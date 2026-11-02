@@ -1,0 +1,40 @@
+name: "🐞 Bug / באג"
+description: "Something broke, froze or looks wrong. / משהו נשבר, נתקע או נראה לא נכון."
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: "What happened? / מה קרה?"
+      description: "What did you do, what did you expect, and what happened instead? / מה עשית, מה ציפית שיקרה ומה קרה בפועל?"
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: "Where in the game? / איפה במשחק?"
+      placeholder: "Story 1-3, Arcade, Arsenal, menu… / סיפור 1-3, ארקייד, ארסנל, תפריט…"
+  - type: dropdown
+    id: device
+    attributes:
+      label: "Device / מכשיר"
+      options:
+        - "Android phone / טלפון אנדרואיד"
+        - "iPhone / iPad"
+        - "Computer (Windows/Mac/Linux) / מחשב"
+        - "Other / אחר"
+  - type: dropdown
+    id: view
+    attributes:
+      label: "Graphics mode / מצב גרפיקה"
+      options:
+        - "2D"
+        - "3D"
+        - "3D MODELS"
+        - "Not sure / לא בטוח"
+  - type: textarea
+    id: info
+    attributes:
+      label: "Game info (optional) / מידע מהמשחק (לא חובה)"
+      description: "Settings → DEVICE CHECK → COPY, and paste here. A screenshot or video helps a lot. / הגדרות ← בדיקת מכשיר ← העתקה, והדבקה כאן. צילום מסך או סרטון עוזרים מאוד."
