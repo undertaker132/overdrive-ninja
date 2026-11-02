@@ -385,10 +385,115 @@ input.txt { min-height: 46px; padding: 0 12px; background: var(--panel); border:
 @keyframes perkIn { from { opacity: 0; transform: translateY(28px) rotateX(50deg) scale(.92); } }
 .stage.on .id { animation: stagePulse 1.6s ease-in-out infinite; }
 @keyframes stagePulse { 50% { text-shadow: 0 0 14px currentColor; } }
-/* in a run the achievement popup sits under the score, not on top of Mika's radio box at the bottom */
-body.inrun #achPop { top: calc(env(safe-area-inset-top, 0px) + 146px); bottom: auto; transform: translate(-50%, -16px); }
-body.inrun #achPop.show { transform: translate(-50%, 0) scale(.86); }
+/* in a run the achievement popup is a small strip at the top center, away from the action, the callouts and Mika's radio box */
+body.inrun #achPop { top: calc(env(safe-area-inset-top, 0px) + 8px); bottom: auto; padding: 5px 12px; max-width: calc(100vw - 150px); transform: translate(-50%, -60px); }
+body.inrun #achPop.show { transform: translate(-50%, 0); }
+body.inrun #achPop .a { display: none; } body.inrun #achPop .b { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body.inrun #achPop .b::before { content: '\2605  '; color: var(--gold); }
 @media (prefers-reduced-motion: reduce) { .rip, .btn.pri::before, #achPop.show::after { display: none; } #s-perk #pkList > .perk, .stage.on .id, .bump { animation: none; } }
+</style>
+<style>
+/* =====================================================================
+   TITLE DECK (version 33) — the home screen as a neon command deck:
+   a living city behind it, a mission card for the story, and mode tiles
+   that each move their own way, trace light around their edge and tilt
+   toward your finger.
+   ===================================================================== */
+@property --ang { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+#s-title { background: transparent; }
+#tdCv { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+#s-title > .col { position: relative; z-index: 1; }
+
+/* the mission card */
+#bStory { min-height: 96px; flex-direction: column; align-items: stretch; justify-content: center; gap: 2px; padding: 12px 64px 12px 18px; text-align: start;
+  clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 18px);
+  background: linear-gradient(115deg, #ff0844 0%, #c4126e 38%, #7928ca 100%); box-shadow: 0 0 34px rgba(255, 8, 68, .45); animation: deckPulse 2.6s ease-in-out infinite; }
+html[dir=rtl] #bStory { padding: 12px 18px 12px 64px; }
+@keyframes deckPulse { 50% { box-shadow: 0 0 52px rgba(255, 43, 214, .7); } }
+#bStory .sm-fx { position: absolute; inset: 0; pointer-events: none; opacity: .22;
+  background: repeating-linear-gradient(115deg, rgba(255, 255, 255, .9) 0 2px, transparent 2px 22px); background-size: 200% 100%; animation: deckStripes 3.2s linear infinite; mix-blend-mode: overlay; }
+@keyframes deckStripes { to { background-position: -230px 0; } }
+#bStory .sm-cut { position: absolute; left: -30%; top: 50%; width: 160%; height: 2px; pointer-events: none; background: linear-gradient(90deg, transparent, #fff 45%, #7ffaff 50%, #fff 55%, transparent);
+  box-shadow: 0 0 12px #00f2fe; transform: rotate(-8deg) scaleX(0); animation: deckCut 5s cubic-bezier(.2, .9, .3, 1) infinite; }
+@keyframes deckCut { 0%, 78% { transform: rotate(-8deg) scaleX(0); opacity: 1; } 84% { transform: rotate(-8deg) scaleX(1); opacity: 1; } 100% { transform: rotate(-8deg) scaleX(1); opacity: 0; } }
+#bStory .sm-e { position: relative; font: 700 11px var(--fm); letter-spacing: 2px; color: rgba(255, 255, 255, .78); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#bStory .sm-l { position: relative; font: italic 700 26px/1.05 var(--fd); letter-spacing: 3px; text-shadow: 0 2px 0 rgba(0, 0, 0, .35), 0 0 18px rgba(255, 255, 255, .35); }
+#bStory .sm-b { position: relative; display: block; height: 4px; margin-top: 6px; background: rgba(0, 0, 0, .28); } #bStory .sm-b i { display: block; height: 100%; background: #ffd23f; box-shadow: 0 0 8px #ffd23f; }
+#bStory .sm-p { position: absolute; inset-inline-end: 16px; top: 50%; width: 38px; height: 38px; margin-top: -19px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(255, 255, 255, .16); box-shadow: 0 0 0 2px rgba(255, 255, 255, .6), 0 0 18px rgba(255, 255, 255, .45); font-size: 15px; animation: deckPlay 1.3s ease-in-out infinite; }
+html[dir=rtl] #bStory .sm-p { transform: scaleX(-1); }
+@keyframes deckPlay { 50% { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0), 0 0 26px rgba(255, 255, 255, .7); } }
+
+/* mode tiles */
+.grid2.tiles { gap: 10px; perspective: 900px; }
+.grid2.tiles > .btn { --tc: #00f2fe; --tc2: #ff2bd6; position: relative; min-height: 92px; overflow: hidden; border: 0; transform-style: preserve-3d;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, .08) 50%, transparent 62%) 0 0 / 300% 100% no-repeat,
+              radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--tc) 22%, transparent), transparent 70%),
+              linear-gradient(170deg, #121a3e, #070a1a);
+  animation: deckSweep 6s ease-in-out infinite; transition: transform .18s ease-out, filter .18s;
+  transform: perspective(600px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+.grid2.tiles > .btn:nth-child(3n+2) { --tc: #ff2bd6; --tc2: #ffd23f; } .grid2.tiles > .btn:nth-child(3n) { --tc: #ffd23f; --tc2: #00f2fe; }
+.grid2.tiles > .btn:nth-child(2) { animation-delay: .4s; } .grid2.tiles > .btn:nth-child(3) { animation-delay: .8s; } .grid2.tiles > .btn:nth-child(4) { animation-delay: 1.2s; }
+.grid2.tiles > .btn:nth-child(5) { animation-delay: 1.6s; } .grid2.tiles > .btn:nth-child(6) { animation-delay: 2s; } .grid2.tiles > .btn:nth-child(7) { animation-delay: 2.4s; }
+.grid2.tiles > .btn:nth-child(8) { animation-delay: 2.8s; } .grid2.tiles > .btn:nth-child(9) { animation-delay: 3.2s; } .grid2.tiles > .btn:nth-child(10) { animation-delay: 3.6s; }
+.grid2.tiles > .btn:nth-child(11) { animation-delay: 4s; } .grid2.tiles > .btn:nth-child(12) { animation-delay: 4.4s; }
+@keyframes deckSweep { 0%, 55% { background-position: 120% 0, 0 0, 0 0; } 100% { background-position: -40% 0, 0 0, 0 0; } }
+.grid2.tiles > .btn::before { content: ''; position: absolute; inset: 0; padding: 1.5px; pointer-events: none;
+  background: conic-gradient(from var(--ang), transparent 0deg, var(--tc) 50deg, transparent 100deg, transparent 180deg, var(--tc2) 230deg, transparent 280deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  animation: deckAng 4.5s linear infinite; opacity: .9; }
+.grid2.tiles > .btn:nth-child(even)::before { animation-direction: reverse; animation-duration: 5.5s; }
+@keyframes deckAng { to { --ang: 360deg; } }
+.grid2.tiles > .btn svg.ti { width: 30px; height: 30px; padding: 0; stroke: var(--tc) !important; filter: drop-shadow(0 0 7px var(--tc)) !important; transition: transform .2s; }
+.grid2.tiles > .btn:hover { filter: brightness(1.15); } .grid2.tiles > .btn:hover svg.ti { transform: scale(1.15); }
+.grid2.tiles > .btn:active { transform: perspective(600px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(.95); filter: brightness(1.35); }
+/* every icon moves its own way */
+#bArcade svg.ti { animation: tiDrive 1.4s ease-in-out infinite; } @keyframes tiDrive { 0%, 100% { transform: translateX(-2px); } 50% { transform: translateX(3px) rotate(2deg); } }
+#bArsenal svg.ti { animation: tiSwing 2.4s cubic-bezier(.5, 0, .3, 1.4) infinite; transform-origin: 30% 70%; } @keyframes tiSwing { 0%, 60%, 100% { transform: rotate(-12deg); } 75% { transform: rotate(28deg); } }
+#bWeekly svg.ti { animation: tiFlip 4s ease-in-out infinite; } @keyframes tiFlip { 0%, 70% { transform: rotateY(0); } 100% { transform: rotateY(360deg); } }
+#bDojo svg.ti { animation: tiBob 1.8s ease-in-out infinite; } @keyframes tiBob { 50% { transform: translateY(-4px); } }
+#bPuzzle svg.ti { animation: tiTurn 3s steps(1) infinite; } @keyframes tiTurn { 0% { transform: rotate(0); } 25% { transform: rotate(90deg); } 50% { transform: rotate(180deg); } 75% { transform: rotate(270deg); } }
+#bLive svg.ti { animation: tiPing 1.6s ease-out infinite; } @keyframes tiPing { 0% { transform: scale(.9); } 30% { transform: scale(1.12); } 100% { transform: scale(.9); } }
+#bProfile svg.ti { animation: tiScan 2.6s linear infinite; } @keyframes tiScan { 0%, 100% { opacity: 1; } 48% { opacity: 1; } 50% { opacity: .35; } 52% { opacity: 1; } }
+#bClub svg.ti { animation: tiShine 3s ease-in-out infinite; } @keyframes tiShine { 0%, 80%, 100% { transform: rotate(0) scale(1); } 88% { transform: rotate(-10deg) scale(1.18); } 94% { transform: rotate(8deg) scale(1.1); } }
+#bSeason svg.ti { animation: tiHop 2s cubic-bezier(.3, 1.6, .5, 1) infinite; } @keyframes tiHop { 0%, 70%, 100% { transform: translateY(0); } 80% { transform: translateY(-6px); } }
+#bHideout svg.ti { animation: tiFlicker 3.4s steps(1) infinite; } @keyframes tiFlicker { 0%, 100% { opacity: 1; } 61% { opacity: .4; } 63% { opacity: 1; } 66% { opacity: .5; } 68% { opacity: 1; } }
+#bEditor svg.ti { animation: tiWrite 1.2s ease-in-out infinite; } @keyframes tiWrite { 0%, 100% { transform: rotate(-6deg) translate(-1px, 1px); } 50% { transform: rotate(6deg) translate(2px, -1px); } }
+#bSettings svg.ti { animation: tiSpin 7s linear infinite; } @keyframes tiSpin { to { transform: rotate(360deg); } }
+
+/* the hero on a turning ring of light */
+#tHero { position: relative; overflow: hidden; background: linear-gradient(100deg, rgba(10, 16, 40, .92), rgba(16, 10, 36, .85)); }
+#tHero::before { content: ''; position: absolute; left: 4px; top: 50%; width: 132px; height: 132px; margin-top: -66px; border-radius: 50%; pointer-events: none;
+  background: conic-gradient(from var(--ang), transparent, var(--hc, #00f2fe) 25%, transparent 50%, var(--hc2, #ff2bd6) 75%, transparent); opacity: .5;
+  -webkit-mask: radial-gradient(circle, transparent 60%, #000 62%, #000 66%, transparent 68%); mask: radial-gradient(circle, transparent 60%, #000 62%, #000 66%, transparent 68%); animation: deckAng 3.5s linear infinite; }
+html[dir=rtl] #tHero::before { left: auto; right: 4px; }
+#tHero canvas { position: relative; filter: drop-shadow(0 0 10px var(--hc, #00f2fe)); }
+#tHero .mbar i { background: linear-gradient(90deg, var(--gold), #fff, var(--gold)); background-size: 200% 100%; animation: deckBar 2s linear infinite; }
+@keyframes deckBar { to { background-position: -200% 0; } }
+
+/* the rest of the deck */
+#tCredits::before { content: '\25C8'; display: inline-block; margin-inline-end: 4px; animation: tiFlip 3s ease-in-out infinite; }
+#bDaily { position: relative; overflow: hidden; border-inline-start: 3px solid var(--gold); }
+#bDaily .chip.gold { animation: deckPlay 1.6s ease-in-out infinite; }
+#tBountyBox .bar i { background: linear-gradient(90deg, var(--cyan), var(--pink)); }
+@media (prefers-reduced-motion: reduce) {
+  #bStory, #bStory .sm-fx, #bStory .sm-cut, #bStory .sm-p, .grid2.tiles > .btn, .grid2.tiles > .btn::before, .grid2.tiles > .btn svg.ti, #tHero::before, #tHero .mbar i, #tCredits::before, #bDaily .chip.gold { animation: none !important; }
+  #bStory .sm-cut { display: none; } #tdCv { display: none; }
+}
+</style>
+<style>
+/* ARSENAL SHOWROOM (version 33): rare items shine, the equipped one glows, the name slams in when you pick something */
+.item.shop.foil { position: relative; overflow: hidden; }
+.item.shop.foil::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(110deg, transparent 35%, color-mix(in srgb, var(--tc) 30%, transparent) 47%, rgba(255, 255, 255, .22) 50%, color-mix(in srgb, var(--tc) 30%, transparent) 53%, transparent 65%) 0 0 / 260% 100% no-repeat; animation: foil 4.2s ease-in-out infinite; mix-blend-mode: screen; }
+.item.shop.foil.t4::after, .item.shop.foil.t5::after { animation-duration: 2.6s; }
+.item.shop.foil.t5 { box-shadow: inset 0 0 18px color-mix(in srgb, var(--tc) 35%, transparent); }
+.item.shop.foil.t4 .tierchip, .item.shop.foil.t5 .tierchip { animation: tierGlow 1.6s ease-in-out infinite; }
+@keyframes foil { 0%, 50% { background-position: 130% 0; } 100% { background-position: -30% 0; } }
+@keyframes tierGlow { 50% { box-shadow: 0 0 10px var(--tc); } }
+.item.shop .ic { transition: transform .2s; } .item.shop:hover .ic, .item.shop.sel .ic { transform: scale(1.08) rotate(-3deg); }
+.item.shop.on { animation: eqGlow 2.2s ease-in-out infinite; } @keyframes eqGlow { 50% { box-shadow: inset 0 0 0 1px var(--gold), 0 0 16px rgba(255, 215, 0, .25); } }
+#asPn.slam { animation: pnSlam .45s cubic-bezier(.2, 1.6, .4, 1); } @keyframes pnSlam { 0% { transform: translateX(-14px) skewX(-12deg); opacity: 0; letter-spacing: 6px; } 100% { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .item.shop.foil::after, .item.shop.on, #asPn.slam, .item.shop .tierchip { animation: none !important; } }
 </style>
 <div id="sa" aria-hidden="true"></div>
 <canvas id="c" aria-label="Overdrive: Cyber Slash game field"></canvas>
@@ -926,8 +1031,8 @@ Math.sin = DMATH.sin; Math.cos = DMATH.cos; Math.atan = DMATH.atan; Math.atan2 =
    All tuning lives here. Logical units: the view is ~420 wide, the
    train roof (arena) is 340 wide. Speeds are units per second.
    ===================================================================== */
-const VERSION = '32.0';
-const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
+const VERSION = '33.0';
+const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
 const CFG = { step: 1 / 60, maxSteps: 5, maxEnemies: 22, arenaW: 340, viewW: 420, viewH: 760 };
 
 const DIFFS_V18 = [ // the tuning replays recorded before version 19 were played with
@@ -5478,6 +5583,16 @@ Object.assign(HE, {
 Object.assign(HE, {"OPEN ON GITHUB": "פתיחה ב-GitHub", "Opens a ready-made report on GitHub. You can edit it before you post.": "פותח דיווח מוכן ב-GitHub. אפשר לערוך אותו לפני השליחה.", "INSTALL APP": "התקנת האפליקציה", "INSTALLED": "הותקן", "MOTION": "תנועה", "The HUD moves now: the score rolls up, a lost shield shatters, the last one beats with your heart, the combo punches on every hit and falls away when it breaks, and the boss bar shows the damage you just did in yellow.": "התצוגה במשחק זזה עכשיו: הניקוד מתגלגל למעלה, מגן שאבד מתנפץ, המגן האחרון פועם עם הלב שלך, הקומבו קופץ בכל פגיעה ונופל כשהוא נשבר, ופס הבוס מראה בצהוב את הנזק שעשית הרגע.", "SNAPPIER MENUS": "תפריטים חיים יותר", "Buttons ripple where you touch them, main buttons catch the light, credits count up, and upgrade cards are dealt in one by one.": "כפתורים מגיבים בגל במקום שנוגעים בהם, הכפתורים הראשיים מנצנצים, הקרדיטים נספרים למעלה, וקלפי השדרוג מחולקים אחד אחד.", "ENEMY ARRIVALS": "כניסת אויבים", "New enemies pop onto the roof with a small bounce, and Overdrive READY shimmers instead of blinking.": "אויבים חדשים קופצים לגג עם קפיצה קטנה, ו-OVERDRIVE מוכן מנצנץ במקום להבהב.", "PLAY ANYWHERE": "לשחק בכל מקום", "The game is now an app you can install from its web page, it works offline, and Report a problem opens a ready report on GitHub.": "המשחק הוא עכשיו אפליקציה שאפשר להתקין מדף האינטרנט שלו, הוא עובד בלי אינטרנט, ו'דיווח על בעיה' פותח דיווח מוכן ב-GitHub."});
 Object.assign(AR, {"OPEN ON GITHUB": "افتح على GitHub", "Opens a ready-made report on GitHub. You can edit it before you post.": "يفتح بلاغاً جاهزاً على GitHub. يمكنك تعديله قبل النشر.", "INSTALL APP": "ثبّت التطبيق", "INSTALLED": "تم التثبيت", "MOTION": "حركة", "The HUD moves now: the score rolls up, a lost shield shatters, the last one beats with your heart, the combo punches on every hit and falls away when it breaks, and the boss bar shows the damage you just did in yellow.": "الواجهة تتحرك الآن: النقاط تتصاعد، الدرع المفقود يتحطم، والأخير ينبض مع قلبك، والكومبو يقفز مع كل ضربة ويسقط عندما ينكسر، وشريط الزعيم يُظهر بالأصفر الضرر الذي أحدثته للتو.", "SNAPPIER MENUS": "قوائم أكثر حيوية", "Buttons ripple where you touch them, main buttons catch the light, credits count up, and upgrade cards are dealt in one by one.": "الأزرار تتموج حيث تلمسها، والأزرار الرئيسية تلمع، والرصيد يُعدّ تصاعدياً، وبطاقات الترقية تُوزّع واحدة تلو الأخرى.", "ENEMY ARRIVALS": "وصول الأعداء", "New enemies pop onto the roof with a small bounce, and Overdrive READY shimmers instead of blinking.": "الأعداء الجدد يظهرون على السطح بقفزة صغيرة، وجاهزية الأوفردرايف تتلألأ بدلاً من الوميض.", "PLAY ANYWHERE": "العب في أي مكان", "The game is now an app you can install from its web page, it works offline, and Report a problem opens a ready report on GitHub.": "اللعبة الآن تطبيق يمكنك تثبيته من صفحتها، وتعمل دون إنترنت، وزر الإبلاغ عن مشكلة يفتح بلاغاً جاهزاً على GitHub."});
 Object.assign(RU, {"OPEN ON GITHUB": "ОТКРЫТЬ НА GITHUB", "Opens a ready-made report on GitHub. You can edit it before you post.": "Откроет готовый отчёт на GitHub. Его можно поправить перед отправкой.", "INSTALL APP": "УСТАНОВИТЬ", "INSTALLED": "УСТАНОВЛЕНО", "MOTION": "ДВИЖЕНИЕ", "The HUD moves now: the score rolls up, a lost shield shatters, the last one beats with your heart, the combo punches on every hit and falls away when it breaks, and the boss bar shows the damage you just did in yellow.": "Интерфейс ожил: счёт прокручивается вверх, потерянный щит разлетается, последний бьётся в такт сердцу, комбо подпрыгивает с каждым ударом и падает, когда рвётся, а полоса босса показывает жёлтым только что нанесённый урон.", "SNAPPIER MENUS": "ЖИВЫЕ МЕНЮ", "Buttons ripple where you touch them, main buttons catch the light, credits count up, and upgrade cards are dealt in one by one.": "Кнопки расходятся волной от касания, главные кнопки бликуют, кредиты отсчитываются, а карты улучшений раздаются по одной.", "ENEMY ARRIVALS": "ПОЯВЛЕНИЕ ВРАГОВ", "New enemies pop onto the roof with a small bounce, and Overdrive READY shimmers instead of blinking.": "Новые враги выпрыгивают на крышу с лёгким отскоком, а готовый Овердрайв переливается вместо мигания.", "PLAY ANYWHERE": "ИГРАЙ ГДЕ УГОДНО", "The game is now an app you can install from its web page, it works offline, and Report a problem opens a ready report on GitHub.": "Игру теперь можно установить как приложение прямо с её страницы, она работает без сети, а «Сообщить о проблеме» открывает готовый отчёт на GitHub."});
+
+/* version 33 strings (title deck) */
+Object.assign(HE, {"ALL CHAPTERS CLEAR": "כל הפרקים הושלמו", "CHAPTER {0}": "פרק {0}"});
+Object.assign(AR, {"ALL CHAPTERS CLEAR": "كل الفصول مكتملة", "CHAPTER {0}": "الفصل {0}"});
+Object.assign(RU, {"ALL CHAPTERS CLEAR": "ВСЕ ГЛАВЫ ПРОЙДЕНЫ", "CHAPTER {0}": "ГЛАВА {0}"});
+
+/* version 33 strings (news) */
+Object.assign(HE, {"NO MORE PARRY FREEZE": "בלי קפיאה בהדיפה", "A perfect parry and a boss clash now land with a short, sharp beat instead of slow motion, so the game never seems to stall.": "הדיפה מושלמת והתנגשות עם בוס נוחתות עכשיו בפעימה קצרה וחדה במקום בהילוך איטי, כך שהמשחק אף פעם לא נראה תקוע.", "NEW HOME SCREEN": "מסך בית חדש", "A living city with a sliced moon behind the menu, a mission card for the story, and mode tiles that each move their own way, trace light around their edge and tilt toward your finger.": "עיר חיה עם ירח חתוך מאחורי התפריט, כרטיס משימה לסיפור, ואריחי מצבים שכל אחד זז בדרך משלו, אור רץ סביב המסגרת שלהם והם נוטים לכיוון האצבע.", "CLEANER RUNS": "משחק נקי יותר", "Less text on the roof: small side callouts are gone, one word label shows at a time, ON BEAT shows from x3, and achievements are a small strip at the top.": "פחות טקסט על הגג: ההודעות הקטנות בצד נעלמו, רק תווית מילים אחת בכל פעם, 'על הקצב' מופיע רק מ-x3, והישגים מופיעים כפס קטן למעלה.", "ARSENAL SHOWROOM": "אולם התצוגה בארסנל", "Every item stands on a lit stage in its rarity color with a reveal flash, rare items shine in the list, and the one you have equipped glows.": "כל פריט עומד על במה מוארת בצבע הנדירות שלו עם הבזק חשיפה, פריטים נדירים מנצנצים ברשימה, והפריט המצויד זוהר.", "The score rolls up, a lost shield shatters, the last one beats with your heart, the combo punches and falls away when it breaks, and the boss bar shows your damage in yellow.": "הניקוד מתגלגל למעלה, מגן שאבד מתנפץ, האחרון פועם עם הלב, הקומבו קופץ ונופל כשהוא נשבר, ופס הבוס מראה בצהוב את הנזק שלך."});
+Object.assign(AR, {"NO MORE PARRY FREEZE": "لا تجمّد عند الصدّ", "A perfect parry and a boss clash now land with a short, sharp beat instead of slow motion, so the game never seems to stall.": "الصدّ المثالي والاصطدام بالزعيم يأتيان الآن بنبضة قصيرة وحادة بدل الحركة البطيئة، فلا تبدو اللعبة متوقفة أبداً.", "NEW HOME SCREEN": "شاشة رئيسية جديدة", "A living city with a sliced moon behind the menu, a mission card for the story, and mode tiles that each move their own way, trace light around their edge and tilt toward your finger.": "مدينة حية مع قمر مشطور خلف القائمة، وبطاقة مهمة للقصة، وبلاطات أوضاع تتحرك كلٌّ بطريقتها، ويجري الضوء حول حوافها وتميل نحو إصبعك.", "CLEANER RUNS": "جولات أنظف", "Less text on the roof: small side callouts are gone, one word label shows at a time, ON BEAT shows from x3, and achievements are a small strip at the top.": "نص أقل على السطح: اختفت التنبيهات الجانبية الصغيرة، وتظهر تسمية واحدة في كل مرة، و'على الإيقاع' تظهر من x3، والإنجازات شريط صغير في الأعلى.", "ARSENAL SHOWROOM": "صالة عرض الترسانة", "Every item stands on a lit stage in its rarity color with a reveal flash, rare items shine in the list, and the one you have equipped glows.": "كل عنصر يقف على منصة مضاءة بلون ندرته مع وميض كشف، والعناصر النادرة تلمع في القائمة، والعنصر المجهّز يتوهج.", "The score rolls up, a lost shield shatters, the last one beats with your heart, the combo punches and falls away when it breaks, and the boss bar shows your damage in yellow.": "النقاط تتصاعد، والدرع المفقود يتحطم، والأخير ينبض مع قلبك، والكومبو يقفز ويسقط عندما ينكسر، وشريط الزعيم يُظهر ضررك بالأصفر."});
+Object.assign(RU, {"NO MORE PARRY FREEZE": "ПАРИРОВАНИЕ БЕЗ ЗАМИРАНИЯ", "A perfect parry and a boss clash now land with a short, sharp beat instead of slow motion, so the game never seems to stall.": "Идеальное парирование и сшибка с боссом теперь дают короткий резкий удар вместо замедления, и игра больше не кажется зависшей.", "NEW HOME SCREEN": "НОВЫЙ ГЛАВНЫЙ ЭКРАН", "A living city with a sliced moon behind the menu, a mission card for the story, and mode tiles that each move their own way, trace light around their edge and tilt toward your finger.": "Живой город с разрубленной луной за меню, карточка миссии для сюжета и плитки режимов, которые двигаются каждая по-своему, светятся по краю и наклоняются к пальцу.", "CLEANER RUNS": "ЧИЩЕ В БОЮ", "Less text on the roof: small side callouts are gone, one word label shows at a time, ON BEAT shows from x3, and achievements are a small strip at the top.": "Меньше текста на крыше: мелкие боковые подсказки убраны, надпись показывается одна за раз, «В ТАКТ» — только с x3, а достижения — узкая полоска сверху.", "ARSENAL SHOWROOM": "ВИТРИНА АРСЕНАЛА", "Every item stands on a lit stage in its rarity color with a reveal flash, rare items shine in the list, and the one you have equipped glows.": "Каждый предмет стоит на освещённой сцене в цвете своей редкости со вспышкой появления, редкие предметы блестят в списке, а надетый светится.", "The score rolls up, a lost shield shatters, the last one beats with your heart, the combo punches and falls away when it breaks, and the boss bar shows your damage in yellow.": "Счёт прокручивается, потерянный щит разлетается, последний бьётся в такт сердцу, комбо подпрыгивает и падает, когда рвётся, а полоса босса показывает урон жёлтым."});
 
 /* HEBREW — version 31 strings (news). Written by i18n/v32.py */
 Object.assign(HE, {
@@ -10668,7 +10783,7 @@ BOSSDEF.kage = {
   },
   clash(b) {
     b.stun = 1.7; b.stag = 1.7; b.zanN = 0; b.st = 'recover'; styleAdd(ST_CLASH, 120); Comms.say('clash'); b.stT = 1.7; b.vx = b.vy = 0;
-    P.inv = Math.max(P.inv, .5); P.vx *= -.4; P.vy *= -.4; P.ch = P.maxCh; G.clashes++; G.hs = .16; G.slowT = .5; G.slowK = .3;
+    P.inv = Math.max(P.inv, .5); P.vx *= -.4; P.vy *= -.4; P.ch = P.maxCh; G.clashes++; if (simV(33)) G.hs = .05; else { G.hs = .16; G.slowT = .5; G.slowK = .3; }
     flash(.5, '#d9c2ff'); shake(.6); punch(.08); Aud.sfx('clash'); vibe('clash');
     FX.ring((b.x + P.x) / 2, (b.y + P.y) / 2, 140, '#ffffff', 6); FX.streak((b.x + P.x) / 2, (b.y + P.y) / 2, 0, '#ffd700', 12);
     FX.call(lt('CLASH — TAP KAGE'), '#ffd700', 3);
@@ -10928,7 +11043,7 @@ BOSSDEF.renull = {
   },
   clash(b) {
     b.stun = 1.6; b.stag = 1.6; b.zanN = 0; b.st = 'recover'; b.stT = 1.6; b.chain = 0; b.vx = b.vy = 0; styleAdd(ST_CLASH, 120); Comms.say('nullClash');
-    P.inv = Math.max(P.inv, .5); P.vx *= -.4; P.vy *= -.4; P.ch = P.maxCh; G.clashes++; G.hs = .16; G.slowT = .5; G.slowK = .3;
+    P.inv = Math.max(P.inv, .5); P.vx *= -.4; P.vy *= -.4; P.ch = P.maxCh; G.clashes++; if (simV(33)) G.hs = .05; else { G.hs = .16; G.slowT = .5; G.slowK = .3; }
     flash(.5, '#ffffff'); shake(.6); punch(.08); glitch(.25); Aud.sfx('clash'); vibe('clash');
     FX.ring((b.x + P.x) / 2, (b.y + P.y) / 2, 140, '#ffffff', 6); FX.streak((b.x + P.x) / 2, (b.y + P.y) / 2, 0, '#ff0844', 12);
     FX.call(lt('CLASH — TAP REN.NULL'), '#ffd700', 3);
@@ -11460,7 +11575,7 @@ BOSSDEF.genesis = {
   beamsOn(b) { b.beams = [{ a: 0, va: .5 }, { a: Math.PI, va: .5 }]; },
   clash(b) {
     b.stun = 1.6; b.stag = 1.8; b.zanN = 0; b.st = 'recover'; b.stT = 1.8; b.vx = b.vy = 0; styleAdd(ST_CLASH, 140); G.clashes++;
-    P.inv = Math.max(P.inv, .5); P.vx *= -.4; P.vy *= -.4; P.ch = P.maxCh; G.hs = .18; G.slowT = .5; G.slowK = .3;
+    P.inv = Math.max(P.inv, .5); P.vx *= -.4; P.vy *= -.4; P.ch = P.maxCh; if (simV(33)) G.hs = .05; else { G.hs = .18; G.slowT = .5; G.slowK = .3; }
     flash(.55, '#ffd700'); shake(.7); punch(.1); Aud.sfx('clash'); vibe('clash');
     FX.ring((b.x + P.x) / 2, (b.y + P.y) / 2, 160, '#ffffff', 6); FX.streak((b.x + P.x) / 2, (b.y + P.y) / 2, 0, '#ffd700', 14); FX.call(lt('CLASH — STRIKE THE CORE'), '#ffd700', 3);
   },
@@ -13243,7 +13358,7 @@ function parryBullet(b) {
   if (perfect) {
     if (G.parries === 0) Comms.say('parry');
     G.parries++; bounty('parry', 1); if (G.parries >= 10) ach('parry10'); G.skill = Math.min(G.diff.dda[1], G.skill + .03);
-    G.hs = Math.max(G.hs, simV(15) ? .14 : .08); G.slowT = .35; G.slowK = .35; punch(.09); flash(.18, '#ffd700'); vibe('perfect');
+    if (simV(33)) G.hs = Math.max(G.hs, .035); else { G.hs = Math.max(G.hs, simV(15) ? .14 : .08); G.slowT = .35; G.slowK = .35; } // v33: a crisp beat, no slow motion punch(.09); flash(.18, '#ffd700'); vibe('perfect');
     FX.call(lt('PERFECT PARRY'), '#ffd700', 2); Aud.sfx('parry', 1);
     if (P.perks.nova) for (let k = 0; k < 8; k++) shard(P.x, P.y, k * TAU / 8, 420, '#ffd700', 1.2);
     Dojo.onParry(true);
@@ -15047,7 +15162,31 @@ const Preview = {
     this.t += rd; FX.update(rd, rd);
     withCtx(this.g, () => { cx.setTransform(this.k, 0, 0, this.k, 0, 0); cx.direction = LANG.rtl ? 'rtl' : 'ltr'; this.draw(rd); });
   },
-  floor() {
+  floor() { // version 33: a showroom stage lit in the item's rarity color, with a reveal flash on every new pick
+    if (CALM) return this.floor0();
+    const W = this.W, t = this.t, s = this.sel || {}, c = (s.tier >= 0 && TIERS[s.tier] ? TIERS[s.tier].c : null) || skinLook(s.tab === 'heroes' ? s.id : Store.data.skin).a || '#00f2fe';
+    const bg = cx.createLinearGradient(0, 0, 0, 170); bg.addColorStop(0, '#070a18'); bg.addColorStop(.6, '#0c1230'); bg.addColorStop(1, '#05060f'); cx.fillStyle = bg; cx.fillRect(0, 0, W, 170);
+    cx.save(); cx.globalCompositeOperation = 'lighter';
+    // spotlight cone from above
+    const sp = cx.createLinearGradient(0, 0, 0, 150); sp.addColorStop(0, hexA(c, .28)); sp.addColorStop(1, hexA(c, 0)); cx.fillStyle = sp;
+    cx.beginPath(); cx.moveTo(W / 2 - 30, 0); cx.lineTo(W / 2 + 30, 0); cx.lineTo(W / 2 + 120, 150); cx.lineTo(W / 2 - 120, 150); cx.closePath(); cx.fill();
+    // hex grid drifting on the back wall
+    cx.strokeStyle = hexA(c, .1); cx.lineWidth = 1; cx.beginPath(); const hs = 16, off = (t * 8) % (hs * 1.5);
+    for (let row = -1; row < 170 / (hs * .87) + 1; row++) for (let col = -1; col < W / (hs * 1.5) + 2; col++) { const hx = col * hs * 1.5 - off + (row % 2) * hs * .75, hy = row * hs * .87; cx.moveTo(hx + hs * .5, hy); cx.lineTo(hx + hs * .25, hy - hs * .43); }
+    cx.stroke();
+    // a turning ring of light under the action
+    cx.translate(W / 2, 104); cx.scale(1, .32); cx.lineWidth = 3;
+    for (let k = 0; k < 3; k++) { cx.strokeStyle = hexA(c, .5 - k * .14); cx.beginPath(); cx.arc(0, 0, 70 + k * 16, t * (1.2 - k * .5), t * (1.2 - k * .5) + 4.2); cx.stroke(); }
+    cx.restore();
+    // floating motes
+    cx.fillStyle = c; for (let i = 0; i < 14; i++) { const mx = (i * 97.3 + t * (10 + i % 5 * 6)) % W, my = 170 - ((i * 53.1 + t * (14 + i % 3 * 9)) % 170); cx.globalAlpha = .25 + .25 * Math.sin(t * 3 + i); cx.fillRect(mx, my, 2, 2); } cx.globalAlpha = 1;
+    // rails in the rarity color
+    cx.save(); cx.shadowColor = c; cx.shadowBlur = 10; cx.fillStyle = c; cx.globalAlpha = .75 + .25 * Math.sin(t * 4); cx.fillRect(10, 0, 3, 170); cx.fillRect(W - 13, 0, 3, 170); cx.restore();
+    // the reveal: a flash and a ring burst when something new is picked
+    if (t < .6) { const k = t / .6; cx.save(); cx.globalCompositeOperation = 'lighter'; cx.globalAlpha = (1 - k) * .55; cx.fillStyle = c; cx.fillRect(0, 0, W, 170);
+      cx.globalAlpha = 1 - k; cx.strokeStyle = '#ffffff'; cx.lineWidth = 3 * (1 - k) + 1; cx.beginPath(); cx.ellipse(W / 2, 100, 20 + k * 160, (20 + k * 160) * .4, 0, 0, TAU); cx.stroke(); cx.restore(); }
+  },
+  floor0() {
     const W = this.W; cx.fillStyle = '#0b0f22'; cx.fillRect(0, 0, W, 170); cx.fillStyle = '#0e1430'; cx.fillRect(W * .3, 0, W * .4, 170);
     cx.strokeStyle = 'rgba(0,242,254,.12)'; cx.lineWidth = 2; cx.beginPath(); for (let y = (-this.t * 60) % 48; y < 170; y += 48) { cx.moveTo(14, y); cx.lineTo(W - 14, y); } cx.stroke();
     cx.fillStyle = '#00f2fe'; cx.fillRect(10, 0, 3, 170); cx.fillRect(W - 13, 0, 3, 170);
@@ -15213,10 +15352,12 @@ const Preview = {
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 32
-  ["MOTION", "The HUD moves now: the score rolls up, a lost shield shatters, the last one beats with your heart, the combo punches on every hit and falls away when it breaks, and the boss bar shows the damage you just did in yellow."],
-  ["SNAPPIER MENUS", "Buttons ripple where you touch them, main buttons catch the light, credits count up, and upgrade cards are dealt in one by one."],
-  ["ENEMY ARRIVALS", "New enemies pop onto the roof with a small bounce, and Overdrive READY shimmers instead of blinking."],
+const NEWS = [ // version 33
+  ["NO MORE PARRY FREEZE", "A perfect parry and a boss clash now land with a short, sharp beat instead of slow motion, so the game never seems to stall."],
+  ["NEW HOME SCREEN", "A living city with a sliced moon behind the menu, a mission card for the story, and mode tiles that each move their own way, trace light around their edge and tilt toward your finger."],
+  ["CLEANER RUNS", "Less text on the roof: small side callouts are gone, one word label shows at a time, ON BEAT shows from x3, and achievements are a small strip at the top."],
+  ["ARSENAL SHOWROOM", "Every item stands on a lit stage in its rarity color with a reveal flash, rare items shine in the list, and the one you have equipped glows."],
+  ["MOTION", "The score rolls up, a lost shield shatters, the last one beats with your heart, the combo punches and falls away when it breaks, and the boss bar shows your damage in yellow."],
   ["PLAY ANYWHERE", "The game is now an app you can install from its web page, it works offline, and Report a problem opens a ready report on GitHub."]
 ];
 function deathCause() { // what hit you last, and how to avoid it next time
@@ -21004,6 +21145,23 @@ const CleanHud = {
   const cs0 = Comms.say.bind(Comms); Comms.say = function (key, force) { if (HUDC() && !force) { if (this.cd > 0 || (this.used[key] | 0) >= 1 || Boss.cur || CleanHud.enemiesOn() >= 4) return; } cs0(key, force); if (HUDC() && !force && this.cur) this.cd = Math.max(this.cd, 12); };
   const cr0 = Comms.reset.bind(Comms); Comms.reset = function () { cr0(); CleanHud.q.length = 0; };
 }
+{ // CLEAN HUD 2 (version 33): even less text on the roof. Drawing only, replays look the same.
+  const NUMLIKE = /^[\d\s,.+x×!%-]+$/i; // damage, credits, multipliers: these stay
+  const inPlay = () => HUDC() && G.state === 'PLAY' && !REPLAY.on;
+  // small side callouts (priority 1) are dropped: what they say is already on screen
+  const fc0 = FX.call; FX.call = function (t, c, p, sz) { if (inPlay() && (p || 1) < 2) return; return fc0.call(this, t, c, p, sz); };
+  // word labels over the action: one at a time, a bit smaller; ON BEAT only from x3 up
+  const ft0 = FX.text; FX.text = function (x, y, t, c, sz, pop, key) {
+    if (!inPlay() || t == null) return ft0.call(this, x, y, t, c, sz, pop, key);
+    const s = String(t);
+    if (NUMLIKE.test(s)) return ft0.call(this, x, y, t, c, sz, pop, key);
+    if (key === 'beat' && !/x[34]/.test(s)) return;
+    for (let i = 0; i < TX.n; i++) { const o = TX.a[i]; if (o.alive && o.word && o.l > .12) o.l = .12; }
+    const k = TX.n; ft0.call(this, x, y, t, c, Math.round((sz || 16) * .88), pop, key);
+    if (TX.n > k) TX.a[TX.n - 1].word = 1;
+  };
+  const tg1 = TX.get.bind(TX); TX.get = function () { const o = tg1(); if (o) o.word = 0; return o; };
+}
 { const au0 = applyUiSettings; applyUiSettings = function () { au0.apply(this, arguments); try { CleanHud.sync(); } catch (e) { errLog(e); } }; }
 
 /* =====================================================================
@@ -21822,6 +21980,101 @@ const Motion2 = {
   }
 };
 try { Motion2.init(); } catch (e) { errLog(e); }
+/* ---------------- TITLE DECK (version 33): the living home screen ---------------- */
+const TitleDeck = {
+  on: false, cv: null, g: null, W: 0, H: 0, dpr: 1, t: 0, sk: null, pt: null, lastCut: 0, ca: '#00f2fe', cb: '#ff2bd6', lt: 0,
+  decorate() {
+    const b = $('bStory'); if (!b || b.dataset.deck) return; b.dataset.deck = '1';
+    const label = el('span', 'sm-l'); while (b.firstChild) label.appendChild(b.firstChild); // (the text node moves with its translation)
+    const fx = el('span', 'sm-fx'), cut = el('span', 'sm-cut'), eb = el('span', 'sm-e'), bar = el('span', 'sm-b'), bi = el('i'), play = el('span', 'sm-p', '▶');
+    eb.id = 'smEye'; bi.id = 'smBar'; bar.appendChild(bi); [fx, cut, play].forEach(x => x.setAttribute('aria-hidden', 'true'));
+    b.appendChild(fx); b.appendChild(cut); b.appendChild(eb); b.appendChild(label); b.appendChild(bar); b.appendChild(play);
+    const cv = document.createElement('canvas'); cv.id = 'tdCv'; cv.setAttribute('aria-hidden', 'true'); const sc = $('s-title'); sc.insertBefore(cv, sc.firstChild);
+    this.cv = cv; this.g = cv.getContext('2d');
+    // tiles lean toward the finger or the mouse
+    const tilt = (e, t) => { const r = t.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; t.style.setProperty('--ry', (x * 16).toFixed(1) + 'deg'); t.style.setProperty('--rx', (-y * 16).toFixed(1) + 'deg'); };
+    const flat = t => { t.style.setProperty('--rx', '0deg'); t.style.setProperty('--ry', '0deg'); };
+    const grid = $('bArcade') && $('bArcade').parentElement;
+    if (grid) for (const t of grid.children) {
+      t.addEventListener('pointermove', e => { if (e.pointerType === 'mouse' && !Motion2.rm) tilt(e, t); });
+      t.addEventListener('pointerdown', e => { if (!Motion2.rm) tilt(e, t); });
+      ['pointerleave', 'pointerup', 'pointercancel'].forEach(k => t.addEventListener(k, () => flat(t)));
+    }
+  },
+  refresh() {
+    try {
+      this.decorate();
+      const d = Store.data, un = d.story.unlocked | 0, last = STAGES.findIndex(s => s.secret) - 1, i = Math.max(0, Math.min(un, last >= 0 ? last : STAGES.length - 1)), s = STAGES[i], ch = CHAPTERS[s.ch] || {};
+      const e = $('smEye'); if (e) e.textContent = (un > last ? lt('ALL CHAPTERS CLEAR') : ltf('CHAPTER {0}', s.ch + 1) + ' · ' + lt(ch.name || '')) + '  //  ' + s.id + ' ' + lt(s.name);
+      const bar = $('smBar'); if (bar) bar.style.width = Math.round(Store.stars() / (STAGES.length * 3) * 100) + '%';
+      const sk = skinOf(d.skin); this.ca = sk.a || '#00f2fe'; this.cb = sk.b || '#ff2bd6';
+      const h = $('tHero'); if (h) { h.style.setProperty('--hc', this.ca); h.style.setProperty('--hc2', this.cb); }
+    } catch (er) { errLog(er); }
+    this.start();
+  },
+  start() {
+    if (this.on || !this.cv || CALM || Motion2.rm) return; this.on = true; this.t = 0; this.lastCut = 0;
+    this.sk = []; for (let L = 0; L < 3; L++) { const row = []; let x = 0; while (x < 1600) { const w = 22 + rnd() * (40 + L * 30); row.push([x, w, 60 + rnd() * (90 + L * 90), rnd()]); x += w + 4 + rnd() * 10; } this.sk.push(row); }
+    this.pt = []; for (let i = 0; i < 46; i++) this.pt.push([rnd(), rnd(), rnd(), rnd()]);
+    const loop = ts => { if (!this.on) return; if (UI.cur !== 'title' || document.hidden) { this.on = false; return; } const dt = this.lt ? Math.min(.05, (ts - this.lt) / 1000) : 1 / 60; this.lt = ts; this.draw(dt); requestAnimationFrame(loop); };
+    this.lt = 0; requestAnimationFrame(loop);
+  },
+  fit() { const W = window.innerWidth, H = window.innerHeight, d = Math.min(1.5, window.devicePixelRatio || 1); if (W !== this.W || H !== this.H || d !== this.dpr) { this.W = W; this.H = H; this.dpr = d; this.cv.width = W * d; this.cv.height = H * d; } },
+  draw(dt) {
+    this.fit(); const g = this.g, W = this.W, H = this.H, t = (this.t += dt), hz = H * .62; g.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+    // night sky in the hero's colors
+    const sky = g.createLinearGradient(0, 0, 0, H); sky.addColorStop(0, '#03040c'); sky.addColorStop(.55, '#0c0a24'); sky.addColorStop(1, '#040510'); g.fillStyle = sky; g.fillRect(0, 0, W, H);
+    // the moon, sliced by the last cut
+    const mr = Math.min(W, H) * .2, mx = W * .5, my = H * .3;
+    g.save(); g.globalCompositeOperation = 'lighter'; const halo = g.createRadialGradient(mx, my, mr * .6, mx, my, mr * 2.4); halo.addColorStop(0, 'rgba(255,40,140,.22)'); halo.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = halo; g.fillRect(mx - mr * 2.5, my - mr * 2.5, mr * 5, mr * 5); g.restore();
+    const sl = Math.min(1, Math.max(0, (t - this.lastCut) / .5)), gap = this.lastCut ? 6 * (1 - sl) + 2 : 2;
+    for (const side of [-1, 1]) { g.save(); g.beginPath(); const a = -.35; if (side < 0) { g.moveTo(mx - mr * 2, my - mr * 2); g.lineTo(mx + mr * 2, my - mr * 2); g.lineTo(mx + mr * 2, my + Math.tan(a) * mr * 2 - gap); g.lineTo(mx - mr * 2, my - Math.tan(a) * mr * 2 - gap); } else { g.moveTo(mx - mr * 2, my - Math.tan(a) * mr * 2 + gap); g.lineTo(mx + mr * 2, my + Math.tan(a) * mr * 2 + gap); g.lineTo(mx + mr * 2, my + mr * 2); g.lineTo(mx - mr * 2, my + mr * 2); } g.clip();
+      const mg = g.createLinearGradient(0, my - mr, 0, my + mr); mg.addColorStop(0, '#ffe08a'); mg.addColorStop(.5, '#ff4fa0'); mg.addColorStop(1, '#7a2bd6'); g.fillStyle = mg; g.beginPath(); g.arc(mx + side * gap * .4, my + side * gap * .3, mr, 0, TAU); g.fill();
+      g.fillStyle = 'rgba(12,10,36,.85)'; for (let k = 0; k < 6; k++) { const yy = my + mr * (.1 + k * .16) + ((t * 14) % (mr * .16)); g.fillRect(mx - mr, yy, mr * 2, 1.5 + k * 1.3); } g.restore(); }
+    // searchlights
+    g.save(); g.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < 2; i++) { const bx = W * (.2 + .6 * i), a = -Math.PI / 2 + Math.sin(t * .35 + i * 2.2) * .55, L = H; const bg = g.createLinearGradient(bx, hz, bx + Math.cos(a) * L, hz + Math.sin(a) * L); bg.addColorStop(0, i ? 'rgba(0,242,254,.16)' : 'rgba(255,43,214,.14)'); bg.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = bg; g.beginPath(); g.moveTo(bx, hz); g.lineTo(bx + Math.cos(a - .07) * L, hz + Math.sin(a - .07) * L); g.lineTo(bx + Math.cos(a + .07) * L, hz + Math.sin(a + .07) * L); g.closePath(); g.fill(); }
+    g.restore();
+    // three layers of skyline, the near ones faster
+    const cols = ['#0d0b26', '#090820', '#05050f'];
+    for (let L = 0; L < 3; L++) { const off = (t * (8 + L * 14)) % 1600, base = hz + L * 18; g.fillStyle = cols[L];
+      for (const [bx, bw, bh, s] of this.sk[L]) { let x = bx - off; if (x < -bw) x += 1600; if (x > W) continue; g.fillRect(x, base - bh, bw, bh + H);
+        if (L < 2) { g.fillStyle = s < .4 ? 'rgba(0,242,254,.35)' : s < .7 ? 'rgba(255,43,214,.32)' : 'rgba(255,210,63,.3)'; for (let wy = base - bh + 6; wy < base - 4; wy += 10) for (let wx = x + 4; wx < x + bw - 4; wx += 8) if (((wx * 13 + wy * 7 + L * 5) | 0) % 5 === 0 && ((t * 2 + wx) | 0) % 37 !== 0) g.fillRect(wx, wy, 3, 4); g.fillStyle = cols[L]; }
+        if (L === 1 && s > .85) { g.fillStyle = s > .93 ? '#ff2bd6' : '#00f2fe'; g.globalAlpha = .55 + .45 * Math.sin(t * 3 + bx); g.fillRect(x + bw * .2, base - bh - 10, bw * .6, 6); g.globalAlpha = 1; g.fillStyle = cols[L]; } } }
+    // the neon floor
+    const fy = H * .8; const fl = g.createLinearGradient(0, fy, 0, H); fl.addColorStop(0, '#0a0420'); fl.addColorStop(1, '#020208'); g.fillStyle = fl; g.fillRect(0, fy, W, H - fy);
+    g.strokeStyle = this.ca; g.globalAlpha = .45; g.lineWidth = 1; g.beginPath();
+    for (let k = -16; k <= 16; k++) { g.moveTo(W / 2 + k * 10, fy); g.lineTo(W / 2 + k * W * .14, H); }
+    for (let k = 0; k < 10; k++) { const z = (k + (t * 1.2) % 1) / 10, y = fy + (H - fy) * z * z; g.moveTo(0, y); g.lineTo(W, y); }
+    g.stroke(); g.globalAlpha = 1; g.strokeStyle = this.ca; g.lineWidth = 2; g.shadowColor = this.ca; g.shadowBlur = 14; g.beginPath(); g.moveTo(0, fy); g.lineTo(W, fy); g.stroke(); g.shadowBlur = 0;
+    // petals and embers drifting through
+    for (const p of this.pt) { const x = ((p[0] * W + t * (18 + p[2] * 30)) % (W + 40)) - 20, y = ((p[1] * H + t * (26 + p[3] * 40)) % (H + 40)) - 20, petal = p[3] > .5;
+      g.globalAlpha = .35 + p[2] * .5; g.fillStyle = petal ? '#ffb7d5' : (p[2] > .5 ? this.ca : '#ffd23f');
+      if (petal) { g.beginPath(); g.ellipse(x, y, 3.5, 2, t * 2 + p[0] * 9, 0, TAU); g.fill(); } else g.fillRect(x, y, 2, 2); }
+    g.globalAlpha = 1;
+    // a katana cut across the screen every few seconds (and the logo splits with it)
+    if (t - this.lastCut > 6.5) { this.lastCut = t; const c = document.querySelector('#s-title .logo.v2 .cut'); if (c) { c.style.animation = 'none'; void c.offsetWidth; c.style.animation = ''; } }
+    const ck = (t - this.lastCut) / .3; if (this.lastCut && ck < 2.4) { const k = Math.min(1, ck), a = 1 - Math.max(0, (ck - 1) / 1.4), y0 = H * .4, y1 = H * .18;
+      g.save(); g.globalAlpha = a; g.strokeStyle = '#ffffff'; g.lineWidth = 3; g.shadowColor = this.ca; g.shadowBlur = 20; g.beginPath(); g.moveTo(-20, y0); g.lineTo(-20 + (W + 40) * k, y0 + (y1 - y0) * k); g.stroke(); g.lineWidth = 1.2; g.strokeStyle = this.cb; g.stroke(); g.restore(); }
+    // keep the deck readable
+    const sh = g.createLinearGradient(0, 0, 0, H); sh.addColorStop(0, 'rgba(3,4,10,.25)'); sh.addColorStop(.35, 'rgba(3,4,10,.45)'); sh.addColorStop(1, 'rgba(3,4,10,.7)'); g.fillStyle = sh; g.fillRect(0, 0, W, H);
+  }
+};
+{ const ot1 = UI.openTitle.bind(UI); UI.openTitle = function () { ot1(); TitleDeck.refresh(); }; }
+/* ---------------- ARSENAL SHOWROOM (version 33) ---------------- */
+function hexA(c, a) { // '#rrggbb' + alpha -> rgba()
+  const m = /^#([0-9a-f]{6})$/i.exec(c || ''); if (!m) return 'rgba(0,242,254,' + a + ')';
+  const n = parseInt(m[1], 16); return 'rgba(' + (n >> 16) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+}
+{
+  const ra1 = UI.renderArsenal.bind(UI);
+  UI.renderArsenal = function () {
+    ra1();
+    try { const tab = SHOP_TABS[this.asTab].id, items = this.shopItems(tab); document.querySelectorAll('#asList button.item').forEach((b, i) => { const it = items[i]; if (it && it.tier >= 2) b.classList.add('foil', 't' + it.tier); }); } catch (e) { errLog(e); }
+  };
+  const rs1 = UI.renderShopInfo.bind(UI);
+  UI.renderShopInfo = function (it) { rs1(it); const p = $('asPn'); if (p && !Motion2.rm) { p.classList.remove('slam'); void p.offsetWidth; p.classList.add('slam'); } };
+}
 /* test + automation hooks (used by the headless test suite) */
 window.__OD = { G, P, V, EN, BU, Boss, Director, Flow, UI, Store, STAGES, sim, step, startStory: i => Flow.startStory(i), startArcade: m => Flow.startArcade(m), Dlg, Arena, REC, REPLAY, TICK, R, In, Replays, DMATH };
 try {
