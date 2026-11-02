@@ -1,0 +1,47 @@
+name: "⭐ Review & feedback / ביקורת ומשוב"
+description: "Tell us what you think: what was fun, what was not, what to add. / ספרו מה חשבתם: מה היה כיף, מה פחות, ומה להוסיף."
+title: "[FEEDBACK] "
+labels: ["feedback"]
+body:
+  - type: dropdown
+    id: rating
+    attributes:
+      label: "Overall rating / דירוג כללי"
+      options:
+        - "⭐⭐⭐⭐⭐ Loved it / אהבתי מאוד"
+        - "⭐⭐⭐⭐ Good / טוב"
+        - "⭐⭐⭐ OK / בסדר"
+        - "⭐⭐ Meh / ככה ככה"
+        - "⭐ Did not enjoy it / לא נהניתי"
+    validations:
+      required: true
+  - type: textarea
+    id: liked
+    attributes:
+      label: "What did you like? / מה אהבת?"
+  - type: textarea
+    id: disliked
+    attributes:
+      label: "What should be better? / מה צריך להשתפר?"
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: "Difficulty / רמת קושי"
+      options:
+        - "Too easy / קל מדי"
+        - "Just right / בדיוק"
+        - "Too hard / קשה מדי"
+  - type: input
+    id: progress
+    attributes:
+      label: "How far did you get? / עד איפה הגעת?"
+      placeholder: "Chapter 3, Maglev best 12,000… / פרק 3, שיא מגלב 12,000…"
+  - type: dropdown
+    id: device
+    attributes:
+      label: "Device / מכשיר"
+      options:
+        - "Android phone / טלפון אנדרואיד"
+        - "iPhone / iPad"
+        - "Computer / מחשב"
+        - "Other / אחר"

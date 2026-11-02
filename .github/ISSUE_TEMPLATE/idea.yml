@@ -1,0 +1,15 @@
+name: "💡 Idea / רעיון"
+description: "A mode, boss, weapon, hero or anything else you want in the game. / מצב, בוס, נשק, גיבור או כל דבר אחר שתרצו במשחק."
+title: "[IDEA] "
+labels: ["idea"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: "Your idea / הרעיון שלך"
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: "Why would it make the game better? / למה זה ישפר את המשחק?"

@@ -1,0 +1,66 @@
+{
+  "name": "overdrive-cyber-slash",
+  "productName": "Overdrive Cyber Slash",
+  "version": "35.0.0",
+  "description": "A neon cyberpunk ninja action game.",
+  "author": "undertaker132",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/undertaker132/overdrive-ninja.git"
+  },
+  "homepage": "https://undertaker132.github.io/overdrive-ninja/",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "prepare-web": "node prepare.js",
+    "start": "npm run prepare-web && electron .",
+    "dist": "npm run prepare-web && electron-builder --publish never",
+    "dist:dir": "npm run prepare-web && electron-builder --dir --publish never"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "io.github.undertaker132.overdrive",
+    "productName": "Overdrive Cyber Slash",
+    "files": [
+      "main.js",
+      "web/**/*"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "artifactName": "Overdrive-Cyber-Slash-${version}-${os}-${arch}.${ext}",
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "web/icons/icon-512.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "Overdrive-Cyber-Slash-${version}-Setup.${ext}"
+    },
+    "portable": {
+      "artifactName": "Overdrive-Cyber-Slash-${version}-Portable.${ext}"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.action-games",
+      "icon": "web/icons/icon-512.png"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Game",
+      "icon": "web/icons/icon-512.png"
+    }
+  }
+}
