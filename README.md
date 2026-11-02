@@ -31,7 +31,7 @@
 | **מחשב** (Chrome / Edge) | פותחים את הקישור ← אייקון ההתקנה בצד ימין של שורת הכתובת |
 
 ### מה יש במשחק
-- **מצב סיפור** — 7 מערכות, יותר מ-70 שלבים, בוסים עם כניסות ונפילות משלהם, קומיקס בין הפרקים ו-New Game+.
+- **מצב סיפור** — 8 מערכות, יותר מ-70 שלבים, דיאלוג מדובב, בוסים עם כניסות ונפילות משלהם, קומיקס בין הפרקים ו-New Game+.
 - **ארקייד** — Maglev אינסופי, התקפת בוסים, מגדל רוגלייט, מרדף על אופנוע, אתגר יומי ושבועי, פאזלים ודוג'ו.
 - **ארסנל** — עשרות להבים, גיבורים, סקינים לחרבות, חיות מחמד ועץ שדרוגים.
 - **חברים** — משחק חי עם חברים, רוחות (ghosts) של שיאים, ריפליי וקליפים, צוותים ועורך שלבים.
@@ -58,7 +58,7 @@ The game runs straight in the browser and can also be installed as a real app (h
 | **Desktop** (Chrome / Edge) | Open the link → the install icon at the right of the address bar |
 
 ### What's inside
-- **Story** — 7 acts, 70+ stages, bosses with their own entrances and falls, comics between chapters, New Game+.
+- **Story** — 8 acts, 70+ stages, voiced dialogue, bosses with their own entrances and falls, comics between chapters, New Game+.
 - **Arcade** — endless Maglev Run, boss rush, a rogue-lite tower, a highway chase, daily and weekly challenges, puzzles and a training dojo.
 - **Arsenal** — dozens of blades, heroes, blade skins, pets and an upgrade tree.
 - **Social** — live play with friends, ghost runs, replays and clips, crews and a level editor.
@@ -97,9 +97,14 @@ The whole game is one self-contained file, [`index.html`](index.html) (no build 
 | `sw.js` | offline cache: network first for the game, cache for icons and fonts |
 | `icons/` | app icons (`icon.svg` is the source) |
 | `.github/ISSUE_TEMPLATE/` | the review, bug and idea forms |
+| `desktop/` | the desktop app (Electron) for Windows, macOS and Linux |
+| `.github/workflows/release.yml` | builds the desktop apps and the itch.io web zip |
+| `docs/STORE.md` | store page text, tags, screenshot list and how to publish on itch.io / Steam |
 
 **Publishing (one time):** repository **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main` / `(root)` → Save.**
 After a minute the game is live at `https://undertaker132.github.io/overdrive-ninja/`. Every push to `main` updates it.
+
+**Desktop apps (Windows / macOS / Linux):** push a tag such as `v35.0` (`git tag v35.0 && git push origin v35.0`). GitHub Actions builds the installers and the itch.io zip and attaches them to a release. To build on your own computer: `cd desktop && npm install && npm run dist`. The apps are not code-signed, so Windows SmartScreen and macOS Gatekeeper show a warning the first time (on a Mac: right click → Open).
 
 **Run locally:** `python3 -m http.server` in this folder, then open <http://localhost:8000>. (Opening the file directly also works, without the offline cache.)
 

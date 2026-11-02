@@ -534,6 +534,9 @@ body.pc .sk { max-width: 84px; }
 .set .kb { min-width: 96px; font: 700 12px var(--fm); }
 .set .kb.wait { color: #05060f; background: var(--gold); border-color: var(--gold); animation: deckPlay 1s ease-in-out infinite; }
 </style>
+<style>
+#rsGraph { display: block; width: 100%; height: 120px; margin-top: 6px; }
+</style>
 <div id="sa" aria-hidden="true"></div>
 <canvas id="c" aria-label="Overdrive: Cyber Slash game field"></canvas>
 <button id="pauseBtn" class="hidden" aria-label="Pause">II</button>
@@ -800,6 +803,7 @@ body.pc .sk { max-width: 84px; }
       <div class="big-stars hidden" id="rsStars"></div>
       <div class="newbest hidden" id="rsBest">NEW BEST</div>
       <div class="stat" id="rsStats"></div>
+      <div class="panel hidden" id="rsGraphBox"><div class="eyebrow">RUN GRAPH</div><canvas id="rsGraph" aria-label="Score and combo over the run"></canvas><div class="small mute" id="rsGraphKey"></div></div>
       <div class="panel small" id="rsNotes"></div>
       <button class="btn pri" id="rsMain"></button>
       <div class="grid2"><button class="btn" id="rsAlt"></button><button class="btn" id="rsMenu">MENU</button></div>
@@ -1070,8 +1074,8 @@ Math.sin = DMATH.sin; Math.cos = DMATH.cos; Math.atan = DMATH.atan; Math.atan2 =
    All tuning lives here. Logical units: the view is ~420 wide, the
    train roof (arena) is 340 wide. Speeds are units per second.
    ===================================================================== */
-const VERSION = '34.0';
-const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
+const VERSION = '35.0';
+const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
 const CFG = { step: 1 / 60, maxSteps: 5, maxEnemies: 22, arenaW: 340, viewW: 420, viewH: 760 };
 let RDT = 1 / 60; // version 34: the real time of the frame being drawn. Drawing code uses it instead of a fixed 1/60, so 120-480 Hz screens animate at the right speed
 
@@ -2474,6 +2478,45 @@ EX_ACTS.forEach((A, i) => STAGES.push({
 STAGES.forEach((s, i) => { s.idx = i; STAGE_BY_ID[s.id] = s; });
 Object.assign(BOSS_INFO, { hyakki: { name: 'HYAKKI', sub: 'THE NIGHT PARADE', col: '#ff7a1a' } });
 CODEX_BOSSES.push('hyakki');
+/* =====================================================================
+   STORY ACT VIII — ENCORE (chapter 21, version 35). The Titan Express runs
+   again and every old enemy is back for one last show, ending in a boss
+   chain: SHOGUN.EXE, KUROGANE PRIME and HYAKKI back to back.
+   The stages go in before the SECRETS stages, so a player who finished
+   act VII finds chapter 21 open (the unlock index points at it).
+   ===================================================================== */
+CHAPTERS.push({ n: 21, name: 'ENCORE', sub: 'Every legend, one last time', theme: 'core', lock: 'Finish chapter 20 to unlock chapter 21' });
+{
+  const CH = CHAPTERS.length - 1, ENC = [
+    { id: '21-1', ch: CH, name: 'REWIND', theme: 'maglev', obj: { t: 'kill', n: 50 },
+      pool: { drone: 3, sniper: 2, brute: 1.5, bomber: 1.5, weaver: 1 }, max: 9, rate: .8, traps: { turrets: 1 },
+      star: { t: 'combo', n: 40, d: 'Reach a x40 combo' },
+      pre: [['M', 'Ren, the Titan Express is running again. Same train, same roof, but every car is full of old enemies.', 'רן, הטיטאן אקספרס נוסע שוב. אותה רכבת, אותו גג, אבל כל קרון מלא באויבים ישנים.'],
+            ['R', 'Then it is an encore. Let us give them one.', 'אז זה הדרן. בוא ניתן להם אחד.']],
+      post: [['K', 'Someone is replaying our whole war, piece by piece.', 'מישהו משחזר את כל המלחמה שלנו, חתיכה אחרי חתיכה.']] },
+    { id: '21-2', ch: CH, name: 'MIRROR GARDEN', theme: 'sakura', obj: { t: 'reflect', n: 16 },
+      pool: { sniper: 3, weaver: 2, mirror: 1.5, phantom: 1 }, max: 8, rate: .85,
+      star: { t: 'parry', n: 16, d: 'Land 16 perfect parries' },
+      pre: [['M', 'A garden of mirrors and cherry trees. The snipers here only miss on purpose.', 'גן של מראות ועצי דובדבן. הצלפים כאן מחטיאים רק בכוונה.'],
+            ['R', 'Then I send every shot home.', 'אז אני מחזיר כל ירייה הביתה.']],
+      post: [['M', 'The mirrors are showing a face. It looks like you, only older.', 'המראות מראות פנים. זה נראה כמוך, רק מבוגר יותר.']] },
+    { id: '21-3', ch: CH, name: 'LAST LIGHTS', theme: 'undercity', obj: { t: 'survive', s: 80 }, mod: { dark: 1 },
+      pool: { phantom: 3, mimic: 2, drone: 2, splitter: 2, wraith: .5 }, max: 9, rate: .8,
+      star: { t: 'combo', n: 30, d: 'Reach a x30 combo' },
+      pre: [['K', 'The city is turning its lights off, block by block. Stay alive until the last one comes back.', 'העיר מכבה את האורות שלה, בלוק אחרי בלוק. תישאר בחיים עד שהאחרון יחזור.'],
+            ['R', 'I have fought in the dark before.', 'כבר נלחמתי בחושך.']],
+      post: [['M', 'Signal found. Every boss you ever beat is waiting on one roof.', 'נמצא אות. כל בוס שאי פעם ניצחת מחכה על גג אחד.']] },
+    { id: '21-4', ch: CH, name: 'ENCORE', theme: 'core', obj: { t: 'boss', b: 'shogun', chain: ['shogun', 'prime', 'hyakki'], hp: .5 },
+      pool: { drone: 1.5, phantom: .5 }, max: 3, rate: 4,
+      star: { t: 'time', n: 300, d: 'Win within 300s' },
+      pre: [['M', 'Shogun, Kurogane Prime and the Night Parade. Back to back. This is the encore, Ren.', 'שוגון, קורוגאנה פריים ותהלוכת הלילה. ברצף. זה ההדרן, רן.'],
+            ['R', 'Then let the curtain fall.', 'אז שהמסך ירד.']],
+      post: [['M', 'That was the last bow. Neo-Edo is quiet. Thank you, Ren.', 'זו הייתה הקידה האחרונה. ניאו־אדו שקטה. תודה, רן.'],
+             ['R', 'Thank you for watching.', 'תודה שצפיתם.']] }
+  ];
+  const at = STAGES.findIndex(s => s.secret); STAGES.splice(at < 0 ? STAGES.length : at, 0, ...ENC);
+  STAGES.forEach((s, i) => { s.idx = i; STAGE_BY_ID[s.id] = s; });
+}
 function exActStars(i) { const A = EX_ACTS[i], st = Store.data.story.stars; return STAGES.every(s => A.ch.indexOf(s.ch) < 0 || (st[s.id] | 0) >= 3); }
 function stageOpen(idx) { const s = STAGES[idx]; if (!s) return false; if (s.secret) return exActStars(s.secret - 1); return idx <= Store.data.story.unlocked; }
 const CREDITS_ROLL7 = [
@@ -5639,6 +5682,11 @@ Object.assign(HE, {"Grapple": "אנקול", "Hijack": "השתלטות", "Laser w
 Object.assign(AR, {"Grapple": "الخطّاف", "Hijack": "الاختطاف", "Laser web": "شبكة الليزر", "Time echo": "صدى الزمن", "Swap weapon": "تبديل السلاح", "Overdrive": "أوفردرايف", "Hold to aim (slow motion)": "اضغط مطولاً للتصويب (حركة بطيئة)", "Slash": "ضربة", "Dodge": "مراوغة", "Aim up": "تصويب لأعلى", "Aim down": "تصويب لأسفل", "Aim left": "تصويب لليسار", "Aim right": "تصويب لليمين", "FULLSCREEN": "ملء الشاشة", "EXIT FULLSCREEN": "الخروج من ملء الشاشة", "PC & DISPLAY": "الحاسوب والعرض", "Frame rate limit": "حد معدل الإطارات", "Smooth motion (120-480 Hz)": "حركة سلسة (120-480 هرتز)", "Render resolution": "دقة العرض", "Show FPS": "إظهار FPS", "Mouse aim": "التصويب بالفأرة", "AT THE CURSOR": "نحو المؤشر", "DRAG": "سحب", "Crosshair": "علامة التصويب", "Wide roof (story, dojo, your levels)": "سطح عريض (القصة، الدوجو، مراحلك)", "Pause when the window loses focus": "إيقاف مؤقت عند فقدان النافذة للتركيز", "Mouse: hold to aim at the cursor, release to slash. Right click dodges, the wheel swaps weapons, the middle button is Overdrive. ALT+ENTER: fullscreen.": "الفأرة: اضغط مطولاً للتصويب نحو المؤشر واترك للضرب. النقر الأيمن للمراوغة، والعجلة لتبديل السلاح، والزر الأوسط للأوفردرايف. ALT+ENTER: ملء الشاشة.", "KEYS": "المفاتيح", "PRESS A KEY": "اضغط مفتاحاً", "Default keys": "المفاتيح الافتراضية", "ESC and P always pause. On the result screen R restarts.": "ESC و P يوقفان اللعبة دائماً. في شاشة النتائج R يعيد البدء.", "MAX": "أقصى", "MADE FOR PC": "مصممة للحاسوب", "Hold the mouse to aim at the cursor and release to slash, right click to dodge, the wheel swaps weapons, and a crosshair shows your dash charges. Every key can be rebound, and the arrows, SHIFT and C play without a mouse.": "اضغط بالفأرة للتصويب نحو المؤشر واترك للضرب، النقر الأيمن للمراوغة، العجلة تبدّل السلاح، وعلامة التصويب تُظهر شحنات الاندفاع. يمكن تغيير كل مفتاح، والأسهم مع SHIFT و C تكفي للعب دون فأرة.", "UP TO 480 HZ": "حتى 480 هرتز", "On 120 to 480 Hz screens everything is drawn between game steps for truly smooth motion. Pick a frame-rate limit and the render resolution in Settings > PC & DISPLAY.": "على شاشات 120 إلى 480 هرتز يُرسم كل شيء بين خطوات اللعبة لحركة سلسة حقاً. اختر حد الإطارات ودقة العرض من الإعدادات > الحاسوب والعرض.", "WIDE ROOF": "سطح عريض", "On a computer the story, the dojo and your own levels play on a roof almost twice as wide. Ranked modes keep the standard roof, so leaderboards stay fair.": "على الحاسوب تُلعب القصة والدوجو ومراحلك على سطح أعرض بمرتين تقريباً. الأوضاع المصنفة تبقى على السطح العادي لتبقى لوحات الصدارة عادلة.", "DESKTOP LAYOUT": "واجهة الحاسوب", "The home screen and the Arsenal spread into two columns, arrows move through menus, ESC goes back, ALT+ENTER is fullscreen, and the game pauses when you switch windows.": "الشاشة الرئيسية والترسانة تتوزعان على عمودين، والأسهم تتنقل في القوائم، و ESC للرجوع، و ALT+ENTER لملء الشاشة، وتتوقف اللعبة عند تبديل النوافذ.", "CONTROLLERS": "وحدات التحكم", "Controllers rumble with every hit, and the skill bar shows your controller's buttons.": "وحدات التحكم تهتز مع كل ضربة، وشريط المهارات يعرض أزرار وحدة التحكم."});
 Object.assign(RU, {"Grapple": "КРЮК", "Hijack": "ВЗЛОМ", "Laser web": "ЛАЗЕРНАЯ СЕТЬ", "Time echo": "ЭХО ВРЕМЕНИ", "Swap weapon": "СМЕНА ОРУЖИЯ", "Overdrive": "ОВЕРДРАЙВ", "Hold to aim (slow motion)": "Удерживать для прицела (замедление)", "Slash": "Удар", "Dodge": "Уклон", "Aim up": "Прицел вверх", "Aim down": "Прицел вниз", "Aim left": "Прицел влево", "Aim right": "Прицел вправо", "FULLSCREEN": "ПОЛНЫЙ ЭКРАН", "EXIT FULLSCREEN": "ВЫЙТИ ИЗ ПОЛНОГО ЭКРАНА", "PC & DISPLAY": "ПК И ЭКРАН", "Frame rate limit": "Ограничение частоты кадров", "Smooth motion (120-480 Hz)": "Плавное движение (120-480 Гц)", "Render resolution": "Разрешение рендера", "Show FPS": "Показывать FPS", "Mouse aim": "Прицел мышью", "AT THE CURSOR": "НА КУРСОР", "DRAG": "ПЕРЕТАСКИВАНИЕ", "Crosshair": "Перекрестие", "Wide roof (story, dojo, your levels)": "Широкая крыша (сюжет, додзё, ваши уровни)", "Pause when the window loses focus": "Пауза, когда окно теряет фокус", "Mouse: hold to aim at the cursor, release to slash. Right click dodges, the wheel swaps weapons, the middle button is Overdrive. ALT+ENTER: fullscreen.": "Мышь: удерживайте, чтобы целиться на курсор, отпустите для удара. Правая кнопка — уклон, колесо меняет оружие, средняя кнопка — Овердрайв. ALT+ENTER: полный экран.", "KEYS": "КЛАВИШИ", "PRESS A KEY": "НАЖМИТЕ КЛАВИШУ", "Default keys": "Клавиши по умолчанию", "ESC and P always pause. On the result screen R restarts.": "ESC и P всегда ставят паузу. На экране результатов R перезапускает.", "MAX": "МАКС", "MADE FOR PC": "СОЗДАНО ДЛЯ ПК", "Hold the mouse to aim at the cursor and release to slash, right click to dodge, the wheel swaps weapons, and a crosshair shows your dash charges. Every key can be rebound, and the arrows, SHIFT and C play without a mouse.": "Удерживайте мышь, чтобы целиться на курсор, отпустите для удара, правая кнопка — уклон, колесо меняет оружие, а перекрестие показывает заряды рывка. Любую клавишу можно переназначить, а стрелки, SHIFT и C позволяют играть без мыши.", "UP TO 480 HZ": "ДО 480 ГЦ", "On 120 to 480 Hz screens everything is drawn between game steps for truly smooth motion. Pick a frame-rate limit and the render resolution in Settings > PC & DISPLAY.": "На экранах 120–480 Гц всё рисуется между шагами игры — движение по-настоящему плавное. Ограничение кадров и разрешение рендера — в Настройки > ПК И ЭКРАН.", "WIDE ROOF": "ШИРОКАЯ КРЫША", "On a computer the story, the dojo and your own levels play on a roof almost twice as wide. Ranked modes keep the standard roof, so leaderboards stay fair.": "На компьютере сюжет, додзё и ваши уровни идут на крыше почти вдвое шире. Рейтинговые режимы остаются на обычной крыше, чтобы таблицы были честными.", "DESKTOP LAYOUT": "РАСКЛАДКА ДЛЯ ПК", "The home screen and the Arsenal spread into two columns, arrows move through menus, ESC goes back, ALT+ENTER is fullscreen, and the game pauses when you switch windows.": "Главный экран и Арсенал раскладываются в две колонки, стрелки ходят по меню, ESC — назад, ALT+ENTER — полный экран, а игра встаёт на паузу при смене окна.", "CONTROLLERS": "ГЕЙМПАДЫ", "Controllers rumble with every hit, and the skill bar shows your controller's buttons.": "Геймпады вибрируют при каждом ударе, а панель навыков показывает кнопки вашего геймпада."});
 
+/* version 35 strings */
+Object.assign(HE, {"ENCORE": "הדרן", "Every legend, one last time": "כל אגדה, פעם אחרונה", "Finish chapter 20 to unlock chapter 21": "סיימו את פרק 20 כדי לפתוח את פרק 21", "REWIND": "הרצה לאחור", "MIRROR GARDEN": "גן המראות", "LAST LIGHTS": "האורות האחרונים", "Reach a x40 combo": "הגיעו לקומבו x40", "Land 16 perfect parries": "בצעו 16 הדיפות מושלמות", "Reach a x30 combo": "הגיעו לקומבו x30", "Win within 300s": "נצחו תוך 300 שניות", "AURORA": "זוהר", "Northern lights on steel. Kills fold inward in green and violet.": "זוהר צפוני על פלדה. הרוגים מתקפלים פנימה בירוק וסגול.", "GOLD LEAF": "עלה זהב", "A blade wrapped in gold leaf. Kills burst into coins.": "להב עטוף בעלי זהב. הרוגים מתפוצצים למטבעות.", "STORM CALL": "קריאת סערה", "An ice-blue edge. Every kill calls down lightning.": "להב כחול קרח. כל הריגה מורידה ברק.", "ENCORE RONIN": "רונין הדרן", "A neon-pink ronin with a gold hat band, dressed for the last act.": "רונין ורוד ניאון עם סרט זהב על הכובע, לבוש למערכה האחרונה.", "GLITCH SAMURAI": "סמוראי גליץ'", "A street samurai whose coat flickers between frames.": "סמוראי רחוב שהמעיל שלו מהבהב בין הפריימים.", "AURORA SERAPH": "שרף הזוהר", "Wings of green and violet light, like the northern sky.": "כנפיים של אור ירוק וסגול, כמו השמיים בצפון.", "RUN GRAPH": "גרף הריצה", "Blue: score. Pink: combo. Red marks: hits taken.": "כחול: ניקוד. ורוד: קומבו. סימנים אדומים: פגיעות שספגת.", "PRESENTATION": "הצגה", "Character voices": "קולות הדמויות", "Camera follows your aim": "המצלמה עוקבת אחרי הכיוון", "Heartbeat on the last shield": "דופק במגן האחרון", "High-contrast enemies": "אויבים בניגודיות גבוהה", "Character voices use the voices installed on your device, in the game's language.": "קולות הדמויות משתמשים בקולות שמותקנים במכשיר שלך, בשפת המשחק.", "ACT VIII: ENCORE": "מערכה VIII: הדרן", "A new story chapter after the Night Parade: four stages on the old roofs, ending in SHOGUN.EXE, KUROGANE PRIME and HYAKKI back to back.": "פרק סיפור חדש אחרי תהלוכת הלילה: ארבעה שלבים על הגגות הישנים, שנגמרים ב-SHOGUN.EXE, KUROGANE PRIME ו-HYAKKI ברצף.", "VOICES": "קולות", "Story dialogue is read aloud, each character in their own voice, in the game's language (with the voices on your device).": "דיאלוגים בסיפור מוקראים בקול, כל דמות בקול משלה, בשפת המשחק (בקולות שבמכשיר שלך).", "CINEMA": "קולנוע", "The camera leans toward your aim and swoops in on the hero when a stage is cleared. A red arc shows where every hit came from.": "המצלמה נוטה לכיוון שאליו מכוונים ומתקרבת אל הגיבור כשמסיימים שלב. קשת אדומה מראה מאיפה הגיעה כל פגיעה.", "The results screen draws your run: score, combo and every hit you took.": "מסך התוצאות מצייר את הריצה שלך: ניקוד, קומבו וכל פגיעה שספגת.", "NEW HEROES AND BLADES": "גיבורים ולהבים חדשים", "ENCORE RONIN, GLITCH SAMURAI and AURORA SERAPH join the Arsenal, with three new blade skins: AURORA, GOLD LEAF and STORM CALL.": "רונין הדרן, סמוראי גליץ' ושרף הזוהר מצטרפים לארסנל, עם שלושה סקינים חדשים ללהב: זוהר, עלה זהב וקריאת סערה.", "MORE": "ועוד", "Slow-motion replays (.25× and .5×), a heartbeat on the last shield, high-contrast enemies, a frame-time overlay with Show FPS, and the announcer calls boss kills and stage clears.": "ריפליי בהילוך איטי (‎.25× ו-‎.5×), דופק במגן האחרון, אויבים בניגודיות גבוהה, גרף זמני פריים עם הצגת FPS, והקריין מכריז על בוסים שהובסו ושלבים שהושלמו.", "Mouse aim at the cursor, rebindable keys, up to 480 Hz, a wide roof and two-column menus.": "כיוון בעכבר אל הסמן, מקשים שאפשר לשנות, עד 480 הרץ, גג רחב ותפריטים בשני טורים."});
+Object.assign(AR, {"ENCORE": "الختام", "Every legend, one last time": "كل أسطورة، مرة أخيرة", "Finish chapter 20 to unlock chapter 21": "أنهِ الفصل 20 لفتح الفصل 21", "REWIND": "إعادة", "MIRROR GARDEN": "حديقة المرايا", "LAST LIGHTS": "الأضواء الأخيرة", "Reach a x40 combo": "حقق كومبو x40", "Land 16 perfect parries": "نفّذ 16 صدّة مثالية", "Reach a x30 combo": "حقق كومبو x30", "Win within 300s": "انتصر خلال 300 ثانية", "AURORA": "الشفق", "Northern lights on steel. Kills fold inward in green and violet.": "شفق قطبي على الفولاذ. الضحايا ينطوون للداخل بالأخضر والبنفسجي.", "GOLD LEAF": "ورق الذهب", "A blade wrapped in gold leaf. Kills burst into coins.": "نصل ملفوف بورق الذهب. الضحايا ينفجرون عملات.", "STORM CALL": "نداء العاصفة", "An ice-blue edge. Every kill calls down lightning.": "حد أزرق جليدي. كل قتل يستدعي البرق.", "ENCORE RONIN": "رونين الختام", "A neon-pink ronin with a gold hat band, dressed for the last act.": "رونين وردي نيون بشريط ذهبي على قبعته، مستعد للفصل الأخير.", "GLITCH SAMURAI": "ساموراي الخلل", "A street samurai whose coat flickers between frames.": "ساموراي شوارع يومض معطفه بين الإطارات.", "AURORA SERAPH": "سيراف الشفق", "Wings of green and violet light, like the northern sky.": "أجنحة من ضوء أخضر وبنفسجي، كسماء الشمال.", "RUN GRAPH": "مخطط الجولة", "Blue: score. Pink: combo. Red marks: hits taken.": "الأزرق: النقاط. الوردي: الكومبو. العلامات الحمراء: الضربات التي تلقيتها.", "PRESENTATION": "العرض", "Character voices": "أصوات الشخصيات", "Camera follows your aim": "الكاميرا تتبع تصويبك", "Heartbeat on the last shield": "نبض القلب عند الدرع الأخير", "High-contrast enemies": "أعداء بتباين عالٍ", "Character voices use the voices installed on your device, in the game's language.": "أصوات الشخصيات تستخدم الأصوات المثبتة على جهازك بلغة اللعبة.", "ACT VIII: ENCORE": "الفصل الثامن: الختام", "A new story chapter after the Night Parade: four stages on the old roofs, ending in SHOGUN.EXE, KUROGANE PRIME and HYAKKI back to back.": "فصل قصة جديد بعد موكب الليل: أربع مراحل على الأسطح القديمة، تنتهي بـ SHOGUN.EXE و KUROGANE PRIME و HYAKKI على التوالي.", "VOICES": "الأصوات", "Story dialogue is read aloud, each character in their own voice, in the game's language (with the voices on your device).": "حوارات القصة تُقرأ بصوت عالٍ، لكل شخصية صوتها، بلغة اللعبة (بالأصوات الموجودة على جهازك).", "CINEMA": "سينما", "The camera leans toward your aim and swoops in on the hero when a stage is cleared. A red arc shows where every hit came from.": "الكاميرا تميل نحو تصويبك وتقترب من البطل عند إنهاء المرحلة. قوس أحمر يُظهر من أين جاءت كل ضربة.", "The results screen draws your run: score, combo and every hit you took.": "شاشة النتائج ترسم جولتك: النقاط والكومبو وكل ضربة تلقيتها.", "NEW HEROES AND BLADES": "أبطال وأنصال جديدة", "ENCORE RONIN, GLITCH SAMURAI and AURORA SERAPH join the Arsenal, with three new blade skins: AURORA, GOLD LEAF and STORM CALL.": "رونين الختام وساموراي الخلل وسيراف الشفق ينضمون إلى الترسانة، مع ثلاثة أشكال أنصال جديدة: الشفق وورق الذهب ونداء العاصفة.", "MORE": "والمزيد", "Slow-motion replays (.25× and .5×), a heartbeat on the last shield, high-contrast enemies, a frame-time overlay with Show FPS, and the announcer calls boss kills and stage clears.": "إعادة بالحركة البطيئة (‎.25× و ‎.5×)، ونبض عند الدرع الأخير، وأعداء بتباين عالٍ، ومخطط أزمنة الإطارات مع إظهار FPS، والمعلّق يعلن هزيمة الزعماء وإنهاء المراحل.", "Mouse aim at the cursor, rebindable keys, up to 480 Hz, a wide roof and two-column menus.": "تصويب بالفأرة نحو المؤشر، ومفاتيح قابلة للتغيير، وحتى 480 هرتز، وسطح عريض وقوائم بعمودين."});
+Object.assign(RU, {"ENCORE": "НА БИС", "Every legend, one last time": "Все легенды в последний раз", "Finish chapter 20 to unlock chapter 21": "Пройдите главу 20, чтобы открыть главу 21", "REWIND": "ПЕРЕМОТКА", "MIRROR GARDEN": "ЗЕРКАЛЬНЫЙ САД", "LAST LIGHTS": "ПОСЛЕДНИЕ ОГНИ", "Reach a x40 combo": "Наберите комбо x40", "Land 16 perfect parries": "16 идеальных парирований", "Reach a x30 combo": "Наберите комбо x30", "Win within 300s": "Победите за 300 с", "AURORA": "АВРОРА", "Northern lights on steel. Kills fold inward in green and violet.": "Северное сияние на стали. Убитые схлопываются в зелёном и фиолетовом.", "GOLD LEAF": "СУСАЛЬНОЕ ЗОЛОТО", "A blade wrapped in gold leaf. Kills burst into coins.": "Клинок в сусальном золоте. Убитые рассыпаются монетами.", "STORM CALL": "ЗОВ БУРИ", "An ice-blue edge. Every kill calls down lightning.": "Ледяная кромка. Каждое убийство призывает молнию.", "ENCORE RONIN": "РОНИН НА БИС", "A neon-pink ronin with a gold hat band, dressed for the last act.": "Неоново-розовый ронин с золотой лентой на шляпе, одетый к последнему акту.", "GLITCH SAMURAI": "ГЛИТЧ-САМУРАЙ", "A street samurai whose coat flickers between frames.": "Уличный самурай, чей плащ мерцает между кадрами.", "AURORA SERAPH": "СЕРАФИМ АВРОРЫ", "Wings of green and violet light, like the northern sky.": "Крылья зелёного и фиолетового света, как северное небо.", "RUN GRAPH": "ГРАФИК ЗАБЕГА", "Blue: score. Pink: combo. Red marks: hits taken.": "Синий: очки. Розовый: комбо. Красные метки: полученные удары.", "PRESENTATION": "ПОДАЧА", "Character voices": "Голоса персонажей", "Camera follows your aim": "Камера следует за прицелом", "Heartbeat on the last shield": "Сердцебиение на последнем щите", "High-contrast enemies": "Контрастные враги", "Character voices use the voices installed on your device, in the game's language.": "Голоса персонажей используют голоса, установленные на устройстве, на языке игры.", "ACT VIII: ENCORE": "АКТ VIII: НА БИС", "A new story chapter after the Night Parade: four stages on the old roofs, ending in SHOGUN.EXE, KUROGANE PRIME and HYAKKI back to back.": "Новая глава после Ночного парада: четыре этапа на старых крышах и финал — SHOGUN.EXE, KUROGANE PRIME и HYAKKI подряд.", "VOICES": "ГОЛОСА", "Story dialogue is read aloud, each character in their own voice, in the game's language (with the voices on your device).": "Диалоги озвучены: у каждого персонажа свой голос, на языке игры (голосами вашего устройства).", "CINEMA": "КИНО", "The camera leans toward your aim and swoops in on the hero when a stage is cleared. A red arc shows where every hit came from.": "Камера смещается к прицелу и наезжает на героя после этапа. Красная дуга показывает, откуда пришёл каждый удар.", "The results screen draws your run: score, combo and every hit you took.": "Экран результатов рисует ваш забег: очки, комбо и каждый полученный удар.", "NEW HEROES AND BLADES": "НОВЫЕ ГЕРОИ И КЛИНКИ", "ENCORE RONIN, GLITCH SAMURAI and AURORA SERAPH join the Arsenal, with three new blade skins: AURORA, GOLD LEAF and STORM CALL.": "РОНИН НА БИС, ГЛИТЧ-САМУРАЙ и СЕРАФИМ АВРОРЫ в Арсенале, плюс три облика клинка: АВРОРА, СУСАЛЬНОЕ ЗОЛОТО и ЗОВ БУРИ.", "MORE": "И ЕЩЁ", "Slow-motion replays (.25× and .5×), a heartbeat on the last shield, high-contrast enemies, a frame-time overlay with Show FPS, and the announcer calls boss kills and stage clears.": "Замедленные повторы (.25× и .5×), сердцебиение на последнем щите, контрастные враги, график времени кадра при показе FPS, а диктор объявляет победы над боссами и прохождение этапов.", "Mouse aim at the cursor, rebindable keys, up to 480 Hz, a wide roof and two-column menus.": "Прицел мышью на курсор, переназначаемые клавиши, до 480 Гц, широкая крыша и меню в две колонки."});
+
 /* HEBREW — version 31 strings (news). Written by i18n/v32.py */
 Object.assign(HE, {
   "SHARPER CODE": "קוד חד יותר",
@@ -5709,6 +5757,11 @@ const SKINS = [
   { id: 'pumpking', name: 'PUMPKIN KING', body: 'pumpkin', a: '#ff7a1a', b: '#6a1aa0', cost: -1, unlock: { t: 'event', id: 'halloween' }, desc: 'A jack-o-lantern head with a burning grin and a tattered cape. NEON HALLOWEEN event reward.' },
   { id: 'yeti', name: 'NEON YETI', body: 'yeti', a: '#9fe8ff', b: '#ffffff', cost: -1, unlock: { t: 'event', id: 'winter' }, desc: 'A shaggy snow beast with ice horns and glowing eyes. FROSTBYTE WINTER event reward.' },
   { id: 'voidoni', name: 'VOID ONI', body: 'oni', a: '#7df9ff', b: '#1a0830', cost: -1, unlock: { t: 'ach', id: 'ngplus' }, desc: 'An oni from the void, cold and glowing.' }
+];
+const BLADE_FX_V35 = [ // version 35
+  { id: 'aurora', name: 'AURORA', blade: '#00ff88', edge: '#e0ccff', trail: 'void', kill: 'implode', deco: 'prism', cost: 1700, desc: 'Northern lights on steel. Kills fold inward in green and violet.' },
+  { id: 'goldleaf', name: 'GOLD LEAF', blade: '#ffd23f', edge: '#fff4c2', trail: 'gold', kill: 'coins', deco: 'flame', cost: 1900, desc: 'A blade wrapped in gold leaf. Kills burst into coins.' },
+  { id: 'stormcall', name: 'STORM CALL', blade: '#7df9ff', edge: '#ffffff', trail: 'spark', kill: 'zap', deco: 'crack', cost: 2100, desc: 'An ice-blue edge. Every kill calls down lightning.' }
 ];
 const BLADE_FX = [
   { id: 'std', name: 'STANDARD ISSUE', cost: 0, trail: '', kill: '', desc: "Takes your hero's neon color." },
@@ -5783,6 +5836,12 @@ function unlockText(u) {
   return lt('Locked');
 }
 function skinOf(id) { return SKINS.find(s => s.id === id) || SKINS[0]; }
+BLADE_FX.push(...BLADE_FX_V35);
+SKINS.push( // version 35
+  { id: 'encore', name: 'ENCORE RONIN', body: 'ronin', a: '#ff2bd6', b: '#ffd23f', cost: 3200, desc: 'A neon-pink ronin with a gold hat band, dressed for the last act.' },
+  { id: 'glitchsam', name: 'GLITCH SAMURAI', body: 'chromesam', a: '#7df9ff', b: '#ff0844', cost: 6800, desc: 'A street samurai whose coat flickers between frames.' },
+  { id: 'auroraseraph', name: 'AURORA SERAPH', body: 'seraph', a: '#00ff88', b: '#b537f2', cost: 9800, desc: 'Wings of green and violet light, like the northern sky.' }
+);
 function bladeOf(id) { return BLADE_FX.find(s => s.id === id) || BLADE_FX[0]; }
 
 /* =====================================================================
@@ -13963,7 +14022,7 @@ const UI = {
     $('arPlay').onclick = () => { Aud.sfx('ui'); Flow.startArcade(Store.data.mode); };
     $('pauseBtn').addEventListener('pointerdown', e => { e.stopPropagation(); e.preventDefault(); Flow.togglePause(); });
     $('rbPlay').onclick = () => { if (!REPLAY.on) return; REPLAY.paused = !REPLAY.paused; $('rbPlay').textContent = REPLAY.paused ? '▶' : '❚❚'; };
-    $('rbSpeed').onclick = () => { if (!REPLAY.on) return; REPLAY.speed = REPLAY.speed >= 4 ? 1 : REPLAY.speed * 2; $('rbSpeed').textContent = REPLAY.speed + '×'; };
+    $('rbSpeed').onclick = () => { if (!REPLAY.on) return; REPLAY.speed = ({ 1: 2, 2: 4, 4: .25, .25: .5, .5: 1 })[REPLAY.speed] || 1; $('rbSpeed').textContent = REPLAY.speed + '×'; };
     $('rbClip').onclick = () => { if (REPLAY.on && Replays.cur && !Replays.clipOn) { const r = Replays.cur, b = Replays.back; REPLAY.stop(); Replays.clip(r, b); } };
     $('rbExit').onclick = () => { if (Replays.clipOn) { Replays.clipOn = false; if (Replays.mr) { const m = Replays.mr; Replays.mr = null; try { m.onstop = null; m.stop(); } catch (e) { errLog(e); } } } UI.replayExit(); };
     this.dockEls = [];
@@ -15396,14 +15455,14 @@ const Preview = {
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 34
-  ["MADE FOR PC", "Hold the mouse to aim at the cursor and release to slash, right click to dodge, the wheel swaps weapons, and a crosshair shows your dash charges. Every key can be rebound, and the arrows, SHIFT and C play without a mouse."],
-  ["UP TO 480 HZ", "On 120 to 480 Hz screens everything is drawn between game steps for truly smooth motion. Pick a frame-rate limit and the render resolution in Settings > PC & DISPLAY."],
-  ["WIDE ROOF", "On a computer the story, the dojo and your own levels play on a roof almost twice as wide. Ranked modes keep the standard roof, so leaderboards stay fair."],
-  ["DESKTOP LAYOUT", "The home screen and the Arsenal spread into two columns, arrows move through menus, ESC goes back, ALT+ENTER is fullscreen, and the game pauses when you switch windows."],
-  ["CONTROLLERS", "Controllers rumble with every hit, and the skill bar shows your controller's buttons."],
-  ["NO MORE PARRY FREEZE", "A perfect parry and a boss clash now land with a short, sharp beat instead of slow motion, so the game never seems to stall."],
-  ["NEW HOME SCREEN", "A living city with a sliced moon behind the menu, a mission card for the story, and mode tiles that each move their own way, trace light around their edge and tilt toward your finger."]
+const NEWS = [ // version 35
+  ["ACT VIII: ENCORE", "A new story chapter after the Night Parade: four stages on the old roofs, ending in SHOGUN.EXE, KUROGANE PRIME and HYAKKI back to back."],
+  ["VOICES", "Story dialogue is read aloud, each character in their own voice, in the game's language (with the voices on your device)."],
+  ["CINEMA", "The camera leans toward your aim and swoops in on the hero when a stage is cleared. A red arc shows where every hit came from."],
+  ["RUN GRAPH", "The results screen draws your run: score, combo and every hit you took."],
+  ["NEW HEROES AND BLADES", "ENCORE RONIN, GLITCH SAMURAI and AURORA SERAPH join the Arsenal, with three new blade skins: AURORA, GOLD LEAF and STORM CALL."],
+  ["MORE", "Slow-motion replays (.25× and .5×), a heartbeat on the last shield, high-contrast enemies, a frame-time overlay with Show FPS, and the announcer calls boss kills and stage clears."],
+  ["MADE FOR PC", "Mouse aim at the cursor, rebindable keys, up to 480 Hz, a wide roof and two-column menus."]
 ];
 function deathCause() { // what hit you last, and how to avoid it next time
   const s = G.lastHit, w = G.lastWho, en = k => lt(EDEF[k] ? EDEF[k].name : 'ENEMY');
@@ -22144,9 +22203,9 @@ const Smooth = {
   },
   lerp1(o, a) { if (o._px == null) return; const dx = o.x - o._px, dy = o.y - o._py; if (!(dx * dx + dy * dy < 8100) || (dx === 0 && dy === 0)) return; this.list.push(o); this.vals.push(o.x, o.y); o.x = o._px + dx * a; o.y = o._py + dy * a; },
   render(rd) {
-    this.act = G.state === 'PLAY' && !REPLAY.on && !G.photo && this.want();
+    this.act = G.state === 'PLAY' && !(REPLAY.on && (REPLAY.fast || REPLAY.paused)) && !G.photo && (this.want() || (REPLAY.on && REPLAY.speed < 1));
     if (!this.act) { render(rd); return; }
-    const a = this.a = clamp(acc / CFG.step, 0, 1);
+    const a = this.a = clamp((REPLAY.on ? REPLAY.acc : acc) / CFG.step, 0, 1);
     this.list.length = 0; this.vals.length = 0;
     try {
       if (P._pv) this.lerp1(P, a);
@@ -22360,6 +22419,124 @@ const PC = {
   }
 };
 { const st0 = start; start = function () { const r = st0.apply(this, arguments); try { PC.init(); } catch (e) { errLog(e); console.error(e); } return r; }; } // after the save has loaded
+/* =====================================================================
+   VERSION 35 — PRESENTATION PACK. Drawing and sound only; the simulation,
+   replays and leaderboards do not change.
+   ===================================================================== */
+/* ---- character voices: story dialogue is read aloud, a voice per character ---- */
+const Voices = {
+  list: [], lang: '',
+  on() { const s = Store.data && Store.data.settings; return !!(s && s.cvoice !== 0) && typeof speechSynthesis !== 'undefined' && !Aud.quiet; },
+  code() { return { he: 'he', ar: 'ar', ru: 'ru' }[LANG.id] || 'en'; },
+  load() { try { const all = speechSynthesis.getVoices() || [], c = this.code(); this.list = all.filter(v => (v.lang || '').toLowerCase().startsWith(c)); this.lang = c; } catch (e) { this.list = []; } },
+  speak(cid, text) {
+    if (!this.on() || !text) return;
+    try {
+      if (this.lang !== this.code() || !this.list.length) this.load(); if (!this.list.length) return; // no voice for this language on this device: stay silent
+      const ch = CHARS[cid] || {}, p = ch.pitch || 200, ai = /\.(EXE|SYS|NULL)$|HYAKKI|RAIJIN|IZANAMI/.test(ch.name || '');
+      const u = new SpeechSynthesisUtterance(text.replace(/[*_~]/g, ''));
+      let h = 0; for (const k of cid + 'v') h = (h * 31 + k.charCodeAt(0)) | 0; u.voice = this.list[Math.abs(h) % this.list.length]; u.lang = u.voice.lang;
+      u.pitch = clamp(.35 + (p - 40) / 420 * 1.3, .2, 1.8); u.rate = ai ? .86 : p > 400 ? 1.12 : 1; u.volume = clamp(.75 * (Store.data.settings.sfx || .8), 0, 1);
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+    } catch (e) { errLog(e); }
+  },
+  stop() { try { if (typeof speechSynthesis !== 'undefined') speechSynthesis.cancel(); } catch (e) { } }
+};
+try { if (typeof speechSynthesis !== 'undefined' && speechSynthesis.addEventListener) speechSynthesis.addEventListener('voiceschanged', () => Voices.load()); } catch (e) { }
+{ const l0 = Dlg.load.bind(Dlg); Dlg.load = function () { l0(); Voices.speak(this.cid, this.text); };
+  const e0 = Dlg.end.bind(Dlg); Dlg.end = function () { Voices.stop(); e0(); }; }
+
+/* ---- the camera leans a little toward where you aim ---- */
+const Lean = { x: 0, y: 0,
+  tick(rd) {
+    let tx = 0, ty = 0; const s = Store.data && Store.data.settings;
+    if (s && s.lean !== 0 && !CALM && G.state === 'PLAY' && !REPLAY.on && In.on) { const dx = In.cx - In.sx, dy = In.cy - In.sy, d = Math.hypot(dx, dy); if (d > 8) { tx = -dx / d * 14; ty = -dy / d * 14; } }
+    const k = 1 - Math.exp(-rd * (In.on ? 6 : 4)); this.x += (tx - this.x) * k; this.y += (ty - this.y) * k;
+  }
+};
+{ const cu0 = camUpdate; camUpdate = function (rd) { cu0(rd); Lean.tick(rd); CAM.ox += Lean.x; CAM.oy += Lean.y; };
+  const ps0 = In.pos.bind(In); In.pos = function (e) { ps0(e); if (!W3D.live) { this.px -= Lean.x; this.py -= Lean.y; } }; }
+
+/* ---- which way the hit came from: a red arc around the hero ---- */
+const HitDir = { a: [],
+  find() { let best = null, bd = 1e9; for (let i = 0; i < BU.n; i++) { const b = BU.a[i]; if (!b.alive || b.rf) continue; const d = dist(b.x, b.y, P.x, P.y); if (d < bd) { bd = d; best = b; } }
+    for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (!e.alive || e.al > 0) continue; const d = dist(e.x, e.y, P.x, P.y) - e.r; if (d < bd) { bd = d; best = e; } }
+    const B = Boss.cur; if (B && dist(B.x, B.y, P.x, P.y) - B.r < bd) best = B; return best; },
+  draw(rd) {
+    if (!this.a.length) return; const k = V.s * V.dpr; let q = W3D.proj(P.x, P.y, 20); const x = q[0] / k, y = q[1] / k;
+    cx.save(); cx.lineCap = 'round';
+    for (const h of this.a) { h.t += rd; const u = h.t / 1.1; cx.globalAlpha = (1 - u) * .9; cx.strokeStyle = '#ff2a3d'; cx.lineWidth = 7 * (1 - u) + 2; cx.shadowColor = '#ff0844'; cx.shadowBlur = 12;
+      const r = 58 + u * 10; cx.beginPath(); cx.arc(x, y, r, h.ang - .55, h.ang + .55); cx.stroke(); }
+    cx.restore(); this.a = this.a.filter(h => h.t < 1.1);
+  }
+};
+{ const h0 = hurt; hurt = function (src, who) { const hp = P.hp, o = G.state === 'PLAY' ? HitDir.find() : null; const r = h0(src, who); if (o && P.hp < hp && !REPLAY.fast) HitDir.a.push({ ang: Math.atan2(o.y - P.y, o.x - P.x), t: 0 }); return r; }; }
+
+/* ---- stage clear: the camera swoops in on the hero (no slow motion) ---- */
+const ClearCam = { won: false,
+  tick() { const w = !!G.won && inRun(); if (w && !this.won && !CALM && !REPLAY.on) { CAM.finD = 1.5; CAM.fin = 1.5; CAM.fx = P.x; CAM.fy = P.y; if (Store.data.settings.voice) Aud.say('Stage clear', 1); } this.won = w; }
+};
+
+/* ---- the run graph: score and combo over the run, on the results screen ---- */
+const RunLog = { s: [], lt: -1, hits: 0,
+  tick() {
+    if (G.state !== 'PLAY' || REPLAY.on) return; const t = G.time || 0;
+    if (t < this.lt - .5 || this.lt < 0) { this.s = []; this.hits = G.hits | 0; this.lt = -1; }
+    if (t - this.lt >= .5) { this.s.push([t, G.score | 0, G.combo | 0, (G.hits | 0) > this.hits ? 1 : 0]); this.hits = G.hits | 0; this.lt = t; if (this.s.length > 2400) this.s.splice(0, this.s.length - 2400); }
+  },
+  draw() {
+    const box = $('rsGraphBox'), cvG = $('rsGraph'); if (!box || !cvG) return; const s = this.s;
+    if (s.length < 6) { box.classList.add('hidden'); return; } box.classList.remove('hidden');
+    const r = cvG.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1), W = Math.max(200, r.width | 0), H = 120; cvG.width = W * d; cvG.height = H * d;
+    const g = cvG.getContext('2d'); g.setTransform(d, 0, 0, d, 0, 0); g.clearRect(0, 0, W, H);
+    const t0 = s[0][0], t1 = s[s.length - 1][0] || 1, mS = Math.max(1, s[s.length - 1][1]), mC = Math.max(5, ...s.map(q => q[2])), X = t => 4 + (t - t0) / Math.max(1, t1 - t0) * (W - 8);
+    g.strokeStyle = 'rgba(255,255,255,.08)'; g.lineWidth = 1; for (let i = 1; i < 4; i++) { g.beginPath(); g.moveTo(0, H * i / 4); g.lineTo(W, H * i / 4); g.stroke(); }
+    g.fillStyle = 'rgba(255,43,214,.55)'; for (const q of s) { const h = q[2] / mC * (H - 20); g.fillRect(X(q[0]) - 1, H - h, 2, h); }
+    const gr = g.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, 'rgba(0,242,254,.35)'); gr.addColorStop(1, 'rgba(0,242,254,0)');
+    g.beginPath(); g.moveTo(X(s[0][0]), H); for (const q of s) g.lineTo(X(q[0]), H - 6 - q[1] / mS * (H - 16)); g.lineTo(X(s[s.length - 1][0]), H); g.closePath(); g.fillStyle = gr; g.fill();
+    g.beginPath(); s.forEach((q, i) => { const x = X(q[0]), y = H - 6 - q[1] / mS * (H - 16); if (i) g.lineTo(x, y); else g.moveTo(x, y); }); g.strokeStyle = '#00f2fe'; g.lineWidth = 2; g.shadowColor = '#00f2fe'; g.shadowBlur = 8; g.stroke(); g.shadowBlur = 0;
+    g.fillStyle = '#ff3b5c'; for (const q of s) if (q[3]) { g.beginPath(); g.moveTo(X(q[0]), 2); g.lineTo(X(q[0]) + 4, 10); g.lineTo(X(q[0]) - 4, 10); g.fill(); }
+    const peak = s.reduce((a, q) => q[2] > a[2] ? q : a, s[0]); g.fillStyle = '#ffd23f'; g.font = '700 10px ' + FONT_M; g.textAlign = 'center'; g.fillText('x' + peak[2], clamp(X(peak[0]), 14, W - 14), H - peak[2] / mC * (H - 20) - 4);
+    $('rsGraphKey').textContent = lt('Blue: score. Pink: combo. Red marks: hits taken.');
+  }
+};
+{ const or0 = UI.openResult.bind(UI); UI.openResult = function (o) { or0(o); try { requestAnimationFrame(() => RunLog.draw()); } catch (e) { errLog(e); } }; }
+
+/* ---- the last shield: a heartbeat you can hear ---- */
+const Heart = { t: 0,
+  tick(rd) { const s = Store.data.settings; if (G.state !== 'PLAY' || P.hp !== 1 || REPLAY.on || s.hb === 0 || Aud.quiet || G.mode === 'dojo') { this.t = 0; return; }
+    this.t -= rd; if (this.t > 0) return; this.t = .9;
+    try { Aud.tone(64, 42, .11, .32, 'sine'); setTimeout(() => { if (G.state === 'PLAY' && P.hp === 1) Aud.tone(58, 40, .1, .22, 'sine'); }, 170); } catch (e) { errLog(e); } }
+};
+
+/* ---- high-contrast enemies (accessibility): a bright outline on every enemy ---- */
+{ const de0 = drawEnemy; drawEnemy = function (e) { de0(e); const s = Store.data.settings; if (s.hc && e.alive && (EDRAW & ED_BODY) && !W3D.live && e.vis > .3) { const r = e.r * (e.scale || 1) + 4; cx.save(); cx.lineWidth = 4; cx.strokeStyle = '#05060f'; cx.beginPath(); cx.arc(e.x, e.y, r, 0, TAU); cx.stroke(); cx.lineWidth = 2; cx.strokeStyle = e.type === ET.BOMBER ? '#ffd23f' : '#ffffff'; cx.stroke(); cx.restore(); } }; }
+
+/* ---- performance overlay (Show FPS on a computer): frame times, 1% low ---- */
+const Perf = { ft: new Float32Array(180), i: 0,
+  tick(rd) { this.ft[this.i] = rd * 1000; this.i = (this.i + 1) % this.ft.length; },
+  draw() {
+    const s = Store.data.settings; if (!s.fps || !PC.isPC) return; const a = Array.from(this.ft).filter(v => v > 0); if (a.length < 20) return;
+    const sorted = a.slice().sort((p, q) => q - p), low = 1000 / sorted[Math.max(0, Math.floor(a.length * .01))], avg = 1000 / (a.reduce((p, q) => p + q, 0) / a.length);
+    const W = 150, H = 40, x0 = V.VW - W - 12 - V.insR, y0 = V.VH - UI.dockH / V.s - H - 14;
+    cx.save(); cx.globalAlpha = .9; cx.fillStyle = 'rgba(5,6,15,.75)'; cx.fillRect(x0, y0, W, H); cx.strokeStyle = 'rgba(0,242,254,.4)'; cx.strokeRect(x0 + .5, y0 + .5, W - 1, H - 1);
+    const n = this.ft.length; cx.beginPath(); for (let k = 0; k < n; k++) { const v = this.ft[(this.i + k) % n], y = y0 + H - 4 - Math.min(1, v / 33.4) * (H - 16); const x = x0 + 2 + k / (n - 1) * (W - 4); if (k) cx.lineTo(x, y); else cx.moveTo(x, y); }
+    cx.strokeStyle = '#00ff88'; cx.lineWidth = 1; cx.stroke();
+    cx.font = '700 9px ' + FONT_M; cx.textAlign = 'left'; cx.fillStyle = '#e8fbff'; cx.fillText(Math.round(avg) + ' FPS · 1% ' + Math.round(low) + ' · ' + (1000 / avg).toFixed(1) + ' ms', x0 + 5, y0 + 11); cx.restore();
+  }
+};
+
+/* ---- announcer: boss down ---- */
+const Announce = { bd: false, tick() { const b = Boss.cur, d = !!(b && b.dying > 0); if (d && !this.bd && Store.data.settings.voice && !REPLAY.fast) Aud.say('Target down', 1); this.bd = d; } };
+
+{ const hd1 = HUD.draw.bind(HUD); HUD.draw = function (rd) { hd1(rd); HitDir.draw(rd); Perf.draw(); }; }
+{ const pt0 = PC.tick.bind(PC); PC.tick = function (rd) { pt0(rd); Perf.tick(rd); RunLog.tick(); ClearCam.tick(); Heart.tick(rd); Announce.tick(); }; }
+{ const ps1 = PC.settings.bind(PC); PC.settings = function (head, cycle, box, s) {
+    head('PRESENTATION');
+    cycle('Character voices', 'cvoice', [1, 0], ['ON', 'OFF']); cycle('Camera follows your aim', 'lean', [1, 0], ['ON', 'OFF']);
+    cycle('Heartbeat on the last shield', 'hb', [1, 0], ['ON', 'OFF']); cycle('High-contrast enemies', 'hc', [0, 1], ['OFF', 'ON']);
+    box.appendChild(el('div', 'small mute', lt('Character voices use the voices installed on your device, in the game\'s language.')));
+    ps1(head, cycle, box, s); }; }
 /* test + automation hooks (used by the headless test suite) */
 window.__OD = { G, P, V, EN, BU, Boss, Director, Flow, UI, Store, STAGES, sim, step, startStory: i => Flow.startStory(i), startArcade: m => Flow.startArcade(m), Dlg, Arena, REC, REPLAY, TICK, R, In, Replays, DMATH };
 try {
