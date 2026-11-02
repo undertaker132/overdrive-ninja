@@ -72,6 +72,15 @@ The game runs straight in the browser and can also be installed as a real app (h
 | Overdrive | ⚡ button | Space | RB |
 | Pause | ‖ button | Esc | START |
 
+### On a computer
+<img src="docs/pc.jpg" alt="On a computer" width="100%">
+
+- **Mouse:** hold to aim at the cursor (time slows), release to slash. Right click dodges, the wheel swaps weapons, the middle button is Overdrive. A crosshair shows your dash charges.
+- **Keyboard only:** arrows aim, hold SHIFT for the slow-motion aim, C slashes, V dodges. Every key can be rebound in **Settings → PC & DISPLAY → KEYS**. Arrows, ENTER and ESC work in the menus; ALT+ENTER is fullscreen.
+- **High refresh rate:** smooth motion on 120 to 480 Hz screens, a frame-rate limit (MAX, 480, 360, 240, 165, 144, 120, 90, 60) and render resolution (75% to 200%).
+- **Wide roof:** on a landscape screen the story, the dojo and your own levels play on a roof almost twice as wide. Ranked modes keep the standard roof.
+- Two-column home screen and Arsenal, controller rumble and button prompts, and the game pauses when you switch windows.
+
 ### Feedback
 - **In the game:** title screen → **REPORT A PROBLEM** → write → **OPEN ON GITHUB**. A ready report with your device info opens.
 - **Here:** [review](https://github.com/undertaker132/overdrive-ninja/issues/new?template=feedback.yml) · [bug](https://github.com/undertaker132/overdrive-ninja/issues/new?template=bug.yml) · [idea](https://github.com/undertaker132/overdrive-ninja/issues/new?template=idea.yml) (a free GitHub account is needed).

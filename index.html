@@ -495,6 +495,45 @@ html[dir=rtl] #tHero::before { left: auto; right: 4px; }
 #asPn.slam { animation: pnSlam .45s cubic-bezier(.2, 1.6, .4, 1); } @keyframes pnSlam { 0% { transform: translateX(-14px) skewX(-12deg); opacity: 0; letter-spacing: 6px; } 100% { transform: none; opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .item.shop.foil::after, .item.shop.on, #asPn.slam, .item.shop .tierchip { animation: none !important; } }
 </style>
+<style>
+/* =====================================================================
+   PC (version 34) — body.pc is set on a computer (a mouse that hovers).
+   ===================================================================== */
+.deckWrap, .deckL, .deckR, .arWrap, .arL, .arR { display: contents; }
+body.pc { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cpath d='M3 2 L3 20 L8 15 L12 24 L15 22.5 L11 14 L18 14 Z' fill='%2305060f' stroke='%2300f2fe' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") 3 2, auto; }
+body.pc button, body.pc [role=button], body.pc .item { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cpath d='M3 2 L3 20 L8 15 L12 24 L15 22.5 L11 14 L18 14 Z' fill='%23ff2bd6' stroke='%23ffffff' stroke-width='1.4' stroke-linejoin='round'/%3E%3C/svg%3E") 3 2, pointer; }
+body.pc.pcross #c { cursor: none; }
+body.pc .btn:hover:not([disabled]) { filter: brightness(1.18); box-shadow: 0 0 18px rgba(0, 242, 254, .22); }
+body.pc .item:hover, body.pc .stage:hover, body.pc .route:hover { border-color: var(--cyan); transform: translateX(3px); transition: transform .15s, border-color .15s; }
+html[dir=rtl] body.pc .item:hover { transform: translateX(-3px); }
+body.pc .seg button:hover, body.pc .tabs button:hover, body.pc .chip:hover { color: var(--fg); border-color: var(--cyan); }
+body.pc :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+/* the skill bar: compact keycaps */
+.sk .kc { display: none; position: absolute; top: 3px; inset-inline-start: 4px; min-width: 15px; padding: 0 3px; font: 700 9px/14px var(--fm); text-align: center; color: #05060f; background: currentColor; border-radius: 3px; }
+.sk .kc b { color: #05060f; font-weight: 700; } .sk .kc { background: rgba(232, 251, 255, .85); }
+body.pc .sk .kc, body.padon .sk .kc { display: block; }
+body.padon .sk .kc { border-radius: 8px; background: #e8fbff; }
+body.pc #dock { --skh: 50px; max-width: 470px; gap: 5px; }
+body.pc .sk { max-width: 84px; }
+/* computer layouts: the title as two columns, the Arsenal with the preview beside the list */
+@media (min-width: 980px) {
+  body.pc #s-title > .col { max-width: 1080px; }
+  body.pc #s-title .deckWrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 28px; align-items: start; }
+  body.pc #s-title .deckL, body.pc #s-title .deckR { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  body.pc #s-title .deckR { padding-top: 6px; }
+  body.pc #s-title .grid2.tiles { grid-template-columns: repeat(4, 1fr); }
+  body.pc #s-title .logo .o { font-size: 68px; }
+  body.pc #s-arsenal > .col { max-width: 1080px; }
+  body.pc #s-arsenal .arWrap { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+  body.pc #s-arsenal .arL { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 0; min-width: 0; }
+  body.pc #s-arsenal .arR { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  body.pc #s-arsenal .prev { position: static; } body.pc #s-arsenal .prev canvas { height: 300px; }
+  body.pc #s-arsenal .seg.tabs5 { grid-template-columns: repeat(8, 1fr); }
+  body.pc #s-settings > .col, body.pc #s-story > .col, body.pc #s-arcade > .col, body.pc #s-club > .col { max-width: 620px; }
+}
+.set .kb { min-width: 96px; font: 700 12px var(--fm); }
+.set .kb.wait { color: #05060f; background: var(--gold); border-color: var(--gold); animation: deckPlay 1s ease-in-out infinite; }
+</style>
 <div id="sa" aria-hidden="true"></div>
 <canvas id="c" aria-label="Overdrive: Cyber Slash game field"></canvas>
 <button id="pauseBtn" class="hidden" aria-label="Pause">II</button>
@@ -559,7 +598,7 @@ html[dir=rtl] #tHero::before { left: auto; right: 4px; }
       <div class="panel hidden" id="tRivals"></div>
       <button class="panel daily" id="bDaily"><span><span class="eyebrow">DAILY RUN</span><br><span class="small mute" id="tDaily"></span></span><span class="chip gold">PLAY</span></button>
       <div class="panel" id="tBountyBox"><div class="eyebrow" style="margin-bottom:4px">ACTIVE BOUNTIES</div><div id="tBounties"></div></div>
-      <div class="chips"><button class="chip" id="tNews">WHAT'S NEW</button><button class="chip" id="tReport">REPORT A PROBLEM</button><button class="chip gold hidden" id="tInstall">INSTALL APP</button><button class="chip gold hidden" id="tCreator">CREATOR DASHBOARD</button></div>
+      <div class="chips"><button class="chip" id="tNews">WHAT'S NEW</button><button class="chip" id="tReport">REPORT A PROBLEM</button><button class="chip gold hidden" id="tInstall">INSTALL APP</button><button class="chip hidden" id="tFull">FULLSCREEN</button><button class="chip gold hidden" id="tCreator">CREATOR DASHBOARD</button></div>
       <div class="small mute" style="text-align:center" id="tFoot"></div>
     </div>
   </section>
@@ -707,7 +746,7 @@ html[dir=rtl] #tHero::before { left: auto; right: 4px; }
       <div class="panel small" id="psInfo"></div>
       <button class="btn pri" id="psResume">RESUME</button>
       <div class="grid2"><button class="btn" id="psRestart">RESTART</button><button class="btn" id="psSettings">SETTINGS</button></div>
-      <button class="btn" id="psPhoto">PHOTO MODE</button>
+      <div class="grid2"><button class="btn" id="psPhoto">PHOTO MODE</button><button class="btn hidden" id="psFull">FULLSCREEN</button></div>
       <button class="btn ghost" id="psReport">REPORT A PROBLEM</button>
       <button class="btn ghost" id="psQuit">QUIT TO MENU</button>
     </div>
@@ -1031,9 +1070,10 @@ Math.sin = DMATH.sin; Math.cos = DMATH.cos; Math.atan = DMATH.atan; Math.atan2 =
    All tuning lives here. Logical units: the view is ~420 wide, the
    train roof (arena) is 340 wide. Speeds are units per second.
    ===================================================================== */
-const VERSION = '33.0';
-const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
+const VERSION = '34.0';
+const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
 const CFG = { step: 1 / 60, maxSteps: 5, maxEnemies: 22, arenaW: 340, viewW: 420, viewH: 760 };
+let RDT = 1 / 60; // version 34: the real time of the frame being drawn. Drawing code uses it instead of a fixed 1/60, so 120-480 Hz screens animate at the right speed
 
 const DIFFS_V18 = [ // the tuning replays recorded before version 19 were played with
   { id: 'rookie', name: 'ROOKIE', desc: 'Forgiving. Extra shields, slower enemies.', ehp: .7, espd: .82, bspd: .8, fire: .75, spawn: .8, hp: 2, parry: .06, score: .75, cred: .8, bhp: .7, elite: 0, dda: [.15, .75] },
@@ -5594,6 +5634,11 @@ Object.assign(HE, {"NO MORE PARRY FREEZE": "בלי קפיאה בהדיפה", "A 
 Object.assign(AR, {"NO MORE PARRY FREEZE": "لا تجمّد عند الصدّ", "A perfect parry and a boss clash now land with a short, sharp beat instead of slow motion, so the game never seems to stall.": "الصدّ المثالي والاصطدام بالزعيم يأتيان الآن بنبضة قصيرة وحادة بدل الحركة البطيئة، فلا تبدو اللعبة متوقفة أبداً.", "NEW HOME SCREEN": "شاشة رئيسية جديدة", "A living city with a sliced moon behind the menu, a mission card for the story, and mode tiles that each move their own way, trace light around their edge and tilt toward your finger.": "مدينة حية مع قمر مشطور خلف القائمة، وبطاقة مهمة للقصة، وبلاطات أوضاع تتحرك كلٌّ بطريقتها، ويجري الضوء حول حوافها وتميل نحو إصبعك.", "CLEANER RUNS": "جولات أنظف", "Less text on the roof: small side callouts are gone, one word label shows at a time, ON BEAT shows from x3, and achievements are a small strip at the top.": "نص أقل على السطح: اختفت التنبيهات الجانبية الصغيرة، وتظهر تسمية واحدة في كل مرة، و'على الإيقاع' تظهر من x3، والإنجازات شريط صغير في الأعلى.", "ARSENAL SHOWROOM": "صالة عرض الترسانة", "Every item stands on a lit stage in its rarity color with a reveal flash, rare items shine in the list, and the one you have equipped glows.": "كل عنصر يقف على منصة مضاءة بلون ندرته مع وميض كشف، والعناصر النادرة تلمع في القائمة، والعنصر المجهّز يتوهج.", "The score rolls up, a lost shield shatters, the last one beats with your heart, the combo punches and falls away when it breaks, and the boss bar shows your damage in yellow.": "النقاط تتصاعد، والدرع المفقود يتحطم، والأخير ينبض مع قلبك، والكومبو يقفز ويسقط عندما ينكسر، وشريط الزعيم يُظهر ضررك بالأصفر."});
 Object.assign(RU, {"NO MORE PARRY FREEZE": "ПАРИРОВАНИЕ БЕЗ ЗАМИРАНИЯ", "A perfect parry and a boss clash now land with a short, sharp beat instead of slow motion, so the game never seems to stall.": "Идеальное парирование и сшибка с боссом теперь дают короткий резкий удар вместо замедления, и игра больше не кажется зависшей.", "NEW HOME SCREEN": "НОВЫЙ ГЛАВНЫЙ ЭКРАН", "A living city with a sliced moon behind the menu, a mission card for the story, and mode tiles that each move their own way, trace light around their edge and tilt toward your finger.": "Живой город с разрубленной луной за меню, карточка миссии для сюжета и плитки режимов, которые двигаются каждая по-своему, светятся по краю и наклоняются к пальцу.", "CLEANER RUNS": "ЧИЩЕ В БОЮ", "Less text on the roof: small side callouts are gone, one word label shows at a time, ON BEAT shows from x3, and achievements are a small strip at the top.": "Меньше текста на крыше: мелкие боковые подсказки убраны, надпись показывается одна за раз, «В ТАКТ» — только с x3, а достижения — узкая полоска сверху.", "ARSENAL SHOWROOM": "ВИТРИНА АРСЕНАЛА", "Every item stands on a lit stage in its rarity color with a reveal flash, rare items shine in the list, and the one you have equipped glows.": "Каждый предмет стоит на освещённой сцене в цвете своей редкости со вспышкой появления, редкие предметы блестят в списке, а надетый светится.", "The score rolls up, a lost shield shatters, the last one beats with your heart, the combo punches and falls away when it breaks, and the boss bar shows your damage in yellow.": "Счёт прокручивается, потерянный щит разлетается, последний бьётся в такт сердцу, комбо подпрыгивает и падает, когда рвётся, а полоса босса показывает урон жёлтым."});
 
+/* version 34 strings (PC) */
+Object.assign(HE, {"Grapple": "אנקול", "Hijack": "השתלטות", "Laser web": "רשת לייזר", "Time echo": "הד זמן", "Swap weapon": "החלפת נשק", "Overdrive": "אוברדרייב", "Hold to aim (slow motion)": "החזק לכוון (הילוך איטי)", "Slash": "חיתוך", "Dodge": "התחמקות", "Aim up": "כוון למעלה", "Aim down": "כוון למטה", "Aim left": "כוון שמאלה", "Aim right": "כוון ימינה", "FULLSCREEN": "מסך מלא", "EXIT FULLSCREEN": "יציאה ממסך מלא", "PC & DISPLAY": "מחשב ותצוגה", "Frame rate limit": "הגבלת קצב פריימים", "Smooth motion (120-480 Hz)": "תנועה חלקה (120-480 הרץ)", "Render resolution": "רזולוציית רינדור", "Show FPS": "הצג FPS", "Mouse aim": "כיוון בעכבר", "AT THE CURSOR": "אל הסמן", "DRAG": "גרירה", "Crosshair": "כוונת", "Wide roof (story, dojo, your levels)": "גג רחב (סיפור, דוג'ו, השלבים שלך)", "Pause when the window loses focus": "השהיה כשהחלון מאבד פוקוס", "Mouse: hold to aim at the cursor, release to slash. Right click dodges, the wheel swaps weapons, the middle button is Overdrive. ALT+ENTER: fullscreen.": "עכבר: החזק כדי לכוון אל הסמן, שחרר כדי לחתוך. קליק ימני מתחמק, הגלגלת מחליפה נשק, הכפתור האמצעי הוא אוברדרייב. ALT+ENTER: מסך מלא.", "KEYS": "מקשים", "PRESS A KEY": "לחץ על מקש", "Default keys": "מקשי ברירת מחדל", "ESC and P always pause. On the result screen R restarts.": "ESC ו-P תמיד עוצרים. במסך התוצאות R מתחיל מחדש.", "MAX": "מקס'", "MADE FOR PC": "בנוי למחשב", "Hold the mouse to aim at the cursor and release to slash, right click to dodge, the wheel swaps weapons, and a crosshair shows your dash charges. Every key can be rebound, and the arrows, SHIFT and C play without a mouse.": "החזיקו את העכבר כדי לכוון אל הסמן ושחררו כדי לחתוך, קליק ימני מתחמק, הגלגלת מחליפה נשק, וכוונת מראה את מטעני הדאש. אפשר לשנות כל מקש, ועם החצים, SHIFT ו-C משחקים גם בלי עכבר.", "UP TO 480 HZ": "עד 480 הרץ", "On 120 to 480 Hz screens everything is drawn between game steps for truly smooth motion. Pick a frame-rate limit and the render resolution in Settings > PC & DISPLAY.": "במסכים של 120 עד 480 הרץ הכל מצויר בין צעדי המשחק לתנועה חלקה באמת. בחרו הגבלת פריימים ורזולוציית רינדור בהגדרות > מחשב ותצוגה.", "WIDE ROOF": "גג רחב", "On a computer the story, the dojo and your own levels play on a roof almost twice as wide. Ranked modes keep the standard roof, so leaderboards stay fair.": "במחשב הסיפור, הדוג'ו והשלבים שלכם משוחקים על גג רחב כמעט פי שניים. מצבים מדורגים נשארים עם הגג הרגיל, כך שטבלאות השיאים נשארות הוגנות.", "DESKTOP LAYOUT": "פריסה למחשב", "The home screen and the Arsenal spread into two columns, arrows move through menus, ESC goes back, ALT+ENTER is fullscreen, and the game pauses when you switch windows.": "מסך הבית והארסנל נפרשים לשני טורים, החצים זזים בין תפריטים, ESC חוזר אחורה, ALT+ENTER למסך מלא, והמשחק נעצר כשעוברים חלון.", "CONTROLLERS": "שלטים", "Controllers rumble with every hit, and the skill bar shows your controller's buttons.": "השלט רוטט עם כל פגיעה, ופס היכולות מראה את כפתורי השלט שלכם."});
+Object.assign(AR, {"Grapple": "الخطّاف", "Hijack": "الاختطاف", "Laser web": "شبكة الليزر", "Time echo": "صدى الزمن", "Swap weapon": "تبديل السلاح", "Overdrive": "أوفردرايف", "Hold to aim (slow motion)": "اضغط مطولاً للتصويب (حركة بطيئة)", "Slash": "ضربة", "Dodge": "مراوغة", "Aim up": "تصويب لأعلى", "Aim down": "تصويب لأسفل", "Aim left": "تصويب لليسار", "Aim right": "تصويب لليمين", "FULLSCREEN": "ملء الشاشة", "EXIT FULLSCREEN": "الخروج من ملء الشاشة", "PC & DISPLAY": "الحاسوب والعرض", "Frame rate limit": "حد معدل الإطارات", "Smooth motion (120-480 Hz)": "حركة سلسة (120-480 هرتز)", "Render resolution": "دقة العرض", "Show FPS": "إظهار FPS", "Mouse aim": "التصويب بالفأرة", "AT THE CURSOR": "نحو المؤشر", "DRAG": "سحب", "Crosshair": "علامة التصويب", "Wide roof (story, dojo, your levels)": "سطح عريض (القصة، الدوجو، مراحلك)", "Pause when the window loses focus": "إيقاف مؤقت عند فقدان النافذة للتركيز", "Mouse: hold to aim at the cursor, release to slash. Right click dodges, the wheel swaps weapons, the middle button is Overdrive. ALT+ENTER: fullscreen.": "الفأرة: اضغط مطولاً للتصويب نحو المؤشر واترك للضرب. النقر الأيمن للمراوغة، والعجلة لتبديل السلاح، والزر الأوسط للأوفردرايف. ALT+ENTER: ملء الشاشة.", "KEYS": "المفاتيح", "PRESS A KEY": "اضغط مفتاحاً", "Default keys": "المفاتيح الافتراضية", "ESC and P always pause. On the result screen R restarts.": "ESC و P يوقفان اللعبة دائماً. في شاشة النتائج R يعيد البدء.", "MAX": "أقصى", "MADE FOR PC": "مصممة للحاسوب", "Hold the mouse to aim at the cursor and release to slash, right click to dodge, the wheel swaps weapons, and a crosshair shows your dash charges. Every key can be rebound, and the arrows, SHIFT and C play without a mouse.": "اضغط بالفأرة للتصويب نحو المؤشر واترك للضرب، النقر الأيمن للمراوغة، العجلة تبدّل السلاح، وعلامة التصويب تُظهر شحنات الاندفاع. يمكن تغيير كل مفتاح، والأسهم مع SHIFT و C تكفي للعب دون فأرة.", "UP TO 480 HZ": "حتى 480 هرتز", "On 120 to 480 Hz screens everything is drawn between game steps for truly smooth motion. Pick a frame-rate limit and the render resolution in Settings > PC & DISPLAY.": "على شاشات 120 إلى 480 هرتز يُرسم كل شيء بين خطوات اللعبة لحركة سلسة حقاً. اختر حد الإطارات ودقة العرض من الإعدادات > الحاسوب والعرض.", "WIDE ROOF": "سطح عريض", "On a computer the story, the dojo and your own levels play on a roof almost twice as wide. Ranked modes keep the standard roof, so leaderboards stay fair.": "على الحاسوب تُلعب القصة والدوجو ومراحلك على سطح أعرض بمرتين تقريباً. الأوضاع المصنفة تبقى على السطح العادي لتبقى لوحات الصدارة عادلة.", "DESKTOP LAYOUT": "واجهة الحاسوب", "The home screen and the Arsenal spread into two columns, arrows move through menus, ESC goes back, ALT+ENTER is fullscreen, and the game pauses when you switch windows.": "الشاشة الرئيسية والترسانة تتوزعان على عمودين، والأسهم تتنقل في القوائم، و ESC للرجوع، و ALT+ENTER لملء الشاشة، وتتوقف اللعبة عند تبديل النوافذ.", "CONTROLLERS": "وحدات التحكم", "Controllers rumble with every hit, and the skill bar shows your controller's buttons.": "وحدات التحكم تهتز مع كل ضربة، وشريط المهارات يعرض أزرار وحدة التحكم."});
+Object.assign(RU, {"Grapple": "КРЮК", "Hijack": "ВЗЛОМ", "Laser web": "ЛАЗЕРНАЯ СЕТЬ", "Time echo": "ЭХО ВРЕМЕНИ", "Swap weapon": "СМЕНА ОРУЖИЯ", "Overdrive": "ОВЕРДРАЙВ", "Hold to aim (slow motion)": "Удерживать для прицела (замедление)", "Slash": "Удар", "Dodge": "Уклон", "Aim up": "Прицел вверх", "Aim down": "Прицел вниз", "Aim left": "Прицел влево", "Aim right": "Прицел вправо", "FULLSCREEN": "ПОЛНЫЙ ЭКРАН", "EXIT FULLSCREEN": "ВЫЙТИ ИЗ ПОЛНОГО ЭКРАНА", "PC & DISPLAY": "ПК И ЭКРАН", "Frame rate limit": "Ограничение частоты кадров", "Smooth motion (120-480 Hz)": "Плавное движение (120-480 Гц)", "Render resolution": "Разрешение рендера", "Show FPS": "Показывать FPS", "Mouse aim": "Прицел мышью", "AT THE CURSOR": "НА КУРСОР", "DRAG": "ПЕРЕТАСКИВАНИЕ", "Crosshair": "Перекрестие", "Wide roof (story, dojo, your levels)": "Широкая крыша (сюжет, додзё, ваши уровни)", "Pause when the window loses focus": "Пауза, когда окно теряет фокус", "Mouse: hold to aim at the cursor, release to slash. Right click dodges, the wheel swaps weapons, the middle button is Overdrive. ALT+ENTER: fullscreen.": "Мышь: удерживайте, чтобы целиться на курсор, отпустите для удара. Правая кнопка — уклон, колесо меняет оружие, средняя кнопка — Овердрайв. ALT+ENTER: полный экран.", "KEYS": "КЛАВИШИ", "PRESS A KEY": "НАЖМИТЕ КЛАВИШУ", "Default keys": "Клавиши по умолчанию", "ESC and P always pause. On the result screen R restarts.": "ESC и P всегда ставят паузу. На экране результатов R перезапускает.", "MAX": "МАКС", "MADE FOR PC": "СОЗДАНО ДЛЯ ПК", "Hold the mouse to aim at the cursor and release to slash, right click to dodge, the wheel swaps weapons, and a crosshair shows your dash charges. Every key can be rebound, and the arrows, SHIFT and C play without a mouse.": "Удерживайте мышь, чтобы целиться на курсор, отпустите для удара, правая кнопка — уклон, колесо меняет оружие, а перекрестие показывает заряды рывка. Любую клавишу можно переназначить, а стрелки, SHIFT и C позволяют играть без мыши.", "UP TO 480 HZ": "ДО 480 ГЦ", "On 120 to 480 Hz screens everything is drawn between game steps for truly smooth motion. Pick a frame-rate limit and the render resolution in Settings > PC & DISPLAY.": "На экранах 120–480 Гц всё рисуется между шагами игры — движение по-настоящему плавное. Ограничение кадров и разрешение рендера — в Настройки > ПК И ЭКРАН.", "WIDE ROOF": "ШИРОКАЯ КРЫША", "On a computer the story, the dojo and your own levels play on a roof almost twice as wide. Ranked modes keep the standard roof, so leaderboards stay fair.": "На компьютере сюжет, додзё и ваши уровни идут на крыше почти вдвое шире. Рейтинговые режимы остаются на обычной крыше, чтобы таблицы были честными.", "DESKTOP LAYOUT": "РАСКЛАДКА ДЛЯ ПК", "The home screen and the Arsenal spread into two columns, arrows move through menus, ESC goes back, ALT+ENTER is fullscreen, and the game pauses when you switch windows.": "Главный экран и Арсенал раскладываются в две колонки, стрелки ходят по меню, ESC — назад, ALT+ENTER — полный экран, а игра встаёт на паузу при смене окна.", "CONTROLLERS": "ГЕЙМПАДЫ", "Controllers rumble with every hit, and the skill bar shows your controller's buttons.": "Геймпады вибрируют при каждом ударе, а панель навыков показывает кнопки вашего геймпада."});
+
 /* HEBREW — version 31 strings (news). Written by i18n/v32.py */
 Object.assign(HE, {
   "SHARPER CODE": "קוד חד יותר",
@@ -6911,7 +6956,8 @@ function fit() {
   applyDpr(); BG.dirty = true;
 }
 function applyDpr() {
-  const d = Math.min(window.devicePixelRatio || 1, Q.dprCap); V.dpr = d;
+  const rs = +(Store.data && Store.data.settings && Store.data.settings.rscale) || 0;
+  const d = rs ? clamp(rs, .5, 2.5) : Math.min(window.devicePixelRatio || 1, Q.dprCap); V.dpr = d; // rs: render pixels per screen point, chosen in Settings > PC
   const pw = Math.round(V.W * d), ph = Math.round(V.H * d);
   if (cv.width !== pw || cv.height !== ph) { cv.width = pw; cv.height = ph; }
 }
@@ -7779,9 +7825,7 @@ function bindInput() {
     if (G.state === 'PLAY' && Tut.cur && (k === 'Space' || k === 'Enter')) { Tut.dismiss(); e.preventDefault(); return; }
     if (k === 'KeyR' && (UI.cur === 'result' || UI.cur === 'pause') && Flow.last && Flow.last.mode !== 'race' && Flow.last.mode !== 'raid') { Aud.sfx('ui'); Flow.restart(); return; } // quick restart
     if (G.state !== 'PLAY') return;
-    if (k === 'KeyQ') useSkill('grapple'); else if (k === 'KeyW') useSkill('hijack');
-    else if (k === 'KeyE') useSkill('web'); else if (k === 'KeyR') useSkill('echo'); else if (k === 'KeyF') swapWeapon();
-    else if (k === 'Space') { overdrive(); e.preventDefault(); }
+    Keys.game(k, e); // version 34: rebindable (Settings > PC > KEYS)
   });
 }
 
@@ -15222,11 +15266,11 @@ const Preview = {
     const wid = s.tab === 'blades' ? s.id : Store.data.weapon; // each blade shows its own trick
     if (wid === 'kunai' && dash && !this.kt) { this.kt = true; for (let k = -1; k <= 1; k++) this.kn.push({ x: x + 10, y, a: k * .2 }); }
     if (wid === 'chakram' && dash && !this.ckr) { this.ckr = { x: x + 10, y, t: 0 }; }
-    if (this.ckr) { const q = this.ckr; q.t += 1 / 60; if (q.t < .4) q.x += 640 / 60 * (1 - q.t / .4); else { const dx = x - q.x, dy = y - q.y, d = Math.hypot(dx, dy) || 1; q.x += dx / d * 12; q.y += dy / d * 12; if (d < 14) this.ckr = null; }
+    if (this.ckr) { const q = this.ckr; q.t += RDT; if (q.t < .4) q.x += 640 * RDT * (1 - q.t / .4); else { const dx = x - q.x, dy = y - q.y, d = Math.hypot(dx, dy) || 1; q.x += dx / d * 720 * RDT; q.y += dy / d * 720 * RDT; if (d < 14) this.ckr = null; }
       if (this.ckr) { cx.save(); cx.translate(q.x, q.y); cx.rotate(this.t * 24); glow(0, 0, 22, '#ff4fd8', .5); cx.strokeStyle = '#ff4fd8'; cx.lineWidth = 3; cx.beginPath(); cx.arc(0, 0, 9, 0, TAU); cx.stroke(); cx.fillStyle = '#ffd6f3'; for (let k = 0; k < 4; k++) { cx.rotate(TAU / 4); cx.beginPath(); cx.moveTo(9, -2); cx.lineTo(14, 0); cx.lineTo(9, 2.4); cx.closePath(); cx.fill(); } cx.restore(); } }
     if (p < .05) this.ckr = null;
     if (wid === 'whip' && p >= 1.85 && !this.cr) { this.cr = true; FX.arc(dx + 22, y, 0, 70, '#ffffff', 8); FX.arc(dx + 22, y, 0, 56, HO.ca, 5); }
-    for (let i = this.kn.length - 1; i >= 0; i--) { const q = this.kn[i]; q.x += Math.cos(q.a) * 560 * (1 / 60); q.y += Math.sin(q.a) * 560 * (1 / 60); if (q.x > W + 10) { this.kn.splice(i, 1); continue; }
+    for (let i = this.kn.length - 1; i >= 0; i--) { const q = this.kn[i]; q.x += Math.cos(q.a) * 560 * RDT; q.y += Math.sin(q.a) * 560 * RDT; if (q.x > W + 10) { this.kn.splice(i, 1); continue; }
       cx.save(); cx.translate(q.x, q.y); cx.rotate(q.a); cx.fillStyle = '#1a2038'; cx.beginPath(); cx.moveTo(10, 0); cx.lineTo(0, -3.6); cx.lineTo(-6, 0); cx.lineTo(0, 3.6); cx.closePath(); cx.fill(); cx.strokeStyle = '#c9d6ff'; cx.lineWidth = 1.6; cx.stroke(); cx.restore(); }
     if (wid === 'fists' && this.hit && p < 2.4) { this.dummy(dx + (p - 1.7) * 260, y - Math.sin(Math.min(1, (p - 1.7) / .7) * Math.PI) * 20, true); }
     if (dash && p < 1.6) FX.arc(x + 10, y, 0, 46, fx.blade && fx.blade !== 'glitch' && fx.blade !== 'prism' ? (fx.id === 'obsidian' ? '#ff0844' : fx.blade) : fx.blade === 'prism' ? PRISM[(this.t * 18 | 0) % 24] : HO.ca, 6);
@@ -15271,7 +15315,7 @@ const Preview = {
     if (s.tab === 'pets') { // the hero runs, the pet follows and shows its trick
       const Z = 1.42; cx.save(); cx.translate(W / 2, 92); cx.scale(Z, Z); cx.translate(-W / 2, -92);
       const p = this.t % 4, x = W * .3 + Math.sin(this.t * .8) * 40, y = 92; this.hero(x, y, Math.cos(this.t * .8) > 0 ? 0 : Math.PI, 200, false, 1.8);
-      if (s.id !== 'none') { const fx = s.id === 'drake' ? x - 6 : x - 40, fy = s.id === 'drake' ? y - 20 : y + 16, hap = (this.petT || 0) > 0; if (hap) this.petT -= 1 / 60; drawPet(s.id, fx, fy - (hap ? Math.abs(Math.sin(this.t * 14)) * 6 : 0), Math.cos(this.t * .8) > 0 ? 0 : Math.PI, this.t * 14, this.t, p > 3 && !hap, s.id === 'kaya' && p > 3 ? 1 - (p - 3) : 0, hap ? 3 : 0);
+      if (s.id !== 'none') { const fx = s.id === 'drake' ? x - 6 : x - 40, fy = s.id === 'drake' ? y - 20 : y + 16, hap = (this.petT || 0) > 0; if (hap) this.petT -= RDT; drawPet(s.id, fx, fy - (hap ? Math.abs(Math.sin(this.t * 14)) * 6 : 0), Math.cos(this.t * .8) > 0 ? 0 : Math.PI, this.t * 14, this.t, p > 3 && !hap, s.id === 'kaya' && p > 3 ? 1 - (p - 3) : 0, hap ? 3 : 0);
         if ((s.id === 'tiger' || s.id === 'shark') && p > 3) { this.dummy(W * .78, y, true); FX.spark(W * .78, y, PET_BY_ID[s.id].col, 2); } }
       cx.restore(); return;
     }
@@ -15352,13 +15396,14 @@ const Preview = {
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 33
+const NEWS = [ // version 34
+  ["MADE FOR PC", "Hold the mouse to aim at the cursor and release to slash, right click to dodge, the wheel swaps weapons, and a crosshair shows your dash charges. Every key can be rebound, and the arrows, SHIFT and C play without a mouse."],
+  ["UP TO 480 HZ", "On 120 to 480 Hz screens everything is drawn between game steps for truly smooth motion. Pick a frame-rate limit and the render resolution in Settings > PC & DISPLAY."],
+  ["WIDE ROOF", "On a computer the story, the dojo and your own levels play on a roof almost twice as wide. Ranked modes keep the standard roof, so leaderboards stay fair."],
+  ["DESKTOP LAYOUT", "The home screen and the Arsenal spread into two columns, arrows move through menus, ESC goes back, ALT+ENTER is fullscreen, and the game pauses when you switch windows."],
+  ["CONTROLLERS", "Controllers rumble with every hit, and the skill bar shows your controller's buttons."],
   ["NO MORE PARRY FREEZE", "A perfect parry and a boss clash now land with a short, sharp beat instead of slow motion, so the game never seems to stall."],
-  ["NEW HOME SCREEN", "A living city with a sliced moon behind the menu, a mission card for the story, and mode tiles that each move their own way, trace light around their edge and tilt toward your finger."],
-  ["CLEANER RUNS", "Less text on the roof: small side callouts are gone, one word label shows at a time, ON BEAT shows from x3, and achievements are a small strip at the top."],
-  ["ARSENAL SHOWROOM", "Every item stands on a lit stage in its rarity color with a reveal flash, rare items shine in the list, and the one you have equipped glows."],
-  ["MOTION", "The score rolls up, a lost shield shatters, the last one beats with your heart, the combo punches and falls away when it breaks, and the boss bar shows your damage in yellow."],
-  ["PLAY ANYWHERE", "The game is now an app you can install from its web page, it works offline, and Report a problem opens a ready report on GitHub."]
+  ["NEW HOME SCREEN", "A living city with a sliced moon behind the menu, a mission card for the story, and mode tiles that each move their own way, trace light around their edge and tilt toward your finger."]
 ];
 function deathCause() { // what hit you last, and how to avoid it next time
   const s = G.lastHit, w = G.lastWho, en = k => lt(EDEF[k] ? EDEF[k].name : 'ENEMY');
@@ -15443,6 +15488,7 @@ Object.assign(UI, {
     box.appendChild(el('div', 'small mute', lt('Assist runs still count for the story, but not for leaderboards or ghosts.')));
     head('PRIVACY'); cycle('Share anonymous play stats', 'share', [1, 0], ['ON', 'OFF']);
     box.appendChild(el('div', 'small mute', lt('Stats are only where players fail or quit, so the game can be balanced. No names, no messages.')));
+    try { PC.settings(head, cycle, box, s); } catch (e) { errLog(e); }
     const more = el('div', 'grid2'); more.style.marginTop = '12px';
     [['WHAT\'S NEW', () => this.openNews(() => this.openSettings())], ['MUSIC ROOM', () => this.openMusic()], ['DEVICE CHECK', () => this.openDevice()], ['SAVE CODE', () => this.openSave()], ['SEND FEEDBACK', () => this.openReport(() => this.openSettings())]]
       .forEach(([n, fn]) => { const b = el('button', 'btn', lt(n)); b.onclick = () => { Aud.sfx('ui'); fn(); }; more.appendChild(b); });
@@ -15768,7 +15814,7 @@ const Pet = {
   onTele() { if (G.pet === 'kaya') { this.bark = .8; if (!Aud.quiet) Aud.tone(1400, 1700, .06, .05, 'square'); } },
   draw() {
     const id = G.pet; if (!id || id === 'none' || G.mode === 'puzzle' || !(G.state === 'PLAY' || G.state === 'PAUSE' || G.state === 'PERK')) return;
-    const moving = Math.hypot(P.vx, P.vy) > 40 || P.dashT > 0; this.still = moving ? 0 : this.still + 1 / 60; if (this.happy > 0) this.happy -= 1 / 60;
+    const moving = Math.hypot(P.vx, P.vy) > 40 || P.dashT > 0; this.still = moving ? 0 : this.still + RDT; if (this.happy > 0) this.happy -= RDT;
     const mood = this.act > 0 ? 0 : this.happy > 0 ? 3 : this.still > 8 ? 2 : this.still > 2 ? 1 : 0; // 1 sits, 2 sleeps, 3 happy hop
     drawPet(id, this.x, this.y - (mood === 3 ? Math.abs(Math.sin(CAM.t * 14)) * 6 : 0), this.ang, mood ? 0 : this.ph, CAM.t, this.act > 0, this.bark, mood);
     if (id === 'turtle' && this.shell > 0) { cx.save(); cx.strokeStyle = '#5ee6a8'; cx.globalAlpha = .35 + .15 * Math.sin(CAM.t * 6); cx.lineWidth = 2; for (let k = 0; k < this.shell; k++) { cx.beginPath(); for (let j = 0; j <= 6; j++) { const q = j * TAU / 6 + CAM.t * .5, r = P.r + 10 + k * 6; j ? cx.lineTo(P.x + Math.cos(q) * r, P.y + Math.sin(q) * r) : cx.moveTo(P.x + Math.cos(q) * r, P.y + Math.sin(q) * r); } cx.stroke(); } cx.restore(); }
@@ -19020,7 +19066,7 @@ const LivePlus = {
     g.px = g.x;
     const hp = clamp(pr.hp | 0, 0, 8); if (hp) { cx.globalAlpha = .9; for (let k = 0; k < hp; k++) { cx.fillStyle = '#00ff88'; cx.fillRect(g.x - hp * 4 + k * 8 + 1, g.y - 44, 6, 4); } cx.globalAlpha = 1; }
     if (pr.od) { cx.globalAlpha = .4 + .2 * Math.sin(CAM.t * 10); cx.strokeStyle = '#ffd700'; cx.lineWidth = 2; cx.beginPath(); cx.arc(g.x, g.y, 30, 0, TAU); cx.stroke(); cx.globalAlpha = 1; }
-    if (g.emT > 0) { g.emT -= 1 / 60; this.bubble(g.x, g.y - 58, lt(EMOTES[g.em]), Math.min(1, g.emT * 3), '#ff4fd8'); }
+    if (g.emT > 0) { g.emT -= RDT; this.bubble(g.x, g.y - 58, lt(EMOTES[g.em]), Math.min(1, g.emT * 3), '#ff4fd8'); }
   },
   bubble(x, y, t, a, col) {
     cx.save(); cx.globalAlpha = a; cx.font = '800 12px ' + FONT_D; cx.textAlign = 'center'; const w = cx.measureText(t).width + 16;
@@ -19028,7 +19074,7 @@ const LivePlus = {
     cx.fillStyle = 'rgba(8,10,24,.92)'; cx.beginPath(); cx.moveTo(x - 5, y + 10); cx.lineTo(x, y + 16); cx.lineTo(x + 5, y + 10); cx.fill();
     cx.fillStyle = '#ffffff'; cx.fillText(t, x, y + 4); cx.restore();
   },
-  drawMine() { if (this.emT > 0 && this.em >= 0) { this.emT -= 1 / 60; this.bubble(P.x, P.y - 58, lt(EMOTES[this.em]), Math.min(1, this.emT * 3), '#00f2fe'); } },
+  drawMine() { if (this.emT > 0 && this.em >= 0) { this.emT -= RDT; this.bubble(P.x, P.y - 58, lt(EMOTES[this.em]), Math.min(1, this.emT * 3), '#00f2fe'); } },
   /* the 💬 button, only while you are in a live run */
   syncBtn() {
     const on = !!Live.r && (G.mode === 'race' || G.mode === 'raid') && G.state === 'PLAY';
@@ -20415,7 +20461,7 @@ const Monster = {
   bossPost(b) {
     if (CALM || Q.lvl < 1 || !b || b.dying > 0 || b.enter < .2) return; const col = (BOSS_INFO[b.id] && BOSS_INFO[b.id].col) || '#ff0844';
     const k = b.id + (b.lvl | 0), h0 = this.bh[k]; this.bh[k] = b.hp; if (h0 != null && b.hp < h0) b._fl = .12;
-    if (b._fl > 0) { b._fl -= 1 / 60; cx.save(); cx.globalCompositeOperation = 'lighter'; glow(b.x, b.y, b.r * 1.6, '#ffffff', .45 * b._fl / .12); cx.restore(); }
+    if (b._fl > 0) { b._fl -= RDT; cx.save(); cx.globalCompositeOperation = 'lighter'; glow(b.x, b.y, b.r * 1.6, '#ffffff', .45 * b._fl / .12); cx.restore(); }
     cx.save(); cx.strokeStyle = '#ffffff'; cx.globalAlpha = .35; cx.lineWidth = 3; cx.shadowColor = col; cx.shadowBlur = 16; cx.beginPath(); cx.arc(b.x, b.y, b.r * .98, 3.6, 5.2); cx.stroke(); cx.restore();
     if (b.hp < b.mhp * .3) { cx.save(); cx.strokeStyle = col; cx.lineWidth = 2; cx.globalCompositeOperation = 'lighter'; const n = 3;
       for (let i = 0; i < n; i++) { const s = Math.floor(CAM.t * 12) + i * 17; if (cmRand(s) > .55) continue; const a = cmRand(s + 3) * TAU, r0 = b.r * .8, r1 = b.r * (1.3 + cmRand(s + 5) * .4);
@@ -21209,7 +21255,7 @@ const FX3D = {
       g.light(o.x, o.y, 18, 110 + d * 50, bc, 1 + d * .7); if (G.odT > 0) g.light(o.x, o.y, 30, 190, [1, .8, .25], 1.3); }
     const b = Boss.cur; if (b && !(b.dying > 1.6)) { const c = rgb3((BOSS_INFO[b.id] && BOSS_INFO[b.id].col) || '#ff0844'); g.light(b.x, b.y, b.r * 1.2, b.r * 3.4, c, .9 + (b._fl > 0 ? 1 : 0)); }
     if (G.pet && G.pet !== 'none' && G.mode !== 'puzzle') { const p = PET_BY_ID[G.pet]; g.light(Pet.x, Pet.y, 14, 60, rgb3((p && p.col) || '#ffd23f'), .45); }
-    for (let i = this.flashes.length - 1; i >= 0; i--) { const f = this.flashes[i]; f.t += 1 / 60; if (f.t > .4) { this.flashes.splice(i, 1); continue; } g.light(f.x, f.y, 22, 150, f.c, 2.2 * (1 - f.t / .4)); }
+    for (let i = this.flashes.length - 1; i >= 0; i--) { const f = this.flashes[i]; f.t += RDT; if (f.t > .4) { this.flashes.splice(i, 1); continue; } g.light(f.x, f.y, 22, 150, f.c, 2.2 * (1 - f.t / .4)); }
     let fl = BG.flash > 0 && BG.T && BG.T.rain ? BG.flash : 0; g.lmul = (1 + fl * .8) * (this.over ? this.over.dim : 1);
   },
   /* ---- arrivals: every new enemy comes down a beam of its own color, onto a ring on the roof ---- */
@@ -21835,7 +21881,7 @@ function step() {
 }
 let simErr = 0;
 function safeStep() { // a bad frame must never kill the run: log, scrub, and keep going
-  try { step(); if (simErr > 0) simErr -= .02; }
+  try { Smooth.snap(); step(); if (simErr > 0) simErr -= .02; }
   catch (e) {
     simErr++; if (simErr < 3) console.error('sim recovered:', e && e.stack || e);
     LAST_ERR = String(e && e.message || e).slice(0, 160); errLog(e);
@@ -21846,7 +21892,8 @@ function safeStep() { // a bad frame must never kill the run: log, scrub, and ke
 }
 function frame(t) {
   requestAnimationFrame(frame);
-  const rd = Math.min(.1, (t - lastT) / 1000 || 0); lastT = t;
+  if (FrameCap.skip(t)) return; // a frame-rate limit (Settings > PC): skip this refresh
+  const rd = Math.min(.1, (t - lastT) / 1000 || 0); lastT = t; RDT = rd || 1 / 60; PC.tick(rd);
   governor(rd); camUpdate(rd); Pad.poll(rd);
   if (REPLAY.on) { REPLAY.frame(rd); acc = 0; }
   else if (G.state === 'PLAY') {
@@ -21861,7 +21908,7 @@ function frame(t) {
   Dlg.tick(rd); Tut.tick(rd); if (G.state === 'PLAY' && !Tut.cur) Comms.tick(rd); // radio lines run on real time
   Live.tick(rd);
   Aud.mix();
-  render(rd);
+  Smooth.render(rd);
   UI.tick(rd);
 }
 const BOOT_LINES = ['> OVERDRIVE KERNEL v' + VERSION + ' ONLINE', '> MOUNTING TITAN EXPRESS TELEMETRY ... OK', '> CALIBRATING PLASMA KATANA ... OK',
@@ -21878,7 +21925,7 @@ const BootFx = { // the loading screen: a synthwave sun, a rushing neon grid, a 
     const cv = $('bootCv'); if (!cv) return; this.cv = cv; this.g = cv.getContext('2d'); this.on = true; this.t = 0; this.cut = 0;
     this.sk = []; let x = 0; while (x < 1400) { const w = 18 + rnd() * 50; this.sk.push([x, w, 40 + rnd() * 140, rnd()]); x += w + rnd() * 6; }
     this.rain = []; for (let i = 0; i < 70; i++) this.rain.push([rnd(), rnd(), .6 + rnd() * .8]);
-    const loop = ts => { if (!this.on) return; this.draw(1 / 60); requestAnimationFrame(loop); }; requestAnimationFrame(loop);
+    let lt0 = 0; const loop = ts => { if (!this.on) return; this.draw(lt0 ? Math.min(.05, (ts - lt0) / 1000) : 1 / 60); lt0 = ts; requestAnimationFrame(loop); }; requestAnimationFrame(loop);
   },
   stop() { this.on = false; },
   fit() { const r = this.cv.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1); if (r.width !== this.W || r.height !== this.H) { this.W = r.width; this.H = r.height; this.dpr = d; this.cv.width = r.width * d; this.cv.height = r.height * d; } },
@@ -22075,6 +22122,244 @@ function hexA(c, a) { // '#rrggbb' + alpha -> rgba()
   const rs1 = UI.renderShopInfo.bind(UI);
   UI.renderShopInfo = function (it) { rs1(it); const p = $('asPn'); if (p && !Motion2.rm) { p.classList.remove('slam'); void p.offsetWidth; p.classList.add('slam'); } };
 }
+/* =====================================================================
+   HIGH REFRESH (version 34) — the simulation stays a fixed 60 Hz (replays and
+   leaderboards do not change), and the screen draws every refresh up to 480 Hz:
+   · Smooth: each moving thing is drawn between where it was before the last
+     step and where it is now, so 120 / 144 / 240 / 360 / 480 Hz screens get
+     really smooth motion (AUTO turns it on above 75 frames a second)
+   · FrameCap: an optional frame-rate limit
+   Drawing only: positions are put back right after the frame is drawn.
+   ===================================================================== */
+const Smooth = {
+  list: [], vals: [], a: 1, act: false,
+  want() { const m = (Store.data && Store.data.settings.smooth) || 'auto'; if (m === 'off') return false; if (m === 'on') return true; return Q.fps > 75; },
+  snap() {
+    if (G.state !== 'PLAY') return;
+    P._px = P.x; P._py = P.y; P._pv = 1;
+    const pools = this.pools || (this.pools = [EN, BU, PB, CO, PU, ECHO]);
+    for (const pool of pools) for (let i = 0; i < pool.n; i++) { const o = pool.a[i]; o._px = o.x; o._py = o.y; o._pg = o.gen; }
+    const b = Boss.cur; if (b) { b._px = b.x; b._py = b.y; b._pb = 1; if (b.parts) for (const p of b.parts) { p._px = p.x; p._py = p.y; p._pb = 1; } }
+    if (typeof Pet !== 'undefined') { Pet._px = Pet.x; Pet._py = Pet.y; }
+  },
+  lerp1(o, a) { if (o._px == null) return; const dx = o.x - o._px, dy = o.y - o._py; if (!(dx * dx + dy * dy < 8100) || (dx === 0 && dy === 0)) return; this.list.push(o); this.vals.push(o.x, o.y); o.x = o._px + dx * a; o.y = o._py + dy * a; },
+  render(rd) {
+    this.act = G.state === 'PLAY' && !REPLAY.on && !G.photo && this.want();
+    if (!this.act) { render(rd); return; }
+    const a = this.a = clamp(acc / CFG.step, 0, 1);
+    this.list.length = 0; this.vals.length = 0;
+    try {
+      if (P._pv) this.lerp1(P, a);
+      for (const pool of this.pools || []) for (let i = 0; i < pool.n; i++) { const o = pool.a[i]; if (o.alive && o._pg === o.gen) this.lerp1(o, a); }
+      const b = Boss.cur; if (b && b._pb) { this.lerp1(b, a); if (b.parts) for (const p of b.parts) if (p._pb) this.lerp1(p, a); }
+      if (typeof Pet !== 'undefined' && Pet._px != null) this.lerp1(Pet, a);
+      render(rd);
+    } finally { for (let i = this.list.length - 1; i >= 0; i--) { const o = this.list[i]; o.x = this.vals[i * 2]; o.y = this.vals[i * 2 + 1]; } this.list.length = 0; }
+  }
+};
+const FrameCap = {
+  last: 0,
+  skip(t) {
+    const cap = +(Store.data && Store.data.settings.fpsCap) || 0; if (!cap) return false;
+    const min = 1000 / cap; if (t - this.last < min - .75) return true;
+    this.last = t - this.last > min * 2 ? t : this.last + min; return false;
+  }
+};
+
+/* =====================================================================
+   WIDE ROOF (version 34, Settings > PC) — on a landscape screen the story,
+   the dojo and your own levels can be played on a roof almost twice as wide,
+   so a computer screen is not a thin strip with empty sides. Ranked arcade
+   modes, replays, ghosts and live play keep the standard roof, so every
+   leaderboard stays fair.
+   ===================================================================== */
+const Wide = {
+  W: 600,
+  can() { const s0 = Math.min(V.W / CFG.viewW, V.H / CFG.viewH); return V.W / s0 >= this.W + 90 && V.W > V.H * 1.15; },
+  want(mode) { const s = Store.data.settings; return !!s.wide && !REPLAY.on && !Flow.sr && (mode === 'story' || mode === 'dojo' || mode === 'custom') && this.can(); },
+  set(mode) { const w = this.want(mode) ? this.W : CFG.arenaW; if (V.AW !== w) { V.AW = w; G.wideRoof = w > CFG.arenaW ? 1 : 0; fit(); } else G.wideRoof = w > CFG.arenaW ? 1 : 0; }
+};
+{ const db0 = Director.begin.bind(Director); Director.begin = function (mode, stage) { try { Wide.set(mode); } catch (e) { errLog(e); } return db0(mode, stage); }; }
+/* =====================================================================
+   PC (version 34) — what a computer player expects:
+   · mouse: hold to aim AT THE CURSOR (time slows), release to slash; right
+     click dodges toward the cursor, the wheel swaps weapons, the middle
+     button fires Overdrive; a neon crosshair shows your dash charges
+   · keyboard: every action can be rebound; arrows aim, SHIFT holds the
+     slow-motion aim, C slashes, V dodges; arrows + ENTER + ESC in menus;
+     ALT+ENTER for fullscreen
+   · controllers rumble, and the skill bar shows the controller's buttons
+   · the game pauses when the window loses focus
+   Every action goes through the same input paths as touch, so replays,
+   ghosts and leaderboards work the same.
+   ===================================================================== */
+const KEY_ACTS = [['grapple', 'Grapple', 'KeyQ'], ['hijack', 'Hijack', 'KeyW'], ['web', 'Laser web', 'KeyE'], ['echo', 'Time echo', 'KeyR'], ['swap', 'Swap weapon', 'KeyF'], ['od', 'Overdrive', 'Space'],
+  ['aim', 'Hold to aim (slow motion)', 'ShiftLeft'], ['slash', 'Slash', 'KeyC'], ['dodge', 'Dodge', 'KeyV'], ['up', 'Aim up', 'ArrowUp'], ['down', 'Aim down', 'ArrowDown'], ['left', 'Aim left', 'ArrowLeft'], ['right', 'Aim right', 'ArrowRight']];
+const PAD_GLYPH = { grapple: 'X', hijack: 'Y', web: 'B', echo: 'LB', od: 'RB', swap: '' };
+const Keys = {
+  held: {}, aiming: false, capture: null,
+  map() { const s = Store.data.settings; if (!s.keys || typeof s.keys !== 'object') s.keys = {}; const m = {}; for (const a of KEY_ACTS) m[a[0]] = s.keys[a[0]] || a[2]; return m; },
+  norm(c) { return c === 'ShiftRight' ? 'ShiftLeft' : c === 'ControlRight' ? 'ControlLeft' : c === 'AltRight' ? 'AltLeft' : c; },
+  act(code) { const m = this.map(), c = this.norm(code); for (const k in m) if (this.norm(m[k]) === c) return k; return ''; },
+  label(code) {
+    if (!code) return '—'; const L = { Space: 'SPACE', ShiftLeft: 'SHIFT', ControlLeft: 'CTRL', AltLeft: 'ALT', ArrowUp: '↑', ArrowDown: '↓', ArrowLeft: '←', ArrowRight: '→', Enter: 'ENTER', Tab: 'TAB', Backspace: '⌫', CapsLock: 'CAPS' };
+    const c = this.norm(code); if (L[c]) return L[c]; return c.replace(/^Key/, '').replace(/^Digit/, '').replace(/^Numpad/, 'NUM ').toUpperCase();
+  },
+  dir() { const h = this.held, x = (h.right ? 1 : 0) - (h.left ? 1 : 0), y = (h.down ? 1 : 0) - (h.up ? 1 : 0); return x || y ? Math.atan2(y, x) : (PC.mouseOn() ? Math.atan2(PC.wy() - P.y, PC.wx() - P.x) : P.face); },
+  canPlay() { return G.state === 'PLAY' && !REPLAY.on && G.freeze <= 0; },
+  aimStart() {
+    if (In.on || !this.canPlay()) return false; if (Tut.cur) { Tut.dismiss(); return false; } Aud.init();
+    this.aiming = true; In.on = true; In.id = 'kb'; In.cur = 0; In.sx = In.sy = 0; In.t0 = performance.now() - 1000; P.nlk = 0; G.aimHold = 0; REC.act(RA.DOWN); this.aimMove(); return true;
+  },
+  aimMove() { if (!this.aiming || !In.on) return; const a = this.dir(); In.cx = Math.cos(a) * 120; In.cy = Math.sin(a) * 120; },
+  aimEnd() { if (!this.aiming) return; this.aiming = false; if (!In.on || In.id !== 'kb') return; this.aimMove(); In.up(); },
+  game(k, e) { // a key went down during a run (called by the game's own key handler)
+    const a = this.act(k); if (!a) return;
+    if (a === 'grapple' || a === 'hijack' || a === 'web' || a === 'echo') useSkill(a);
+    else if (a === 'swap') swapWeapon();
+    else if (a === 'od') { overdrive(); e.preventDefault(); }
+    else if (a === 'slash') { if (Boss.cur && Boss.cur.stag > 0) { Boss.zanTap(Boss.cur.x, Boss.cur.y); return; } if (!this.aiming && this.aimStart()) this.aimEnd(); }
+    else if (a === 'aim') { this.aimStart(); e.preventDefault(); }
+    else if (a === 'dodge') { if (this.canPlay()) dodge(this.dir()); }
+    if (a === 'up' || a === 'down' || a === 'left' || a === 'right') e.preventDefault();
+  },
+  down(e) {
+    if (this.capture) { e.preventDefault(); e.stopImmediatePropagation(); const f = this.capture; this.capture = null; f(e.code === 'Escape' ? null : e.code); return; }
+    const tg = e.target && e.target.tagName; if (tg === 'TEXTAREA' || tg === 'INPUT') return;
+    if (e.code === 'Enter' && e.altKey) { e.preventDefault(); PC.fullscreen(); return; }
+    const a = this.act(e.code); if (a === 'up' || a === 'down' || a === 'left' || a === 'right') this.held[a] = true;
+    if (e.repeat) return;
+    if (G.state !== 'PLAY' && G.state !== 'BOOT') this.menuKey(e);
+  },
+  up(e) { const a = this.act(e.code); if (a === 'up' || a === 'down' || a === 'left' || a === 'right') this.held[a] = false; if (a === 'aim') this.aimEnd(); },
+  menuKey(e) { // arrows move between buttons, ESC goes back
+    const k = e.code; const d = { ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] }[k];
+    if (d && UI.cur !== 'comic' && UI.cur !== 'photo') { e.preventDefault(); const ax = Pad.ax, ay = Pad.ay; Pad.ax = d[0]; Pad.ay = d[1]; Pad.navT = 0; try { Pad.menu({ buttons: [], axes: [] }, 0); } catch (er) { errLog(er); } Pad.ax = ax; Pad.ay = ay; return; }
+    if (k === 'Escape' && G.state === 'MENU' && UI.cur && UI.cur !== 'title' && UI.cur !== 'boot') { const b = document.querySelector('#s-' + UI.cur + ' [data-back]'); if (b) { e.preventDefault(); b.click(); } }
+  },
+  clear() { this.held = {}; if (this.aiming) this.aimEnd(); }
+};
+const PC = {
+  isPC: false, mx: -1, my: -1, mt: 0, wheelT: 0, rm: false,
+  mouseOn() { return this.mt > 0 && performance.now() - this.mt < 4000; },
+  wx() { return W3D.live ? W3D.unproj(this.mx, this.my)[0] : this.mx; }, wy() { return W3D.live ? W3D.unproj(this.mx, this.my)[1] : this.my; },
+  init() {
+    const s = Store.data.settings;
+    try { const mq = matchMedia('(hover: hover) and (pointer: fine)'); this.isPC = mq.matches; mq.addEventListener && mq.addEventListener('change', () => { this.isPC = mq.matches; this.sync(); }); } catch (e) { errLog(e); }
+    if (s.pcInit == null) { s.pcInit = 1; s.maim = this.isPC ? 'cursor' : 'drag'; s.wide = this.isPC ? 1 : 0; if (s.xh == null) s.xh = 1; Store.touch(); }
+    for (const [k, v] of [['fpsCap', 0], ['smooth', 'auto'], ['rscale', 0], ['blurPause', 1], ['maim', 'drag'], ['wide', 0], ['xh', 1]]) if (s[k] == null) s[k] = v;
+    window.addEventListener('keydown', e => Keys.down(e), true);
+    window.addEventListener('keyup', e => Keys.up(e));
+    window.addEventListener('blur', () => { Keys.clear(); if (Store.data.settings.blurPause && G.state === 'PLAY' && !REPLAY.on && !G.photo) Flow.togglePause(); });
+    window.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') { this.mx = (e.clientX - (In.ox || 0)) / V.s; this.my = (e.clientY - (In.oy || 0)) / V.s; this.mt = performance.now(); } }, { passive: true });
+    cv.addEventListener('contextmenu', e => e.preventDefault());
+    cv.addEventListener('wheel', e => { if (G.state !== 'PLAY' || REPLAY.on) return; e.preventDefault(); const n = performance.now(); if (n - this.wheelT < 260) return; this.wheelT = n; swapWeapon(); }, { passive: false });
+    const d0 = In.down.bind(In);
+    In.down = function (e) {
+      if (e && e.pointerType === 'mouse' && e.button === 2) { PC.rclick(e); return; }
+      if (e && e.pointerType === 'mouse' && e.button === 1) { if (G.state === 'PLAY' && !REPLAY.on) overdrive(); return; }
+      d0(e); this.cur = this.on && e && e.pointerType === 'mouse' && Store.data.settings.maim === 'cursor' ? 1 : 0;
+      if (this.cur) { this.sx = P.x; this.sy = P.y; }
+    };
+    const c0 = In.cancel.bind(In); In.cancel = function () { this.cur = 0; c0(); };
+    const v0 = vibe; vibe = function (kind) { v0(kind); PC.rumble(kind); };
+    const hd0 = HUD.draw.bind(HUD); HUD.draw = function (rd) { hd0(rd); PC.cross(); };
+    const ot0 = UI.openTitle.bind(UI); UI.openTitle = function () { ot0(); PC.titleLayout(); PC.sync(); };
+    const oa0 = UI.openArsenal.bind(UI); UI.openArsenal = function () { PC.arsenalLayout(); oa0.apply(this, arguments); };
+    const full = () => { Aud.sfx('ui'); PC.fullscreen(); };
+    if ($('tFull')) $('tFull').onclick = full; if ($('psFull')) $('psFull').onclick = full;
+    document.addEventListener('fullscreenchange', () => this.sync());
+    document.querySelectorAll('#dock .sk').forEach(b => { if (!b.querySelector('.kc')) { const k = el('span', 'kc'); k.setAttribute('aria-hidden', 'true'); b.appendChild(k); } });
+    window.addEventListener('gamepadconnected', () => setTimeout(() => this.sync(), 50)); window.addEventListener('gamepaddisconnected', () => setTimeout(() => this.sync(), 50));
+    this.sync();
+  },
+  sync() {
+    document.body.classList.toggle('pc', this.isPC);
+    document.body.classList.toggle('padon', !!Pad.on);
+    const fsOk = !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen), fs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+    for (const id of ['tFull', 'psFull']) { const b = $(id); if (b) { b.classList.toggle('hidden', !fsOk || (id === 'tFull' && !this.isPC)); b.textContent = lt(fs ? 'EXIT FULLSCREEN' : 'FULLSCREEN'); } }
+    const m = Keys.map();
+    document.querySelectorAll('#dock .sk').forEach(b => { const k = b.querySelector('.kc'); if (!k) return; const a = b.dataset.k, t = Pad.on ? PAD_GLYPH[a] : Keys.label(m[a]); k.textContent = t || ''; k.style.display = t ? '' : 'none'; b.title = lt(((KEY_ACTS.find(q => q[0] === a) || [])[1]) || '') + (t ? ' (' + t + ')' : ''); });
+  },
+  fullscreen() {
+    try { const d = document, el0 = d.documentElement; if (d.fullscreenElement || d.webkitFullscreenElement) (d.exitFullscreen || d.webkitExitFullscreen).call(d); else (el0.requestFullscreen || el0.webkitRequestFullscreen).call(el0, { navigationUI: 'hide' }); } catch (e) { errLog(e); }
+  },
+  rclick(e) { // right click: dodge toward the cursor
+    if (G.state !== 'PLAY' || REPLAY.on || G.freeze > 0) return; if (Tut.cur) { Tut.dismiss(); return; }
+    In.pos(e); const a = Math.atan2(In.py - P.y, In.px - P.x); dodge(a);
+  },
+  tick(rd) {
+    if (In.on && In.cur) { In.sx = P.x; In.sy = P.y; } // cursor aim: the aim line starts at the hero, wherever the hero is
+    if (Keys.aiming) Keys.aimMove();
+    const cross = this.isPC && G.state === 'PLAY' && Store.data.settings.xh && this.mouseOn() && !REPLAY.on;
+    if (cross !== this.cr0) { this.cr0 = cross; document.body.classList.toggle('pcross', !!cross); }
+  },
+  cross() { // the crosshair, drawn in screen space: dash charges around it, red when the blade is locked
+    if (!this.cr0) return; const x = this.mx, y = this.my; if (x < 0) return;
+    const lock = P.lock > 0, c = lock ? '#ff3b3b' : G.odT > 0 ? '#ffd700' : P.ca || '#00f2fe', n = Math.max(1, P.maxCh), aim = In.on ? 1 : 0;
+    cx.save(); cx.lineCap = 'round'; cx.strokeStyle = '#05060f'; cx.lineWidth = 4; cx.globalAlpha = .55;
+    const r = aim ? 8 : 11; cx.beginPath(); cx.arc(x, y, r, 0, TAU); cx.stroke(); cx.globalAlpha = 1;
+    for (let i = 0; i < n; i++) { const a0 = -Math.PI / 2 + i * TAU / n + .12, a1 = a0 + TAU / n - .24, on = i < P.ch || G.odT > 0; cx.strokeStyle = on ? c : 'rgba(255,255,255,.25)'; cx.lineWidth = 2.5; cx.beginPath(); cx.arc(x, y, r, a0, a1); cx.stroke(); }
+    cx.strokeStyle = c; cx.lineWidth = 1.6; cx.beginPath(); const g = aim ? 3 : 5, L = aim ? 7 : 5;
+    cx.moveTo(x - g - L, y); cx.lineTo(x - g, y); cx.moveTo(x + g, y); cx.lineTo(x + g + L, y); cx.moveTo(x, y - g - L); cx.lineTo(x, y - g); cx.moveTo(x, y + g); cx.lineTo(x, y + g + L); cx.stroke();
+    cx.fillStyle = c; cx.beginPath(); cx.arc(x, y, 1.4, 0, TAU); cx.fill(); cx.restore();
+  },
+  rumble(kind) { // controllers rumble with the same moments as phones vibrate
+    try {
+      const s = Store.data.settings; if (!s.haptics || REPLAY.on || !Pad.on || !navigator.getGamepads) return;
+      const gp = navigator.getGamepads()[Pad.idx], h = HAPTIC[kind]; if (!gp || !h || !gp.vibrationActuator) return;
+      let len = 0; for (const v of h[1]) len += v; const pri = h[0];
+      gp.vibrationActuator.playEffect('dual-rumble', { duration: Math.min(320, len), strongMagnitude: pri >= 3 ? .85 : pri === 2 ? .45 : .12, weakMagnitude: pri >= 2 ? .7 : .35 });
+    } catch (e) { }
+  },
+  titleLayout() { // two wrappers around the title: one column on a phone (display: contents), two on a computer
+    const col = document.querySelector('#s-title > .col'); if (!col) return;
+    let w = col.querySelector('.deckWrap'), L, R;
+    if (!w) { w = el('div', 'deckWrap'); L = el('div', 'deckL'); R = el('div', 'deckR'); w.appendChild(L); w.appendChild(R); const chips = col.querySelector('.chips'); col.insertBefore(w, chips); }
+    else { L = w.querySelector('.deckL'); R = w.querySelector('.deckR'); }
+    const toL = [col.querySelector('.logo'), $('tHero'), $('tLogin')], toR = [$('bArcade') && $('bArcade').parentElement, $('tRivals'), $('bDaily'), $('tBountyBox')];
+    for (const x of toL) if (x && x.parentElement !== L) L.appendChild(x);
+    for (const x of [...col.querySelectorAll(':scope > .evbanner')]) L.appendChild(x);
+    for (const id of ['bStory', 'tNext']) { const x = $(id); if (x && x.parentElement !== L) L.appendChild(x); }
+    for (const x of toR) if (x && x.parentElement !== R) R.appendChild(x);
+  },
+  arsenalLayout() {
+    const col = document.querySelector('#s-arsenal > .col'); if (!col || col.querySelector('.arWrap')) return;
+    const w = el('div', 'arWrap'), L = el('div', 'arL'), R = el('div', 'arR'); w.appendChild(L); w.appendChild(R);
+    const prev = $('asPrev'), list = $('asList'); if (!prev || !list) return; col.insertBefore(w, prev);
+    L.appendChild(prev); const tree = $('asTree'); if (tree) L.appendChild(tree); R.appendChild(list);
+  },
+  settings(head, cycle, box, s) {
+    head('PC & DISPLAY');
+    cycle('Frame rate limit', 'fpsCap', [0, 480, 360, 240, 165, 144, 120, 90, 60], ['MAX', '480', '360', '240', '165', '144', '120', '90', '60']);
+    cycle('Smooth motion (120-480 Hz)', 'smooth', ['auto', 'on', 'off'], ['AUTO', 'ON', 'OFF']);
+    cycle('Render resolution', 'rscale', [0, 1, 1.5, 2, .75], ['AUTO', '100%', '150%', '200%', '75%'], () => applyDpr());
+    cycle('Show FPS', 'fps', [0, 1], ['OFF', 'ON']);
+    cycle('Mouse aim', 'maim', ['cursor', 'drag'], ['AT THE CURSOR', 'DRAG']);
+    cycle('Crosshair', 'xh', [1, 0], ['ON', 'OFF']);
+    cycle('Wide roof (story, dojo, your levels)', 'wide', [1, 0], ['ON', 'OFF']);
+    cycle('Pause when the window loses focus', 'blurPause', [1, 0], ['ON', 'OFF']);
+    box.appendChild(el('div', 'small mute', lt('Mouse: hold to aim at the cursor, release to slash. Right click dodges, the wheel swaps weapons, the middle button is Overdrive. ALT+ENTER: fullscreen.')));
+    head('KEYS');
+    const m = Keys.map();
+    for (const [id, name] of KEY_ACTS) {
+      const r = el('div', 'set'); r.appendChild(el('span', '', lt(name)));
+      const b = el('button', 'tog kb', Keys.label(m[id])); b.id = 'key-' + id;
+      b.onclick = () => {
+        Aud.sfx('ui'); b.classList.add('wait'); b.textContent = lt('PRESS A KEY');
+        Keys.capture = code => {
+          b.classList.remove('wait'); const keys = Store.data.settings.keys || (Store.data.settings.keys = {});
+          if (code && code !== 'Escape' && code !== 'KeyP') { const cur = Keys.map(); for (const k in cur) if (k !== id && Keys.norm(cur[k]) === Keys.norm(code)) keys[k] = cur[id]; keys[id] = code; Store.touch(); Aud.sfx('buy'); }
+          UI.openSettings(); PC.sync();
+        };
+      };
+      r.appendChild(b); box.appendChild(r);
+    }
+    { const r = el('div', 'set'); r.appendChild(el('span', '', lt('Default keys'))); const b = el('button', 'tog', lt('RESET')); b.onclick = () => { Store.data.settings.keys = {}; Store.touch(); Aud.sfx('ui'); UI.openSettings(); PC.sync(); }; r.appendChild(b); box.appendChild(r); }
+    box.appendChild(el('div', 'small mute', lt('ESC and P always pause. On the result screen R restarts.')));
+  }
+};
+{ const st0 = start; start = function () { const r = st0.apply(this, arguments); try { PC.init(); } catch (e) { errLog(e); console.error(e); } return r; }; } // after the save has loaded
 /* test + automation hooks (used by the headless test suite) */
 window.__OD = { G, P, V, EN, BU, Boss, Director, Flow, UI, Store, STAGES, sim, step, startStory: i => Flow.startStory(i), startArcade: m => Flow.startArcade(m), Dlg, Arena, REC, REPLAY, TICK, R, In, Replays, DMATH };
 try {
