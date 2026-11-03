@@ -1074,8 +1074,8 @@ Math.sin = DMATH.sin; Math.cos = DMATH.cos; Math.atan = DMATH.atan; Math.atan2 =
    All tuning lives here. Logical units: the view is ~420 wide, the
    train roof (arena) is 340 wide. Speeds are units per second.
    ===================================================================== */
-const VERSION = '35.0';
-const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
+const VERSION = '36.0';
+const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0', '36.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
 const CFG = { step: 1 / 60, maxSteps: 5, maxEnemies: 22, arenaW: 340, viewW: 420, viewH: 760 };
 let RDT = 1 / 60; // version 34: the real time of the frame being drawn. Drawing code uses it instead of a fixed 1/60, so 120-480 Hz screens animate at the right speed
 
@@ -2515,6 +2515,39 @@ CHAPTERS.push({ n: 21, name: 'ENCORE', sub: 'Every legend, one last time', theme
              ['R', 'Thank you for watching.', 'תודה שצפיתם.']] }
   ];
   const at = STAGES.findIndex(s => s.secret); STAGES.splice(at < 0 ? STAGES.length : at, 0, ...ENC);
+  STAGES.forEach((s, i) => { s.idx = i; STAGE_BY_ID[s.id] = s; });
+}
+/* ---------------- CHAPTER 22: AFTERGLOW (version 36) ----------------
+   After the encore the storm comes back: RAIJIN, REN.NULL and IZANAMI return as one last chain. */
+CHAPTERS.push({ n: 22, name: 'AFTERGLOW', sub: 'The storm after the show', theme: 'storm', lock: 'Finish chapter 21 to unlock chapter 22' });
+{
+  const CH = CHAPTERS.length - 1, AG = [
+    { id: '22-1', ch: CH, name: 'STATIC SKY', theme: 'storm', obj: { t: 'kill', n: 55 }, mod: { storm: 1 },
+      pool: { drone: 3, weaver: 2, bomber: 2, sniper: 1.5, splitter: 1 }, max: 9, rate: .78,
+      star: { t: 'combo', n: 45, d: 'Reach a x45 combo' },
+      pre: [['M', 'Ren, the sky over the tower is full of static again. The storm never really left.', 'רן, השמיים מעל המגדל שוב מלאים בחשמל סטטי. הסערה אף פעם לא באמת עזבה.'],
+            ['R', 'Then we finish what the storm started.', 'אז נסיים את מה שהסערה התחילה.']],
+      post: [['M', 'Lightning is striking the same roof again and again. Something is calling it.', 'ברקים פוגעים באותו גג שוב ושוב. משהו קורא להם.']] },
+    { id: '22-2', ch: CH, name: 'GLASS RAIN', theme: 'winter', obj: { t: 'reflect', n: 18 },
+      pool: { sniper: 3, mirror: 2, weaver: 1.5, wraith: .4 }, max: 8, rate: .82,
+      star: { t: 'parry', n: 18, d: 'Land 18 perfect parries' },
+      pre: [['K', 'The rain is freezing in the air. Every drop is a mirror.', 'הגשם קופא באוויר. כל טיפה היא מראה.'],
+            ['R', 'Mirrors only show what is already there.', 'מראות מראות רק את מה שכבר שם.']],
+      post: [['K', 'I saw my own face in the ice. It was smiling.', 'ראיתי את הפנים שלי בקרח. הן חייכו.']] },
+    { id: '22-3', ch: CH, name: 'THE LAST TRAIN', theme: 'maglev', obj: { t: 'survive', s: 85 },
+      pool: { brute: 2, phantom: 2, drone: 3, medic: 1, enforcer: .3 }, max: 10, rate: .76, traps: { turrets: 1, barrels: 1 },
+      star: { t: 'combo', n: 35, d: 'Reach a x35 combo' },
+      pre: [['M', 'The Titan Express is making one last run to the storm. Hold the roof until it gets there.', 'הטיטאן אקספרס יוצא לנסיעה אחרונה אל הסערה. תחזיק את הגג עד שהוא יגיע.']],
+      post: [['M', 'Three signals at the end of the line. You know all of them.', 'שלושה אותות בסוף הקו. אתה מכיר את כולם.']] },
+    { id: '22-4', ch: CH, name: 'AFTERGLOW', theme: 'storm', obj: { t: 'boss', b: 'raijin', chain: ['raijin', 'renull', 'izanami'], hp: .55 },
+      pool: { drone: 1.5, weaver: .5 }, max: 3, rate: 4,
+      star: { t: 'time', n: 320, d: 'Win within 320s' },
+      pre: [['M', 'Raijin, your own data and the first code. All of them, one after another.', 'ראיג׳ין, הנתונים שלך והקוד הראשון. כולם, אחד אחרי השני.'],
+            ['R', 'After the storm, the sky is always clearest.', 'אחרי הסערה, השמיים תמיד הכי בהירים.']],
+      post: [['M', 'The storm is gone. The whole city is glowing in the afterlight.', 'הסערה נעלמה. כל העיר זוהרת באור שאחרי.'],
+             ['K', 'Rest, Ren. You earned the morning.', 'תנוח, רן. הרווחת את הבוקר.']] }
+  ];
+  const at = STAGES.findIndex(s => s.secret); STAGES.splice(at < 0 ? STAGES.length : at, 0, ...AG);
   STAGES.forEach((s, i) => { s.idx = i; STAGE_BY_ID[s.id] = s; });
 }
 function exActStars(i) { const A = EX_ACTS[i], st = Store.data.story.stars; return STAGES.every(s => A.ch.indexOf(s.ch) < 0 || (st[s.id] | 0) >= 3); }
@@ -5687,6 +5720,11 @@ Object.assign(HE, {"ENCORE": "הדרן", "Every legend, one last time": "כל א
 Object.assign(AR, {"ENCORE": "الختام", "Every legend, one last time": "كل أسطورة، مرة أخيرة", "Finish chapter 20 to unlock chapter 21": "أنهِ الفصل 20 لفتح الفصل 21", "REWIND": "إعادة", "MIRROR GARDEN": "حديقة المرايا", "LAST LIGHTS": "الأضواء الأخيرة", "Reach a x40 combo": "حقق كومبو x40", "Land 16 perfect parries": "نفّذ 16 صدّة مثالية", "Reach a x30 combo": "حقق كومبو x30", "Win within 300s": "انتصر خلال 300 ثانية", "AURORA": "الشفق", "Northern lights on steel. Kills fold inward in green and violet.": "شفق قطبي على الفولاذ. الضحايا ينطوون للداخل بالأخضر والبنفسجي.", "GOLD LEAF": "ورق الذهب", "A blade wrapped in gold leaf. Kills burst into coins.": "نصل ملفوف بورق الذهب. الضحايا ينفجرون عملات.", "STORM CALL": "نداء العاصفة", "An ice-blue edge. Every kill calls down lightning.": "حد أزرق جليدي. كل قتل يستدعي البرق.", "ENCORE RONIN": "رونين الختام", "A neon-pink ronin with a gold hat band, dressed for the last act.": "رونين وردي نيون بشريط ذهبي على قبعته، مستعد للفصل الأخير.", "GLITCH SAMURAI": "ساموراي الخلل", "A street samurai whose coat flickers between frames.": "ساموراي شوارع يومض معطفه بين الإطارات.", "AURORA SERAPH": "سيراف الشفق", "Wings of green and violet light, like the northern sky.": "أجنحة من ضوء أخضر وبنفسجي، كسماء الشمال.", "RUN GRAPH": "مخطط الجولة", "Blue: score. Pink: combo. Red marks: hits taken.": "الأزرق: النقاط. الوردي: الكومبو. العلامات الحمراء: الضربات التي تلقيتها.", "PRESENTATION": "العرض", "Character voices": "أصوات الشخصيات", "Camera follows your aim": "الكاميرا تتبع تصويبك", "Heartbeat on the last shield": "نبض القلب عند الدرع الأخير", "High-contrast enemies": "أعداء بتباين عالٍ", "Character voices use the voices installed on your device, in the game's language.": "أصوات الشخصيات تستخدم الأصوات المثبتة على جهازك بلغة اللعبة.", "ACT VIII: ENCORE": "الفصل الثامن: الختام", "A new story chapter after the Night Parade: four stages on the old roofs, ending in SHOGUN.EXE, KUROGANE PRIME and HYAKKI back to back.": "فصل قصة جديد بعد موكب الليل: أربع مراحل على الأسطح القديمة، تنتهي بـ SHOGUN.EXE و KUROGANE PRIME و HYAKKI على التوالي.", "VOICES": "الأصوات", "Story dialogue is read aloud, each character in their own voice, in the game's language (with the voices on your device).": "حوارات القصة تُقرأ بصوت عالٍ، لكل شخصية صوتها، بلغة اللعبة (بالأصوات الموجودة على جهازك).", "CINEMA": "سينما", "The camera leans toward your aim and swoops in on the hero when a stage is cleared. A red arc shows where every hit came from.": "الكاميرا تميل نحو تصويبك وتقترب من البطل عند إنهاء المرحلة. قوس أحمر يُظهر من أين جاءت كل ضربة.", "The results screen draws your run: score, combo and every hit you took.": "شاشة النتائج ترسم جولتك: النقاط والكومبو وكل ضربة تلقيتها.", "NEW HEROES AND BLADES": "أبطال وأنصال جديدة", "ENCORE RONIN, GLITCH SAMURAI and AURORA SERAPH join the Arsenal, with three new blade skins: AURORA, GOLD LEAF and STORM CALL.": "رونين الختام وساموراي الخلل وسيراف الشفق ينضمون إلى الترسانة، مع ثلاثة أشكال أنصال جديدة: الشفق وورق الذهب ونداء العاصفة.", "MORE": "والمزيد", "Slow-motion replays (.25× and .5×), a heartbeat on the last shield, high-contrast enemies, a frame-time overlay with Show FPS, and the announcer calls boss kills and stage clears.": "إعادة بالحركة البطيئة (‎.25× و ‎.5×)، ونبض عند الدرع الأخير، وأعداء بتباين عالٍ، ومخطط أزمنة الإطارات مع إظهار FPS، والمعلّق يعلن هزيمة الزعماء وإنهاء المراحل.", "Mouse aim at the cursor, rebindable keys, up to 480 Hz, a wide roof and two-column menus.": "تصويب بالفأرة نحو المؤشر، ومفاتيح قابلة للتغيير، وحتى 480 هرتز، وسطح عريض وقوائم بعمودين."});
 Object.assign(RU, {"ENCORE": "НА БИС", "Every legend, one last time": "Все легенды в последний раз", "Finish chapter 20 to unlock chapter 21": "Пройдите главу 20, чтобы открыть главу 21", "REWIND": "ПЕРЕМОТКА", "MIRROR GARDEN": "ЗЕРКАЛЬНЫЙ САД", "LAST LIGHTS": "ПОСЛЕДНИЕ ОГНИ", "Reach a x40 combo": "Наберите комбо x40", "Land 16 perfect parries": "16 идеальных парирований", "Reach a x30 combo": "Наберите комбо x30", "Win within 300s": "Победите за 300 с", "AURORA": "АВРОРА", "Northern lights on steel. Kills fold inward in green and violet.": "Северное сияние на стали. Убитые схлопываются в зелёном и фиолетовом.", "GOLD LEAF": "СУСАЛЬНОЕ ЗОЛОТО", "A blade wrapped in gold leaf. Kills burst into coins.": "Клинок в сусальном золоте. Убитые рассыпаются монетами.", "STORM CALL": "ЗОВ БУРИ", "An ice-blue edge. Every kill calls down lightning.": "Ледяная кромка. Каждое убийство призывает молнию.", "ENCORE RONIN": "РОНИН НА БИС", "A neon-pink ronin with a gold hat band, dressed for the last act.": "Неоново-розовый ронин с золотой лентой на шляпе, одетый к последнему акту.", "GLITCH SAMURAI": "ГЛИТЧ-САМУРАЙ", "A street samurai whose coat flickers between frames.": "Уличный самурай, чей плащ мерцает между кадрами.", "AURORA SERAPH": "СЕРАФИМ АВРОРЫ", "Wings of green and violet light, like the northern sky.": "Крылья зелёного и фиолетового света, как северное небо.", "RUN GRAPH": "ГРАФИК ЗАБЕГА", "Blue: score. Pink: combo. Red marks: hits taken.": "Синий: очки. Розовый: комбо. Красные метки: полученные удары.", "PRESENTATION": "ПОДАЧА", "Character voices": "Голоса персонажей", "Camera follows your aim": "Камера следует за прицелом", "Heartbeat on the last shield": "Сердцебиение на последнем щите", "High-contrast enemies": "Контрастные враги", "Character voices use the voices installed on your device, in the game's language.": "Голоса персонажей используют голоса, установленные на устройстве, на языке игры.", "ACT VIII: ENCORE": "АКТ VIII: НА БИС", "A new story chapter after the Night Parade: four stages on the old roofs, ending in SHOGUN.EXE, KUROGANE PRIME and HYAKKI back to back.": "Новая глава после Ночного парада: четыре этапа на старых крышах и финал — SHOGUN.EXE, KUROGANE PRIME и HYAKKI подряд.", "VOICES": "ГОЛОСА", "Story dialogue is read aloud, each character in their own voice, in the game's language (with the voices on your device).": "Диалоги озвучены: у каждого персонажа свой голос, на языке игры (голосами вашего устройства).", "CINEMA": "КИНО", "The camera leans toward your aim and swoops in on the hero when a stage is cleared. A red arc shows where every hit came from.": "Камера смещается к прицелу и наезжает на героя после этапа. Красная дуга показывает, откуда пришёл каждый удар.", "The results screen draws your run: score, combo and every hit you took.": "Экран результатов рисует ваш забег: очки, комбо и каждый полученный удар.", "NEW HEROES AND BLADES": "НОВЫЕ ГЕРОИ И КЛИНКИ", "ENCORE RONIN, GLITCH SAMURAI and AURORA SERAPH join the Arsenal, with three new blade skins: AURORA, GOLD LEAF and STORM CALL.": "РОНИН НА БИС, ГЛИТЧ-САМУРАЙ и СЕРАФИМ АВРОРЫ в Арсенале, плюс три облика клинка: АВРОРА, СУСАЛЬНОЕ ЗОЛОТО и ЗОВ БУРИ.", "MORE": "И ЕЩЁ", "Slow-motion replays (.25× and .5×), a heartbeat on the last shield, high-contrast enemies, a frame-time overlay with Show FPS, and the announcer calls boss kills and stage clears.": "Замедленные повторы (.25× и .5×), сердцебиение на последнем щите, контрастные враги, график времени кадра при показе FPS, а диктор объявляет победы над боссами и прохождение этапов.", "Mouse aim at the cursor, rebindable keys, up to 480 Hz, a wide roof and two-column menus.": "Прицел мышью на курсор, переназначаемые клавиши, до 480 Гц, широкая крыша и меню в две колонки."});
 
+/* version 36 strings */
+Object.assign(HE, {"AFTERGLOW": "האור שאחרי", "The storm after the show": "הסערה שאחרי ההופעה", "Finish chapter 21 to unlock chapter 22": "סיימו את פרק 21 כדי לפתוח את פרק 22", "STATIC SKY": "שמיים סטטיים", "GLASS RAIN": "גשם של זכוכית", "THE LAST TRAIN": "הרכבת האחרונה", "Reach a x45 combo": "הגיעו לקומבו x45", "Land 18 perfect parries": "בצעו 18 הדיפות מושלמות", "Reach a x35 combo": "הגיעו לקומבו x35", "Win within 320s": "נצחו תוך 320 שניות", "RIPTIDE": "זרם חוזר", "A sea-blue edge. Kills break apart like ice in the surf.": "להב בכחול ים. הרוגים מתנפצים כמו קרח בגלים.", "NEON INK": "דיו ניאון", "Black ink with a pink glow. Kills splash across the roof.": "דיו שחור עם זוהר ורוד. הרוגים ניתזים על הגג.", "EMBER SHINOBI": "שינובי הגחלים", "A cyber-ninja frame glowing like coals in the wind.": "שלד סייבר־נינג׳ה שזוהר כמו גחלים ברוח.", "MIDNIGHT WOLF": "זאב חצות", "A wolf warrior in black armor with moonlit eyes.": "לוחם זאב בשריון שחור עם עיניים מוארות בירח.", "SAKURA WITCH": "מכשפת הסאקורה", "A street witch whose hat sheds cherry petals.": "מכשפת רחוב שהכובע שלה משיר עלי דובדבן.", "SOLAR LANCE": "רומח השמש", "A spear of sunlight. When a dash ends, light falls from the sky on the three nearest enemies.": "רומח מאור שמש. בסוף כל זינוק, אור נופל מהשמיים על שלושת האויבים הקרובים.", "MIRROR TWINBLADES": "להבי המראה התאומים", "Two mirrored daggers. Every dash also cuts the same distance behind you.": "שני פגיונות מראה. כל זינוק חותך גם את אותו מרחק מאחוריך.", "SUNFALL": "נפילת השמש", "Five beams of light instead of three": "חמש קרני אור במקום שלוש", "KALEIDOSCOPE": "קליידוסקופ", "The mirror cut also fans out to both sides": "חיתוך המראה מתפרס גם לשני הצדדים", "NEON KOI": "קוי ניאון", "Spirit fish": "דג רוח", "A glowing koi that swims through the air. Every 11 seconds it sends a wave ahead of you that hits everything in a line.": "קוי זוהר ששוחה באוויר. כל 11 שניות הוא שולח לפניך גל שפוגע בכל מה שבקו.", "MANTIS DRONE": "רחפן גמל שלמה", "Blade bug": "חרק להבים", "A green drone with scythe arms. Every 7 seconds it cuts the two nearest enemies, and finishes off any that are badly hurt.": "רחפן ירוק עם זרועות חרמש. כל 7 שניות הוא חותך את שני האויבים הקרובים ומחסל את אלה שפצועים קשה.", "FINISHED": "חוסל", "CHAPTER 22: AFTERGLOW": "פרק 22: האור שאחרי", "The storm comes back after the encore: four new stages ending in RAIJIN, REN.NULL and IZANAMI back to back.": "הסערה חוזרת אחרי ההדרן: ארבעה שלבים חדשים שנגמרים ב-RAIJIN, REN.NULL ו-IZANAMI ברצף.", "TWO NEW WEAPONS": "שני נשקים חדשים", "SOLAR LANCE calls light down on the three nearest enemies when a dash ends. MIRROR TWINBLADES cut the same line behind you on every dash.": "רומח השמש מוריד אור על שלושת האויבים הקרובים בסוף זינוק. להבי המראה חותכים את אותו קו מאחוריך בכל זינוק.", "TWO NEW PETS": "שתי חיות מחמד חדשות", "NEON KOI sends a wave through a whole line of enemies. MANTIS DRONE cuts the two nearest enemies and finishes off the badly hurt.": "קוי הניאון שולח גל דרך שורה שלמה של אויבים. רחפן גמל השלמה חותך את שני הקרובים ומחסל את הפצועים קשה.", "NEW LOOKS": "מראות חדשים", "Heroes EMBER SHINOBI, MIDNIGHT WOLF and SAKURA WITCH, and the blade skins RIPTIDE and NEON INK.": "הגיבורים שינובי הגחלים, זאב חצות ומכשפת הסאקורה, והסקינים ללהב זרם חוזר ודיו ניאון.", "FIXES": "תיקונים", "The rain and every other sound stop when you leave the app without closing it. Pet effects run at the right speed on 120-480 Hz screens.": "הגשם וכל שאר הצלילים נעצרים כשיוצאים מהאפליקציה בלי לסגור אותה. אפקטים של חיות המחמד רצים במהירות הנכונה במסכים של 120 עד 480 הרץ."});
+Object.assign(AR, {"AFTERGLOW": "الوهج الأخير", "The storm after the show": "العاصفة بعد العرض", "Finish chapter 21 to unlock chapter 22": "أنهِ الفصل 21 لفتح الفصل 22", "STATIC SKY": "سماء مشحونة", "GLASS RAIN": "مطر الزجاج", "THE LAST TRAIN": "القطار الأخير", "Reach a x45 combo": "حقق كومبو x45", "Land 18 perfect parries": "نفّذ 18 صدّة مثالية", "Reach a x35 combo": "حقق كومبو x35", "Win within 320s": "انتصر خلال 320 ثانية", "RIPTIDE": "التيار الساحب", "A sea-blue edge. Kills break apart like ice in the surf.": "حد بلون البحر. الضحايا يتكسرون كالجليد في الأمواج.", "NEON INK": "حبر النيون", "Black ink with a pink glow. Kills splash across the roof.": "حبر أسود بتوهج وردي. الضحايا يتناثرون على السطح.", "EMBER SHINOBI": "شينوبي الجمر", "A cyber-ninja frame glowing like coals in the wind.": "هيكل نينجا سيبراني يتوهج كالجمر في الريح.", "MIDNIGHT WOLF": "ذئب منتصف الليل", "A wolf warrior in black armor with moonlit eyes.": "محارب ذئب بدرع أسود وعينين مضاءتين بالقمر.", "SAKURA WITCH": "ساحرة الساكورا", "A street witch whose hat sheds cherry petals.": "ساحرة شوارع تتساقط من قبعتها بتلات الكرز.", "SOLAR LANCE": "رمح الشمس", "A spear of sunlight. When a dash ends, light falls from the sky on the three nearest enemies.": "رمح من ضوء الشمس. عند انتهاء الاندفاع يسقط الضوء من السماء على أقرب ثلاثة أعداء.", "MIRROR TWINBLADES": "النصلان المرآويان", "Two mirrored daggers. Every dash also cuts the same distance behind you.": "خنجران مرآويان. كل اندفاع يقطع أيضاً المسافة نفسها خلفك.", "SUNFALL": "سقوط الشمس", "Five beams of light instead of three": "خمسة أشعة ضوء بدل ثلاثة", "KALEIDOSCOPE": "المشكال", "The mirror cut also fans out to both sides": "قطع المرآة يمتد أيضاً إلى الجانبين", "NEON KOI": "كوي النيون", "Spirit fish": "سمكة روح", "A glowing koi that swims through the air. Every 11 seconds it sends a wave ahead of you that hits everything in a line.": "سمكة كوي متوهجة تسبح في الهواء. كل 11 ثانية ترسل أمامك موجة تصيب كل ما في خط واحد.", "MANTIS DRONE": "طائرة فرس النبي", "Blade bug": "حشرة الأنصال", "A green drone with scythe arms. Every 7 seconds it cuts the two nearest enemies, and finishes off any that are badly hurt.": "طائرة خضراء بذراعين كالمنجل. كل 7 ثوانٍ تقطع أقرب عدوين وتجهز على المصابين بشدة.", "FINISHED": "تمت التصفية", "CHAPTER 22: AFTERGLOW": "الفصل 22: الوهج الأخير", "The storm comes back after the encore: four new stages ending in RAIJIN, REN.NULL and IZANAMI back to back.": "تعود العاصفة بعد الختام: أربع مراحل جديدة تنتهي بـ RAIJIN و REN.NULL و IZANAMI على التوالي.", "TWO NEW WEAPONS": "سلاحان جديدان", "SOLAR LANCE calls light down on the three nearest enemies when a dash ends. MIRROR TWINBLADES cut the same line behind you on every dash.": "رمح الشمس يُنزل الضوء على أقرب ثلاثة أعداء عند انتهاء الاندفاع. النصلان المرآويان يقطعان الخط نفسه خلفك مع كل اندفاع.", "TWO NEW PETS": "حيوانان أليفان جديدان", "NEON KOI sends a wave through a whole line of enemies. MANTIS DRONE cuts the two nearest enemies and finishes off the badly hurt.": "كوي النيون يرسل موجة عبر صف كامل من الأعداء. طائرة فرس النبي تقطع أقرب عدوين وتجهز على المصابين بشدة.", "NEW LOOKS": "أشكال جديدة", "Heroes EMBER SHINOBI, MIDNIGHT WOLF and SAKURA WITCH, and the blade skins RIPTIDE and NEON INK.": "الأبطال شينوبي الجمر وذئب منتصف الليل وساحرة الساكورا، وأشكال الأنصال التيار الساحب وحبر النيون.", "FIXES": "إصلاحات", "The rain and every other sound stop when you leave the app without closing it. Pet effects run at the right speed on 120-480 Hz screens.": "يتوقف المطر وكل الأصوات الأخرى عند مغادرة التطبيق دون إغلاقه. مؤثرات الحيوانات الأليفة تعمل بالسرعة الصحيحة على شاشات 120-480 هرتز."});
+Object.assign(RU, {"AFTERGLOW": "ПОСЛЕСВЕЧЕНИЕ", "The storm after the show": "Буря после шоу", "Finish chapter 21 to unlock chapter 22": "Пройдите главу 21, чтобы открыть главу 22", "STATIC SKY": "ЭЛЕКТРИЧЕСКОЕ НЕБО", "GLASS RAIN": "СТЕКЛЯННЫЙ ДОЖДЬ", "THE LAST TRAIN": "ПОСЛЕДНИЙ ПОЕЗД", "Reach a x45 combo": "Наберите комбо x45", "Land 18 perfect parries": "18 идеальных парирований", "Reach a x35 combo": "Наберите комбо x35", "Win within 320s": "Победите за 320 с", "RIPTIDE": "ОБРАТНОЕ ТЕЧЕНИЕ", "A sea-blue edge. Kills break apart like ice in the surf.": "Кромка цвета моря. Убитые раскалываются, как лёд в прибое.", "NEON INK": "НЕОНОВЫЕ ЧЕРНИЛА", "Black ink with a pink glow. Kills splash across the roof.": "Чёрные чернила с розовым свечением. Убитые разлетаются брызгами по крыше.", "EMBER SHINOBI": "ШИНОБИ УГЛЕЙ", "A cyber-ninja frame glowing like coals in the wind.": "Кибер-ниндзя, светящийся, как угли на ветру.", "MIDNIGHT WOLF": "ПОЛУНОЧНЫЙ ВОЛК", "A wolf warrior in black armor with moonlit eyes.": "Воин-волк в чёрной броне с лунными глазами.", "SAKURA WITCH": "САКУРА-ВЕДЬМА", "A street witch whose hat sheds cherry petals.": "Уличная ведьма, с чьей шляпы сыплются лепестки сакуры.", "SOLAR LANCE": "СОЛНЕЧНОЕ КОПЬЁ", "A spear of sunlight. When a dash ends, light falls from the sky on the three nearest enemies.": "Копьё из солнечного света. В конце рывка свет падает с неба на трёх ближайших врагов.", "MIRROR TWINBLADES": "ЗЕРКАЛЬНЫЕ КЛИНКИ", "Two mirrored daggers. Every dash also cuts the same distance behind you.": "Два зеркальных кинжала. Каждый рывок режет и на то же расстояние позади вас.", "SUNFALL": "ПАДЕНИЕ СОЛНЦА", "Five beams of light instead of three": "Пять лучей света вместо трёх", "KALEIDOSCOPE": "КАЛЕЙДОСКОП", "The mirror cut also fans out to both sides": "Зеркальный разрез расходится и в обе стороны", "NEON KOI": "НЕОНОВЫЙ КОИ", "Spirit fish": "Рыба-дух", "A glowing koi that swims through the air. Every 11 seconds it sends a wave ahead of you that hits everything in a line.": "Светящийся карп, плывущий по воздуху. Каждые 11 секунд он пускает перед вами волну, которая бьёт всех на линии.", "MANTIS DRONE": "ДРОН-БОГОМОЛ", "Blade bug": "Жук-клинок", "A green drone with scythe arms. Every 7 seconds it cuts the two nearest enemies, and finishes off any that are badly hurt.": "Зелёный дрон с руками-косами. Каждые 7 секунд режет двух ближайших врагов и добивает тяжело раненых.", "FINISHED": "ДОБИТ", "CHAPTER 22: AFTERGLOW": "ГЛАВА 22: ПОСЛЕСВЕЧЕНИЕ", "The storm comes back after the encore: four new stages ending in RAIJIN, REN.NULL and IZANAMI back to back.": "После «на бис» возвращается буря: четыре новых этапа и финал — RAIJIN, REN.NULL и IZANAMI подряд.", "TWO NEW WEAPONS": "ДВА НОВЫХ ОРУЖИЯ", "SOLAR LANCE calls light down on the three nearest enemies when a dash ends. MIRROR TWINBLADES cut the same line behind you on every dash.": "Солнечное копьё в конце рывка обрушивает свет на трёх ближайших врагов. Зеркальные клинки режут ту же линию позади вас при каждом рывке.", "TWO NEW PETS": "ДВА НОВЫХ ПИТОМЦА", "NEON KOI sends a wave through a whole line of enemies. MANTIS DRONE cuts the two nearest enemies and finishes off the badly hurt.": "Неоновый кои пускает волну через целую линию врагов. Дрон-богомол режет двух ближайших и добивает тяжело раненых.", "NEW LOOKS": "НОВЫЕ ОБЛИКИ", "Heroes EMBER SHINOBI, MIDNIGHT WOLF and SAKURA WITCH, and the blade skins RIPTIDE and NEON INK.": "Герои ШИНОБИ УГЛЕЙ, ПОЛУНОЧНЫЙ ВОЛК и САКУРА-ВЕДЬМА, облики клинка ОБРАТНОЕ ТЕЧЕНИЕ и НЕОНОВЫЕ ЧЕРНИЛА.", "FIXES": "ИСПРАВЛЕНИЯ", "The rain and every other sound stop when you leave the app without closing it. Pet effects run at the right speed on 120-480 Hz screens.": "Дождь и все остальные звуки затихают, когда вы выходите из приложения, не закрывая его. Эффекты питомцев идут с правильной скоростью на экранах 120–480 Гц."});
+
 /* HEBREW — version 31 strings (news). Written by i18n/v32.py */
 Object.assign(HE, {
   "SHARPER CODE": "קוד חד יותר",
@@ -5836,7 +5874,13 @@ function unlockText(u) {
   return lt('Locked');
 }
 function skinOf(id) { return SKINS.find(s => s.id === id) || SKINS[0]; }
-BLADE_FX.push(...BLADE_FX_V35);
+BLADE_FX.push(...BLADE_FX_V35,
+  { id: 'riptide', name: 'RIPTIDE', blade: '#3dd8ff', edge: '#e8fbff', trail: 'snow', kill: 'shatter', deco: 'ice', cost: 2300, desc: 'A sea-blue edge. Kills break apart like ice in the surf.' },
+  { id: 'neonink', name: 'NEON INK', blade: '#ff2bd6', edge: '#05060f', trail: 'smoke', kill: 'ink', deco: 'crack', cost: 2500, desc: 'Black ink with a pink glow. Kills splash across the roof.' });
+SKINS.push( // version 36
+  { id: 'emberninja', name: 'EMBER SHINOBI', body: 'shinobi2', a: '#ff6a00', b: '#ffd23f', cost: 4600, desc: 'A cyber-ninja frame glowing like coals in the wind.' },
+  { id: 'midnightwolf', name: 'MIDNIGHT WOLF', body: 'wolf', a: '#7d8cff', b: '#05060f', cost: 5800, desc: 'A wolf warrior in black armor with moonlit eyes.' },
+  { id: 'sakurawitch', name: 'SAKURA WITCH', body: 'witch', a: '#ffb7d5', b: '#7928ca', cost: 7200, desc: 'A street witch whose hat sheds cherry petals.' });
 SKINS.push( // version 35
   { id: 'encore', name: 'ENCORE RONIN', body: 'ronin', a: '#ff2bd6', b: '#ffd23f', cost: 3200, desc: 'A neon-pink ronin with a gold hat band, dressed for the last act.' },
   { id: 'glitchsam', name: 'GLITCH SAMURAI', body: 'chromesam', a: '#7df9ff', b: '#ff0844', cost: 6800, desc: 'A street samurai whose coat flickers between frames.' },
@@ -9407,6 +9451,10 @@ function tessenParry(b, perfect) { // STEEL FAN: a parried shot splits into thre
    All of it is simulation on sim time with no random numbers, so replays
    and ghosts stay exact. The art lives in 41g-art4.js.
    ===================================================================== */
+WEAPONS.push( // version 36: art and swing borrowed from a base weapon, mechanics of their own (WX)
+  { id: 'solarlance', name: 'SOLAR LANCE', desc: 'A spear of sunlight. When a dash ends, light falls from the sky on the three nearest enemies.', dmg: 1.05, speed: 1420, ch: 2, crit: .14, cm: 2.1, heat: 22, reach: 12, cost: 5600, v: 36 },
+  { id: 'mirrorblade', name: 'MIRROR TWINBLADES', desc: 'Two mirrored daggers. Every dash also cuts the same distance behind you.', dmg: .8, speed: 1480, ch: 4, crit: .24, cm: 1.9, heat: 24, reach: 0, cost: 6200, v: 36 });
+Object.assign(SIGS, { solarlance: { n: 'SUNFALL', d: 'Five beams of light instead of three' }, mirrorblade: { n: 'KALEIDOSCOPE', d: 'The mirror cut also fans out to both sides' } });
 const W4_IDS = { cleaver: 1, thunder: 1, zerocut: 1, staff: 1, monowire: 1, drill: 1, bow: 1, claws: 1, glaive: 1, phoenix: 1, beamsaber: 1, cryo: 1 };
 const W4 = {
   cnt: {}, // counters for the test suite
@@ -15455,14 +15503,12 @@ const Preview = {
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 35
-  ["ACT VIII: ENCORE", "A new story chapter after the Night Parade: four stages on the old roofs, ending in SHOGUN.EXE, KUROGANE PRIME and HYAKKI back to back."],
-  ["VOICES", "Story dialogue is read aloud, each character in their own voice, in the game's language (with the voices on your device)."],
-  ["CINEMA", "The camera leans toward your aim and swoops in on the hero when a stage is cleared. A red arc shows where every hit came from."],
-  ["RUN GRAPH", "The results screen draws your run: score, combo and every hit you took."],
-  ["NEW HEROES AND BLADES", "ENCORE RONIN, GLITCH SAMURAI and AURORA SERAPH join the Arsenal, with three new blade skins: AURORA, GOLD LEAF and STORM CALL."],
-  ["MORE", "Slow-motion replays (.25× and .5×), a heartbeat on the last shield, high-contrast enemies, a frame-time overlay with Show FPS, and the announcer calls boss kills and stage clears."],
-  ["MADE FOR PC", "Mouse aim at the cursor, rebindable keys, up to 480 Hz, a wide roof and two-column menus."]
+const NEWS = [ // version 36
+  ["CHAPTER 22: AFTERGLOW", "The storm comes back after the encore: four new stages ending in RAIJIN, REN.NULL and IZANAMI back to back."],
+  ["TWO NEW WEAPONS", "SOLAR LANCE calls light down on the three nearest enemies when a dash ends. MIRROR TWINBLADES cut the same line behind you on every dash."],
+  ["TWO NEW PETS", "NEON KOI sends a wave through a whole line of enemies. MANTIS DRONE cuts the two nearest enemies and finishes off the badly hurt."],
+  ["NEW LOOKS", "Heroes EMBER SHINOBI, MIDNIGHT WOLF and SAKURA WITCH, and the blade skins RIPTIDE and NEON INK."],
+  ["FIXES", "The rain and every other sound stop when you leave the app without closing it. Pet effects run at the right speed on 120-480 Hz screens."]
 ];
 function deathCause() { // what hit you last, and how to avoid it next time
   const s = G.lastHit, w = G.lastWho, en = k => lt(EDEF[k] ? EDEF[k].name : 'ENEMY');
@@ -16019,12 +16065,12 @@ const PET4 = {
   }
 };
 const PET4D = { // world-space effects (render only; fx counts down on the render clock)
-  scarab() { if (this.fx <= 0) return; const k = 1 - this.fx / .45, x = lerp(this.x, this.fxx, k), y = lerp(this.y, this.fxy, k) - Math.sin(k * Math.PI) * 30; glow(x, y, 22, '#ffd23f', .8); cx.fillStyle = '#fff3c4'; dot(x, y, 5); this.fx -= 1 / 60; },
-  komainu() { if (this.fx <= 0) return; cx.save(); cx.globalAlpha = this.fx; cx.strokeStyle = '#7dd8c8'; cx.lineWidth = 2; for (let k = 0; k < 3; k++) { cx.beginPath(); cx.arc(this.x, this.y - 4, 14 + k * 9 + (1 - this.fx) * 30, -.7, .7); cx.stroke(); } cx.restore(); this.fx -= 1 / 60; },
+  scarab() { if (this.fx <= 0) return; const k = 1 - this.fx / .45, x = lerp(this.x, this.fxx, k), y = lerp(this.y, this.fxy, k) - Math.sin(k * Math.PI) * 30; glow(x, y, 22, '#ffd23f', .8); cx.fillStyle = '#fff3c4'; dot(x, y, 5); this.fx -= RDT; },
+  komainu() { if (this.fx <= 0) return; cx.save(); cx.globalAlpha = this.fx; cx.strokeStyle = '#7dd8c8'; cx.lineWidth = 2; for (let k = 0; k < 3; k++) { cx.beginPath(); cx.arc(this.x, this.y - 4, 14 + k * 9 + (1 - this.fx) * 30, -.7, .7); cx.stroke(); } cx.restore(); this.fx -= RDT; },
   phoenix() { if (this.fx <= 0) return; const r = 130 * (1 - this.fx * .4); cx.save(); cx.globalCompositeOperation = 'lighter'; cx.globalAlpha = Math.min(1, this.fx * 2);
-    for (let k = 0; k < 14; k++) { const a = k * TAU / 14 + CAM.t * 3, x = P.x + Math.cos(a) * r, y = P.y + Math.sin(a) * r; glow(x, y, 18, k % 2 ? '#ff6a00' : '#ffd23f', .7); } cx.restore(); this.fx -= 1 / 60; },
+    for (let k = 0; k < 14; k++) { const a = k * TAU / 14 + CAM.t * 3, x = P.x + Math.cos(a) * r, y = P.y + Math.sin(a) * r; glow(x, y, 18, k % 2 ? '#ff6a00' : '#ffd23f', .7); } cx.restore(); this.fx -= RDT; },
   saucer() { if (this.fx <= 0) return; cx.save(); cx.globalAlpha = Math.min(1, this.fx * 3) * .7; const g = cx.createLinearGradient(this.x, this.y - 14, this.fxx, this.fxy); g.addColorStop(0, 'rgba(125,255,106,.9)'); g.addColorStop(1, 'rgba(125,255,106,.1)');
-    cx.fillStyle = g; cx.beginPath(); cx.moveTo(this.x - 4, this.y - 14); cx.lineTo(this.fxx - 18, this.fxy + 10); cx.lineTo(this.fxx + 18, this.fxy + 10); cx.lineTo(this.x + 4, this.y - 14); cx.closePath(); cx.fill(); cx.restore(); this.fx -= 1 / 60; },
+    cx.fillStyle = g; cx.beginPath(); cx.moveTo(this.x - 4, this.y - 14); cx.lineTo(this.fxx - 18, this.fxy + 10); cx.lineTo(this.fxx + 18, this.fxy + 10); cx.lineTo(this.x + 4, this.y - 14); cx.closePath(); cx.fill(); cx.restore(); this.fx -= RDT; },
   nano() { cx.save(); cx.fillStyle = '#c9d6ff'; for (let k = 0; k < 18; k++) { const a = CAM.t * (1.5 + (k % 3) * .4) + k * 2.4, r = 30 + Math.sin(CAM.t * 2 + k) * 14 + (k % 4) * 5; cx.globalAlpha = .5 + .4 * Math.sin(CAM.t * 7 + k); cx.fillRect(P.x + Math.cos(a) * r - 1, P.y + Math.sin(a) * r - 1, 2, 2); } cx.restore(); }
 };
 const PET4ART = { // pet bodies, local frame facing right
@@ -19379,7 +19425,7 @@ Object.assign(PET4, {
   }
 });
 Object.assign(PET4D, {
-  batling() { if (this.fx <= 0) return; cx.save(); cx.globalAlpha = this.fx * 1.6; cx.strokeStyle = '#d9a8ff'; cx.lineWidth = 2; for (let k = 0; k < 3; k++) { cx.beginPath(); cx.arc(this.x, this.y - 14, 10 + k * 8 + (1 - this.fx) * 30, 0, TAU); cx.stroke(); } cx.restore(); this.fx -= 1 / 60; }
+  batling() { if (this.fx <= 0) return; cx.save(); cx.globalAlpha = this.fx * 1.6; cx.strokeStyle = '#d9a8ff'; cx.lineWidth = 2; for (let k = 0; k < 3; k++) { cx.beginPath(); cx.arc(this.x, this.y - 14, 10 + k * 8 + (1 - this.fx) * 30, 0, TAU); cx.stroke(); } cx.restore(); this.fx -= RDT; }
 });
 Object.assign(PET4ART, {
   batling(leg, t, att) {
@@ -22045,7 +22091,7 @@ function start(hot) {
   $('dlgSkip').addEventListener('click', e => { e.stopPropagation(); Aud.sfx('back'); Dlg.end(); });
   setInterval(() => Store.flush(), 4000);
   window.addEventListener('pagehide', () => Store.flush(true));
-  document.addEventListener('visibilitychange', () => { if (document.hidden) { Store.flush(true); if (REPLAY.on) REPLAY.paused = true; else if (G.state === 'PLAY') Flow.togglePause(); } else if (Aud.c && Aud.c.state === 'suspended' && G.state !== 'BOOT') Aud.c.resume(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { try { if (Aud.c && Aud.c.state === 'running') Aud.c.suspend(); if (typeof Voices !== 'undefined') Voices.stop(); } catch (e) { errLog(e); } Store.flush(true); if (REPLAY.on) REPLAY.paused = true; else if (G.state === 'PLAY') Flow.togglePause(); } else if (Aud.c && Aud.c.state === 'suspended' && G.state !== 'BOOT') Aud.c.resume(); });
   try { if (window.claude && window.claude.hot && window.claude.hot.snapshot) window.claude.hot.snapshot(() => ({ save: REPLAY.on && REPLAY.bak ? REPLAY.bak.data : Store.data })); } catch (e) { errLog(e); }
   BG.set('maglev'); G.state = 'BOOT'; UI.show('boot'); bootSeq();
   requestAnimationFrame(frame);
@@ -22537,6 +22583,123 @@ const Announce = { bd: false, tick() { const b = Boss.cur, d = !!(b && b.dying >
     cycle('Heartbeat on the last shield', 'hb', [1, 0], ['ON', 'OFF']); cycle('High-contrast enemies', 'hc', [0, 1], ['OFF', 'ON']);
     box.appendChild(el('div', 'small mute', lt('Character voices use the voices installed on your device, in the game\'s language.')));
     ps1(head, cycle, box, s); }; }
+/* =====================================================================
+   VERSION 36 — two weapons (WX) and two pets. Simulation on sim time with
+   no random numbers (replays and ghosts stay exact); art and swing come
+   from a base weapon, tinted in the weapon's own colors.
+     SOLAR LANCE        dash end: light falls on the 3 nearest enemies
+                        0.45 s later (SUNFALL: 5)
+     MIRROR TWINBLADES  every dash also cuts the same line behind you
+                        (KALEIDOSCOPE: and to both sides)
+     NEON KOI           every 11 s a wave ahead of you hits a whole line
+     MANTIS DRONE       every 7 s cuts the 2 nearest enemies and finishes
+                        any below 30% health
+   ===================================================================== */
+const W5_BASE = { solarlance: 'spear', mirrorblade: 'daggers' };
+const W5_TINT = { solarlance: { id: 'w5sol', blade: '#ffd23f', edge: '#fff4c2' }, mirrorblade: { id: 'w5mir', blade: '#bfe8ff', edge: '#ffffff' } };
+for (const k in W5_BASE) { const b = W5_BASE[k]; GRIP[k] = GRIP[b]; if (SW_DUR[b] != null) SW_DUR[k] = SW_DUR[b]; }
+Object.assign(SW_COL, { solarlance: '#ffd23f', mirrorblade: '#bfe8ff' });
+Object.assign(HAPTIC, { w_solarlance: [1, [4, 60, 20]], w_mirrorblade: [1, [6, 40, 6]] });
+Object.assign(W4SND.slash, {
+  solarlance(b, t) { this.tone(520 + b * .4, 1040 + b * .4, .14, .06, 'triangle'); this.noise(.1, .05, 6000, 2500, 'bandpass'); },
+  mirrorblade(b, t) { this.tone(1500 + b, 2600 + b, .05, .06, 'sawtooth'); this.tone(2600 + b, 1500 + b, .05, .05, 'sawtooth', t + .07); }
+});
+{ const ss0 = SWING.start.bind(SWING); SWING.start = function (s, w, a, now) { return ss0(s, W5_BASE[w] || w, a, now); }; }
+{ const dh0 = drawHeld; drawHeld = function (o) {
+    const b = W5_BASE[o.w]; if (!b) return dh0(o);
+    const w = o.w, fx = o.fx; o.w = b; if (!fx || !fx.blade) o.fx = W5_TINT[w];
+    try { return dh0(o); } finally { o.w = w; o.fx = fx; } }; }
+const WX = {
+  pil: [], mir: [],
+  reset() { this.pil.length = 0; this.mir.length = 0; },
+  D() { return P.w.dmg * P.dmgMul * G.dmgMod; },
+  onSlash(a) {
+    if (P.w.id === 'solarlance') { P.w4e = 1; return; } // so dashEnd() fires when this dash ends
+    if (P.w.id !== 'mirrorblade') return;
+    const L = 150, sig = P.sig === 'mirrorblade', dirs = sig ? [a + Math.PI, a + Math.PI / 2, a - Math.PI / 2] : [a + Math.PI];
+    for (const d of dirs) this.mir.push({ x: P.x, y: P.y, a: d, L, t: .08, l: .35, d: .85 * this.D() });
+  },
+  dashEnd() {
+    if (P.w.id !== 'solarlance') return;
+    const n = P.sig === 'solarlance' ? 5 : 3, list = [];
+    for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (!W4.ok(e)) continue; const d = dist(e.x, e.y, P.x, P.y); if (d < 340) list.push([d, i, e]); }
+    list.sort((p, q) => p[0] - q[0] || p[1] - q[1]);
+    for (const [, , e] of list.slice(0, n)) this.pil.push({ x: e.x, y: e.y, t: .45, l: .45, r: 46, d: 1.3 * this.D(), hit: 0 });
+    const B = Boss.cur; if (B && B.dying <= 0 && B.enter >= 1 && list.length < n && dist(B.x, B.y, P.x, P.y) < 360) this.pil.push({ x: B.x, y: B.y, t: .45, l: .45, r: 46, d: 1.3 * this.D(), hit: 0 });
+    if (this.pil.length) Aud.tone(1600, 2400, .2, .04, 'sine');
+  },
+  update(dt) {
+    for (const p of this.pil) { p.t -= dt; if (p.t <= 0 && !p.hit) { p.hit = 1;
+      for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (W4.ok(e) && dist(e.x, e.y, p.x, p.y) < p.r + e.r) W4.hitE(e, p.d, -1.57); }
+      W4.boss(p.x, p.y, p.r, p.d, -1.57); FX.ring(p.x, p.y, p.r * 1.6, '#ffd23f', 5); FX.spark(p.x, p.y, '#fff4c2', 10); shake(.12); Aud.tone(900, 300, .18, .06, 'triangle'); } }
+    this.pil = this.pil.filter(p => p.t > -.35);
+    for (const m of this.mir) { m.t -= dt; if (m.t <= 0 && !m.hit) { m.hit = 1; const x2 = m.x + Math.cos(m.a) * m.L, y2 = m.y + Math.sin(m.a) * m.L;
+      for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (W4.ok(e) && W4.segD(e.x, e.y, m.x, m.y, x2, y2) < e.r + 14) W4.hitE(e, m.d, m.a); }
+      W4.boss((m.x + x2) / 2, (m.y + y2) / 2, m.L / 2, m.d, m.a); } }
+    this.mir = this.mir.filter(m => m.t > -m.l);
+  },
+  draw() { // world space, render only
+    for (const p of this.pil) {
+      if (p.t > 0) { const k = 1 - p.t / p.l; cx.save(); cx.globalAlpha = .4 + .5 * k; cx.strokeStyle = '#ffd23f'; cx.lineWidth = 2; cx.setLineDash(DASH6); cx.beginPath(); cx.arc(p.x, p.y, p.r * (1.6 - .6 * k), CAM.t * 2, CAM.t * 2 + TAU); cx.stroke(); cx.setLineDash(NODASH); cx.restore(); }
+      else { const k = Math.min(1, -p.t / .35); cx.save(); cx.globalCompositeOperation = 'lighter'; cx.globalAlpha = 1 - k; const g = cx.createLinearGradient(p.x, p.y - 260, p.x, p.y); g.addColorStop(0, 'rgba(255,210,63,0)'); g.addColorStop(1, 'rgba(255,244,194,.9)'); cx.fillStyle = g; cx.fillRect(p.x - 14 * (1 - k * .5), p.y - 260, 28 * (1 - k * .5), 260); glow(p.x, p.y, 60, '#ffd23f', .8 * (1 - k)); cx.restore(); }
+    }
+    for (const m of this.mir) { if (m.t > 0) continue; const k = Math.min(1, -m.t / m.l), x2 = m.x + Math.cos(m.a) * m.L, y2 = m.y + Math.sin(m.a) * m.L;
+      cx.save(); cx.globalAlpha = 1 - k; cx.lineCap = 'round'; cx.strokeStyle = '#bfe8ff'; cx.lineWidth = 6 * (1 - k) + 1; cx.beginPath(); cx.moveTo(m.x, m.y); cx.lineTo(x2, y2); cx.stroke(); cx.strokeStyle = '#ffffff'; cx.lineWidth = 1.5; cx.stroke(); cx.restore(); }
+  }
+};
+{ const r0 = W4.reset.bind(W4); W4.reset = function () { r0(); WX.reset(); };
+  const s0 = W4.onSlash.bind(W4); W4.onSlash = function (a) { s0(a); WX.onSlash(a); };
+  const e0 = W4.dashEnd.bind(W4); W4.dashEnd = function () { e0(); WX.dashEnd(); };
+  const u0 = W4.update.bind(W4); W4.update = function (dt) { u0(dt); WX.update(dt); };
+  const d0 = W4.draw.bind(W4); W4.draw = function () { d0(); WX.draw(); }; }
+/* the pets */
+PETS.push( // version 36
+  { id: 'koi', name: 'NEON KOI', kind: 'Spirit fish', col: '#ff8a3d', cost: 5400, desc: 'A glowing koi that swims through the air. Every 11 seconds it sends a wave ahead of you that hits everything in a line.' },
+  { id: 'mantis', name: 'MANTIS DRONE', kind: 'Blade bug', col: '#7dff6a', cost: 6400, desc: 'A green drone with scythe arms. Every 7 seconds it cuts the two nearest enemies, and finishes off any that are badly hurt.' });
+PET_BY_ID.koi = PETS[PETS.length - 2]; PET_BY_ID.mantis = PETS[PETS.length - 1];
+{ const pr0 = Pet.period.bind(Pet); Pet.period = function () { const b = { koi: 11, mantis: 7 }[G.pet]; return b ? b * (1 - .08 * (this.lv() - 1)) : pr0(); };
+  const pl0 = petLevelText; petLevelText = function (id, lv) { const n = lv - 1; if (id === 'koi' || id === 'mantis') return ltf('Every {0}s · damage +{1}%', ({ koi: 11, mantis: 7 }[id] * (1 - .08 * n)).toFixed(1), n * 15); return pl0(id, lv); }; }
+Object.assign(PET4, {
+  koi(W) { // a wave along your facing that hits everything in a line
+    const a = P.face, L = 280, x2 = P.x + Math.cos(a) * L, y2 = P.y + Math.sin(a) * L; let n = 0;
+    for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (W4.ok(e) && W4.segD(e.x, e.y, P.x, P.y, x2, y2) < e.r + 30) { damageEnemy(e, W * 1.1, a, 2); n++; } }
+    if (W4.boss((P.x + x2) / 2, (P.y + y2) / 2, L / 2, W * 1.1, a)) n++;
+    if (!n) { this.cd = .5; return; }
+    this.cd = this.period(); this.uses = (this.uses | 0) + 1; this.fx = .6; this.fxx = x2; this.fxy = y2; this.fxa = a; this.happy = .6;
+    Aud.noise(.4, .1, 400, 2400, 'bandpass');
+  },
+  mantis(W) { // two quick cuts; badly hurt enemies are finished off
+    const list = []; for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (!W4.ok(e) || e.type === ET.COURIER) continue; const d = dist(e.x, e.y, P.x, P.y); if (d < 300) list.push([d, i, e]); }
+    if (!list.length) { this.cd = .5; return; }
+    list.sort((p, q) => p[0] - q[0] || p[1] - q[1]);
+    this.cd = this.period(); this.uses = (this.uses | 0) + 1; this.fx = .4; this.happy = .5; this.mt = [];
+    for (const [, , e] of list.slice(0, 2)) { this.mt.push(e.x, e.y); const low = !e.mb && !e.elite && e.hp < e.mhp * .3; damageEnemy(e, low ? 999 : W * 1.2, Math.atan2(e.y - P.y, e.x - P.x), 2); if (low) FX.text(e.x, e.y - e.r - 12, lt('FINISHED'), '#7dff6a', 12); }
+    Aud.tone(3200, 1800, .06, .05, 'sawtooth');
+  }
+});
+Object.assign(PET4D, {
+  koi() { if (this.fx <= 0) return; const k = 1 - this.fx / .6; cx.save(); cx.globalAlpha = Math.min(1, this.fx * 3); cx.translate(lerp(this.x, this.fxx, k), lerp(this.y, this.fxy, k)); cx.rotate(this.fxa || 0);
+    cx.strokeStyle = '#7df9ff'; cx.lineWidth = 3; for (let s = -1; s <= 1; s += 2) { cx.beginPath(); cx.arc(-8, 0, 26, s * .3, s * 1.2, s < 0); cx.stroke(); } glow(0, 0, 30, '#ff8a3d', .6); cx.restore(); this.fx -= RDT; },
+  mantis() { if (this.fx <= 0 || !this.mt) return; cx.save(); cx.globalAlpha = this.fx * 2.5; cx.strokeStyle = '#7dff6a'; cx.lineWidth = 3; cx.lineCap = 'round';
+    for (let i = 0; i < this.mt.length; i += 2) { const x = this.mt[i], y = this.mt[i + 1]; cx.beginPath(); cx.moveTo(x - 18, y - 18); cx.lineTo(x + 18, y + 18); cx.moveTo(x + 18, y - 18); cx.lineTo(x - 18, y + 18); cx.stroke(); } cx.restore(); this.fx -= RDT; }
+});
+Object.assign(PET4ART, {
+  koi(leg, t, att) { // a glowing koi swimming in the air
+    cx.translate(0, -12 + Math.sin(t * 2.2) * 2); const sw = Math.sin(t * 7) * .35;
+    cx.fillStyle = '#ff8a3d'; cx.beginPath(); cx.moveTo(-8, 0); cx.lineTo(-15, -5 + sw * 6); cx.lineTo(-13, 0); cx.lineTo(-15, 5 + sw * 6); cx.closePath(); cx.fill();
+    cx.fillStyle = '#fff1e6'; cx.beginPath(); cx.ellipse(0, 0, 9, 4.6, sw * .15, 0, TAU); cx.fill();
+    cx.fillStyle = '#ff5a1f'; cx.beginPath(); cx.ellipse(1, -1, 4, 2.4, 0, 0, TAU); cx.fill(); cx.beginPath(); cx.ellipse(-4, 1.2, 2.6, 1.6, 0, 0, TAU); cx.fill();
+    cx.fillStyle = '#ffb07a'; cx.beginPath(); cx.moveTo(0, -4); cx.lineTo(-4, -8); cx.lineTo(-3, -3.5); cx.fill();
+    cx.fillStyle = '#05060f'; dot(6, -1.2, .9); hglow(0, 0, 16, '#ff8a3d', att ? .9 : .4);
+  },
+  mantis(leg, t, att) { // a green drone with folded scythe arms
+    cx.translate(0, -10 + Math.sin(t * 6) * 1.5); const f = att ? 1 : .25 + .1 * Math.sin(t * 3);
+    cx.fillStyle = 'rgba(200,255,200,.35)'; for (const s of [-1, 1]) { cx.beginPath(); cx.ellipse(-3, s * 5, 7, 2.2, s * (.5 + Math.sin(t * 40) * .2), 0, TAU); cx.fill(); }
+    cx.fillStyle = '#2f7a28'; cx.beginPath(); cx.ellipse(-2, 0, 7, 3.4, 0, 0, TAU); cx.fill(); cx.fillStyle = '#7dff6a'; cx.beginPath(); cx.arc(6, 0, 3.4, 0, TAU); cx.fill();
+    cx.strokeStyle = '#c8ffb8'; cx.lineWidth = 1.6; for (const s of [-1, 1]) { cx.beginPath(); cx.moveTo(4, s * 2); cx.lineTo(9, s * (3 + 4 * f)); cx.lineTo(13, s * (1 + 6 * f)); cx.stroke(); }
+    cx.fillStyle = '#05060f'; dot(7.5, -1.4, .8); dot(7.5, 1.4, .8); hglow(0, 0, 14, '#7dff6a', att ? .9 : .35);
+  }
+});
 /* test + automation hooks (used by the headless test suite) */
 window.__OD = { G, P, V, EN, BU, Boss, Director, Flow, UI, Store, STAGES, sim, step, startStory: i => Flow.startStory(i), startArcade: m => Flow.startArcade(m), Dlg, Arena, REC, REPLAY, TICK, R, In, Replays, DMATH };
 try {
