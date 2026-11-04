@@ -1080,8 +1080,8 @@ Math.sin = DMATH.sin; Math.cos = DMATH.cos; Math.atan = DMATH.atan; Math.atan2 =
    All tuning lives here. Logical units: the view is ~420 wide, the
    train roof (arena) is 340 wide. Speeds are units per second.
    ===================================================================== */
-const VERSION = '37.0';
-const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0', '36.0', '37.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
+const VERSION = '38.0';
+const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0', '36.0', '37.0', '38.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
 const CFG = { step: 1 / 60, maxSteps: 5, maxEnemies: 22, arenaW: 340, viewW: 420, viewH: 760 };
 let RDT = 1 / 60; // version 34: the real time of the frame being drawn. Drawing code uses it instead of a fixed 1/60, so 120-480 Hz screens animate at the right speed
 
@@ -5736,6 +5736,11 @@ Object.assign(HE, {"MISS": "פספוס", "THORNS": "קוצים", "DASHES THAT HI
 Object.assign(AR, {"MISS": "خطأ", "THORNS": "أشواك", "DASHES THAT HIT NOTHING HEAT YOUR BLADE: AIM, THEN RELEASE": "الاندفاعات التي لا تصيب شيئاً تسخّن نصلك: صوّب ثم اترك", "THORNS: BOUNCE OFF A SIDE RAIL FIRST, OR USE OVERDRIVE, TO CUT THROUGH THE SPIKES": "أشواك: ارتدّ عن حاجز جانبي أولاً، أو استخدم الأوفردرايف، لتقطع عبر الأشواك", "SKILL GRADE": "درجة المهارة", "ACCURACY {0}% · PARRIES {1} · RAIL BOUNCES {2} · HITS TAKEN {3}": "الدقة {0}% · صدّات {1} · ارتدادات {2} · ضربات تلقيتها {3}", "{0} of your {1} dashes hit nothing. Hold to aim (time slows), then release on a target.": "{0} من {1} اندفاعاتك لم تصب شيئاً. اضغط مطولاً للتصويب (الزمن يبطؤ) ثم اترك على هدف.", "You took {0} hits. Watch the red rings: enemies flash before they attack.": "تلقيت {0} ضربات. راقب الحلقات الحمراء: الأعداء يومضون قبل الهجوم.", "No parries yet: slash an orange bullet right as your dash starts to send it back.": "لا صدّات بعد: اضرب رصاصة برتقالية لحظة بدء اندفاعك لتعيدها.", "Bounce off a side rail mid-dash: the next hit is a sure critical and cuts through THORNS.": "ارتدّ عن حاجز جانبي أثناء الاندفاع: الضربة التالية حرجة مؤكدة وتقطع عبر الأشواك.", "Clean run. Next: keep the combo alive between waves for a higher score.": "جولة نظيفة. التالي: حافظ على الكومبو بين الموجات لنقاط أعلى.", "3D camera": "كاميرا ثلاثية الأبعاد", "CLOSE": "قريبة", "CINEMATIC": "سينمائية", "TOP": "من الأعلى", "3D style": "نمط ثلاثي الأبعاد", "TOON": "كرتوني", "CLASSIC": "كلاسيكي", "SKILL MATTERS": "المهارة تهم", "Swiping at random no longer wins. A dash is only safe at its start, two misses in a row heat your blade and cut the combo, and a dash that hits cools the blade.": "التمرير العشوائي لم يعد يفوز. الاندفاع آمن في بدايته فقط، وخطآن متتاليان يسخّنان النصل ويقطعان الكومبو، والاندفاع الذي يصيب يبرّد النصل.", "LESS HAND-HOLDING": "مساعدة أقل", "From RONIN up the aim help is smaller and the game forgives less after a hit. ROOKIE keeps all the help. Mouse aim at the cursor is exact, with no help.": "من RONIN فما فوق تقل مساعدة التصويب ويسامح اللعب أقل بعد الإصابة. يحتفظ ROOKIE بكل المساعدة. التصويب بالفأرة نحو المؤشر دقيق بلا مساعدة.", "A new elite trait: a direct dash bounces off its spikes. Bounce off a side rail first, or use Overdrive, to cut through.": "صفة نخبة جديدة: الاندفاع المباشر يرتد عن أشواكها. ارتدّ عن حاجز جانبي أولاً أو استخدم الأوفردرايف لتقطع عبرها.", "The results grade your play from D to SSS (accuracy, parries, rail bounces, hits taken) and tell you one thing to get better at.": "شاشة النتائج تقيّم لعبك من D إلى SSS (الدقة، الصدّات، الارتدادات، الضربات المتلقاة) وتخبرك بشيء واحد لتتحسن فيه.", "A NEW 3D VIEW": "عرض ثلاثي الأبعاد جديد", "A closer camera that follows you (CLOSE, CINEMATIC or TOP) and a toon look with two light bands and dark outlines. Settings > PRESENTATION > 3D.": "كاميرا أقرب تتبعك (قريبة أو سينمائية أو من الأعلى) ومظهر كرتوني بمستويين للضوء وحواف داكنة. الإعدادات > العرض > ثلاثي الأبعاد."});
 Object.assign(RU, {"MISS": "МИМО", "THORNS": "ШИПЫ", "DASHES THAT HIT NOTHING HEAT YOUR BLADE: AIM, THEN RELEASE": "Рывки мимо цели греют клинок: прицельтесь, потом отпустите", "THORNS: BOUNCE OFF A SIDE RAIL FIRST, OR USE OVERDRIVE, TO CUT THROUGH THE SPIKES": "ШИПЫ: сначала отскочите от бортика или включите Овердрайв, чтобы прорубиться", "SKILL GRADE": "ОЦЕНКА МАСТЕРСТВА", "ACCURACY {0}% · PARRIES {1} · RAIL BOUNCES {2} · HITS TAKEN {3}": "ТОЧНОСТЬ {0}% · ПАРИРОВАНИЯ {1} · ОТСКОКИ {2} · ПОЛУЧЕНО УДАРОВ {3}", "{0} of your {1} dashes hit nothing. Hold to aim (time slows), then release on a target.": "{0} из {1} рывков ушли мимо. Удерживайте для прицела (время замедляется) и отпускайте на цель.", "You took {0} hits. Watch the red rings: enemies flash before they attack.": "Вы получили {0} ударов. Следите за красными кольцами: враги вспыхивают перед атакой.", "No parries yet: slash an orange bullet right as your dash starts to send it back.": "Пока без парирований: рубите оранжевую пулю в самом начале рывка, чтобы отбить её.", "Bounce off a side rail mid-dash: the next hit is a sure critical and cuts through THORNS.": "Отскочите от бортика в рывке: следующий удар — гарантированный крит, и он пробивает ШИПЫ.", "Clean run. Next: keep the combo alive between waves for a higher score.": "Чистый забег. Дальше: держите комбо между волнами ради большего счёта.", "3D camera": "3D-камера", "CLOSE": "БЛИЖЕ", "CINEMATIC": "КИНО", "TOP": "СВЕРХУ", "3D style": "3D-стиль", "TOON": "ТУН", "CLASSIC": "КЛАССИКА", "SKILL MATTERS": "ВАЖНО МАСТЕРСТВО", "Swiping at random no longer wins. A dash is only safe at its start, two misses in a row heat your blade and cut the combo, and a dash that hits cools the blade.": "Случайные свайпы больше не побеждают. Рывок безопасен только в начале, два промаха подряд греют клинок и рвут комбо, а попадание охлаждает клинок.", "LESS HAND-HOLDING": "МЕНЬШЕ ПОДСКАЗОК", "From RONIN up the aim help is smaller and the game forgives less after a hit. ROOKIE keeps all the help. Mouse aim at the cursor is exact, with no help.": "Начиная с RONIN помощь прицеливания меньше, а игра меньше прощает после удара. На ROOKIE вся помощь остаётся. Прицел мышью на курсор точный, без помощи.", "A new elite trait: a direct dash bounces off its spikes. Bounce off a side rail first, or use Overdrive, to cut through.": "Новая черта элиты: прямой рывок отскакивает от шипов. Сначала отскочите от бортика или включите Овердрайв, чтобы прорубиться.", "The results grade your play from D to SSS (accuracy, parries, rail bounces, hits taken) and tell you one thing to get better at.": "Экран результатов оценивает игру от D до SSS (точность, парирования, отскоки, полученные удары) и подсказывает, что улучшить.", "A NEW 3D VIEW": "НОВЫЙ 3D-ВИД", "A closer camera that follows you (CLOSE, CINEMATIC or TOP) and a toon look with two light bands and dark outlines. Settings > PRESENTATION > 3D.": "Камера ближе и следует за вами (БЛИЖЕ, КИНО или СВЕРХУ) и тун-стиль с двумя уровнями света и тёмными контурами. Настройки > ПОДАЧА > 3D."});
 
+/* version 38 strings */
+Object.assign(HE, {"SOUND": "צליל", "Soundtrack": "פסקול", "WAR": "מלחמה", "CLASSIC": "קלאסי", "SYNTH": "מסונתז", "Reflections": "השתקפויות", "SOFT": "עדינות", "FULL": "מלאות", "Character voices use the voices installed on your device, in the game's language.": "קולות הדמויות משתמשים בקולות שבמכשיר בשפת המשחק; אם אין, בקול אנגלי או בקול שהמשחק מסנתז בעצמו.", "WAR SOUNDTRACK": "פסקול מלחמה", "Four new tracks: SIEGE PROTOCOL, STEEL RAIN and FRONTLINE for the runs, TOTAL WAR for every boss. Distant explosions, an air-raid siren when a boss arrives, and a heavier thump on every kill. Settings > SOUND > SOUNDTRACK.": "ארבעה טרקים חדשים: SIEGE PROTOCOL, STEEL RAIN ו-FRONTLINE למשחק, ו-TOTAL WAR לכל בוס. פיצוצים רחוקים, צפירה כשבוס מגיע, וחבטה עמוקה בכל הריגה. הגדרות > צליל > פסקול.", "VOICES FOR EVERYONE": "קולות לכולם", "Characters always speak now: with a voice from your device in the game's language, an English voice if there is none, or the game's own synthesized voice. Mika's radio calls are voiced too.": "הדמויות מדברות עכשיו תמיד: בקול מהמכשיר בשפת המשחק, בקול אנגלי אם אין כזה, או בקול שהמשחק מסנתז בעצמו. גם הודעות הקשר של מיקה מדוברות.", "3D FIXED": "תלת־ממד מתוקן", "With the new camera the 3D roof, shadows and models sat away from the enemies; they line up exactly again. Spawn beams are short and thin, shadows are soft, characters are no longer mirrored in the roof, the searchlight is softer and the scene is brighter. Settings > PRESENTATION > 3D > REFLECTIONS.": "עם המצלמה החדשה הגג, הצללים והמודלים בתלת־ממד היו מוזזים מהאויבים; עכשיו הם שוב מדויקים. קרני ההופעה קצרות ודקות, הצללים רכים, הדמויות כבר לא משתקפות בגג, הזרקור עדין יותר והתמונה בהירה יותר. הגדרות > הצגה > תלת־ממד > השתקפויות.", "CHECKED END TO END": "נבדק מקצה לקצה", "Every mode and a stage from every chapter ran in 2D, 3D and 3D MODELS with no errors.": "כל מצב ושלב מכל פרק רצו בדו־ממד, בתלת־ממד ובמודלים בלי שגיאות."});
+Object.assign(AR, {"SOUND": "الصوت", "Soundtrack": "الموسيقى التصويرية", "WAR": "حرب", "CLASSIC": "كلاسيكي", "SYNTH": "اصطناعي", "Reflections": "الانعكاسات", "SOFT": "ناعمة", "FULL": "كاملة", "Character voices use the voices installed on your device, in the game's language.": "أصوات الشخصيات تستخدم أصوات جهازك بلغة اللعبة؛ وإن لم توجد فصوتاً إنجليزياً أو صوتاً تركّبه اللعبة بنفسها.", "WAR SOUNDTRACK": "موسيقى الحرب", "Four new tracks: SIEGE PROTOCOL, STEEL RAIN and FRONTLINE for the runs, TOTAL WAR for every boss. Distant explosions, an air-raid siren when a boss arrives, and a heavier thump on every kill. Settings > SOUND > SOUNDTRACK.": "أربعة مقاطع جديدة: SIEGE PROTOCOL و STEEL RAIN و FRONTLINE للجولات، و TOTAL WAR لكل زعيم. انفجارات بعيدة، وصفارة إنذار عند وصول الزعيم، وضربة أعمق مع كل قتل. الإعدادات > الصوت > الموسيقى التصويرية.", "VOICES FOR EVERYONE": "أصوات للجميع", "Characters always speak now: with a voice from your device in the game's language, an English voice if there is none, or the game's own synthesized voice. Mika's radio calls are voiced too.": "الشخصيات تتكلم دائماً الآن: بصوت من جهازك بلغة اللعبة، أو بصوت إنجليزي إن لم يوجد، أو بصوت تركّبه اللعبة. ونداءات ميكا اللاسلكية أيضاً.", "3D FIXED": "إصلاح ثلاثي الأبعاد", "With the new camera the 3D roof, shadows and models sat away from the enemies; they line up exactly again. Spawn beams are short and thin, shadows are soft, characters are no longer mirrored in the roof, the searchlight is softer and the scene is brighter. Settings > PRESENTATION > 3D > REFLECTIONS.": "مع الكاميرا الجديدة كان السطح والظلال والنماذج ثلاثية الأبعاد بعيدة عن الأعداء؛ الآن تتطابق تماماً. أشعة الظهور قصيرة ورفيعة، والظلال ناعمة، والشخصيات لم تعد تنعكس على السطح، والكشاف أخف، والمشهد أسطع.", "CHECKED END TO END": "فحص شامل", "Every mode and a stage from every chapter ran in 2D, 3D and 3D MODELS with no errors.": "كل وضع ومرحلة من كل فصل عملت في 2D و3D والنماذج دون أخطاء."});
+Object.assign(RU, {"SOUND": "ЗВУК", "Soundtrack": "Саундтрек", "WAR": "ВОЙНА", "CLASSIC": "КЛАССИКА", "SYNTH": "СИНТЕЗ", "Reflections": "Отражения", "SOFT": "МЯГКИЕ", "FULL": "ПОЛНЫЕ", "Character voices use the voices installed on your device, in the game's language.": "Голоса персонажей берутся из голосов устройства на языке игры; если их нет — английский голос или голос, который синтезирует сама игра.", "WAR SOUNDTRACK": "ВОЕННЫЙ САУНДТРЕК", "Four new tracks: SIEGE PROTOCOL, STEEL RAIN and FRONTLINE for the runs, TOTAL WAR for every boss. Distant explosions, an air-raid siren when a boss arrives, and a heavier thump on every kill. Settings > SOUND > SOUNDTRACK.": "Четыре новых трека: SIEGE PROTOCOL, STEEL RAIN и FRONTLINE для забегов и TOTAL WAR для каждого босса. Далёкие взрывы, сирена при появлении босса и тяжёлый удар при каждом убийстве. Настройки > ЗВУК > САУНДТРЕК.", "VOICES FOR EVERYONE": "ГОЛОСА ДЛЯ ВСЕХ", "Characters always speak now: with a voice from your device in the game's language, an English voice if there is none, or the game's own synthesized voice. Mika's radio calls are voiced too.": "Персонажи теперь всегда говорят: голосом устройства на языке игры, английским голосом, если такого нет, или голосом, который синтезирует сама игра. Радиовызовы Мики тоже озвучены.", "3D FIXED": "3D ИСПРАВЛЕНО", "With the new camera the 3D roof, shadows and models sat away from the enemies; they line up exactly again. Spawn beams are short and thin, shadows are soft, characters are no longer mirrored in the roof, the searchlight is softer and the scene is brighter. Settings > PRESENTATION > 3D > REFLECTIONS.": "С новой камерой 3D-крыша, тени и модели были смещены от врагов; теперь всё снова совпадает. Лучи появления короткие и тонкие, тени мягкие, персонажи больше не отражаются в крыше, прожектор мягче, а сцена ярче.", "CHECKED END TO END": "ПРОВЕРЕНО ОТ И ДО", "Every mode and a stage from every chapter ran in 2D, 3D and 3D MODELS with no errors.": "Каждый режим и этап из каждой главы прошли в 2D, 3D и 3D-МОДЕЛЯХ без ошибок."});
+
 /* HEBREW — version 31 strings (news). Written by i18n/v32.py */
 Object.assign(HE, {
   "SHARPER CODE": "קוד חד יותר",
@@ -6692,6 +6697,48 @@ Object.assign(TRACKS, { // version 22: act VII
 const TRACK_LIST = ['menu', 'maglev', 'undercity', 'ghost', 'spire', 'core', 'storm', 'void', 'harbor', 'temple', 'summit', 'orbital', 'datavoid', 'apex', 'phonk', 'chip', 'metal', 'trap', 'warden', 'hydra', 'kage', 'shogun', 'raijin', 'renull', 'leviathan', 'benkei', 'prime', 'valkyrie', 'chimera', 'genesis', 'sakura', 'abyss', 'oryu', 'dojo', 'credits', 'skyroad', 'starring', 'ruins', 'origin', 'tenkai', 'izanami', 'parade', 'hollow', 'hyakki'];
 const RUN_TRACKS = ['maglev', 'undercity', 'ghost', 'spire', 'core', 'storm', 'phonk', 'chip', 'metal', 'trap'];
 const MODE_TRACK = { tower: 'metal', highway: 'phonk', mayhem: 'metal', timeattack: 'phonk', daily: 'chip', weekly: 'trap' }; // AUTO picks these for arcade modes
+Object.assign(TRACKS, { // version 38: the WAR soundtrack
+  war1: mkTrack({ name: 'SIEGE PROTOCOL', style: 'Darksynth war march', bpm: 128, root: 46.25, sc: 'phr', prog: [0, 5, 3, 6], form: ['A', 'A', 'B', 'B', 'D', 'B', 'B'], taiko: 1,
+    dr: { A: { k: 'x...x...x...x...', s: '....x.......x...', h: '..x...x...x...x.', t: 'x.......x..x....' },
+          B: { k: 'x...x...x...x...', d: '..x...x...x...xx', s: '....X.......X...', c: '....x.......x...', h: 'x.x.x.x.x.x.x.x.', t: 'x..x..x.x..x..x.', y: 'x...............' },
+          D: { t: 'x.......x.......', h: '....x.......x...', p: '..x.......x.....' },
+          F: { k: 'x...x...x.x.x.x.', s: '....x...x.xxXXXX', t: 'x.x.x.x.xxxxxxxx', y: '...............x' } },
+    bass: { pat: [0, null, 0, null, 0, 0, null, 0, 0, null, 0, null, 1, null, 0, null], type: 'reese', v: .085, len: .9 },
+    pad: { type: 'darkpad', oct: 2, v: .02 },
+    lead: { type: 'gld', oct: 3, v: .03, sec: 'B', n: [[0, 4, 3], [3, 5, 1], [4, 4, 2], [6, 3, 2], [8, 1, 4], [12, 0, 4], [16, 4, 3], [19, 5, 1], [20, 7, 4], [24, 5, 2], [26, 4, 2], [28, 3, 4],
+      [32, 4, 3], [35, 5, 1], [36, 4, 2], [38, 3, 2], [40, 1, 4], [44, 0, 4], [48, 7, 6], [54, 8, 2], [56, 7, 4], [60, 5, 4]] },
+    lead2: { type: 'brass', oct: 2, v: .024, sec: 'B', n: [[0, 0, 2], [8, 0, 2], [16, 1, 2], [24, 0, 2], [32, 0, 2], [40, 0, 2], [48, 3, 2], [56, 1, 4]] } }),
+  war2: mkTrack({ name: 'STEEL RAIN', style: 'Industrial drum and bass', bpm: 172, root: 49, sc: 'aeo', prog: [0, 5, 3, 4], form: ['A', 'B', 'B', 'D', 'B', 'B'],
+    dr: { A: { k: 'x.........x.....', s: '....x.......x...', h: 'x.x.x.x.x.x.x.x.', p: '..x.......x...x.' },
+          B: { k: 'x.........x.x...', s: '....x.......x..g', h: 'x.x.x.x.x.x.x.x.', o: '......o.......o.', p: '..x.......x...x.', y: 'x...............' },
+          D: { h: 'x...x...x...x...', p: '..x...x...x...x.' },
+          F: { k: 'x.........x.....', s: '....x..x.xx.xxxx', y: '...............x' } },
+    bass: { pat: [0, null, null, 0, null, null, 0, null, null, null, 3, null, null, 2, null, null], type: 'reese', v: .09, len: 1.4 },
+    pad: { type: 'pad', oct: 2, v: .016, sec: 'BD' },
+    arp: { pat: [0, 2, 4, 2], rate: 2, oct: 3, type: 'pluck', v: .018, sec: 'B' },
+    lead: { type: 'lead', oct: 3, v: .026, sec: 'B', n: [[0, 7, 4], [4, 6, 2], [6, 4, 2], [8, 3, 6], [16, 4, 4], [20, 3, 2], [22, 1, 2], [24, 0, 8], [32, 7, 4], [36, 8, 2], [38, 7, 2], [40, 6, 6], [48, 4, 4], [52, 6, 4], [56, 7, 8]] } }),
+  war3: mkTrack({ name: 'FRONTLINE', style: 'Cyber taiko war drums', bpm: 140, root: 51.9, sc: 'insen', prog: [0, 0, 3, 2], form: ['A', 'A', 'B', 'B', 'D', 'B'], taiko: 1,
+    dr: { A: { t: 'x..x..x.x..x..x.', r: '..x...x...x...x.', k: 'x.......x.......' },
+          B: { t: 'x..x..x.x..x..x.', k: 'x...x...x...x...', s: '....x.......x...', m: '.........x.x.x..', h: 'x.x.x.x.x.x.x.x.', y: 'x...............' },
+          D: { t: 'x.......x.......', r: '..x...x...x...x.' },
+          F: { t: 'x.x.x.x.xxxxXXXX', s: '....x...x.x.xxxx', y: '...............x' } },
+    bass: { pat: [0, null, null, null, 0, null, null, null, 0, null, null, 0, null, null, 2, null], type: 'sub', v: .1, len: 2 },
+    pad: { type: 'choir', oct: 2, v: .02 },
+    lead: { type: 'koto', oct: 3, v: .034, sec: 'AB', n: [[0, 0, 2], [2, 1, 2], [4, 2, 2], [6, 4, 4], [12, 2, 2], [14, 1, 2], [16, 0, 4], [24, 4, 2], [26, 3, 2], [28, 2, 4],
+      [32, 0, 2], [34, 1, 2], [36, 2, 2], [38, 4, 4], [44, 5, 2], [46, 4, 2], [48, 3, 8], [56, 2, 4], [60, 1, 4]] },
+    lead2: { type: 'brass', oct: 2, v: .022, sec: 'B', n: [[0, 0, 8], [16, 2, 8], [32, 3, 8], [48, 2, 8]] } }),
+  warboss: mkTrack({ name: 'TOTAL WAR', style: 'Boss: war metal synth', bpm: 152, root: 41.2, sc: 'phr', prog: [0, 1, 0, 6], form: ['A', 'B', 'B', 'D', 'B', 'B'], taiko: 1,
+    dr: { A: { d: 'x.x.x.x.x.x.x.x.', s: '....X.......X...', h: 'x.x.x.x.x.x.x.x.', t: 'x.......x.......' },
+          B: { d: 'xxxxxxxxxxxxxxxx', s: '....X.......X...', c: '....x.......x...', y: 'x.......x.......', h: 'x.x.x.x.x.x.x.x.' },
+          D: { t: 'x..x..x.x..x..x.', k: 'x...............', r: '..x...x...x...x.' },
+          F: { d: 'xxxxxxxxxxxxxxxx', s: 'x.x.x.x.xxxxXXXX', y: '...............x' } },
+    bass: { pat: [0, null, 0, null, 0, null, 1, null, 0, null, 0, null, 0, null, 6, null], type: 'reese', v: .09, len: .8 },
+    pad: { type: 'choir', oct: 2, v: .022 },
+    lead: { type: 'gtr', oct: 2, v: .03, sec: 'AB', n: [[0, 0, 1], [2, 0, 1], [4, 1, 2], [6, 0, 1], [8, 0, 1], [10, 3, 2], [12, 1, 2], [14, 0, 2], [16, 0, 1], [18, 0, 1], [20, 1, 2], [22, 0, 1], [24, 5, 2], [26, 4, 2], [28, 3, 4],
+      [32, 0, 1], [34, 0, 1], [36, 1, 2], [38, 0, 1], [40, 0, 1], [42, 3, 2], [44, 1, 2], [46, 0, 2], [48, 7, 4], [52, 6, 4], [56, 5, 4], [60, 4, 4]] },
+    lead2: { type: 'brass', oct: 3, v: .02, sec: 'B', n: [[0, 4, 8], [8, 3, 8], [16, 4, 8], [24, 5, 8], [32, 4, 8], [40, 3, 8], [48, 7, 8], [56, 6, 8]] } })
+});
+TRACK_LIST.push('war1', 'war2', 'war3', 'warboss');
 function runTrackPick() { // once per run: AUTO (area or mode), SHUFFLE, or the track the player chose in the Music Room
   if (G.mode === 'dojo') return 'dojo';
   const s = Store.data.settings.track || 'auto';
@@ -7729,6 +7776,7 @@ const FX = {
   clear() { CALL.l = 0; PT.reset(); SW.reset(); HV.reset(); TX.reset(); ARC.reset(); AIM.reset(); LZ.reset(); DEC.reset(); WFX.clear(); }
 };
 const SIDES = [5, 3, 6, 8, 4, 3, 7, 5, 4, 6, 8, 3, 8];
+const Refl = { m() { return (Store.data && Store.data.settings.refl) || 'soft'; }, chars() { return this.m() === 'full'; }, k() { const m = this.m(); return m === 'off' ? 0 : m === 'soft' ? .55 : 1; } }; // v38: reflections SOFT (lights only) / FULL / OFF
 let CBM = 0; // colorblind palette on
 let CALM = 0; // 'calm effects' setting: half particles, no afterimages, rain, glitch; soft flashes
 function dmgNum(x, y, n, crit, big) { // damage numbers respect the ALL / CRITS / OFF setting
@@ -13648,7 +13696,7 @@ function render(rd) {
     fk = CAM.fin > 0 ? Math.sin(clamp(Math.min((CAM.finD - CAM.fin) / .35, CAM.fin / .5), 0, 1) * 1.5708) : 0;
     const z = 1 + CAM.zoom + (In.on && G.state === 'PLAY' ? .025 : 0) + fk * .32, hw = V.VW / (2 * z), hh = V.VH / (2 * z);
     const fx = clamp(V.VW / 2 + (CAM.fx - V.VW / 2) * fk * .65, hw, V.VW - hw), fy = clamp(V.VH / 2 + (CAM.fy - V.VH / 2) * fk * .65, hh, V.VH - hh);
-    cx.translate(V.VW / 2, V.VH / 2 + W3D.offY()); cx.scale(z, z * W3D.k()); cx.rotate(W3D.live ? GL3D.yaw : CAM.rot); cx.translate(-fx + CAM.ox, -fy + CAM.oy); // 3D: the 2D layer lies on the tilted roof
+    if (W3D.live) { const C3 = GL3D.cam; cx.translate(V.VW / 2, V.VH / 2 + W3D.offY()); cx.scale(C3.z, C3.z * W3D.k()); cx.rotate(GL3D.yaw); cx.translate(-C3.x, -C3.y); } else { cx.translate(V.VW / 2, V.VH / 2 + W3D.offY()); cx.scale(z, z * W3D.k()); cx.rotate(CAM.rot); cx.translate(-fx + CAM.ox, -fy + CAM.oy); } // 3D: the 2D layer lies on the tilted roof
   }
   BG.draw(true);
   if (run) {
@@ -14462,7 +14510,7 @@ const Dlg = {
     if (!this.active) return;
     if (this.shown < this.text.length) {
       this.t += rd * this.cps; const n = Math.min(this.text.length, this.t | 0);
-      if (n !== this.shown) { this.shown = n; $('dlgTxt').textContent = this.text.slice(0, n); if (n % 2 === 0 && this.text[n - 1] !== ' ') Aud.sfx('blip', this.c.pitch); }
+      if (n !== this.shown) { this.shown = n; $('dlgTxt').textContent = this.text.slice(0, n); if (n % 2 === 0 && this.text[n - 1] !== ' ' && !(typeof Voices !== 'undefined' && Voices.busy())) Aud.sfx('blip', this.c.pitch); }
     }
     this.pt += rd; this.drawPortrait();
   },
@@ -15515,12 +15563,11 @@ const Preview = {
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 37
-  ["SKILL MATTERS", "Swiping at random no longer wins. A dash is only safe at its start, two misses in a row heat your blade and cut the combo, and a dash that hits cools the blade."],
-  ["LESS HAND-HOLDING", "From RONIN up the aim help is smaller and the game forgives less after a hit. ROOKIE keeps all the help. Mouse aim at the cursor is exact, with no help."],
-  ["THORNS", "A new elite trait: a direct dash bounces off its spikes. Bounce off a side rail first, or use Overdrive, to cut through."],
-  ["SKILL GRADE", "The results grade your play from D to SSS (accuracy, parries, rail bounces, hits taken) and tell you one thing to get better at."],
-  ["A NEW 3D VIEW", "A closer camera that follows you (CLOSE, CINEMATIC or TOP) and a toon look with two light bands and dark outlines. Settings > PRESENTATION > 3D."]
+const NEWS = [ // version 38
+  ["WAR SOUNDTRACK", "Four new tracks: SIEGE PROTOCOL, STEEL RAIN and FRONTLINE for the runs, TOTAL WAR for every boss. Distant explosions, an air-raid siren when a boss arrives, and a heavier thump on every kill. Settings > SOUND > SOUNDTRACK."],
+  ["VOICES FOR EVERYONE", "Characters always speak now: with a voice from your device in the game's language, an English voice if there is none, or the game's own synthesized voice. Mika's radio calls are voiced too."],
+  ["3D FIXED", "With the new camera the 3D roof, shadows and models sat away from the enemies; they line up exactly again. Spawn beams are short and thin, shadows are soft, characters are no longer mirrored in the roof, the searchlight is softer and the scene is brighter. Settings > PRESENTATION > 3D > REFLECTIONS."],
+  ["CHECKED END TO END", "Every mode and a stage from every chapter ran in 2D, 3D and 3D MODELS with no errors."]
 ];
 function deathCause() { // what hit you last, and how to avoid it next time
   const s = G.lastHit, w = G.lastWho, en = k => lt(EDEF[k] ? EDEF[k].name : 'ENEMY');
@@ -20936,10 +20983,10 @@ const W3D = {
     finally { for (let i = 0; i < keep.length; i += 3) { keep[i].x = keep[i + 1]; keep[i].y = keep[i + 2]; } }
   },
   heroShadow() { const g = GL3D, o = this.ho; if (o) { g.add('cyl', o.x + 3, o.y + 5, .15, 0, 22, 14, .2, [.01, .01, .03], 0, 0); g.floorGlow(o.x, o.y, .3, 30, rgb3(o.ca || P.ca || '#00f2fe'), .3); } if (G.pet && G.pet !== 'none' && G.mode !== 'puzzle') g.add('cyl', Pet.x + 2, Pet.y + 4, .12, 0, 14, 9, .2, [.01, .01, .03], 0, 0); },
-  shadows() { const g = GL3D; for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (!e.alive || e.vis < .2 || e.y < -4) continue; const r = Math.max(4, e.r * (e.scale || 1)); g.add('cyl', e.x + r * .3, e.y + r * .45, .12, 0, r * 2.3, r * 1.5, .2, [.01, .01, .03], 0, 0); }
-    const b = Boss.cur; if (b && !(b.dying > 1.6)) { g.add('cyl', b.x + b.r * .25, b.y + b.r * .4, .1, 0, b.r * 2.4, b.r * 1.7, .2, [.01, .01, .03], 0, 0); g.floorGlow(b.x, b.y, .3, b.r * 2.2, rgb3((BOSS_INFO[b.id] && BOSS_INFO[b.id].col) || '#ff0844'), .22); }
-    const o = this.ho; if (o) { g.add('cyl', o.x + 3, o.y + 5, .15, 0, 22, 14, .2, [.01, .01, .03], 0, 0); g.floorGlow(o.x, o.y, .3, 30, rgb3(o.ca || P.ca || '#00f2fe'), .3); }
-    if (G.pet && G.pet !== 'none' && G.mode !== 'puzzle') g.add('cyl', Pet.x + 2, Pet.y + 4, .12, 0, 14, 9, .2, [.01, .01, .03], 0, 0); },
+  shadows() { const g = GL3D, SH = [.035, .04, .09], skip = this.models() && g.P && g.P.sm; for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (skip || !e.alive || e.vis < .2 || e.y < 0 || e.y > V.VH || (e.alt || 0) > .35) continue; const r = Math.max(4, e.r * (e.scale || 1)) * .85; g.add('cyl', e.x + r * .25, e.y + r * .35, .12, 0, r * 2.1, r * 1.35, .2, SH, 0, 0); }
+    const b = Boss.cur; if (b && !(b.dying > 1.6)) { g.add('cyl', b.x + b.r * .25, b.y + b.r * .4, .1, 0, b.r * 2.2, b.r * 1.5, .2, [.035, .04, .09], 0, 0); g.floorGlow(b.x, b.y, .3, b.r * 2.2, rgb3((BOSS_INFO[b.id] && BOSS_INFO[b.id].col) || '#ff0844'), .22); }
+    const o = this.ho; if (o) { g.add('cyl', o.x + 3, o.y + 5, .15, 0, 20, 12, .2, [.035, .04, .09], 0, 0); g.floorGlow(o.x, o.y, .3, 34, rgb3(o.ca || P.ca || '#00f2fe'), .38); }
+    if (G.pet && G.pet !== 'none' && G.mode !== 'puzzle') g.add('cyl', Pet.x + 2, Pet.y + 4, .12, 0, 12, 8, .2, [.035, .04, .09], 0, 0); },
   active() {
     return this.want() && !this.slow && !(typeof Power !== 'undefined' && Power.on()) && !CALM_3D() && inRun() && !(REPLAY.on && REPLAY.fast) && G.mode !== 'highway' && G.mode !== 'puzzle' && G.mode !== 'dojo' && !G.photoLock && (GL3D.ok || GL3D.init());
   },
@@ -21353,7 +21400,7 @@ const FX3D = {
     const g = GL3D, P = g.P, t = this.tier(), rainy = !!T.rain;
     P.on = t >= 1; P.bloom = t >= 2 ? 2 : t >= 1 ? 1 : 0; P.fxaa = t >= 1 ? 1 : 0; P.sm = t >= 2; P.ultra = t >= 3; P.grain = t >= 2 ? .028 : 0; P.vig = t >= 1 ? .38 : 0;
     g.nlMax = t >= 2 ? 8 : t >= 1 ? 6 : 3;
-    g.wet = t >= 1 && rainy ? 1 : t >= 2 ? .35 : 0; g.rip = rainy ? 1.6 : .5; g.t = CAM.t;
+    g.wet = (t >= 1 && rainy ? 1 : t >= 2 ? .35 : 0) * Refl.k(); g.rip = rainy ? 1.6 : .5; g.t = CAM.t;
     if (!P.grade || P.gk !== BG.theme) { P.gk = BG.theme; const a = rgb3(T.b1 || '#ff0844'), b = rgb3(T.sky2 || '#22093a'), m = (q, w) => 1 + (q - .5) * w;
       P.grade = { t: [m(a[0] * .5 + b[0] * .5, .14), m(a[1] * .5 + b[1] * .5, .14), m(a[2] * .5 + b[2] * .5 + (rainy ? .15 : 0), .14)], l: [b[0] * .18, b[1] * .18, b[2] * .22], s: 1.14, c: 1.08 }; }
     document.body.classList.toggle('ultra3d', P.ultra && P.on);
@@ -21375,22 +21422,23 @@ const FX3D = {
     const b = Boss.cur; if (b && !(b.dying > 1.6)) { const c = rgb3((BOSS_INFO[b.id] && BOSS_INFO[b.id].col) || '#ff0844'); g.light(b.x, b.y, b.r * 1.2, b.r * 3.4, c, .9 + (b._fl > 0 ? 1 : 0)); }
     if (G.pet && G.pet !== 'none' && G.mode !== 'puzzle') { const p = PET_BY_ID[G.pet]; g.light(Pet.x, Pet.y, 14, 60, rgb3((p && p.col) || '#ffd23f'), .45); }
     for (let i = this.flashes.length - 1; i >= 0; i--) { const f = this.flashes[i]; f.t += RDT; if (f.t > .4) { this.flashes.splice(i, 1); continue; } g.light(f.x, f.y, 22, 150, f.c, 2.2 * (1 - f.t / .4)); }
-    let fl = BG.flash > 0 && BG.T && BG.T.rain ? BG.flash : 0; g.lmul = (1 + fl * .8) * (this.over ? this.over.dim : 1);
+    let fl = BG.flash > 0 && BG.T && BG.T.rain ? BG.flash : 0; g.lmul = (1.22 + fl * .8) * (this.over ? this.over.dim : 1); // v38: brighter base light, so shapes and colors read
   },
   /* ---- arrivals: every new enemy comes down a beam of its own color, onto a ring on the roof ---- */
   spawns() { // a beam of light, a floor ring and a light mark every new enemy for its first .9 s on screen (drawn only)
     const g = GL3D, B = this.born || (this.born = new Map()), now = performance.now() / 1000, seen = new Set();
     for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (!e.alive || e.al > 0) continue; seen.add(e.uid);
       if (!B.has(e.uid)) B.set(e.uid, e.spawnT > 0 ? now : now - 9); const age = now - B.get(e.uid); if (age > .9) continue;
-      const k = age / .9, c = rgb3(e.col || '#ff3b5c'), x = clamp(e.x, V.L + 8, V.R - 8), y = clamp(e.y, 6, V.VH - 6), r = (e.r || 14), f = 1 - k;
-      g.beam(x, y, 300, x, y, 0, 4 + f * 10, 2 + f * 6, c, .05, .7 * f); g.floorRing(x, y, .5, r * (1.1 + k * 1.8), c, .85 * f); g.floorGlow(x, y, .4, r * 2.6, c, .45 * f);
-      g.light(x, y, 30, 120, c, 1.4 * f); }
+      if (e.y < 0 || e.y > V.VH || age > .55) continue; // v38: enemies flying in from outside show their own flight; on the roof, a short mark
+      const k = age / .55, c = rgb3(e.col || '#ff3b5c'), x = e.x, y = e.y, r = (e.r || 14), f = 1 - k;
+      g.beam(x, y, 150 * f + 20, x, y, 0, 2 + f * 4, 1 + f * 2, c, .0, .45 * f); g.floorRing(x, y, .5, r * (1.1 + k * 1.4), c, .7 * f); g.floorGlow(x, y, .4, r * 2, c, .3 * f);
+      g.light(x, y, 30, 100, c, .8 * f); }
     if (B.size > 64) for (const u of B.keys()) if (!seen.has(u)) B.delete(u);
   },
   /* ---- particles ---- */
   burst(x, y, c, n, sp, z) { if (this.sp.length > 260) return; for (let i = 0; i < n; i++) { const a = Math.random() * TAU, v = sp * (.4 + Math.random()), up = 60 + Math.random() * 200; this.sp.push({ x, y, z: z || 8, vx: Math.cos(a) * v, vy: Math.sin(a) * v, vz: up, t: 0, l: .45 + Math.random() * .4, c: Math.random() < .35 ? [1, 1, 1] : c }); } },
   particles(rd) {
-    const g = GL3D; g.mir = true;
+    const g = GL3D; g.mir = Refl.chars();
     for (let i = this.sp.length - 1; i >= 0; i--) { const p = this.sp[i]; p.t += rd; if (p.t > p.l) { this.sp.splice(i, 1); continue; }
       p.vz -= 700 * rd; const x0 = p.x, y0 = p.y, z0 = p.z; p.x += p.vx * rd; p.y += p.vy * rd; p.z += p.vz * rd; if (p.z < .5) { p.z = .5; p.vz *= -.4; p.vx *= .7; p.vy *= .7; }
       const a = 1 - p.t / p.l; g.beam(x0, y0, z0, p.x, p.y, p.z, .9, .6, p.c, a, a * .6); g.glow(p.x, p.y, p.z, 3, p.c, a * .8); }
@@ -21429,7 +21477,7 @@ const FX3D = {
       const fx = (L + R) / 2 + Math.sin(q.t * .9) * (R - L) * .35, fy = y + 60 + Math.cos(q.t * .7) * 160, blink = ((this.t * 4) | 0) % 2;
       g.add('box', x, y, z, q.t, 22, 22, 6, [.1, .1, .14], 0, 0); for (const s of [-1, 1]) g.add('cyl', x + s * 14, y, z + 3, 0, 10, 10, 1.5, [.2, .2, .26], 0, 0);
       g.glow(x, y, z - 2, 6, blink ? [1, .1, .2] : [.2, .4, 1], .9);
-      g.beam(x, y, z - 3, fx, fy, 0, 2, 34, [.95, .97, 1], .2 * e, .05 * e); g.floorGlow(fx, fy, .35, 48, [.95, .97, 1], .32 * e); g.light(fx, fy, 50, 150, [.9, .95, 1], 1.1 * e); }
+      g.beam(x, y, z - 3, fx, fy, 0, 2, 30, [.85, .9, 1], .08 * e, .02 * e); g.floorGlow(fx, fy, .35, 42, [.85, .9, 1], .12 * e); g.light(fx, fy, 50, 130, [.85, .9, 1], .4 * e); }
     // an overpass: every so often the train runs under a bridge; the light dims as it passes
     const per = 34, ph = (this.t % per) / per; this.over = null;
     if (ph > .78) { const p = (ph - .78) / .22, y = C.y - VH * .9 + p * VH * 2.2, dist = Math.abs(y - C.y) / (VH * .6); this.over = { dim: .55 + .45 * clamp(dist, 0, 1) };
@@ -21457,7 +21505,7 @@ const FX3D = {
     withCtx(hg, f);
     const X = q[0] - S / 2, Y = q[1] - S / 2, col = h.ca || P.ca || '#00f2fe';
     cx.save(); cx.setTransform(1, 0, 0, 1, 0, 0);
-    if (GL3D.wet > 0) { cx.globalAlpha = .26 * GL3D.wet; cx.globalCompositeOperation = 'lighter'; const by = q[1] + zz * 16; cx.setTransform(1, 0, 0, -.8, 0, by * 1.8); cx.drawImage(c, X, Y); cx.setTransform(1, 0, 0, 1, 0, 0); } // the reflection: flipped under the feet, a little shorter
+    if (GL3D.wet > 0 && Refl.chars()) { cx.globalAlpha = .26 * GL3D.wet; cx.globalCompositeOperation = 'lighter'; const by = q[1] + zz * 16; cx.setTransform(1, 0, 0, -.8, 0, by * 1.8); cx.drawImage(c, X, Y); cx.setTransform(1, 0, 0, 1, 0, 0); } // the reflection: flipped under the feet, a little shorter
     cx.globalCompositeOperation = 'lighter'; cx.globalAlpha = t >= 2 ? .2 : .12; const o = 1.6 * V.dpr; for (const [dx, dy] of [[o, 0], [-o, 0], [0, o], [0, -o]]) cx.drawImage(c, X + dx, Y + dy); // neon rim
     cx.globalCompositeOperation = 'source-over'; cx.globalAlpha = 1; cx.drawImage(c, X, Y); cx.restore(); void col;
   }
@@ -21495,7 +21543,7 @@ GL3D.holo = function (x, y, z, w, h, col, a, reg) { // a hologram: the sign text
   const GA = Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype, 'globalAlpha');
   FX3D.amul = function (c, m) { if (m === 1) { delete c.globalAlpha; return; } const a0 = GA.get.call(c); Object.defineProperty(c, 'globalAlpha', { configurable: true, get() { return GA.get.call(this) / m; }, set(v) { GA.set.call(this, Math.min(1, v) * m); } }); GA.set.call(c, Math.min(1, a0) * m); };
   const de2 = drawEnemy; drawEnemy = function (e) {
-    if (W3D.live && cx === W3D.cx0 && !W3D.models() && GL3D.wet > 0 && FX3D.tier() >= 1 && e.alive && e.vis > .3) { const ym = e.y + e.r * (e.scale || 1) * .9;
+    if (W3D.live && cx === W3D.cx0 && !W3D.models() && GL3D.wet > 0 && Refl.chars() && FX3D.tier() >= 1 && e.alive && e.vis > .3) { const ym = e.y + e.r * (e.scale || 1) * .9;
       W3D.stand(e.x, e.y, () => { cx.translate(0, ym * 1.8); cx.scale(1, -.8); cx.globalCompositeOperation = 'lighter'; FX3D.amul(cx, .32 * GL3D.wet); EDRAW = ED_BODY; try { W3D.de0(e); } finally { FX3D.amul(cx, 1); EDRAW = 7; cx.globalCompositeOperation = 'source-over'; } }); }
     de2(e);
   };
@@ -22503,7 +22551,7 @@ const Voices = {
   stop() { try { if (typeof speechSynthesis !== 'undefined') speechSynthesis.cancel(); } catch (e) { } }
 };
 try { if (typeof speechSynthesis !== 'undefined' && speechSynthesis.addEventListener) speechSynthesis.addEventListener('voiceschanged', () => Voices.load()); } catch (e) { }
-{ const l0 = Dlg.load.bind(Dlg); Dlg.load = function () { l0(); Voices.speak(this.cid, this.text); };
+{ const l0 = Dlg.load.bind(Dlg); Dlg.load = function () { l0(); const ln = this.lines && this.lines[this.i]; Voices.speak(this.cid, this.text, ln && ln[1]); };
   const e0 = Dlg.end.bind(Dlg); Dlg.end = function () { Voices.stop(); e0(); }; }
 
 /* ---- the camera leans a little toward where you aim ---- */
@@ -22593,7 +22641,7 @@ const Announce = { bd: false, tick() { const b = Boss.cur, d = !!(b && b.dying >
 { const pt0 = PC.tick.bind(PC); PC.tick = function (rd) { pt0(rd); Perf.tick(rd); RunLog.tick(); ClearCam.tick(); Heart.tick(rd); Announce.tick(); }; }
 { const ps1 = PC.settings.bind(PC); PC.settings = function (head, cycle, box, s) {
     head('PRESENTATION');
-    cycle('Character voices', 'cvoice', [1, 0], ['ON', 'OFF']); cycle('Camera follows your aim', 'lean', [1, 0], ['ON', 'OFF']);
+    cycle('Character voices', 'cvoice', [1, 2, 0], ['ON', 'SYNTH', 'OFF']); cycle('Camera follows your aim', 'lean', [1, 0], ['ON', 'OFF']);
     cycle('Heartbeat on the last shield', 'hb', [1, 0], ['ON', 'OFF']); cycle('High-contrast enemies', 'hc', [0, 1], ['OFF', 'ON']);
     box.appendChild(el('div', 'small mute', lt('Character voices use the voices installed on your device, in the game\'s language.')));
     ps1(head, cycle, box, s); }; }
@@ -22803,13 +22851,97 @@ const Cam3 = { x: 0, y: 0, init: false,
     const tx = clamp(C.x + (P.x - C.x) * c.f, lo, hi), ty = clamp(C.y + (P.y - C.y) * c.f * .55, Math.min(hh, V.VH / 2), Math.max(V.VH - hh, V.VH / 2));
     if (!this.init || G.state !== 'PLAY') { this.x = tx; this.y = ty; this.init = true; }
     const k = 1 - Math.exp(-(RDT || 1 / 60) * 6); this.x += (tx - this.x) * k; this.y += (ty - this.y) * k;
-    C.x = this.x; C.y = this.y; C.z = z;
+    C.x = this.x; C.y = this.y; C.z = z; C.offY = W3D.offY();
   }
 };
 { const wc0 = W3D.camera.bind(W3D); W3D.camera = function () { wc0(); if (inRun()) Cam3.apply(); else Cam3.init = false; }; }
 { const ps2 = PC.settings.bind(PC); PC.settings = function (head, cycle, box, s) {
-    head('3D'); cycle('3D camera', 'cam3d', ['close', 'cine', 'top'], ['CLOSE', 'CINEMATIC', 'TOP']); cycle('3D style', 'toon3d', [1, 0], ['TOON', 'CLASSIC']);
+    head('3D'); cycle('3D camera', 'cam3d', ['close', 'cine', 'top'], ['CLOSE', 'CINEMATIC', 'TOP']); cycle('3D style', 'toon3d', [1, 0], ['TOON', 'CLASSIC']); cycle('Reflections', 'refl', ['soft', 'full', 'off'], ['SOFT', 'FULL', 'OFF']);
     ps2(head, cycle, box, s); }; }
+/* =====================================================================
+   WAR SOUNDTRACK (version 38, Settings > SOUND > SOUNDTRACK: WAR / CLASSIC).
+   Runs play SIEGE PROTOCOL, STEEL RAIN or FRONTLINE (by area), bosses play
+   TOTAL WAR with an air-raid siren as they arrive; distant explosions roll
+   across the city during a run, and every kill lands with a low thump.
+   The Music Room still lets you pick any single track. Sound only.
+   ===================================================================== */
+const War = {
+  on() { const s = Store.data && Store.data.settings; return !!s && s.sndtrk !== 'classic'; },
+  auto() { const t = Store.data.settings.track; return !t || t === 'auto'; },
+  run() { const L = ['war1', 'war2', 'war3'], th = BG.theme || 'maglev'; let h = 0; for (const ch of th + (G.mode || '')) h = (h * 31 + ch.charCodeAt(0)) | 0; return L[Math.abs(h) % 3]; },
+  boomT: 9, boss0: '',
+  siren(t) { const A = Aud; if (!A.c || A.quiet) return; for (let k = 0; k < 2; k++) { const t0 = t + k * 1.7; A.tone(520, 880, .85, .03, 'sawtooth', t0); A.tone(880, 520, .85, .03, 'sawtooth', t0 + .85); } },
+  tick(rd) {
+    const A = Aud; if (!this.on() || !A.c || A.c.state !== 'running' || A.quiet || G.state !== 'PLAY' || REPLAY.fast) return;
+    this.boomT -= rd; if (this.boomT <= 0) { this.boomT = 12 + Math.random() * 16; const t = A.c.currentTime + .05; A.noise(1.6, .07, 220, 40, 'lowpass', t); A.tone(46, 26, 1.5, .07, 'sine', t); }
+    const b = Boss.cur, id = b && b.dying <= 0 ? b.id + (b.lvl || '') : ''; if (id && id !== this.boss0) this.siren(A.c.currentTime + .1); this.boss0 = id;
+  }
+};
+{ const rp0 = runTrackPick; runTrackPick = function () { if (G.mode !== 'dojo' && War.on() && War.auto()) return War.run(); return rp0(); };
+  const mu0 = Aud.music.bind(Aud); Aud.music = function (id, boss) { if (boss && War.on() && War.auto()) return mu0('warboss', false); return mu0(id, boss); };
+  const ed1 = EAnim.death.bind(EAnim); EAnim.death = function (e, a) { ed1(e, a); try { if (War.on() && Aud.c && !Aud.quiet && !(REPLAY.on && REPLAY.fast)) Aud.tone(78, 34, .14, .085, 'sine'); } catch (er) { errLog(er); } };
+  const pt1 = PC.tick.bind(PC); PC.tick = function (rd) { pt1(rd); War.tick(rd); };
+  const ps3 = PC.settings.bind(PC); PC.settings = function (head, cycle, box, s) {
+    head('SOUND'); cycle('Soundtrack', 'sndtrk', ['war', 'classic'], ['WAR', 'CLASSIC'], () => { if (inRun()) { G.runTrack = runTrackPick(); Aud.music('run', !!Boss.cur); } });
+    ps3(head, cycle, box, s); }; }
+/* =====================================================================
+   VOICES 2 (version 38) — every character always has a voice:
+     1. a voice installed on the device in the game's language
+     2. otherwise an English voice reading the original English line
+     3. otherwise (or with CHARACTER VOICES: SYNTH) a voice made by the game:
+        speech-like syllables shaped by two vowel formants, pitched and
+        timed per character, robotic for the AIs (REN.NULL, SHOGUN.EXE...)
+   Mika's radio lines during a run are voiced too, quieter.
+   ===================================================================== */
+Object.assign(Voices, {
+  until: 0,
+  busy() { return performance.now() < this.until; },
+  mode() { const v = Store.data && Store.data.settings.cvoice; return v === 0 ? 'off' : v === 2 ? 'synth' : 'auto'; },
+  on() { return this.mode() !== 'off' && !Aud.quiet; },
+  pick(code) { try { const all = (typeof speechSynthesis !== 'undefined' && speechSynthesis.getVoices()) || []; return all.filter(v => (v.lang || '').toLowerCase().startsWith(code)); } catch (e) { return []; } },
+  speak(cid, text, english, vol) {
+    if (!this.on() || !text) return; this.stop();
+    const ch = CHARS[cid] || {}, p = ch.pitch || 200, ai = /\.(EXE|SYS|NULL)$|HYAKKI|RAIJIN|IZANAMI/.test(ch.name || '');
+    const v = vol == null ? 1 : vol, synthOnly = this.mode() === 'synth';
+    if (!synthOnly && typeof speechSynthesis !== 'undefined') {
+      let list = this.pick(this.code()), say = text;
+      if (!list.length && english && this.code() !== 'en') { list = this.pick('en'); say = english; }
+      if (list.length) try {
+        const u = new SpeechSynthesisUtterance(String(say).replace(/[*_~]/g, ''));
+        let h = 0; for (const k of cid + 'v') h = (h * 31 + k.charCodeAt(0)) | 0; u.voice = list[Math.abs(h) % list.length]; u.lang = u.voice.lang;
+        u.pitch = clamp(.35 + (p - 40) / 420 * 1.3, .2, 1.8); u.rate = ai ? .86 : p > 400 ? 1.12 : 1; u.volume = clamp(.8 * v * (Store.data.settings.sfx || .8), 0, 1);
+        speechSynthesis.speak(u); this.until = performance.now() + Math.min(9000, say.length * 70); return;
+      } catch (e) { errLog(e); }
+    }
+    this.babble(cid, text, v);
+  },
+  babble(cid, text, vol) { // the game's own voice: no device voice needed
+    const A = Aud; if (!A.c || A.c.state !== 'running') return;
+    const c = A.c, ch = CHARS[cid] || {}, p = ch.pitch || 200, ai = /\.(EXE|SYS|NULL)$|HYAKKI|RAIJIN|IZANAMI/.test(ch.name || '');
+    const base = clamp(p * .85, 70, 380), s = String(text), n = Math.max(2, Math.min(42, Math.round(s.replace(/\s+/g, '').length / 2.4)));
+    const F1 = [730, 530, 390, 300, 600, 450], F2 = [1090, 1840, 1990, 870, 1400, 1200], step = ai ? .1 : .085;
+    let t = c.currentTime + .03; const v0 = .26 * (vol == null ? 1 : vol);
+    const out = c.createGain(); out.gain.value = 1; out.connect(A.sfxBus);
+    for (let i = 0; i < n; i++) {
+      const ci = Math.min(s.length - 1, Math.round(i * s.length / n)), code = s.charCodeAt(ci) || 97, vw = code % 6, d = step * (.75 + (code % 3) * .2);
+      if (/[\s,.!?…—-]/.test(s[ci]) && i > 0) { t += step * .9; continue; }
+      const o = c.createOscillator(), b1 = c.createBiquadFilter(), b2 = c.createBiquadFilter(), g1 = c.createGain(), g2 = c.createGain(), env = c.createGain();
+      o.type = ai ? 'square' : 'sawtooth'; const f = base * (1 + ((code % 7) - 3) * .035) * (1 + .04 * Math.sin(i * 1.7));
+      o.frequency.setValueAtTime(f, t); o.frequency.linearRampToValueAtTime(f * (ai ? 1 : .93), t + d);
+      b1.type = 'bandpass'; b1.frequency.value = F1[vw] * (p > 400 ? 1.2 : 1); b1.Q.value = ai ? 12 : 6; b2.type = 'bandpass'; b2.frequency.value = F2[vw] * (p > 400 ? 1.15 : 1); b2.Q.value = ai ? 14 : 8;
+      g1.gain.value = 2.6; g2.gain.value = 1.7; // (narrow formant filters keep little of the raw wave)
+      env.gain.setValueAtTime(.0001, t); env.gain.linearRampToValueAtTime(v0, t + .012); env.gain.setValueAtTime(v0, t + d * .7); env.gain.exponentialRampToValueAtTime(.0001, t + d);
+      o.connect(b1); o.connect(b2); b1.connect(g1); b2.connect(g2); g1.connect(env); g2.connect(env); env.connect(out);
+      o.start(t); o.stop(t + d + .02); o.onended = () => { try { o.disconnect(); b1.disconnect(); b2.disconnect(); g1.disconnect(); g2.disconnect(); env.disconnect(); } catch (e) { } };
+      t += d + step * .25;
+    }
+    this.out = out; this.until = performance.now() + (t - c.currentTime) * 1000;
+    setTimeout(() => { if (this.out === out) { try { out.disconnect(); } catch (e) { } } }, (t - c.currentTime) * 1000 + 400);
+  },
+  stop() { try { if (typeof speechSynthesis !== 'undefined') speechSynthesis.cancel(); } catch (e) { } if (this.out) { try { this.out.gain.setTargetAtTime(0, Aud.c.currentTime, .02); } catch (e) { } this.out = null; } this.until = 0; }
+});
+{ const cs1 = Comms.say.bind(Comms); Comms.say = function (key, force) { const before = this.cur; cs1(key, force);
+    if (this.cur && this.cur !== before && !REPLAY.on) { const arr = COMMS[key], u = (this.used[key] | 0) - 1, ln = arr && arr[((u % arr.length) + arr.length) % arr.length]; Voices.speak(this.cur.cid, this.cur.text, ln && ln[1], .6); } }; }
 /* test + automation hooks (used by the headless test suite) */
 window.__OD = { G, P, V, EN, BU, Boss, Director, Flow, UI, Store, STAGES, sim, step, startStory: i => Flow.startStory(i), startArcade: m => Flow.startArcade(m), Dlg, Arena, REC, REPLAY, TICK, R, In, Replays, DMATH };
 try {
