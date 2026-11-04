@@ -537,6 +537,11 @@ body.pc .sk { max-width: 84px; }
 <style>
 #rsGraph { display: block; width: 100%; height: 120px; margin-top: 6px; }
 </style>
+<style>
+#rsGrade { display: grid; grid-template-columns: 74px 1fr; gap: 4px 14px; align-items: center; }
+#rsGrade .gl { grid-row: span 3; font: italic 700 54px/1 var(--fd); text-align: center; text-shadow: 0 0 18px currentColor; animation: slam .5s .2s cubic-bezier(.2, 1.6, .4, 1) both; }
+#rsGrade .gt { font: 700 12px var(--fm); color: var(--mute); letter-spacing: 1px; } #rsGrade .gs { font: 700 13px var(--fm); color: var(--fg); } #rsGrade .tip { font-size: 14px; color: var(--gold); }
+</style>
 <div id="sa" aria-hidden="true"></div>
 <canvas id="c" aria-label="Overdrive: Cyber Slash game field"></canvas>
 <button id="pauseBtn" class="hidden" aria-label="Pause">II</button>
@@ -802,6 +807,7 @@ body.pc .sk { max-width: 84px; }
       <h1 style="text-align:center" id="rsTitle"></h1>
       <div class="big-stars hidden" id="rsStars"></div>
       <div class="newbest hidden" id="rsBest">NEW BEST</div>
+      <div class="panel hidden" id="rsGrade"></div>
       <div class="stat" id="rsStats"></div>
       <div class="panel hidden" id="rsGraphBox"><div class="eyebrow">RUN GRAPH</div><canvas id="rsGraph" aria-label="Score and combo over the run"></canvas><div class="small mute" id="rsGraphKey"></div></div>
       <div class="panel small" id="rsNotes"></div>
@@ -1074,8 +1080,8 @@ Math.sin = DMATH.sin; Math.cos = DMATH.cos; Math.atan = DMATH.atan; Math.atan2 =
    All tuning lives here. Logical units: the view is ~420 wide, the
    train roof (arena) is 340 wide. Speeds are units per second.
    ===================================================================== */
-const VERSION = '36.0';
-const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0', '36.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
+const VERSION = '37.0';
+const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0', '36.0', '37.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
 const CFG = { step: 1 / 60, maxSteps: 5, maxEnemies: 22, arenaW: 340, viewW: 420, viewH: 760 };
 let RDT = 1 / 60; // version 34: the real time of the frame being drawn. Drawing code uses it instead of a fixed 1/60, so 120-480 Hz screens animate at the right speed
 
@@ -1407,7 +1413,7 @@ const WAVES = [
   { id: 'triage', name: 'FIELD HOSPITAL', need: ['medic', 'brute'] },
   { id: 'mirrors', name: 'HALL OF MIRRORS', need: ['mirror'] }
 ];
-const AFF_TXT = ['', 'SWIFT', 'VOLATILE', 'SPLIT', 'AEGIS']; // elite traits
+const AFF_TXT = ['', 'SWIFT', 'VOLATILE', 'SPLIT', 'AEGIS', 'THORNS']; // elite traits (THORNS: version 37)
 
 /* =====================================================================
    STORY MODE — 4 chapters x 3 stages + two bonus chapters, 6 bosses
@@ -5725,6 +5731,11 @@ Object.assign(HE, {"AFTERGLOW": "האור שאחרי", "The storm after the show
 Object.assign(AR, {"AFTERGLOW": "الوهج الأخير", "The storm after the show": "العاصفة بعد العرض", "Finish chapter 21 to unlock chapter 22": "أنهِ الفصل 21 لفتح الفصل 22", "STATIC SKY": "سماء مشحونة", "GLASS RAIN": "مطر الزجاج", "THE LAST TRAIN": "القطار الأخير", "Reach a x45 combo": "حقق كومبو x45", "Land 18 perfect parries": "نفّذ 18 صدّة مثالية", "Reach a x35 combo": "حقق كومبو x35", "Win within 320s": "انتصر خلال 320 ثانية", "RIPTIDE": "التيار الساحب", "A sea-blue edge. Kills break apart like ice in the surf.": "حد بلون البحر. الضحايا يتكسرون كالجليد في الأمواج.", "NEON INK": "حبر النيون", "Black ink with a pink glow. Kills splash across the roof.": "حبر أسود بتوهج وردي. الضحايا يتناثرون على السطح.", "EMBER SHINOBI": "شينوبي الجمر", "A cyber-ninja frame glowing like coals in the wind.": "هيكل نينجا سيبراني يتوهج كالجمر في الريح.", "MIDNIGHT WOLF": "ذئب منتصف الليل", "A wolf warrior in black armor with moonlit eyes.": "محارب ذئب بدرع أسود وعينين مضاءتين بالقمر.", "SAKURA WITCH": "ساحرة الساكورا", "A street witch whose hat sheds cherry petals.": "ساحرة شوارع تتساقط من قبعتها بتلات الكرز.", "SOLAR LANCE": "رمح الشمس", "A spear of sunlight. When a dash ends, light falls from the sky on the three nearest enemies.": "رمح من ضوء الشمس. عند انتهاء الاندفاع يسقط الضوء من السماء على أقرب ثلاثة أعداء.", "MIRROR TWINBLADES": "النصلان المرآويان", "Two mirrored daggers. Every dash also cuts the same distance behind you.": "خنجران مرآويان. كل اندفاع يقطع أيضاً المسافة نفسها خلفك.", "SUNFALL": "سقوط الشمس", "Five beams of light instead of three": "خمسة أشعة ضوء بدل ثلاثة", "KALEIDOSCOPE": "المشكال", "The mirror cut also fans out to both sides": "قطع المرآة يمتد أيضاً إلى الجانبين", "NEON KOI": "كوي النيون", "Spirit fish": "سمكة روح", "A glowing koi that swims through the air. Every 11 seconds it sends a wave ahead of you that hits everything in a line.": "سمكة كوي متوهجة تسبح في الهواء. كل 11 ثانية ترسل أمامك موجة تصيب كل ما في خط واحد.", "MANTIS DRONE": "طائرة فرس النبي", "Blade bug": "حشرة الأنصال", "A green drone with scythe arms. Every 7 seconds it cuts the two nearest enemies, and finishes off any that are badly hurt.": "طائرة خضراء بذراعين كالمنجل. كل 7 ثوانٍ تقطع أقرب عدوين وتجهز على المصابين بشدة.", "FINISHED": "تمت التصفية", "CHAPTER 22: AFTERGLOW": "الفصل 22: الوهج الأخير", "The storm comes back after the encore: four new stages ending in RAIJIN, REN.NULL and IZANAMI back to back.": "تعود العاصفة بعد الختام: أربع مراحل جديدة تنتهي بـ RAIJIN و REN.NULL و IZANAMI على التوالي.", "TWO NEW WEAPONS": "سلاحان جديدان", "SOLAR LANCE calls light down on the three nearest enemies when a dash ends. MIRROR TWINBLADES cut the same line behind you on every dash.": "رمح الشمس يُنزل الضوء على أقرب ثلاثة أعداء عند انتهاء الاندفاع. النصلان المرآويان يقطعان الخط نفسه خلفك مع كل اندفاع.", "TWO NEW PETS": "حيوانان أليفان جديدان", "NEON KOI sends a wave through a whole line of enemies. MANTIS DRONE cuts the two nearest enemies and finishes off the badly hurt.": "كوي النيون يرسل موجة عبر صف كامل من الأعداء. طائرة فرس النبي تقطع أقرب عدوين وتجهز على المصابين بشدة.", "NEW LOOKS": "أشكال جديدة", "Heroes EMBER SHINOBI, MIDNIGHT WOLF and SAKURA WITCH, and the blade skins RIPTIDE and NEON INK.": "الأبطال شينوبي الجمر وذئب منتصف الليل وساحرة الساكورا، وأشكال الأنصال التيار الساحب وحبر النيون.", "FIXES": "إصلاحات", "The rain and every other sound stop when you leave the app without closing it. Pet effects run at the right speed on 120-480 Hz screens.": "يتوقف المطر وكل الأصوات الأخرى عند مغادرة التطبيق دون إغلاقه. مؤثرات الحيوانات الأليفة تعمل بالسرعة الصحيحة على شاشات 120-480 هرتز."});
 Object.assign(RU, {"AFTERGLOW": "ПОСЛЕСВЕЧЕНИЕ", "The storm after the show": "Буря после шоу", "Finish chapter 21 to unlock chapter 22": "Пройдите главу 21, чтобы открыть главу 22", "STATIC SKY": "ЭЛЕКТРИЧЕСКОЕ НЕБО", "GLASS RAIN": "СТЕКЛЯННЫЙ ДОЖДЬ", "THE LAST TRAIN": "ПОСЛЕДНИЙ ПОЕЗД", "Reach a x45 combo": "Наберите комбо x45", "Land 18 perfect parries": "18 идеальных парирований", "Reach a x35 combo": "Наберите комбо x35", "Win within 320s": "Победите за 320 с", "RIPTIDE": "ОБРАТНОЕ ТЕЧЕНИЕ", "A sea-blue edge. Kills break apart like ice in the surf.": "Кромка цвета моря. Убитые раскалываются, как лёд в прибое.", "NEON INK": "НЕОНОВЫЕ ЧЕРНИЛА", "Black ink with a pink glow. Kills splash across the roof.": "Чёрные чернила с розовым свечением. Убитые разлетаются брызгами по крыше.", "EMBER SHINOBI": "ШИНОБИ УГЛЕЙ", "A cyber-ninja frame glowing like coals in the wind.": "Кибер-ниндзя, светящийся, как угли на ветру.", "MIDNIGHT WOLF": "ПОЛУНОЧНЫЙ ВОЛК", "A wolf warrior in black armor with moonlit eyes.": "Воин-волк в чёрной броне с лунными глазами.", "SAKURA WITCH": "САКУРА-ВЕДЬМА", "A street witch whose hat sheds cherry petals.": "Уличная ведьма, с чьей шляпы сыплются лепестки сакуры.", "SOLAR LANCE": "СОЛНЕЧНОЕ КОПЬЁ", "A spear of sunlight. When a dash ends, light falls from the sky on the three nearest enemies.": "Копьё из солнечного света. В конце рывка свет падает с неба на трёх ближайших врагов.", "MIRROR TWINBLADES": "ЗЕРКАЛЬНЫЕ КЛИНКИ", "Two mirrored daggers. Every dash also cuts the same distance behind you.": "Два зеркальных кинжала. Каждый рывок режет и на то же расстояние позади вас.", "SUNFALL": "ПАДЕНИЕ СОЛНЦА", "Five beams of light instead of three": "Пять лучей света вместо трёх", "KALEIDOSCOPE": "КАЛЕЙДОСКОП", "The mirror cut also fans out to both sides": "Зеркальный разрез расходится и в обе стороны", "NEON KOI": "НЕОНОВЫЙ КОИ", "Spirit fish": "Рыба-дух", "A glowing koi that swims through the air. Every 11 seconds it sends a wave ahead of you that hits everything in a line.": "Светящийся карп, плывущий по воздуху. Каждые 11 секунд он пускает перед вами волну, которая бьёт всех на линии.", "MANTIS DRONE": "ДРОН-БОГОМОЛ", "Blade bug": "Жук-клинок", "A green drone with scythe arms. Every 7 seconds it cuts the two nearest enemies, and finishes off any that are badly hurt.": "Зелёный дрон с руками-косами. Каждые 7 секунд режет двух ближайших врагов и добивает тяжело раненых.", "FINISHED": "ДОБИТ", "CHAPTER 22: AFTERGLOW": "ГЛАВА 22: ПОСЛЕСВЕЧЕНИЕ", "The storm comes back after the encore: four new stages ending in RAIJIN, REN.NULL and IZANAMI back to back.": "После «на бис» возвращается буря: четыре новых этапа и финал — RAIJIN, REN.NULL и IZANAMI подряд.", "TWO NEW WEAPONS": "ДВА НОВЫХ ОРУЖИЯ", "SOLAR LANCE calls light down on the three nearest enemies when a dash ends. MIRROR TWINBLADES cut the same line behind you on every dash.": "Солнечное копьё в конце рывка обрушивает свет на трёх ближайших врагов. Зеркальные клинки режут ту же линию позади вас при каждом рывке.", "TWO NEW PETS": "ДВА НОВЫХ ПИТОМЦА", "NEON KOI sends a wave through a whole line of enemies. MANTIS DRONE cuts the two nearest enemies and finishes off the badly hurt.": "Неоновый кои пускает волну через целую линию врагов. Дрон-богомол режет двух ближайших и добивает тяжело раненых.", "NEW LOOKS": "НОВЫЕ ОБЛИКИ", "Heroes EMBER SHINOBI, MIDNIGHT WOLF and SAKURA WITCH, and the blade skins RIPTIDE and NEON INK.": "Герои ШИНОБИ УГЛЕЙ, ПОЛУНОЧНЫЙ ВОЛК и САКУРА-ВЕДЬМА, облики клинка ОБРАТНОЕ ТЕЧЕНИЕ и НЕОНОВЫЕ ЧЕРНИЛА.", "FIXES": "ИСПРАВЛЕНИЯ", "The rain and every other sound stop when you leave the app without closing it. Pet effects run at the right speed on 120-480 Hz screens.": "Дождь и все остальные звуки затихают, когда вы выходите из приложения, не закрывая его. Эффекты питомцев идут с правильной скоростью на экранах 120–480 Гц."});
 
+/* version 37 strings */
+Object.assign(HE, {"MISS": "פספוס", "THORNS": "קוצים", "DASHES THAT HIT NOTHING HEAT YOUR BLADE: AIM, THEN RELEASE": "זינוקים שלא פוגעים בכלום מחממים את הלהב: כוונו ואז שחררו", "THORNS: BOUNCE OFF A SIDE RAIL FIRST, OR USE OVERDRIVE, TO CUT THROUGH THE SPIKES": "קוצים: הקפיצו קודם ממעקה צד, או השתמשו באוברדרייב, כדי לחתוך דרך הקוצים", "SKILL GRADE": "ציון מיומנות", "ACCURACY {0}% · PARRIES {1} · RAIL BOUNCES {2} · HITS TAKEN {3}": "דיוק {0}% · הדיפות {1} · קפיצות ממעקה {2} · פגיעות שספגת {3}", "{0} of your {1} dashes hit nothing. Hold to aim (time slows), then release on a target.": "{0} מתוך {1} הזינוקים שלך לא פגעו בכלום. החזיקו כדי לכוון (הזמן מאט), ושחררו על מטרה.", "You took {0} hits. Watch the red rings: enemies flash before they attack.": "ספגת {0} פגיעות. שימו לב לטבעות האדומות: אויבים מהבהבים לפני שהם תוקפים.", "No parries yet: slash an orange bullet right as your dash starts to send it back.": "עוד לא הדפת: חתכו כדור כתום בדיוק כשהזינוק מתחיל כדי להחזיר אותו.", "Bounce off a side rail mid-dash: the next hit is a sure critical and cuts through THORNS.": "הקפיצו ממעקה צד באמצע זינוק: הפגיעה הבאה קריטית בטוחה וחותכת דרך קוצים.", "Clean run. Next: keep the combo alive between waves for a higher score.": "ריצה נקייה. הצעד הבא: שמרו על הקומבו בין הגלים כדי לקבל ניקוד גבוה יותר.", "3D camera": "מצלמת תלת־ממד", "CLOSE": "קרובה", "CINEMATIC": "קולנועית", "TOP": "מלמעלה", "3D style": "סגנון תלת־ממד", "TOON": "מצויר", "CLASSIC": "קלאסי", "SKILL MATTERS": "מיומנות קובעת", "Swiping at random no longer wins. A dash is only safe at its start, two misses in a row heat your blade and cut the combo, and a dash that hits cools the blade.": "החלקות אקראיות כבר לא מנצחות. זינוק בטוח רק בתחילתו, שני פספוסים ברצף מחממים את הלהב ושוברים את הקומבו, וזינוק שפוגע מקרר את הלהב.", "LESS HAND-HOLDING": "פחות עזרה אוטומטית", "From RONIN up the aim help is smaller and the game forgives less after a hit. ROOKIE keeps all the help. Mouse aim at the cursor is exact, with no help.": "מ-RONIN ומעלה סיוע הכיוון קטן יותר והמשחק סולח פחות אחרי פגיעה. ב-ROOKIE כל העזרה נשארת. כיוון בעכבר אל הסמן מדויק, בלי עזרה.", "A new elite trait: a direct dash bounces off its spikes. Bounce off a side rail first, or use Overdrive, to cut through.": "תכונת עילית חדשה: זינוק ישיר נהדף מהקוצים. הקפיצו קודם ממעקה צד, או השתמשו באוברדרייב, כדי לחתוך דרכם.", "The results grade your play from D to SSS (accuracy, parries, rail bounces, hits taken) and tell you one thing to get better at.": "מסך התוצאות נותן ציון למשחק שלך מ-D עד SSS (דיוק, הדיפות, קפיצות ממעקה, פגיעות שספגת) ואומר לך דבר אחד לשפר.", "A NEW 3D VIEW": "מבט תלת־ממד חדש", "A closer camera that follows you (CLOSE, CINEMATIC or TOP) and a toon look with two light bands and dark outlines. Settings > PRESENTATION > 3D.": "מצלמה קרובה יותר שעוקבת אחריך (קרובה, קולנועית או מלמעלה) ומראה מצויר עם שתי רמות אור וקווי מתאר כהים. הגדרות > הצגה > תלת־ממד."});
+Object.assign(AR, {"MISS": "خطأ", "THORNS": "أشواك", "DASHES THAT HIT NOTHING HEAT YOUR BLADE: AIM, THEN RELEASE": "الاندفاعات التي لا تصيب شيئاً تسخّن نصلك: صوّب ثم اترك", "THORNS: BOUNCE OFF A SIDE RAIL FIRST, OR USE OVERDRIVE, TO CUT THROUGH THE SPIKES": "أشواك: ارتدّ عن حاجز جانبي أولاً، أو استخدم الأوفردرايف، لتقطع عبر الأشواك", "SKILL GRADE": "درجة المهارة", "ACCURACY {0}% · PARRIES {1} · RAIL BOUNCES {2} · HITS TAKEN {3}": "الدقة {0}% · صدّات {1} · ارتدادات {2} · ضربات تلقيتها {3}", "{0} of your {1} dashes hit nothing. Hold to aim (time slows), then release on a target.": "{0} من {1} اندفاعاتك لم تصب شيئاً. اضغط مطولاً للتصويب (الزمن يبطؤ) ثم اترك على هدف.", "You took {0} hits. Watch the red rings: enemies flash before they attack.": "تلقيت {0} ضربات. راقب الحلقات الحمراء: الأعداء يومضون قبل الهجوم.", "No parries yet: slash an orange bullet right as your dash starts to send it back.": "لا صدّات بعد: اضرب رصاصة برتقالية لحظة بدء اندفاعك لتعيدها.", "Bounce off a side rail mid-dash: the next hit is a sure critical and cuts through THORNS.": "ارتدّ عن حاجز جانبي أثناء الاندفاع: الضربة التالية حرجة مؤكدة وتقطع عبر الأشواك.", "Clean run. Next: keep the combo alive between waves for a higher score.": "جولة نظيفة. التالي: حافظ على الكومبو بين الموجات لنقاط أعلى.", "3D camera": "كاميرا ثلاثية الأبعاد", "CLOSE": "قريبة", "CINEMATIC": "سينمائية", "TOP": "من الأعلى", "3D style": "نمط ثلاثي الأبعاد", "TOON": "كرتوني", "CLASSIC": "كلاسيكي", "SKILL MATTERS": "المهارة تهم", "Swiping at random no longer wins. A dash is only safe at its start, two misses in a row heat your blade and cut the combo, and a dash that hits cools the blade.": "التمرير العشوائي لم يعد يفوز. الاندفاع آمن في بدايته فقط، وخطآن متتاليان يسخّنان النصل ويقطعان الكومبو، والاندفاع الذي يصيب يبرّد النصل.", "LESS HAND-HOLDING": "مساعدة أقل", "From RONIN up the aim help is smaller and the game forgives less after a hit. ROOKIE keeps all the help. Mouse aim at the cursor is exact, with no help.": "من RONIN فما فوق تقل مساعدة التصويب ويسامح اللعب أقل بعد الإصابة. يحتفظ ROOKIE بكل المساعدة. التصويب بالفأرة نحو المؤشر دقيق بلا مساعدة.", "A new elite trait: a direct dash bounces off its spikes. Bounce off a side rail first, or use Overdrive, to cut through.": "صفة نخبة جديدة: الاندفاع المباشر يرتد عن أشواكها. ارتدّ عن حاجز جانبي أولاً أو استخدم الأوفردرايف لتقطع عبرها.", "The results grade your play from D to SSS (accuracy, parries, rail bounces, hits taken) and tell you one thing to get better at.": "شاشة النتائج تقيّم لعبك من D إلى SSS (الدقة، الصدّات، الارتدادات، الضربات المتلقاة) وتخبرك بشيء واحد لتتحسن فيه.", "A NEW 3D VIEW": "عرض ثلاثي الأبعاد جديد", "A closer camera that follows you (CLOSE, CINEMATIC or TOP) and a toon look with two light bands and dark outlines. Settings > PRESENTATION > 3D.": "كاميرا أقرب تتبعك (قريبة أو سينمائية أو من الأعلى) ومظهر كرتوني بمستويين للضوء وحواف داكنة. الإعدادات > العرض > ثلاثي الأبعاد."});
+Object.assign(RU, {"MISS": "МИМО", "THORNS": "ШИПЫ", "DASHES THAT HIT NOTHING HEAT YOUR BLADE: AIM, THEN RELEASE": "Рывки мимо цели греют клинок: прицельтесь, потом отпустите", "THORNS: BOUNCE OFF A SIDE RAIL FIRST, OR USE OVERDRIVE, TO CUT THROUGH THE SPIKES": "ШИПЫ: сначала отскочите от бортика или включите Овердрайв, чтобы прорубиться", "SKILL GRADE": "ОЦЕНКА МАСТЕРСТВА", "ACCURACY {0}% · PARRIES {1} · RAIL BOUNCES {2} · HITS TAKEN {3}": "ТОЧНОСТЬ {0}% · ПАРИРОВАНИЯ {1} · ОТСКОКИ {2} · ПОЛУЧЕНО УДАРОВ {3}", "{0} of your {1} dashes hit nothing. Hold to aim (time slows), then release on a target.": "{0} из {1} рывков ушли мимо. Удерживайте для прицела (время замедляется) и отпускайте на цель.", "You took {0} hits. Watch the red rings: enemies flash before they attack.": "Вы получили {0} ударов. Следите за красными кольцами: враги вспыхивают перед атакой.", "No parries yet: slash an orange bullet right as your dash starts to send it back.": "Пока без парирований: рубите оранжевую пулю в самом начале рывка, чтобы отбить её.", "Bounce off a side rail mid-dash: the next hit is a sure critical and cuts through THORNS.": "Отскочите от бортика в рывке: следующий удар — гарантированный крит, и он пробивает ШИПЫ.", "Clean run. Next: keep the combo alive between waves for a higher score.": "Чистый забег. Дальше: держите комбо между волнами ради большего счёта.", "3D camera": "3D-камера", "CLOSE": "БЛИЖЕ", "CINEMATIC": "КИНО", "TOP": "СВЕРХУ", "3D style": "3D-стиль", "TOON": "ТУН", "CLASSIC": "КЛАССИКА", "SKILL MATTERS": "ВАЖНО МАСТЕРСТВО", "Swiping at random no longer wins. A dash is only safe at its start, two misses in a row heat your blade and cut the combo, and a dash that hits cools the blade.": "Случайные свайпы больше не побеждают. Рывок безопасен только в начале, два промаха подряд греют клинок и рвут комбо, а попадание охлаждает клинок.", "LESS HAND-HOLDING": "МЕНЬШЕ ПОДСКАЗОК", "From RONIN up the aim help is smaller and the game forgives less after a hit. ROOKIE keeps all the help. Mouse aim at the cursor is exact, with no help.": "Начиная с RONIN помощь прицеливания меньше, а игра меньше прощает после удара. На ROOKIE вся помощь остаётся. Прицел мышью на курсор точный, без помощи.", "A new elite trait: a direct dash bounces off its spikes. Bounce off a side rail first, or use Overdrive, to cut through.": "Новая черта элиты: прямой рывок отскакивает от шипов. Сначала отскочите от бортика или включите Овердрайв, чтобы прорубиться.", "The results grade your play from D to SSS (accuracy, parries, rail bounces, hits taken) and tell you one thing to get better at.": "Экран результатов оценивает игру от D до SSS (точность, парирования, отскоки, полученные удары) и подсказывает, что улучшить.", "A NEW 3D VIEW": "НОВЫЙ 3D-ВИД", "A closer camera that follows you (CLOSE, CINEMATIC or TOP) and a toon look with two light bands and dark outlines. Settings > PRESENTATION > 3D.": "Камера ближе и следует за вами (БЛИЖЕ, КИНО или СВЕРХУ) и тун-стиль с двумя уровнями света и тёмными контурами. Настройки > ПОДАЧА > 3D."});
+
 /* HEBREW — version 31 strings (news). Written by i18n/v32.py */
 Object.assign(HE, {
   "SHARPER CODE": "קוד חד יותר",
@@ -7848,17 +7859,18 @@ const P = {
 /* ---------------- input ---------------- */
 const SENS = [256, 121, 36]; // squared minimum swipe length in logical units: LOW, NORMAL, HIGH sensitivity
 function swipeMin() { return SENS[clamp(Store.data.settings.sens | 0, 0, 2)]; }
+function assistK() { if (In.cur) return 0; const d = G.di | 0; return d <= 0 ? 1 : d === 1 ? .6 : d === 2 ? .45 : .3; } // v37: ROOKIE keeps the full help, mouse aim at the cursor gets none
 function assistAngle(a) { // aim assist: bend a swipe onto an enemy within ~15 degrees of it
   if (!Store.data.settings.assist || G.mode === 'puzzle') return a; // puzzles: the aim is exactly the swipe
   let best = a, bs = 1e9;
   for (let i = 0; i < EN.n; i++) {
     const e = EN.a[i]; if (!e.alive || e.al > 0 || e.vis < .5 || e.spawnT > 0) continue;
     const dx = e.x - P.x, dy = e.y - P.y, d = Math.sqrt(dx * dx + dy * dy); if (d > 420 || d < 8) continue;
-    const ea = Math.atan2(dy, dx), df = Math.abs(angDiff(ea, a)); if (df > .27) continue;
+    const ea = Math.atan2(dy, dx), df = Math.abs(angDiff(ea, a)); if (df > .27 * assistK()) continue;
     const sc = df * 300 + d * .25; if (sc < bs) { bs = sc; best = ea; }
   }
   const B = Boss.cur;
-  if (bs > 1e8 && B && B.enter >= 1 && B.dying <= 0) { const ea = Math.atan2(B.y - P.y, B.x - P.x); if (Math.abs(angDiff(ea, a)) < .22) best = ea; }
+  if (bs > 1e8 && B && B.enter >= 1 && B.dying <= 0) { const ea = Math.atan2(B.y - P.y, B.x - P.x); if (Math.abs(angDiff(ea, a)) < .22 * assistK()) best = ea; }
   return best;
 }
 const In = {
@@ -7883,7 +7895,7 @@ const In = {
     if (dx * dx + dy * dy > swipeMin()) { this.buf = .22; this.ba = assistAngle(Math.atan2(dy, dx)); return; }
     // quick tap: dash toward the tapped spot (snaps to an enemy right under the finger)
     if (Store.data.settings.tap && performance.now() - this.t0 < 280) {
-      let tx = this.sx, ty = this.sy, bd = 70;
+      let tx = this.sx, ty = this.sy, bd = (G.di | 0) >= 1 ? 42 : 70; // (v37: a tighter snap above ROOKIE)
       for (let i = 0; i < EN.n; i++) { const o = EN.a[i]; if (!o.alive || o.al > 0) continue; const q = dist(o.x, o.y, this.sx, this.sy); if (q < bd + o.r) { bd = q; tx = o.x; ty = o.y; } }
       if (dist(tx, ty, P.x, P.y) > 14) { this.buf = .22; this.ba = Math.atan2(ty - P.y, tx - P.x); }
     }
@@ -8046,7 +8058,7 @@ function slash(a) {
   if (G.mode === 'puzzle') { if (!Puzzle.ready()) return; Puzzle.onSlash(); }
   if (REC.live()) { const q = qAng(a); a = dqAng(q); REC.act(RA.SLASH, q); } // recorded runs use the exact angle the replay will use
   const w = P.w, sp = w.speed;
-  P.vx = Math.cos(a) * sp; P.vy = Math.sin(a) * sp; P.dashT = .24; P.pw = P.pwMax; P.inv = Math.max(P.inv, .26); P.bounced = false;
+  P.vx = Math.cos(a) * sp; P.vy = Math.sin(a) * sp; P.dashT = .24; P.pw = P.pwMax; P.inv = Math.max(P.inv, simV(37) ? .12 : .26); P.bounced = false;
   if (G.odT <= 0) P.ch--; P.rt = P.rc; P.ang = a; P.seq++; P.swing = -1.9; P.sx = 1.6; P.sy = .58;
   P.heat += w.heat * P.heatMul * (G.odT > 0 ? .3 : 1);
   if (P.heat >= 75 && P.heat < 100) Tut.check('heat', HUD.hx || 70, 92, 54);
@@ -8117,13 +8129,13 @@ function addOD(n) {
   if (was < 100 && G.od >= 100 && P.has.od) { Comms.say('od'); const d = dockCenter('od') || { x: V.VW - 50, y: V.VH - 40, r: 34 }; Tut.check('od', d.x, d.y, d.r); } // always checked: replays must see the same tip
 }
 function hurt(src, who) {
-  if (P.inv > 0 || P.dashT > 0 || G.odT > 0 || G.state !== 'PLAY') return false;
+  if (P.inv > 0 || (P.dashT > 0 && (!simV(37) || P.dashT > .12)) || G.odT > 0 || G.state !== 'PLAY') return false; // v37: only the start of a dash is safe
   if (G.mode === 'dojo') { P.inv = .8; shake(.3); flash(.2, '#ff0844'); FX.call(lt('HIT! (NO DAMAGE IN THE DOJO)'), '#ff3b5c', 2, 15); Aud.sfx('hurt'); return true; }
   G.lastHit = src; G.lastWho = who == null ? -1 : who; P.regT = 0;
   if (P.skin.body === 'skull') FX.spark(P.x, P.y, '#e8e2d0', 16); // the skeleton rattles apart, then snaps back
   for (const t of Arena.terms) if (!t.done && dist(P.x, P.y, t.x, t.y) < t.zr + 10) t.p = Math.max(0, t.p - .3);
   P.hp--; G.hits++; P.inv = 1.25; G.combo = 0; P.otN = 0; styleHurt(); if (P.hp === 1) Comms.say('low', true); P.heat = Math.max(0, P.heat - 30);
-  G.skill = Math.max(G.diff.dda[0], G.skill - .12); G.hs = .08; shake(.65); flash(.35, '#ff0844'); glitch(.25); vibe('hurt');
+  G.skill = Math.max(G.diff.dda[0], G.skill - (simV(37) && G.di >= 1 ? .06 : .12)); G.hs = .08; shake(.65); flash(.35, '#ff0844'); glitch(.25); vibe('hurt');
   P.sx = 1.4; P.sy = .6; Aud.sfx('hurt'); FX.spark(P.x, P.y, '#ff0844', 20, 1.2); FX.call(lt('SHIELD BREACH'), '#ff0844', 2);
   if (P.hp <= 0 && G.stage && G.stage.safe && G.mode === 'story') { P.hp = P.maxHp; P.inv = 2; FX.call(lt('SHIELDS REBOOTED'), '#00ff88', 3); hint('safe', lt('SLASH DRONES BEFORE THEY TOUCH YOU')); return true; }
   if (P.hp <= 0 && P.tal.laststand && !P.lastStand) { P.lastStand = 1; P.hp = 1; P.inv = 2; FX.ring(P.x, P.y, 220, '#ff3b5c', 6); FX.call(lt('LAST STAND'), '#ff3b5c', 3); Aud.sfx('od'); return true; }
@@ -10103,7 +10115,7 @@ function spawnEnemy(t, x, y, elite) {
   else if (t === ET.MIRROR) e.sa = R.f() * TAU;
   else if (t === ET.ENFORCER) { e.sh = 1; e.cd = 2.4; }
   else if (t === ET.WRAITH) e.stT = 2.6;
-  if (elite && !e.mb) { e.bub = 1; e.aff = 1 + R.i(4); if (e.aff === 1) e.spd *= 1.45; if (e.aff === 4) e.bt = 4; } else if (e.mb) e.elite = 0;
+  if (elite && !e.mb) { e.bub = 1; e.aff = 1 + R.i(simV(37) ? 5 : 4); if (e.aff === 1) e.spd *= 1.45; if (e.aff === 4) e.bt = 4; } else if (e.mb) e.elite = 0;
   return e;
 }
 function shoot(x, y, a, s, kind) {
@@ -15503,12 +15515,12 @@ const Preview = {
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 36
-  ["CHAPTER 22: AFTERGLOW", "The storm comes back after the encore: four new stages ending in RAIJIN, REN.NULL and IZANAMI back to back."],
-  ["TWO NEW WEAPONS", "SOLAR LANCE calls light down on the three nearest enemies when a dash ends. MIRROR TWINBLADES cut the same line behind you on every dash."],
-  ["TWO NEW PETS", "NEON KOI sends a wave through a whole line of enemies. MANTIS DRONE cuts the two nearest enemies and finishes off the badly hurt."],
-  ["NEW LOOKS", "Heroes EMBER SHINOBI, MIDNIGHT WOLF and SAKURA WITCH, and the blade skins RIPTIDE and NEON INK."],
-  ["FIXES", "The rain and every other sound stop when you leave the app without closing it. Pet effects run at the right speed on 120-480 Hz screens."]
+const NEWS = [ // version 37
+  ["SKILL MATTERS", "Swiping at random no longer wins. A dash is only safe at its start, two misses in a row heat your blade and cut the combo, and a dash that hits cools the blade."],
+  ["LESS HAND-HOLDING", "From RONIN up the aim help is smaller and the game forgives less after a hit. ROOKIE keeps all the help. Mouse aim at the cursor is exact, with no help."],
+  ["THORNS", "A new elite trait: a direct dash bounces off its spikes. Bounce off a side rail first, or use Overdrive, to cut through."],
+  ["SKILL GRADE", "The results grade your play from D to SSS (accuracy, parries, rail bounces, hits taken) and tell you one thing to get better at."],
+  ["A NEW 3D VIEW", "A closer camera that follows you (CLOSE, CINEMATIC or TOP) and a toon look with two light bands and dark outlines. Settings > PRESENTATION > 3D."]
 ];
 function deathCause() { // what hit you last, and how to avoid it next time
   const s = G.lastHit, w = G.lastWho, en = k => lt(EDEF[k] ? EDEF[k].name : 'ENEMY');
@@ -20631,21 +20643,23 @@ const GL3D = {
           vc = c; ve = e; vu = uv; vn = n; vw = q; vd = clamp((-dd - 260.) / 1300., 0., .85);
           vs = vec3((q.x - q.z * ld.x - smo.x) * smo.z, (q.y - q.z * ld.y - smo.y) * smo.w, clamp((q.z + 20.) / 300., 0., 1.)); }`;
       const fs = hp + `uniform sampler2D tx; uniform sampler2D sm; uniform vec3 fog; uniform vec4 lt; uniform float add; uniform float wet; uniform float tp;
-        uniform float smOn; uniform vec2 smT; uniform float lmul; uniform vec3 vv; uniform vec4 lp[NL]; uniform vec3 lc[NL]; uniform float nl;
+        uniform float smOn; uniform vec2 smT; uniform float lmul; uniform float toon; uniform vec3 vv; uniform vec4 lp[NL]; uniform vec3 lc[NL]; uniform float nl;
         varying vec4 vc; varying float ve; varying vec2 vu; varying vec3 vn; varying float vd; varying vec3 vw; varying vec3 vs;
         float sh1(vec2 q) { return step(texture2D(sm, q).r, vs.z + .012); }
         void main() { vec4 t = texture2D(tx, vu); if (add > .5) { float m = vc.a < 0. ? t.r : t.a; gl_FragColor = vec4(vc.rgb * m * abs(vc.a), 1.); return; } // a negative alpha: the texture's red is the light (holograms)
           vec3 N = normalize(vn); vec3 base = vc.rgb * t.rgb; float sh = 1.;
           if (smOn > .5 && vs.x > .002 && vs.x < .998 && vs.y > .002 && vs.y < .998) sh = (sh1(vs.xy + vec2(smT.x, 0.)) + sh1(vs.xy - vec2(smT.x, 0.)) + sh1(vs.xy + vec2(0., smT.y)) + sh1(vs.xy - vec2(0., smT.y))) * .25;
           vec3 Ld0 = normalize(lt.xyz); float l = max(dot(N, Ld0), 0.) * sh; float rim = pow(1. - abs(N.z * .6 + N.y * .4), 3.) * .35;
+          if (toon > .5 && ve < .5) { l = smoothstep(.16, .22, l) * .55 + smoothstep(.55, .6, l) * .45; rim = smoothstep(.12, .16, rim) * .45; } // toon: light in two bands, a crisp rim
           float ao = mix(1., .45 + .55 * clamp(vw.z / 16., 0., 1.), (1. - abs(N.z)) * (1. - ve)); float gls = N.z > .9 ? .25 + wet * .9 : .2; vec3 Vd = normalize(vv);
           vec3 col = (base * (lt.w * mix(.72, 1., sh) + l * (1. - lt.w)) + vc.rgb * rim) * ao * lmul;
           col += vec3(.5, .58, .78) * pow(max(dot(N, normalize(Ld0 + Vd)), 0.), 40.) * gls * sh;
           for (int i = 0; i < NL; i++) { if (float(i) >= nl) break; vec3 Lv = lp[i].xyz - vw; float dl = length(Lv); float at = max(1. - dl / lp[i].w, 0.); at *= at;
             vec3 Ld = Lv / max(dl, .001); float df = max(dot(N, Ld), 0.); float spc = pow(max(dot(N, normalize(Ld + Vd)), 0.), 28.) * gls * 2.; col += lc[i] * at * (base * df * 1.8 + spc); }
+          if (toon > .5 && ve < .5 && N.z < .85) { float sil = 1. - abs(dot(N, normalize(vv))); col *= mix(1., .18, smoothstep(.78, .86, sil)); } // toon: dark silhouette edges
           col += base * ve * 1.4; col = mix(col, fog, vd * (1. - ve));
           float a = vc.a; if (tp > .5) a *= mix(1., t.a, wet); gl_FragColor = vec4(col, a); }`.replace(/NL\]/g, this.NL + ']').replace('i < NL', 'i < ' + this.NL);
-      this.pr = this.prog(vs, fs, ['p', 'n', 'c', 'e', 'uv'], ['scr', 'ctr', 'cam', 'ks', 'yw', 'smo', 'ld', 'off', 'tx', 'sm', 'fog', 'lt', 'add', 'wet', 'tp', 'smOn', 'smT', 'lmul', 'vv', 'lp', 'lc', 'nl']);
+      this.pr = this.prog(vs, fs, ['p', 'n', 'c', 'e', 'uv'], ['scr', 'ctr', 'cam', 'ks', 'yw', 'smo', 'ld', 'off', 'tx', 'sm', 'fog', 'lt', 'add', 'wet', 'tp', 'smOn', 'smT', 'lmul', 'vv', 'lp', 'lc', 'nl', 'toon']);
       // shadow pass: the height of the highest thing over each roof texel, seen from the moon
       this.prS = this.prog(`attribute vec3 p; uniform vec4 smo; uniform vec2 ld; varying float vh;
         void main() { vec2 q = vec2((p.x - p.z * ld.x - smo.x) * smo.z, (p.y - p.z * ld.y - smo.y) * smo.w); vh = clamp((p.z + 20.) / 300., 0., 1.); gl_Position = vec4(q * 2. - 1., 1. - vh * 2., 1.); }`,
@@ -20834,7 +20848,7 @@ const GL3D = {
     if (post) target = this.rt('sc', W, H, true);
     gl.bindFramebuffer(gl.FRAMEBUFFER, target ? target.f : null); gl.viewport(0, 0, W, H);
     gl.clearColor(sky[0], sky[1], sky[2], 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    gl.useProgram(this.pr.pr); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, this.tex); gl.uniform1i(U.tx, 0);
+    gl.useProgram(this.pr.pr); gl.uniform1f(U.toon, Store.data && Store.data.settings.toon3d !== 0 ? 1 : 0); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, this.tex); gl.uniform1i(U.tx, 0);
     gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, P.sm && this.RT && this.RT.sm ? this.RT.sm.t : this.tex); gl.uniform1i(U.sm, 1); gl.activeTexture(gl.TEXTURE0);
     const k = V.s * V.dpr; gl.uniform2f(U.scr, cv.width / k, cv.height / k); { const o = typeof W3D !== 'undefined' ? W3D.lb() : [0, 0]; gl.uniform2f(U.ctr, V.VW / 2 + o[0] / V.s, V.VH / 2 + o[1] / V.s); } // a replay's letterbox
     gl.uniform4f(U.cam, this.cam.x, this.cam.y, this.cam.z, this.cam.offY); gl.uniform2f(U.ks, this.k, this.s); gl.uniform2f(U.yw, this.cy, this.sy);
@@ -22700,6 +22714,102 @@ Object.assign(PET4ART, {
     cx.fillStyle = '#05060f'; dot(7.5, -1.4, .8); dot(7.5, 1.4, .8); hglow(0, 0, 14, '#7dff6a', att ? .9 : .35);
   }
 });
+/* =====================================================================
+   VERSION 37 — SKILL. Swiping at random should not win:
+   · a dash is invulnerable only for its first 0.12 s (whole dash before)
+   · two or more dashes in a row that hit nothing heat the blade and cut the
+     combo timer; a dash that hits cools the blade a little
+   · less aim help on RONIN and above, none for mouse aim at the cursor;
+     the adaptive difficulty forgives half as much after a hit
+   · THORNS elites: a direct dash bounces off the spikes (and costs heat and
+     a charge); a rail bounce or Overdrive cuts through
+   · the results grade your play (accuracy, parries, rail bounces, hits)
+     and give one concrete tip
+   Rules that change the simulation are on for version 37 and newer, so
+   older replays keep playing back exactly.
+   ===================================================================== */
+const Skill = {
+  s: { dashes: 0, hit: 0, whiffs: 0, streak: 0, bounces: 0, thorns: 0 },
+  reset() { this.s = { dashes: 0, hit: 0, whiffs: 0, streak: 0, bounces: 0, thorns: 0 }; },
+  exempt() { const o = G.obj; return G.mode === 'puzzle' || G.mode === 'dojo' || G.mode === 'highway' || (G.mode === 'story' && o && (o.t === 'collect' || o.t === 'escort' || o.t === 'hack')); },
+  targets() { for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (e.alive && e.al <= 0 && e.y > 0 && e.y < V.VH && e.type !== ET.TREASURE) return true; } return !!(Boss.cur && Boss.cur.enter >= 1 && Boss.cur.dying <= 0); },
+  onHit() { if (P.dHit) return; P.dHit = 1; if (simV(37) && G.odT <= 0) P.heat = Math.max(0, P.heat - 6); },
+  dashEnd() {
+    if (this.exempt() || !this.targets()) return; const s = this.s; s.dashes++;
+    if (P.dHit) { s.hit++; s.streak = 0; return; }
+    s.whiffs++; s.streak++;
+    if (!simV(37) || s.streak < 2 || G.odT > 0) return;
+    P.heat += 9 * Math.min(3, s.streak - 1) * (P.heatMul || 1); G.ct = Math.min(G.ct, .5);
+    FX.text(P.x, P.y - 26, lt('MISS'), '#8fa4c8', 12, 0, 'miss');
+    if (P.heat >= 100 && P.lock <= 0) { P.lock = 1.3; P.heat = 62; FX.call(lt('OVERHEAT'), '#ff3b3b', 2); Aud.sfx('deny'); }
+    if (s.whiffs === 4) hint('miss', lt('DASHES THAT HIT NOTHING HEAT YOUR BLADE: AIM, THEN RELEASE'));
+  },
+  thorns(e) { // a direct dash into a THORNS elite bounces off
+    this.s.thorns++; e.hid = P.seq; P.vx *= -.55; P.vy *= -.55; P.dashT = Math.min(P.dashT, .06);
+    P.heat += 25 * (P.heatMul || 1); G.ct = Math.min(G.ct, .4); if (P.ch > 0 && G.odT <= 0) P.ch--;
+    FX.spark(e.x, e.y, '#ff3b5c', 12); FX.text(e.x, e.y - e.r - 14, lt('THORNS'), '#ff3b5c', 13, 0, 'thorns'); Aud.sfx('deny'); shake(.15);
+    hint('thorns', lt('THORNS: BOUNCE OFF A SIDE RAIL FIRST, OR USE OVERDRIVE, TO CUT THROUGH THE SPIKES'));
+  }
+};
+{ const he0 = hitEnemy; hitEnemy = function (e) {
+    if (simV(37) && e.aff === 5 && e.alive && e.hid !== P.seq && !P.bounced && G.odT <= 0 && G.mode !== 'dojo') { Skill.thorns(e); return; }
+    const was = e.hid; he0(e); if (e.hid === P.seq && was !== P.seq) Skill.onHit(); };
+  const pb0 = parryBullet; parryBullet = function (b) { pb0(b); Skill.onHit(); };
+  const hb0 = Boss.hitBody.bind(Boss); Boss.hitBody = function (b, d, a, ig, fx, fy) { if (P.dashT > 0) Skill.onHit(); return hb0(b, d, a, ig, fx, fy); };
+  const sl0 = slash; slash = function (a) { P.dHit = 0; return sl0(a); };
+  const up0 = updatePlayer; updatePlayer = function (dt, rd) { const was = P.dashT > 0, wb = P.bounced; up0(dt, rd); if (was && !wb && P.bounced) Skill.s.bounces++; if (was && P.dashT <= 0) Skill.dashEnd(); };
+  const db0 = Director.begin.bind(Director); Director.begin = function (m, s) { Skill.reset(); return db0(m, s); }; }
+/* THORNS: red spikes around the body */
+{ const de1 = drawEnemy; drawEnemy = function (e) { de1(e); if (e.aff !== 5 || !e.alive || !(EDRAW & ED_BODY)) return; const r = e.r * (e.scale || 1) + 3, t = CAM.t * 1.5;
+    cx.save(); cx.fillStyle = '#ff3b5c'; cx.strokeStyle = '#ffffff'; cx.lineWidth = 1;
+    for (let k = 0; k < 10; k++) { const a = t + k * TAU / 10, c = Math.cos(a), s = Math.sin(a); cx.beginPath(); cx.moveTo(e.x + c * (r + 9), e.y + s * (r + 9)); cx.lineTo(e.x + Math.cos(a + .2) * r, e.y + Math.sin(a + .2) * r); cx.lineTo(e.x + Math.cos(a - .2) * r, e.y + Math.sin(a - .2) * r); cx.closePath(); cx.fill(); cx.stroke(); }
+    cx.restore(); }; }
+/* the skill grade on the results screen */
+const Grade = {
+  show(o) {
+    const box = $('rsGrade'); if (!box) return; const s = Skill.s; box.textContent = '';
+    if (s.dashes < 5 || REPLAY.on) { box.classList.add('hidden'); return; }
+    const acc = s.hit / s.dashes, par = G.parries | 0, hits = G.hits | 0, mc = G.maxCombo | 0;
+    let sc = acc * 55 + Math.min(18, par * 2.5) + Math.min(12, s.bounces * 3) + Math.min(15, mc / 4) - hits * 7 - s.thorns * 2;
+    sc = Math.max(0, Math.min(100, sc));
+    const G0 = [[90, 'SSS', '#ff2bd6'], [82, 'SS', '#ff4fd8'], [74, 'S', '#ffd23f'], [62, 'A', '#00ff88'], [48, 'B', '#00f2fe'], [34, 'C', '#8fa4c8'], [0, 'D', '#ff3b5c']].find(g => sc >= g[0]);
+    let tip;
+    if (acc < .6) tip = ltf('{0} of your {1} dashes hit nothing. Hold to aim (time slows), then release on a target.', s.dashes - s.hit, s.dashes);
+    else if (hits >= 2) tip = ltf('You took {0} hits. Watch the red rings: enemies flash before they attack.', hits);
+    else if (par === 0) tip = lt('No parries yet: slash an orange bullet right as your dash starts to send it back.');
+    else if (s.bounces === 0) tip = lt('Bounce off a side rail mid-dash: the next hit is a sure critical and cuts through THORNS.');
+    else tip = lt('Clean run. Next: keep the combo alive between waves for a higher score.');
+    const g = el('div', 'gl', G0[1]); g.style.color = G0[2]; box.appendChild(g);
+    box.appendChild(el('div', 'gt', lt('SKILL GRADE')));
+    box.appendChild(el('div', 'gs', ltf('ACCURACY {0}% · PARRIES {1} · RAIL BOUNCES {2} · HITS TAKEN {3}', Math.round(acc * 100), par, s.bounces, hits)));
+    box.appendChild(el('div', 'tip', tip)); box.classList.remove('hidden');
+  }
+};
+{ const or1 = UI.openResult.bind(UI); UI.openResult = function (o) { or1(o); try { Grade.show(o); } catch (e) { errLog(e); } }; }
+
+/* =====================================================================
+   3D VIEW (version 37): a closer camera that follows the hero, and toon
+   shading (two light bands, a crisp rim, dark silhouette edges).
+   Settings > PRESENTATION > 3D CAMERA (CLOSE, CINEMATIC, TOP) and 3D STYLE.
+   Aiming follows the camera exactly (it already reads GL3D.cam).
+   ===================================================================== */
+const Cam3 = { x: 0, y: 0, init: false,
+  cfg() { const m = (Store.data && Store.data.settings.cam3d) || 'close'; return m === 'top' ? null : m === 'cine' ? { th: 58, z: 1.32, f: .7 } : { th: 49, z: 1.16, f: .5 }; },
+  apply() {
+    const c = this.cfg(), C = GL3D.cam; if (!c) { this.init = false; return; }
+    if (Math.abs(GL3D.th - GL3D.th0) < 1e-6 && GL3D.yaw === 0) GL3D.setView(c.th * Math.PI / 180, 0); // (boss entrances and finishers keep their own view)
+    const z = C.z * c.z, hw = V.VW / (2 * z), hh = V.VH / (2 * z * Math.max(.5, GL3D.k));
+    const lo = Math.min(V.L0 - 40 + hw, V.CX), hi = Math.max(V.R0 + 40 - hw, V.CX);
+    const tx = clamp(C.x + (P.x - C.x) * c.f, lo, hi), ty = clamp(C.y + (P.y - C.y) * c.f * .55, Math.min(hh, V.VH / 2), Math.max(V.VH - hh, V.VH / 2));
+    if (!this.init || G.state !== 'PLAY') { this.x = tx; this.y = ty; this.init = true; }
+    const k = 1 - Math.exp(-(RDT || 1 / 60) * 6); this.x += (tx - this.x) * k; this.y += (ty - this.y) * k;
+    C.x = this.x; C.y = this.y; C.z = z;
+  }
+};
+{ const wc0 = W3D.camera.bind(W3D); W3D.camera = function () { wc0(); if (inRun()) Cam3.apply(); else Cam3.init = false; }; }
+{ const ps2 = PC.settings.bind(PC); PC.settings = function (head, cycle, box, s) {
+    head('3D'); cycle('3D camera', 'cam3d', ['close', 'cine', 'top'], ['CLOSE', 'CINEMATIC', 'TOP']); cycle('3D style', 'toon3d', [1, 0], ['TOON', 'CLASSIC']);
+    ps2(head, cycle, box, s); }; }
 /* test + automation hooks (used by the headless test suite) */
 window.__OD = { G, P, V, EN, BU, Boss, Director, Flow, UI, Store, STAGES, sim, step, startStory: i => Flow.startStory(i), startArcade: m => Flow.startArcade(m), Dlg, Arena, REC, REPLAY, TICK, R, In, Replays, DMATH };
 try {
