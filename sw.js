@@ -1,7 +1,7 @@
 /* Overdrive: Cyber Slash — offline cache.
    The game is one HTML file. It is served from the network when there is one (so players get
    updates right away) and from the cache when there is not. Fonts are cached the first time they load. */
-const CACHE = 'overdrive-v37';
+const CACHE = 'overdrive-v38';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
