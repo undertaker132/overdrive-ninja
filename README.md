@@ -15,6 +15,8 @@
 
 <img src="docs/screenshots.jpg" alt="Screenshots" width="100%">
 
+<img src="docs/3d.jpg" alt="The new 3D: hero, bosses, pets and enemies" width="100%">
+
 </div>
 
 ---
@@ -35,7 +37,8 @@
 - **ארקייד** — Maglev אינסופי, התקפת בוסים, מגדל רוגלייט, מרדף על אופנוע, אתגר יומי ושבועי, פאזלים ודוג'ו.
 - **ארסנל** — עשרות להבים, גיבורים, סקינים לחרבות, חיות מחמד ועץ שדרוגים.
 - **חברים** — משחק חי עם חברים, רוחות (ghosts) של שיאים, ריפליי וקליפים, צוותים ועורך שלבים.
-- **דו־ממד או תלת־ממד**, תמיכה בשלט (Xbox / PlayStation / Switch), עברית, ערבית, רוסית ואנגלית.
+- **תלת־ממד אמיתי** (מנוע three.js): מודלים מוארים עם צללים לגיבור, לאויבים, לבוסים ולחיות, גג רכבת רטוב שמשקף את הניאון והעיר למטה. אפשר גם תלת־ממד קלאסי או דו־ממד.
+- תמיכה בשלט (Xbox / PlayStation / Switch), עברית, ערבית, רוסית ואנגלית.
 
 ### נתתם ביקורת? תודה! 🙏
 המשחק בפיתוח, וכל משוב עוזר:
@@ -62,7 +65,8 @@ The game runs straight in the browser and can also be installed as a real app (h
 - **Arcade** — endless Maglev Run, boss rush, a rogue-lite tower, a highway chase, daily and weekly challenges, puzzles and a training dojo.
 - **Arsenal** — dozens of blades, heroes, blade skins, pets and an upgrade tree.
 - **Social** — live play with friends, ghost runs, replays and clips, crews and a level editor.
-- **2D or 3D** graphics, gamepad support, English, Hebrew, Arabic and Russian.
+- **Real 3D** (three.js engine): lit, shadowed models for the hero, enemies, bosses and pets, a wet train roof that reflects the neon, and the city far below. Classic 3D and 2D are still there.
+- Gamepad support, English, Hebrew, Arabic and Russian.
 
 ### Controls
 | | Touch | Keyboard / mouse | Gamepad |
@@ -109,3 +113,7 @@ After a minute the game is live at `https://undertaker132.github.io/overdrive-ni
 **Run locally:** `python3 -m http.server` in this folder, then open <http://localhost:8000>. (Opening the file directly also works, without the offline cache.)
 
 Saves stay on the player's device (local storage). Cloud saves, leaderboards and the creator dashboard only work in the claude.ai version of the game.
+
+---
+
+The 3D view uses [three.js](https://threejs.org) r160 (MIT License, Copyright 2010-2023 three.js authors), bundled inside `index.html`.
