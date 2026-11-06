@@ -1,0 +1,450 @@
+<div id="sa" aria-hidden="true"></div>
+<canvas id="c" aria-label="Overdrive: Cyber Slash game field"></canvas>
+<button id="pauseBtn" class="hidden" aria-label="Pause">II</button>
+<div id="replayBar" class="hidden"><div class="rb-top"><span id="rbName">REPLAY</span><span id="rbTime"></span></div><div class="rb-prog"><i id="rbFill"></i></div><div class="rb-btns"><button id="rbPlay" aria-label="Pause or play">❚❚</button><button id="rbSpeed" aria-label="Playback speed">1×</button><button id="rbClip">CLIP</button><button id="rbExit">EXIT</button></div></div>
+<div id="dock" class="hidden" aria-label="Skills">
+  <button class="sk" data-k="grapple" aria-label="Grapple (Q)"><svg viewBox="0 0 24 24"><path d="M12 2v10a4 4 0 1 1-4-4"/><path d="M9 4l3-2 3 2"/></svg><span class="n">GRAPPLE</span><span class="t">Q</span><i class="fill"></i></button>
+  <button class="sk" data-k="hijack" aria-label="Hijack (W)"><svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10"/><path d="M10 2v5M14 2v5M10 17v5M14 17v5M2 10h5M2 14h5M17 10h5M17 14h5"/></svg><span class="n">HIJACK</span><span class="t">W</span><i class="fill"></i></button>
+  <button class="sk" data-k="web" aria-label="Laser web (E)"><svg viewBox="0 0 24 24"><path d="M3 6l18 3M3 12h18M3 18l18-3"/><circle cx="3" cy="12" r="1.5"/><circle cx="21" cy="12" r="1.5"/></svg><span class="n">LASER WEB</span><span class="t">E</span><i class="fill"></i></button>
+  <button class="sk" data-k="echo" aria-label="Time echo (R)"><svg viewBox="0 0 24 24"><path d="M11 6l-6 6 6 6M19 6l-6 6 6 6"/></svg><span class="n">TIME ECHO</span><span class="t">R</span><i class="fill"></i></button>
+  <button class="sk hidden" data-k="swap" aria-label="Swap weapon (F)"><svg viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg><span class="n">SWAP</span><span class="t">F</span><i class="fill"></i></button>
+  <button class="sk" data-k="od" aria-label="Overdrive (Space)"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg><span class="n">OVERDRIVE</span><span class="t">0%</span><i class="fill"></i></button>
+</div>
+<div id="dlgTap" class="hidden"></div>
+<div id="dlg" class="hidden" role="dialog" aria-live="polite">
+  <div class="box">
+    <canvas id="dlgPort" width="168" height="168"></canvas>
+    <div>
+      <div><span class="who" id="dlgWho"></span><span class="role" id="dlgRole"></span></div>
+      <div class="txt" id="dlgTxt"></div>
+      <div class="ctl"><span id="dlgHint">TAP TO CONTINUE</span><button id="dlgSkip">SKIP ▸▸</button></div>
+    </div>
+  </div>
+</div>
+<div id="achPop" aria-live="polite"><div class="a">ACHIEVEMENT UNLOCKED</div><div class="b" id="achTxt"></div></div>
+
+<style id="ui39">
+/* =====================================================================
+   MENUS 39 — every screen gets the same comfortable frame:
+   · a header that stays at the top while you scroll, with a big BACK
+     button right next to the title (no scrolling down to leave)
+   · glass cards with a soft inner light, clearer text, a bright edge on
+     what is selected, and hover states for the mouse
+   · bigger touch targets, section labels with a guide line
+   · on a wide screen the menus are wider and long lists use two columns
+   ===================================================================== */
+:root { --mute: #a3b6da; --line: #2a3a70; --glass: linear-gradient(180deg, rgba(22, 30, 70, .82), rgba(9, 13, 32, .9)); --glass2: linear-gradient(180deg, rgba(30, 42, 92, .9), rgba(12, 18, 44, .92)); --cut: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px); }
+.scr { background: radial-gradient(130% 70% at 50% 0%, rgba(30, 20, 80, .78), rgba(6, 8, 22, .93) 60%, rgba(3, 4, 10, .96)); padding-block: 0 26px; scrollbar-width: thin; scrollbar-color: #33447e transparent; }
+.scr::-webkit-scrollbar { width: 8px; } .scr::-webkit-scrollbar-thumb { background: #33447e; border-radius: 8px; }
+.scr > .col { padding-top: 18px; }
+.scr.has-hdr > .col { padding-top: 0; }
+/* the header */
+.hdr { position: sticky; top: 0; z-index: 4; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 12px 0 10px; margin-bottom: -2px;
+  background: linear-gradient(180deg, rgba(6, 8, 22, .97) 0%, rgba(6, 8, 22, .94) 78%, rgba(6, 8, 22, 0) 100%); }
+.hdr::after { content: ''; position: absolute; left: 0; right: 0; bottom: 4px; height: 1px; background: linear-gradient(90deg, rgba(0, 242, 254, .55), rgba(255, 43, 214, .35) 60%, transparent); }
+.hdr h2, .hdr .topbar h2 { font-size: 24px; line-height: 1.1; }
+.hdr .topbar { flex: 1; min-width: 0; }
+.hdr > h2 { flex: 1; min-width: 0; }
+.hback { flex: none; width: 46px; height: 46px; display: grid; place-items: center; background: var(--glass2); border: 1px solid rgba(0, 242, 254, .45); clip-path: var(--cut); color: var(--cyan); transition: transform .12s, background .15s, color .15s; }
+.hback svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+[dir="rtl"] .hback svg { transform: scaleX(-1); }
+.hback:hover { background: rgba(0, 242, 254, .16); color: #fff; } .hback:active { transform: scale(.92); }
+.scr.has-hdr .col > .hdr-dup { display: none; }
+/* cards, lists, buttons */
+.panel, .item { background: var(--glass); border-color: rgba(110, 140, 255, .2); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06); }
+.item { padding: 13px 14px; transition: border-color .15s, background .15s, transform .12s; }
+.item .nm { font-size: 16px; } .item .ds { font-size: 14px; line-height: 1.4; }
+.item.on { border-color: var(--gold); background: linear-gradient(90deg, rgba(255, 215, 0, .14), rgba(255, 215, 0, .04) 60%), var(--glass); box-shadow: inset 3px 0 0 var(--gold); }
+.item.lock { opacity: .62; filter: saturate(.55); }
+.btn { min-height: 52px; transition: filter .15s, transform .12s, border-color .15s; }
+.btn.ghost { border-color: rgba(110, 140, 255, .3); color: #c3d2f0; }
+.seg button { min-height: 40px; color: #b3c3e4; transition: color .15s, border-color .15s, background .15s; }
+.seg button.on { color: #fff; border-color: var(--cyan); background: linear-gradient(180deg, rgba(0, 242, 254, .2), rgba(0, 242, 254, .06)); box-shadow: inset 0 -2px 0 var(--cyan); }
+.chip { border-color: rgba(110, 140, 255, .3); }
+.eyebrow { display: flex; align-items: center; gap: 10px; color: #6ff6ff; }
+.eyebrow::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(0, 242, 254, .35), transparent); }
+[dir="rtl"] .eyebrow::after { background: linear-gradient(270deg, rgba(0, 242, 254, .35), transparent); }
+.small { font-size: 13.5px; line-height: 1.45; }
+textarea, input[type="text"], .edcode { background: rgba(4, 7, 20, .8); border: 1px solid rgba(110, 140, 255, .3); color: var(--fg); }
+@media (hover: hover) and (pointer: fine) {
+  .item:hover:not(.lock) { border-color: rgba(0, 242, 254, .55); background: var(--glass2); }
+  .btn:hover:not([disabled]) { filter: brightness(1.14); }
+  .btn.ghost:hover, .seg button:hover { border-color: rgba(0, 242, 254, .5); color: #fff; }
+}
+/* wide screens: wider menus, two-column lists */
+@media (min-width: 900px) and (min-height: 560px) {
+  .scr > .col, .scr .col.wide39 { max-width: 640px; }
+  #arList, #stList, #muList, #lgList, #seBox .list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .hdr h2, .hdr .topbar h2 { font-size: 28px; }
+}
+@media (prefers-reduced-motion: reduce) { .item, .btn, .hback, .seg button { transition: none; } }
+</style>
+<div id="ov">
+  <section class="scr center" id="s-boot">
+    <canvas id="bootCv" aria-hidden="true"></canvas>
+    <div class="col boot-col" style="text-align:center">
+      <div class="emblem"><i></i></div>
+      <div class="logo v2 boot-logo" id="bootLogo" role="img" aria-label="OVERDRIVE: CYBER SLASH"><svg class="emb" viewBox="0 0 120 64" aria-hidden="true"><path d="M6 6 A60 60 0 0 0 114 6 A90 90 0 0 1 6 6 Z" fill="#ffd23f"/><path d="M60 42 L67 52 L60 62 L53 52 Z" fill="#ff0844"/></svg><div class="word"><span class="o h1" data-t="OVERDRIVE">OVERDRIVE</span><span class="o h2" data-t="OVERDRIVE" aria-hidden="true">OVERDRIVE</span><i class="cut"></i></div><span class="s">CYBER SLASH</span></div>
+      <div class="boot-blade" aria-hidden="true"><b class="hilt"></b><span class="edge"><i id="bootBar"></i></span><b class="tip"></b></div>
+      <div class="boot-row"><span class="eyebrow" id="bootLbl">0%</span><span class="boot-pct" id="bootPct">0</span></div>
+      <div class="term boot-term" id="bootTerm"></div>
+      <div class="boot-tip" id="bootTip"></div>
+      <button class="btn pri hidden" id="bootGo">TAP TO JACK IN</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-title">
+    <div class="col">
+      <div class="topbar"><button class="chip" id="tProfile">GUEST</button><span class="chip gold" id="tCredits">0 CR</span></div>
+      <div class="logo v2" role="img" aria-label="OVERDRIVE: CYBER SLASH"><svg class="emb" viewBox="0 0 120 64" aria-hidden="true"><path d="M6 6 A60 60 0 0 0 114 6 A90 90 0 0 1 6 6 Z" fill="#ffd23f"/><path d="M60 42 L67 52 L60 62 L53 52 Z" fill="#ff0844"/></svg><div class="word"><span class="o h1" data-t="OVERDRIVE">OVERDRIVE</span><span class="o h2" data-t="OVERDRIVE" aria-hidden="true">OVERDRIVE</span><i class="cut"></i></div><span class="s">CYBER SLASH</span><div class="slashline"></div></div>
+      <button class="panel hero-strip" id="tHero" aria-label="Your hero"><canvas id="thCv" aria-hidden="true"></canvas><span class="hs"><span class="eyebrow" id="thNm">HERO</span><span class="small gold" id="thMs"></span><span class="mbar"><i id="thBar"></i></span><span class="small mute" id="thPk"></span></span></button>
+      <div class="panel login hidden" id="tLogin"></div>
+      <button class="btn pri" id="bStory">STORY MODE</button>
+      <div class="panel next small hidden" id="tNext"></div>
+      <div class="grid2">
+        <button class="btn" id="bArcade">ARCADE</button>
+        <button class="btn" id="bArsenal">ARSENAL</button>
+        <button class="btn" id="bWeekly">WEEKLY</button>
+        <button class="btn" id="bDojo">DOJO</button>
+        <button class="btn" id="bPuzzle">PUZZLES</button>
+        <button class="btn" id="bLive">PLAY LIVE</button>
+        <button class="btn" id="bProfile">PROFILE &amp; CODEX</button>
+        <button class="btn" id="bClub">CLUB</button>
+        <button class="btn season-btn" id="bSeason"><span>SEASON</span><span class="chip gold" id="tSeason">0/20</span></button>
+        <button class="btn" id="bHideout">HIDEOUT</button>
+        <button class="btn" id="bEditor">LEVEL EDITOR</button>
+        <button class="btn" id="bSettings">SETTINGS</button>
+      </div>
+      <div class="panel hidden" id="tRivals"></div>
+      <button class="panel daily" id="bDaily"><span><span class="eyebrow">DAILY RUN</span><br><span class="small mute" id="tDaily"></span></span><span class="chip gold">PLAY</span></button>
+      <div class="panel" id="tBountyBox"><div class="eyebrow" style="margin-bottom:4px">ACTIVE BOUNTIES</div><div id="tBounties"></div></div>
+      <div class="chips"><button class="chip" id="tNews">WHAT'S NEW</button><button class="chip" id="tReport">REPORT A PROBLEM</button><button class="chip gold hidden" id="tInstall">INSTALL APP</button><button class="chip hidden" id="tFull">FULLSCREEN</button><button class="chip gold hidden" id="tCreator">CREATOR DASHBOARD</button></div>
+      <div class="small mute" style="text-align:center" id="tFoot"></div>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-me">
+    <div class="col">
+      <div class="prof-top" id="meTop"></div>
+      <div class="seg" id="meTabs"></div>
+      <div class="col" id="meList"></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr comic hidden" id="s-comic">
+    <canvas id="cmCv" aria-label="Comic page"></canvas>
+    <button class="chip" id="cmSkip">SKIP</button>
+  </section>
+
+  <section class="scr hidden" id="s-sync">
+    <div class="col">
+      <h2>TWO SAVES FOUND</h2>
+      <div class="small mute">You played on another device too. Choose which progress to keep. Nothing is lost until you choose.</div>
+      <div class="col" id="syBox"></div>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-season">
+    <div class="col">
+      <div class="col" id="seBox"></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-live">
+    <div class="col">
+      <div class="topbar"><h2>PLAY LIVE</h2><span class="chip" id="lvConn">LIVE</span></div>
+      <div class="col" id="lvBox"></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-puzzle">
+    <div class="col">
+      <div class="topbar"><h2>PUZZLES</h2><span class="chip gold" id="pzStars">★ 0</span></div>
+      <div class="tabs" id="pzTabs"></div>
+      <div class="small mute" id="pzDesc"></div>
+      <div class="pzgrid" id="pzGrid"></div>
+      <div class="panel prev pz" id="pzInfo"><canvas id="pzCv" width="224" height="224" aria-label="Map of the selected puzzle"></canvas><div class="pv"><div class="pn" id="pzName"></div><div class="small mute" id="pzSub"></div></div></div>
+      <button class="btn pri" id="pzPlay">PLAY</button>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-story">
+    <div class="col">
+      <div class="topbar"><h2>STORY</h2><span class="chip gold" id="stStars">★ 0/36</span></div>
+      <div class="tabs" id="stTabs"></div>
+      <div class="eyebrow" id="stChap"></div>
+      <div class="chips" id="stComics"><button class="chip" id="stComic">CHAPTER COMIC</button><button class="chip hidden" id="stEpi">EPILOGUE</button><button class="chip" id="stIntro">OPENING FILM</button></div>
+      <div class="list" id="stList"></div>
+      <div class="panel info" id="stInfo"></div>
+      <button class="btn ghost hidden" id="stNG">NEW GAME+</button>
+      <button class="btn ghost hidden" id="stSpeed">SPEEDRUN</button>
+      <div class="eyebrow">DIFFICULTY</div>
+      <div class="seg" id="stDiff"></div>
+      <div class="small mute" id="stDiffD"></div>
+      <button class="btn pri" id="stPlay">PLAY STAGE</button>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-arcade">
+    <div class="col">
+      <h2>ARCADE</h2>
+      <div class="nemcard hidden" id="arNem"></div>
+      <div class="list" id="arList"></div>
+      <div class="col" id="arDiffWrap" style="gap:8px"><div class="eyebrow">DIFFICULTY</div><div class="seg" id="arDiff"></div></div>
+      <div class="col hidden" id="arCtrWrap" style="gap:8px"><div class="eyebrow" id="arCtrH">CONTRACTS</div><div class="ctrs" id="arCtr"></div><div class="small mute" id="arCtrD"></div></div>
+      <div class="panel col" id="arFc" style="gap:6px"><div class="eyebrow">FRIEND CHALLENGE</div><div class="edimp"><input id="arFcCode" class="edcode" placeholder="Paste a challenge code (ODC1.…)" autocomplete="off" spellcheck="false"><button class="btn" id="arFcGo">PLAY</button></div><div class="small mute">Play the same roof your friend played, with the same seed, and try to beat their score.</div></div>
+      <div class="col hidden" id="arAltWrap" style="gap:8px"><div class="eyebrow" id="arAltH">TOWER ALTAR</div><div class="ctrs" id="arAlt"></div><div class="small mute" id="arAltD"></div></div>
+      <button class="btn pri" id="arPlay">START RUN</button>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-arsenal">
+    <div class="col">
+      <div class="topbar"><h2>ARSENAL</h2><span class="chip gold" id="asCredits">0 CR</span></div>
+      <div class="seg tabs5" id="asTabs"></div>
+      <div class="panel prev" id="asPrev"><canvas id="asCv" aria-label="Preview of the selected item"></canvas><div class="pv"><div class="pn" id="asPn"></div><div class="small mute" id="asPd"></div><button class="btn pri" id="asAct"></button><button class="btn ghost hidden" id="asAlt"></button></div></div>
+      <div class="list" id="asList"></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-club">
+    <div class="col">
+      <div class="topbar"><h2>CLUB</h2><span class="chip" id="clMe">GUEST</span></div>
+      <div class="grid2"><button class="btn" id="clCrews">CREWS</button><button class="btn" id="clInvite">INVITE A FRIEND</button></div>
+      <div class="seg tabs5" id="clTabs"></div>
+      <div class="list" id="clList"></div>
+      <div class="panel hidden" id="clProf"></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-crew">
+    <div class="col">
+      <div class="topbar"><h2>CREWS</h2><span class="chip gold" id="crWeek">WEEK</span></div>
+      <div class="col" id="crBox"></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-invite">
+    <div class="col">
+      <h2>INVITE A FRIEND</h2>
+      <div class="col" id="ivBox"></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr intro hidden" id="s-intro">
+    <canvas id="inCv" aria-label="Opening cinematic"></canvas>
+    <button class="chip" id="inSkip">SKIP</button>
+  </section>
+
+  <section class="scr hidden" id="s-settings">
+    <div class="col">
+      <h2>SETTINGS</h2>
+      <div class="panel" id="setList"></div>
+      <div class="panel">
+        <div class="eyebrow">ACHIEVEMENTS</div>
+        <div class="list small" id="setAch" style="margin-top:8px"></div>
+      </div>
+      <button class="btn ghost" id="setReset">RESET ALL PROGRESS</button>
+      <div class="panel hidden" id="setConfirm"><div class="info">This deletes your story progress, credits, upgrades and bests on this device. It cannot be undone.</div><div class="row" style="margin-top:10px"><button class="btn" id="setNo">KEEP</button><button class="btn gold" id="setYes">DELETE</button></div></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr center clear hidden" id="s-pause">
+    <div class="col">
+      <h1 style="text-align:center">PAUSED</h1>
+      <div class="panel small" id="psInfo"></div>
+      <button class="btn pri" id="psResume">RESUME</button>
+      <div class="grid2"><button class="btn" id="psRestart">RESTART</button><button class="btn" id="psSettings">SETTINGS</button></div>
+      <div class="grid2"><button class="btn" id="psPhoto">PHOTO MODE</button><button class="btn hidden" id="psFull">FULLSCREEN</button></div>
+      <button class="btn ghost" id="psReport">REPORT A PROBLEM</button>
+      <button class="btn ghost" id="psQuit">QUIT TO MENU</button>
+    </div>
+  </section>
+
+  <section class="scr photo hidden" id="s-photo">
+    <canvas id="phCv" aria-label="Photo preview"></canvas>
+    <button class="chip hidden" id="phHint">TAP TO SHOW THE CONTROLS</button>
+    <div class="panel ph-bar" id="phBar">
+      <div class="seg" id="phF"></div>
+      <div class="ph-row"><span class="small mute">ZOOM</span><input type="range" id="phZ" min="100" max="250" value="100" aria-label="Zoom"><button class="chip" id="phLogo">LOGO: ON</button></div>
+      <button class="btn" id="phPose">VICTORY POSE</button>
+      <div class="grid2"><button class="btn gold" id="phSave">SAVE PHOTO</button><button class="btn ghost" id="phBack">BACK</button></div>
+      <div class="small mute" style="text-align:center">Tap the picture to hide the controls. Drag it to move it when zoomed in.</div>
+    </div>
+  </section>
+
+  <section class="scr center clear hidden" id="s-route">
+    <div class="col">
+      <div class="eyebrow" style="text-align:center" id="rtEyebrow">NEXT CAR</div>
+      <h1 style="text-align:center" id="rtTitle">CHOOSE YOUR ROUTE</h1>
+      <div class="small mute" style="text-align:center" id="rtSub"></div>
+      <div class="list" id="rtList"></div>
+      <button class="btn ghost hidden" id="rtLeave">LEAVE THE MARKET</button>
+    </div>
+  </section>
+
+  <section class="scr center hidden" id="s-clip">
+    <div class="col">
+      <div class="eyebrow" style="text-align:center">HIGHLIGHT CLIP</div>
+      <h1 style="text-align:center">PICK A MOMENT</h1>
+      <div class="ctrs" id="cpOpt" style="grid-template-columns:repeat(2,1fr)"></div>
+      <div class="list" id="cpList"></div>
+      <button class="btn ghost" id="cpBack">BACK</button>
+    </div>
+  </section>
+
+  <section class="scr center clear hidden" id="s-perk">
+    <div class="col">
+      <div class="eyebrow" style="text-align:center" id="pkEyebrow">OVERCLOCK</div>
+      <h1 style="text-align:center" id="pkTitle">CHOOSE AN UPGRADE</h1>
+      <div class="list" id="pkList"></div>
+      <button class="btn ghost" id="pkReroll">REROLL — 100 CR</button>
+    </div>
+  </section>
+
+  <section class="scr center hidden" id="s-result">
+    <div class="col">
+      <div class="eyebrow" style="text-align:center" id="rsEyebrow"></div>
+      <h1 style="text-align:center" id="rsTitle"></h1>
+      <div class="big-stars hidden" id="rsStars"></div>
+      <div class="newbest hidden" id="rsBest">NEW BEST</div>
+      <div class="panel hidden" id="rsGrade"></div>
+      <div class="stat" id="rsStats"></div>
+      <div class="panel hidden" id="rsGraphBox"><div class="eyebrow">RUN GRAPH</div><canvas id="rsGraph" aria-label="Score and combo over the run"></canvas><div class="small mute" id="rsGraphKey"></div></div>
+      <div class="panel small" id="rsNotes"></div>
+      <button class="btn pri" id="rsMain"></button>
+      <div class="grid2"><button class="btn" id="rsAlt"></button><button class="btn" id="rsMenu">MENU</button></div>
+      <button class="btn gold hidden" id="rsShare">SHARE &amp; CHALLENGE</button>
+      <div class="grid2 hidden" id="rsExtra"><button class="btn" id="rsWatch">WATCH REPLAY</button><button class="btn" id="rsClip">SAVE CLIP</button></div>
+      <button class="btn ghost hidden" id="rsCoach">ASK MIKA FOR A TIP</button>
+      <div class="panel small hidden" id="rsCoachTxt"></div>
+      <button class="btn ghost" id="rsReport">REPORT A PROBLEM</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-news">
+    <div class="col">
+      <div class="topbar"><h2>WHAT'S NEW</h2><span class="chip gold" id="nwVer"></span></div>
+      <div class="panel" id="nwList"></div>
+      <button class="btn pri" id="nwOk">LET'S GO</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-music">
+    <div class="col">
+      <h2>MUSIC ROOM</h2>
+      <div class="small mute">Every track is played live by the game and grows with the fight. Tap one to listen.</div>
+      <div class="list" id="muList"></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-device">
+    <div class="col">
+      <h2>DEVICE CHECK</h2>
+      <div class="panel" id="dvList"></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-save">
+    <div class="col">
+      <h2>SAVE CODE</h2>
+      <div class="small mute">Copy this code to move your progress to another phone or browser.</div>
+      <textarea id="svOut" rows="4" readonly aria-label="Your save code"></textarea>
+      <button class="btn" id="svCopy">COPY CODE</button>
+      <div class="eyebrow">LOAD A SAVE</div>
+      <div class="small mute">Paste a save code here. It replaces the progress on this device.</div>
+      <textarea id="svIn" rows="4" placeholder="ODSAVE1:…" aria-label="Paste a save code"></textarea>
+      <button class="btn gold" id="svLoad">LOAD SAVE</button>
+      <div class="small gold" id="svMsg" aria-live="polite"></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-report">
+    <div class="col">
+      <h2>SEND FEEDBACK</h2>
+      <div class="seg" id="rpCats"></div>
+      <textarea id="rpText" rows="5" maxlength="600" placeholder="What happened? What did you expect?" aria-label="Your message"></textarea>
+      <label class="set"><span>Attach game info</span><input type="checkbox" id="rpInfo" checked></label>
+      <div class="small mute" id="rpCtx"></div>
+      <button class="btn pri" id="rpSend">SEND</button>
+      <div class="small gold" id="rpMsg" aria-live="polite"></div>
+      <textarea id="rpCopy" class="hidden" rows="5" readonly aria-label="Report text to copy"></textarea>
+      <button class="btn gold hidden" id="rpGh">OPEN ON GITHUB</button>
+      <div class="small mute hidden" id="rpGhNote">Opens a ready-made report on GitHub. You can edit it before you post.</div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-share">
+    <div class="col">
+      <h2>SHARE &amp; CHALLENGE</h2>
+      <img id="shImg" class="share-img" alt="Your score card">
+      <div class="grid2"><button class="btn gold" id="shSave">SAVE PICTURE</button><button class="btn" id="shCopy">COPY CHALLENGE</button></div>
+      <div class="small mute" id="shMsg" aria-live="polite"></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-dash">
+    <div class="col">
+      <h2>CREATOR DASHBOARD</h2>
+      <div class="seg" id="dsTabs"></div>
+      <div class="list" id="dsList"></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-hideout">
+    <div class="col">
+      <div class="topbar"><h2>HIDEOUT</h2><span class="chip gold" id="hdCredits">0 CR</span></div>
+      <canvas id="hdCv" class="hdcv" aria-label="Your hideout. Tap the floor to walk, tap things to use them."></canvas>
+      <div class="panel hidden" id="hdInfo"><div class="eyebrow" id="hdName"></div><div class="small" id="hdDesc"></div><button class="btn pri hidden" id="hdAct"></button></div>
+      <div class="small mute" id="hdHint">Tap the floor to walk. Tap the rack, the shelf, the cabinet or your pet.</div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-editor">
+    <div class="col">
+      <div class="topbar"><h2>LEVEL EDITOR</h2></div>
+      <button class="btn pri" id="edNew">NEW LEVEL</button>
+      <div class="panel col" style="gap:6px"><div class="eyebrow">PLAY A FRIEND'S LEVEL</div><div class="edimp"><input id="edCode" class="edcode" placeholder="Paste a level code (OD1.…)" autocomplete="off" spellcheck="false"><button class="btn" id="edImp">LOAD</button></div><div class="panel hidden" id="edImpBox"></div></div>
+      <div class="list" id="edList"></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-edit">
+    <div class="col">
+      <div class="topbar"><input id="edName" class="edname" maxlength="18" aria-label="Level name"></div>
+      <div class="edtabs" id="edWaves"></div>
+      <canvas id="edCv" class="edcv" aria-label="The rooftop. Tap to place the selected enemy."></canvas>
+      <div class="small mute">Tap the roof to place the selected enemy in this wave. Each wave starts when the last one is cleared.</div>
+      <div class="edpal" id="edPal"></div>
+      <div class="ctrs" id="edOpt"></div>
+      <div class="grid3"><button class="btn pri" id="edTest">TEST PLAY</button><button class="btn" id="edSave">SAVE</button><button class="btn" id="edShare">SHARE</button></div>
+      <button class="btn ghost" data-back>BACK</button>
+    </div>
+  </section>
+
+  <section class="scr hidden" id="s-credits">
+    <div class="col" style="flex:1;justify-content:space-between">
+      <div class="credits-roll" id="crRoll"></div>
+      <button class="btn pri" id="crDone">CONTINUE</button>
+    </div>
+  </section>
+</div>

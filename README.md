@@ -36,9 +36,9 @@
 - **מצב סיפור** — 8 מערכות, יותר מ-70 שלבים, דיאלוג מדובב, בוסים עם כניסות ונפילות משלהם, קומיקס בין הפרקים ו-New Game+.
 - **ארקייד** — Maglev אינסופי, התקפת בוסים, מגדל רוגלייט, מרדף על אופנוע, אתגר יומי ושבועי, פאזלים ודוג'ו.
 - **ארסנל** — עשרות להבים, גיבורים, סקינים לחרבות, חיות מחמד ועץ שדרוגים.
-- **חברים** — משחק חי עם חברים, רוחות (ghosts) של שיאים, ריפליי וקליפים, צוותים ועורך שלבים.
+- **חברים** — משחק חי עם חברים: המארח מקבל קוד של 6 ספרות והחברים מקלידים אותו, וכל חבר מופיע על הגג כנינג׳ה בצבעים שלו. בנוסף רוחות (ghosts) של שיאים, ריפליי וקליפים, צוותים ועורך שלבים.
 - **תלת־ממד אמיתי** (מנוע three.js): מודלים מוארים עם צללים לגיבור, לאויבים, לבוסים ולחיות, גג רכבת רטוב שמשקף את הניאון והעיר למטה. אפשר גם תלת־ממד קלאסי או דו־ממד.
-- תמיכה בשלט (Xbox / PlayStation / Switch), עברית, ערבית, רוסית ואנגלית.
+- תמיכה בשלט (Xbox / PlayStation / Switch), ג׳ויסטיק כיוון על המסך (בהגדרות), בחירת רזולוציה, עברית, ערבית, רוסית ואנגלית.
 
 ### נתתם ביקורת? תודה! 🙏
 המשחק בפיתוח, וכל משוב עוזר:
@@ -64,9 +64,9 @@ The game runs straight in the browser and can also be installed as a real app (h
 - **Story** — 8 acts, 70+ stages, voiced dialogue, bosses with their own entrances and falls, comics between chapters, New Game+.
 - **Arcade** — endless Maglev Run, boss rush, a rogue-lite tower, a highway chase, daily and weekly challenges, puzzles and a training dojo.
 - **Arsenal** — dozens of blades, heroes, blade skins, pets and an upgrade tree.
-- **Social** — live play with friends, ghost runs, replays and clips, crews and a level editor.
+- **Social** — live play with friends (the host gets a 6-digit code, friends type it in, and each friend is a ninja in their own colors on your roof), ghost runs, replays and clips, crews and a level editor.
 - **Real 3D** (three.js engine): lit, shadowed models for the hero, enemies, bosses and pets, a wet train roof that reflects the neon, and the city far below. Classic 3D and 2D are still there.
-- Gamepad support, English, Hebrew, Arabic and Russian.
+- Gamepad support, an optional on-screen aim joystick, a resolution setting, English, Hebrew, Arabic and Russian.
 
 ### Controls
 | | Touch | Keyboard / mouse | Gamepad |
@@ -81,7 +81,7 @@ The game runs straight in the browser and can also be installed as a real app (h
 
 - **Mouse:** hold to aim at the cursor (time slows), release to slash. Right click dodges, the wheel swaps weapons, the middle button is Overdrive. A crosshair shows your dash charges.
 - **Keyboard only:** arrows aim, hold SHIFT for the slow-motion aim, C slashes, V dodges. Every key can be rebound in **Settings → PC & DISPLAY → KEYS**. Arrows, ENTER and ESC work in the menus; ALT+ENTER is fullscreen.
-- **High refresh rate:** smooth motion on 120 to 480 Hz screens, a frame-rate limit (MAX, 480, 360, 240, 165, 144, 120, 90, 60) and render resolution (75% to 200%).
+- **High refresh rate:** smooth motion on 120 to 480 Hz screens, a frame-rate limit (MAX, 480, 360, 240, 165, 144, 120, 90, 60). Sharpness: **Settings → SCREEN → RESOLUTION** (AUTO, MAX, HIGH, MEDIUM, LOW).
 - **Wide roof:** on a landscape screen the story, the dojo and your own levels play on a roof almost twice as wide. Ranked modes keep the standard roof.
 - Two-column home screen and Arsenal, controller rumble and button prompts, and the game pauses when you switch windows.
 
@@ -93,10 +93,11 @@ The game runs straight in the browser and can also be installed as a real app (h
 
 ## For the developer
 
-The whole game is one self-contained file, [`index.html`](index.html) (no build step, no dependencies). Around it:
+The whole game is one self-contained file, [`index.html`](index.html) (no dependencies to install). It is built from [`source/`](source): `python3 source/build.py` writes `index.html` and moves the offline cache in `sw.js` to the new version. Around it:
 
 | File | What it does |
 |---|---|
+| `source/` | the game's source: `src/` (one file per system, joined in name order), `i18n/` (translations), `build.py`, `lint.js` (ESLint check) |
 | `manifest.webmanifest` | makes the page installable (name, icons, full screen) |
 | `sw.js` | offline cache: network first for the game, cache for icons and fonts |
 | `icons/` | app icons (`icon.svg` is the source) |
@@ -112,7 +113,7 @@ After a minute the game is live at `https://undertaker132.github.io/overdrive-ni
 
 **Run locally:** `python3 -m http.server` in this folder, then open <http://localhost:8000>. (Opening the file directly also works, without the offline cache.)
 
-Saves stay on the player's device (local storage). Cloud saves, leaderboards and the creator dashboard only work in the claude.ai version of the game.
+Saves stay on the player's device (local storage). Cloud saves, leaderboards and the creator dashboard only work in the claude.ai version of the game. Live play works everywhere: with a 6-digit code the two phones find each other through public MQTT relays (EMQX, HiveMQ, Eclipse Mosquitto, Eclipse Foundation) and then connect directly (WebRTC); what passes through the relays is encrypted with a key made from the code. The long code / QR way needs no relay at all.
 
 ---
 

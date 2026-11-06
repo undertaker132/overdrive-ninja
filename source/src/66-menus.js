@@ -1,0 +1,269 @@
+/* =====================================================================
+   MENUS 2 — full settings (language, assist, colorblind, left-handed,
+   FPS), what's new, music room, device check, save codes, bug reports,
+   share screen, creator dashboard, rival alerts, weekly + dojo entries.
+   ===================================================================== */
+const NEWS = [ // version 40
+  ["JOIN WITH A 6-DIGIT CODE", "Live rooms use a code like 482 913. A mistyped digit is caught at once, the code itself is never sent, and rooms stay private unless the host opens them. Without claude.ai, friends join with the same short code instead of the long one."],
+  ["SEE YOUR FRIENDS", "In live games each friend is a 3D ninja in their own colors, with a ring and a name tag (their full hero in 2D and CLASSIC 3D). The countdown counts down, START waits for everyone, and if the host leaves another player takes over."],
+  ["THE WHOLE ROOF IN 3D", "The hackable turret no longer has a flat drawing on top of it, and mines, pickups, coins, data shards, the uplink, the cargo drone and portals are 3D models too. CLASSIC 3D gets new models for every enemy and bigger bosses."],
+  ["JOYSTICK, CONTROLLER, RESOLUTION", "New in Settings: an aim joystick (off unless you turn it on), the controller's status and button map, and one RESOLUTION setting from LOW to MAX that sets the 3D picture too."],
+  ["A STEADIER SCREEN", "The picture no longer jumps around: no zoom while aiming, a much smaller kick on hits (none with screen shake OFF), and automatic quality no longer switches back and forth."]
+];
+function deathCause() { // what hit you last, and how to avoid it next time
+  const s = G.lastHit, w = G.lastWho, en = k => lt(EDEF[k] ? EDEF[k].name : 'ENEMY');
+  const bid = Object.keys(BOSS_CODE).find(k => BOSS_CODE[k] === w), bossName = w >= 40 ? lt(BOSS_INFO[bid] ? BOSS_INFO[bid].name : 'THE BOSS') : '';
+  switch (s) {
+    case 'touch': return [ltf('Rammed by a {0}', en(w)), w === ET.BRUTE ? lt('Brutes block from the front: bounce off a rail first or hit them from behind.') : w === ET.PHANTOM ? lt('Phantoms shimmer before they lunge: dash away or strike first.') : w === ET.MIMIC ? lt('The mimic repeats your dash along the pink line. Step off the line after you dash.') : w === ET.ENFORCER ? lt('The red line is its charge. Step aside and let it hit the wall: that stuns it and drops its shield.') : w === ET.WRAITH ? lt('The wraith fades before it blinks next to you. Keep moving when it fades.') : lt('Slash enemies before they reach you, or dodge sideways.')];
+    case 'mine': return [lt('Blown up by a mine'), lt('Do not walk near mines. Dash straight through a mine to disarm it.')];
+    case 'bullet':
+      if (w === ET.SNIPER) return [lt('Shot by a SNIPER'), lt('Snipers aim with an orange laser first: step off the line or parry the shot.')];
+      if (w === 30) return [lt('Shot by a roof turret'), lt('Dash through a turret to hack it. It fights for you after that.')];
+      if (w === 31) return [lt('Shot by a firewall node'), lt('Destroy the nodes quickly, and keep moving between them.')];
+      if (w >= 40) return [ltf('Shot by {0}', bossName), lt('Watch the boss pattern, slash bullets back, and only commit when it is open.')];
+      if (w === ET.SPIDER || w === ET.WRAITH || w === ET.ENFORCER) return [ltf('Shot by the {0}', en(w)), lt('Mini-bosses fire in patterns. Find the gap in the pattern, and slash the slow shots back.')];
+      return [ltf('Shot by a {0}', en(w)), lt('Slash bullets as your dash starts for a perfect parry; near misses charge Overdrive.')];
+    case 'boom': return [lt('Caught in a bomber blast'), lt('Bombers blink before they explode. Slash them early or step out of the ring.')];
+    case 'storm': return [lt('Hit by an EMP strike'), lt('Blue circles mark the strikes. Step out before they land.')];
+    case 'volatile': return [lt('Caught in a VOLATILE explosion'), lt('VOLATILE elites explode after they die. Dash away from the orange ring.')];
+    case 'beam': return [lt('Burned by a laser beam'), lt('Beams show a dashed line first. Move aside, or dash straight through.')];
+    case 'stomp': if ((Boss.cur && Boss.cur.id === 'prime') || (G.stage && G.stage.obj.b === 'prime')) return [lt("Crushed by KUROGANE PRIME's stomp"), lt('The red circle shows where it lands. Leave the circle.')];
+      return [lt('Crushed by the Warden stomp'), lt('The red circle shows where it lands. Leave the circle.')];
+    case 'kage': return [lt("Cut down by Kage's dash"), lt('Dash INTO his red line to clash and stun him.')];
+    case 'train': return [lt('Hit by the express train'), lt('Red stripes mean a train is coming down that track.')];
+    case 'boss': return [ltf('Rammed by {0}', bossName || lt('THE BOSS')), lt('Do not stand next to the boss; strike and bounce away.')];
+    case 'curtain': return [lt("Fried by Raijin's lightning curtain"), lt('Go through the green gap, or dash straight through the wall.')];
+    case 'leviathan': return [lt('Crushed by LEVIATHAN'), lt('Its body hurts to touch. Dash through it, never walk into it, and step off the red lunge line.')];
+    case 'breach': return [lt('Caught by LEVIATHAN breaching'), lt('When it dives, a circle follows you. Leave the circle before it closes.')];
+    case 'car': return [lt('Hit by traffic'), lt('Cars only hurt you when you are not dashing. Dash THROUGH them to slice them in half.')];
+    case 'valkdive': return [lt("Speared by VALKYRIE.SYS's dive"), lt('She dives along the red line. Step aside and let her hit the rail.')];
+    case 'lance': return [lt('Burned by the ORBITAL LANCE'), lt('Glowing columns burn a moment later. Leave the column.')];
+    case 'firewall': return [lt("Caught in CHIMERA.OS's firewall bar"), lt('The dashed gold bar burns across the roof. Move up or down, or dash through.')];
+    case 'corrupt': return [lt('Lost in the corrupted roof'), lt('Purple circles decay the floor. Do not stand in them.')];
+    case 'palm': return [lt('Crushed by the HAND OF DEATH'), lt('Her hand slams down where you stood: watch the red circle and dash out of it.')];
+    case 'coil': return [lt('Crushed by ORYU.EXE'), lt('Never touch its body outside a dash, and get out of the ring before it closes.')];
+    case 'judgement': return [lt('Struck by the judgement dash'), lt('The red line is its dash. Dash straight into it to clash instead.')];
+    case 'sweep': return [lt("Cut by BENKEI's sweep"), lt('The red sector shows the cut. Step out of it, or dash through as it swings.')];
+    case 'bladerain': return [lt('Cut by the blade rain'), lt('Red lines strike a moment later. Stand between them.')];
+    case 'nulldash': return [lt("Cut down by REN.NULL's dash"), lt('Dash INTO its red line to clash and stun it, or hit it right after it dashes.')];
+    case 'echo': return [lt("Caught by REN.NULL's echo"), lt('After each dash, the same line strikes again a moment later. Step off it.')];
+    case 'strike': if ((Boss.cur && Boss.cur.id === 'prime') || (G.stage && G.stage.obj.b === 'prime')) return [lt("Struck by KUROGANE PRIME's lightning"), lt('A blue circle follows you during ZERO HOUR. Keep moving.')];
+      return [lt("Struck by Raijin's lightning"), lt('Each drum marks a blue circle on you. Keep moving, and break the drums.')];
+  }
+  return null;
+}
+Object.assign(UI, {
+  backFn: null,
+  goBack() { if (this.backFn) { const f = this.backFn; this.backFn = null; f(); return true; } return false; },
+  /* ---------------- settings ---------------- */
+  resNote() { // the picture size the RESOLUTION setting gives on this screen
+    const n = $('set-resNote'); if (!n) return; const d = Math.min(window.devicePixelRatio || 1, resK() || Q.dprCap);
+    n.textContent = ltf('Picture: {0} × {1} pixels', Math.round(V.W * d), Math.round(V.H * d)) + (resK() ? '' : ' · ' + lt('AUTO lowers it when the phone slows down'));
+  },
+  openSettings() {
+    this.show('settings'); const s = Store.data.settings, box = $('setList'); box.textContent = '';
+    const head = txt => box.appendChild(el('div', 'eyebrow set-h', lt(txt)));
+    const slider = (label, key) => {
+      const r = el('label', 'set'); r.appendChild(el('span', '', lt(label)));
+      const i = document.createElement('input'); i.type = 'range'; i.min = 0; i.max = 100; i.value = Math.round(s[key] * 100); i.id = 'set-' + key;
+      i.oninput = () => { s[key] = i.value / 100; Aud.setVol(); Store.touch(); }; r.appendChild(i); box.appendChild(r);
+    };
+    const cycle = (label, key, opts, names, after) => {
+      const r = el('div', 'set'); r.appendChild(el('span', '', lt(label)));
+      const b = el('button', 'tog on'); const idx = () => Math.max(0, opts.indexOf(s[key]));
+      b.textContent = lt(names[idx()]); b.id = 'set-' + key;
+      b.onclick = () => { s[key] = opts[(idx() + 1) % opts.length]; b.textContent = lt(names[idx()]); Aud.sfx('ui'); Store.touch(); if (key === 'fx') { Q.applied = 0; setQuality(s.fx === 'low' ? 0 : 2); } applyUiSettings(); if (after) after(); };
+      r.appendChild(b); box.appendChild(r);
+    };
+    head('SOUND'); slider('Sound effects', 'sfx'); slider('Music', 'music');
+    cycle('Voice callouts', 'voice', [1, 0], ['ON', 'OFF']); cycle('Vibration', 'haptics', [1, 0], ['ON', 'OFF']);
+    head('LANGUAGE'); cycle('Language', 'lang', ['auto'].concat(LANGS.map(l => l.id)), ['AUTO'].concat(LANGS.map(l => l.n)), () => { applyLang(); this.openSettings(); });
+    head('CONTROLS');
+    cycle('Tap to dash', 'tap', [1, 0], ['ON', 'OFF']); cycle('Aim assist', 'assist', [1, 0], ['ON', 'OFF']);
+    cycle('Swipe sensitivity', 'sens', [1, 2, 0], ['NORMAL', 'HIGH', 'LOW']); cycle('Skill button size', 'btn', [1, 2, 0], ['MEDIUM', 'LARGE', 'SMALL']);
+    cycle('Left-handed dock', 'lefty', [0, 1], ['OFF', 'ON']); cycle('Skill button opacity', 'bop', [1, .75, .5], ['100%', '75%', '50%']);
+    { const r = el('div', 'set'); r.appendChild(el('span', '', lt('Move the skill buttons'))); const b = el('button', 'tog', lt('EDIT')); b.id = 'set-hudEdit';
+      b.onclick = () => { Aud.sfx('ui'); HudEdit.open(); }; r.appendChild(b); box.appendChild(r); }
+    cycle('Aim joystick', 'stick', [0, 1], ['OFF', 'ON']);
+    box.appendChild(el('div', 'small mute set-note', lt('A stick above the skill buttons: push it the way you want to strike, let go to slash. Dragging anywhere still works.')));
+    cycle('Auto rival ghost', 'rival', [1, 0], ['ON', 'OFF']);
+    head('CONTROLLER'); { const r = el('div', 'set'); r.appendChild(el('span', '', lt('Controller'))); const b = el('span', Pad.on ? 'gold' : 'mute', Pad.on ? (Pad.name || lt('CONNECTED')).slice(0, 28) : lt('NOT CONNECTED')); b.id = 'set-pad'; r.appendChild(b); box.appendChild(r); }
+    box.appendChild(el('div', 'small mute set-note', Pad.on ? lt('Left stick aims · A slash · hold LT to aim in slow motion, release to slash · X grapple · Y hijack · B laser web · LB time echo · RB overdrive · START pause. In menus: stick to move, A to press, B to go back.') : lt('Connect a controller by Bluetooth or USB, then press any button on it. Xbox, PlayStation, Switch Pro and most phone controllers work.')));
+    head('SCREEN'); cycle('Graphics', 'd3', [1, 2, 0], ['3D', 'CLASSIC 3D', '2D']);
+    cycle('Resolution', 'res', ['auto', 'max', 'high', 'med', 'low'], ['AUTO', 'MAX', 'HIGH', 'MEDIUM', 'LOW'], () => { Q.applied = 0; setQuality(Q.lvl); if (GL3D.cv) GL3D.size(); this.resNote(); });
+    { const n = el('div', 'small mute set-note'); n.id = 'set-resNote'; box.appendChild(n); this.resNote(); } cycle('HUD', 'hud', ['clean', 'full'], ['CLEAN', 'FULL'], () => CleanHud.sync());
+    cycle('Effects quality', 'fx', ['auto', 'ultra', 'high', 'low'], ['AUTO', 'ULTRA', 'HIGH', 'LOW']); cycle('Battery saver', 'bat', ['auto', 'on', 'off'], ['AUTO', 'ON', 'OFF'], () => { Power.check(); this.openSettings(); }); if (Power.note()) box.appendChild(el('div', 'small mute set-note', Power.note())); cycle('Screen shake', 'shake', [1, .5, 0], ['FULL', 'LOW', 'OFF']);
+    cycle('Damage numbers', 'nums', ['all', 'crit', 'off'], ['ALL', 'CRITS', 'OFF']); cycle('Calm effects', 'calm', [0, 1], ['OFF', 'ON']);
+    cycle('Colorblind colors', 'cb', [0, 1], ['OFF', 'ON']); cycle('Flashes and impact frames', 'flashes', ['full', 'soft', 'off'], ['FULL', 'SOFT', 'OFF']); cycle('Text size', 'tsz', [0, 1, 2], ['100%', '115%', '130%']); cycle('Show FPS', 'fps', [0, 1], ['OFF', 'ON']);
+    cycle('Tutorial tips', 'tips', [1, 0], ['ON', 'OFF']);
+    { const r = el('div', 'set'); r.appendChild(el('span', '', lt('Show every tip again'))); const b = el('button', 'tog', lt('RESET')); b.id = 'set-tipsReset';
+      b.onclick = () => { Store.data.tut = {}; Store.data.seen = { rm: Store.data.seen.rm }; Store.touch(); Aud.sfx('ui'); b.textContent = lt('DONE'); }; r.appendChild(b); box.appendChild(r); }
+    head('ASSIST MODE');
+    cycle('Game speed', 'speed', [1, .9, .8], ['100%', '90%', '80%']); cycle('Extra shields', 'ahp', [0, 1, 2], ['NONE', '+1', '+2']);
+    box.appendChild(el('div', 'small mute', lt('Assist runs still count for the story, but not for leaderboards or ghosts.')));
+    head('PRIVACY'); cycle('Share anonymous play stats', 'share', [1, 0], ['ON', 'OFF']);
+    box.appendChild(el('div', 'small mute', lt('Stats are only where players fail or quit, so the game can be balanced. No names, no messages.')));
+    try { PC.settings(head, cycle, box, s); } catch (e) { errLog(e); }
+    const more = el('div', 'grid2'); more.style.marginTop = '12px';
+    [['WHAT\'S NEW', () => this.openNews(() => this.openSettings())], ['MUSIC ROOM', () => this.openMusic()], ['DEVICE CHECK', () => this.openDevice()], ['SAVE CODE', () => this.openSave()], ['SEND FEEDBACK', () => this.openReport(() => this.openSettings())]]
+      .forEach(([n, fn]) => { const b = el('button', 'btn', lt(n)); b.onclick = () => { Aud.sfx('ui'); fn(); }; more.appendChild(b); });
+    box.appendChild(more);
+    const ach = $('setAch'); ach.textContent = '';
+    for (const a of ACHS) { const got = !!Store.data.ach[a.id], r = el('div', 'bty'); r.appendChild(el('span', got ? '' : 'mute', (got ? '✓ ' : '· ') + lt(a.name) + ' — ' + lt(a.d))); r.appendChild(el('span', 'gold small', '+' + a.r)); ach.appendChild(r); }
+  },
+  /* ---------------- what's new ---------------- */
+  openNews(back) {
+    this.show('news'); this.backFn = back || (() => this.openTitle());
+    $('nwVer').textContent = ltf('VERSION {0}', VERSION); const box = $('nwList'); box.textContent = '';
+    for (const n of NEWS) { const r = el('div', 'bty'); r.appendChild(el('span', 'gold', lt(n[0]))); r.appendChild(el('span', 'small', lt(n[1]))); r.style.gridTemplateColumns = '1fr'; box.appendChild(r); }
+    $('nwOk').onclick = () => { Aud.sfx('ui'); Store.data.seenVer = VERSION; Store.touch(); this.goBack() || this.openTitle(); };
+  },
+  /* ---------------- music room ---------------- */
+  openMusic() {
+    this.show('music'); this.backFn = () => { Aud.music('menu'); Aud.intensity = 0; this.openSettings(); };
+    const st = Store.data.settings, box = $('muList'); box.textContent = '';
+    const pick = st.track || 'auto';
+    box.appendChild(el('div', 'eyebrow', lt('MUSIC DURING RUNS')));
+    const seg = el('div', 'seg'); seg.style.gridTemplateColumns = 'repeat(2,1fr)';
+    [['auto', 'AUTO'], ['shuffle', 'SHUFFLE']].forEach(([k, n]) => { const b = el('button', pick === k ? 'on' : '', lt(n)); b.onclick = () => { Aud.sfx('ui'); st.track = k; Store.touch(); this.openMusic(); }; seg.appendChild(b); });
+    box.appendChild(seg);
+    box.appendChild(el('div', 'small mute', pick === 'auto' ? lt('AUTO: every area and boss has its own track.') : pick === 'shuffle' ? lt('SHUFFLE: a random track every run. Bosses keep their themes.') : ltf('Every run plays {0}, bosses included.', TRACKS[pick] ? TRACKS[pick].name : pick)));
+    for (const id of TRACK_LIST) {
+      const T = TRACKS[id], on = Aud.mus.id === id && Aud.mus.on, mine = pick === id, b = el('div', 'item' + (on ? ' on' : '') + (mine ? ' sel' : '')); b.setAttribute('role', 'button'); b.tabIndex = 0;
+      b.appendChild(el('span', 'nm', T.name)); b.appendChild(el('span', 'pr', on ? '▮▮ ' + lt('PLAYING') : '▶ ' + lt('LISTEN'))); b.appendChild(el('span', 'ds', lt(T.style) + ' · ' + T.bpm + ' BPM'));
+      const use = el('button', 'chip' + (mine ? ' gold' : ''), mine ? '✓ ' + lt('IN RUNS') : lt('USE IN RUNS'));
+      use.onclick = e => { e.stopPropagation(); Aud.sfx('buy'); st.track = mine ? 'auto' : id; Store.touch(); this.openMusic(); };
+      b.appendChild(use);
+      b.onclick = () => { Aud.init(); Aud.intensity = 3; Aud.music(id); this.openMusic(); };
+      box.appendChild(b);
+    }
+  },
+  /* ---------------- device check ---------------- */
+  openDevice() {
+    this.show('device'); this.backFn = () => this.openSettings(); const box = $('dvList'); box.textContent = '';
+    const rows = [
+      ['Screen', Math.round(V.W) + ' × ' + Math.round(V.H) + ' @' + (window.devicePixelRatio || 1).toFixed(2)],
+      ['Frame rate', Math.round(Q.fps || 0) + ' FPS'], ['Effects quality', lt(['LOW', 'MEDIUM', 'HIGH'][Q.lvl])],
+      ['Touch', ('ontouchstart' in window) ? lt('YES') : lt('NO')], ['Vibration', navigator.vibrate ? lt('SUPPORTED') : lt('NOT SUPPORTED (normal on iPhone)')],
+      ['Sound', Aud.c ? lt(Aud.c.state.toUpperCase()) : lt('NOT STARTED')], ['Cloud save', Cloud.ready ? (Cloud.readOnly ? lt('READ ONLY') : lt('ON')) : lt('OFF (guest)')],
+      ['Language', (LANGS.find(l => l.id === LANG.id) || LANGS[0]).n], ['Version', VERSION]
+    ];
+    for (const r of rows) { const d = el('div', 'bty'); d.appendChild(el('span', 'mute', lt(r[0]))); d.appendChild(el('span', '', r[1])); box.appendChild(d); }
+    box.appendChild(el('div', 'small mute', lt('Below 50 FPS the game lowers effects by itself. For testing on friends\' phones, turn on Show FPS.')));
+    for (const l of Pipe.list()) box.appendChild(el('div', 'small mute', l)); // the frame's drawing stages
+    // the error log: what went wrong on this device, so a report can say exactly where
+    const L = ERRLOG.a.slice().sort((p, q) => q.t - p.t); box.appendChild(el('div', 'gold', ltf('ERROR LOG ({0})', L.length)));
+    if (!L.length) box.appendChild(el('div', 'small mute', lt('No errors on this device.')));
+    for (const r of L.slice(0, 12)) { const d = el('div', 'bty'); d.appendChild(el('span', 'small', (r.c > 1 ? '×' + r.c + ' ' : '') + r.m)); d.appendChild(el('span', 'small mute', r.v || '')); box.appendChild(d); }
+    if (L.length) { const g = el('div', 'grid2'); const cp = el('button', 'btn', lt('COPY')), cl = el('button', 'btn', lt('CLEAR'));
+      cp.onclick = () => { const t = L.map(r => `[${r.v}] x${r.c} ${r.m} @ ${r.s}`).join('\n'); try { navigator.clipboard.writeText(t).then(() => { cp.textContent = lt('COPIED'); }, () => { }); } catch (e) { errLog(e); } };
+      cl.onclick = () => { ERRLOG.a.length = 0; try { localStorage.removeItem('od_errlog'); } catch (e) { errLog(e); } this.openDevice(); };
+      g.appendChild(cp); g.appendChild(cl); box.appendChild(g); }
+  },
+  /* ---------------- save code ---------------- */
+  openSave() {
+    this.show('save'); this.backFn = () => this.openSettings();
+    const json = JSON.stringify(Store.data), code = 'ODSAVE1:' + btoa(unescape(encodeURIComponent(json)));
+    const out = $('svOut'); out.value = code; $('svMsg').textContent = '';
+    $('svCopy').onclick = async () => { try { await navigator.clipboard.writeText(code); $('svMsg').textContent = lt('Copied.'); } catch (e) { out.focus(); out.select(); $('svMsg').textContent = lt('Select the code and copy it.'); } };
+    $('svLoad').onclick = () => {
+      const raw = $('svIn').value.trim();
+      try {
+        if (raw.indexOf('ODSAVE1:') !== 0) throw 0;
+        const o = JSON.parse(decodeURIComponent(escape(atob(raw.slice(8)))));
+        if (!o || o.v !== 9 || typeof o.credits !== 'number') throw 0;
+        const keepUser = Store.data.user, keepSet = Store.data.settings;
+        Store.data = Store.merge(Store.def(), o); Store.data.user = keepUser; Store.data.settings = keepSet; Store.sanitize();
+        Store.data.ts = Date.now(); Store.touch(); Store.flush(true); Aud.sfx('buy'); $('svMsg').textContent = lt('Save loaded.'); this.refreshProfile();
+      } catch (e) { Aud.sfx('deny'); $('svMsg').textContent = lt('That code is not a valid save.'); }
+    };
+  },
+  /* ---------------- bug report / feedback ---------------- */
+  openReport(back) {
+    const prevState = G.state; this.show('report'); this.backFn = back || (() => this.openTitle());
+    const cats = ['BUG', 'TOO HARD', 'TOO EASY', 'IDEA', 'OTHER']; let cat = 'BUG';
+    const seg = $('rpCats'); seg.textContent = ''; seg.style.gridTemplateColumns = 'repeat(5,1fr)';
+    cats.forEach(c => { const b = el('button', c === cat ? 'on' : '', lt(c)); b.onclick = () => { cat = c; seg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); }; seg.appendChild(b); });
+    $('rpText').value = ''; $('rpMsg').textContent = ''; $('rpCopy').classList.add('hidden'); $('rpInfo').checked = true;
+    $('rpCtx').textContent = ltf('Attached: version {0}, {1}, screen {2}×{3}, {4} FPS', VERSION, G.stage ? G.stage.id : lt(prevState === 'MENU' ? 'menu' : G.mode), Math.round(V.W), Math.round(V.H), Math.round(Q.fps || 0));
+    const gh = $('rpGh'), off = offlineBuild();
+    gh.className = off ? 'btn pri' : 'btn gold hidden'; $('rpGhNote').classList.toggle('hidden', !off); $('rpSend').classList.toggle('hidden', off);
+    gh.onclick = () => {
+      const text = $('rpText').value.trim(); if (!text) { $('rpMsg').textContent = lt('Write a few words first.'); return; }
+      Aud.sfx('ui'); const item = Object.assign({ ts: Date.now(), cat, text: text.slice(0, 600) }, $('rpInfo').checked ? Feedback.info() : { v: VERSION });
+      let w = null; try { w = window.open(Feedback.ghUrl(item), '_blank', 'noopener'); } catch (e) { errLog(e); }
+      if (!w) { $('rpMsg').textContent = lt('Could not send from here. Copy this and send it to the developer:'); const c = $('rpCopy'); c.classList.remove('hidden'); c.value = Feedback.plain(item); }
+    };
+    $('rpSend').onclick = async () => {
+      const text = $('rpText').value.trim(); if (!text) { $('rpMsg').textContent = lt('Write a few words first.'); return; }
+      $('rpSend').disabled = true; $('rpMsg').textContent = lt('Sending…');
+      const r = await Feedback.send(cat, text, $('rpInfo').checked); $('rpSend').disabled = false;
+      if (r.ok) { $('rpMsg').textContent = lt('Thanks! The developer will see it.'); Aud.sfx('buy'); $('rpText').value = ''; }
+      else { $('rpMsg').textContent = lt('Could not send from here. Copy this and send it to the developer:'); const c = $('rpCopy'); c.classList.remove('hidden'); c.value = Feedback.plain(r.item); $('rpGh').className = 'btn gold'; }
+    };
+  },
+  /* ---------------- share screen ---------------- */
+  openShare(o, back) {
+    this.show('share'); this.backFn = back;
+    const k = Share.build(o); $('shImg').src = k.toDataURL('image/png'); $('shMsg').textContent = '';
+    $('shSave').onclick = async () => { const r = await Share.save(); $('shMsg').textContent = r === 'saved' ? lt('Saved.') : r === 'declined' ? lt('Not saved.') : lt('Long-press the picture to save it.'); };
+    $('shCopy').onclick = async () => { const ok = await Share.copy(); $('shMsg').textContent = ok ? lt('Challenge text copied. Paste it to a friend.') : Share.text; };
+  },
+  /* ---------------- creator dashboard ---------------- */
+  dashTab: 0,
+  async openDash() {
+    this.show('dash'); this.backFn = () => this.openTitle();
+    const tabs = $('dsTabs'); tabs.textContent = ''; tabs.style.gridTemplateColumns = 'repeat(5,1fr)';
+    ['PLAY STATS', 'FEEDBACK', 'SCORES', 'BALANCE', 'INSIGHTS'].forEach((n, i) => { const b = el('button', i === this.dashTab ? 'on' : '', lt(n)); b.onclick = () => { this.dashTab = i; this.openDash(); }; tabs.appendChild(b); });
+    const box = $('dsList'); box.textContent = ''; box.appendChild(el('div', 'panel info mute', lt('Loading…')));
+    if (this.dashTab === 2) { this.renderModTab(box); return; }
+    if (this.dashTab === 3) { this.renderBalance(box); return; }
+    if (this.dashTab === 4) { this.renderInsights(box); return; }
+    const rows = await Dash.load(this.dashTab ? 'feedback' : 'stats'); if (this.cur !== 'dash') return;
+    box.textContent = '';
+    if (!rows) { box.appendChild(el('div', 'panel info', lt('Could not load. The dashboard only works for the game owner, signed in.'))); return; }
+    if (this.dashTab === 1) {
+      const items = []; for (const r of rows) for (const it of (r.items || [])) items.push(it);
+      items.sort((a, b) => tsn(b.ts) - tsn(a.ts));
+      if (!items.length) box.appendChild(el('div', 'panel info', lt('No reports yet.')));
+      for (const it of items.slice(0, 120)) {
+        const p = el('div', 'panel small'); p.appendChild(el('div', 'gold', it.cat + ' · ' + new Date(it.ts).toLocaleString() + ' · v' + it.v));
+        p.appendChild(el('div', '', it.text)); if (it.ua) p.appendChild(el('div', 'mute', [it.mode, it.stage, it.diff, it.t + 's', it.fps + ' FPS', it.w + '×' + it.h, it.ua].join(' · ') + (it.err ? ' · ERR ' + it.err : '')));
+        box.appendChild(p);
+      }
+      return;
+    }
+    const st = {}, md = {}; let players = 0, time = 0, touch = 0, he = 0;
+    for (const r of rows) {
+      players++; time += r.time | 0; if (r.dev === 'touch') touch++; if (r.lang === 'he') he++;
+      for (const id in (r.st || {})) { const a = r.st[id], o = st[id] || (st[id] = { p: 0, c: 0, f: 0, q: 0, t: 0, d: {} }); o.p += a.p | 0; o.c += a.c | 0; o.f += a.f | 0; o.q += a.q | 0; o.t += a.t | 0; for (const k in (a.d || {})) o.d[k] = (o.d[k] | 0) + (a.d[k] | 0); }
+      for (const id in (r.md || {})) { const a = r.md[id], o = md[id] || (md[id] = { p: 0, best: 0, sum: 0 }); o.p += a.p | 0; o.best = Math.max(o.best, a.best | 0); o.sum += a.sum | 0; }
+    }
+    box.appendChild(el('div', 'panel small', ltf('{0} players · {1} hours played · {2} on phones · {3} in Hebrew', players, (time / 3600).toFixed(1), touch, he)));
+    for (const s of STAGES) {
+      const o = st[s.id]; if (!o) continue;
+      let top = '', tn = 0; for (const k in o.d) if (o.d[k] > tn) { tn = o.d[k]; top = k; }
+      const r = el('div', 'bty'); r.appendChild(el('span', '', s.id + ' ' + lt(s.name)));
+      r.appendChild(el('span', o.p && o.c / o.p < .4 ? 'gold' : 'mute', ltf('{0} plays · {1}% clear · {2} quit', o.p, Math.round(o.c / Math.max(1, o.p) * 100), o.q) + (top ? ' · ' + ltf('most deaths: {0}', top) : '')));
+      box.appendChild(r);
+    }
+    for (const m in md) { const o = md[m], r = el('div', 'bty'); r.appendChild(el('span', '', lt((MODES.find(q => q.id === m) || { name: m }).name))); r.appendChild(el('span', 'mute', ltf('{0} runs · best {1} · average {2}', o.p, fmtNum(o.best), fmtNum(o.sum / Math.max(1, o.p))))); box.appendChild(r); }
+  },
+  /* ---------------- rival alerts on the title screen ---------------- */
+  renderRivals() {
+    const box = $('tRivals'); if (!box) return; const al = Rivals.alerts; box.textContent = ''; box.classList.toggle('hidden', !al.length);
+    if (!al.length) return;
+    box.appendChild(el('div', 'eyebrow', lt('RIVAL ALERT')));
+    for (const a of al) {
+      const m = MODES.find(q => q.id === a.m), r = el('div', 'bty');
+      r.appendChild(el('span', '', ltf('{0} beat your {1} score: {2} vs your {3}', a.name, lt(m.name), fmtNum(a.sc), fmtNum(a.mine))));
+      const b = el('button', 'chip gold', lt('CHALLENGE BACK')); b.onclick = () => { Store.data.chal = { n: a.name, s: a.sc, m: a.m, id: a.id }; Store.touch(); Ghost.fetch(a.id, a.m, a.name); Flow.startArcade(a.m); };
+      r.appendChild(b); box.appendChild(r);
+    }
+  }
+});
+function applyUiSettings() { // settings that touch layout or global flags
+  const s = Store.data.settings; CALM = s.calm ? 1 : 0; CBM = s.cb ? 1 : 0;
+  try { document.documentElement.style.setProperty('--skh', [50, 58, 68][clamp(s.btn | 0, 0, 2)] + 'px'); document.body.classList.toggle('lefty', !!s.lefty); document.documentElement.style.setProperty('--bop', String(clamp(+s.bop || 1, .3, 1))); } catch (e) { errLog(e); }
+  UI.measureDock(); HudEdit.apply();
+}
