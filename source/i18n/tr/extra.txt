@@ -1,0 +1,31 @@
+PLAY LIVE	العب مباشرة	ИГРА ОНЛАЙН
+Race your friends on the same roof, or take down a boss together in a raid.	سابق أصدقاءك على السطح نفسه، أو أسقطوا زعيماً معاً في غارة.	Соревнуйся с друзьями на одной крыше или вместе завали босса в рейде.
+SEASONS	المواسم	СЕЗОНЫ
+A free monthly season: weekly missions, 20 reward tiers, and a hero and blade skin that only this month gives.	موسم شهري مجاني: مهام أسبوعية، 20 مستوى من المكافآت، ومظهر بطل ونصل لا يمنحهما إلا هذا الشهر.	Бесплатный ежемесячный сезон: еженедельные задания, 20 уровней наград и облики героя и клинка, которые даёт только этот месяц.
+HERO MASTERY	إتقان الأبطال	МАСТЕРСТВО ГЕРОЕВ
+Every hero levels up as you play: alternate colors, a victory pose and a special Overdrive burst.	كل بطل يرتقي مستواه وأنت تلعب: ألوان بديلة، ووضعية نصر، وانفجار أوفردرايف خاص.	Каждый герой растёт по мере игры: альтернативные цвета, победная поза и особая вспышка Овердрайва.
+NEW BLADES	نصال جديدة	НОВЫЕ КЛИНКИ
+Shadow kunai, a chain whip, a plasma spear and titan gauntlets, each with its own trick.	كوناي الظل، وسوط بسلسلة، ورمح بلازما، وقفازات تيتان، ولكل منها حيلته.	Теневые кунаи, цепной кнут, плазменное копьё и титановые перчатки — у каждого своя фишка.
+NEW ENEMIES	أعداء جدد	НОВЫЕ ВРАГИ
+Medics, mimics, mine layers, mirrors and three mini-bosses with their own attacks.	مسعفون، ومقلّدون، وزارعو ألغام، ومرايا، وثلاثة زعماء صغار بهجمات خاصة.	Медики, подражатели, минёры, зеркала и три мини-босса со своими атаками.
+MAGLEV ROUTES	طرق الماغليف	МАРШРУТЫ МАГЛЕВА
+Choose your next car: elite, repair, black market or mystery. Sign contracts for a bigger score.	اختر عربتك التالية: نخبة، إصلاح، سوق سوداء أو غموض. وقّع عقوداً لنقاط أعلى.	Выбирай следующий вагон: элитный, ремонтный, чёрный рынок или тайна. Подписывай контракты ради большего счёта.
+SKILL EVOLUTIONS	تطوير المهارات	РАЗВИТИЕ НАВЫКОВ
+Use a skill enough and it can evolve into a stronger version.	استخدم المهارة بما يكفي ويمكن أن تتطور إلى نسخة أقوى.	Используй навык достаточно часто — и он сможет развиться в более сильную версию.
+ROOF PUZZLES	ألغاز السطح	ГОЛОВОЛОМКИ НА КРЫШЕ
+24 hand-made roof puzzles and a new puzzle every day.	24 لغزاً مصمماً يدوياً على السطح ولغز جديد كل يوم.	24 головоломки ручной работы и новая головоломка каждый день.
+REPLAYS	الإعادات	ПОВТОРЫ
+Watch the best runs, save a highlight clip, and every top score is checked by its replay.	شاهد أفضل الجولات، واحفظ مقطعاً لأبرز لحظة، وكل نتيجة عليا يتم التحقق منها بإعادتها.	Смотри лучшие забеги, сохраняй клип лучшего момента, а каждый топ-результат проверяется по его повтору.
+STORY SPEEDRUN	سباق سرعة القصة	СПИДРАН СЮЖЕТА
+Race the whole story with splits and your own leaderboard.	تسابق عبر القصة كلها مع توقيتات مرحلية ولوحة صدارة خاصة.	Пробеги весь сюжет на время со сплитами и своей таблицей лидеров.
+COMICS + PHOTO MODE	قصص مصورة + وضع التصوير	КОМИКСЫ + ФОТОРЕЖИМ
+Comic pages between chapters, and a photo mode in the pause menu.	صفحات قصص مصورة بين الفصول، ووضع تصوير في قائمة الإيقاف المؤقت.	Страницы комикса между главами и фоторежим в меню паузы.
+PROFILE & CODEX	الملف والموسوعة	ПРОФИЛЬ И КОДЕКС
+Titles, frames and a codex of every enemy and boss.	ألقاب وإطارات وموسوعة لكل عدو وزعيم.	Титулы, рамки и кодекс всех врагов и боссов.
+ASK MIKA	اسأل ميكا	СПРОСИ МИКУ
+After a run, Mika can give you a tip based on how you played.	بعد الجولة، يمكن لميكا أن تعطيك نصيحة بناءً على طريقة لعبك.	После забега Мика может дать совет, исходя из того, как ты играл.
+LANGUAGES	اللغات	ЯЗЫКИ
+Now in English, Hebrew, Arabic and Russian.	الآن بالإنجليزية والعبرية والعربية والروسية.	Теперь на английском, иврите, арабском и русском.
+TWO DEVICES	جهازان	ДВА УСТРОЙСТВА
+Played on two phones? Choose which save to keep, or merge the best of both.	لعبت على هاتفين؟ اختر أي حفظ تحتفظ به، أو ادمج أفضل ما فيهما.	Играл на двух телефонах? Выбери, какое сохранение оставить, или объедини лучшее из обоих.
+This copy of the game runs offline: your progress is saved on this device. The club, live play, cloud saves and Ask Mika are in the online version.	هذه النسخة من اللعبة تعمل دون اتصال: يُحفظ تقدمك على هذا الجهاز. النادي واللعب المباشر والحفظ السحابي و«اسأل ميكا» متاحة في النسخة المتصلة.	Эта копия игры работает офлайн: прогресс сохраняется на этом устройстве. Клуб, онлайн-игра, облачные сохранения и «Спроси Мику» есть в онлайн-версии.
