@@ -3444,5 +3444,19 @@ Object.assign(RU, {
 "Played on two phones? Choose which save to keep, or merge the best of both.": "Играл на двух телефонах? Выбери, какое сохранение оставить, или объедини лучшее из обоих.",
 "This copy of the game runs offline: your progress is saved on this device. The club, live play, cloud saves and Ask Mika are in the online version.": "Эта копия игры работает офлайн: прогресс сохраняется на этом устройстве. Клуб, онлайн-игра, облачные сохранения и «Спроси Мику» есть в онлайн-версии.",
 "SCREEN FIX": "ИСПРАВЛЕНИЕ ЭКРАНА",
-"On some phones the menus could slide to the side and get cut off after an achievement popped up. The screen now always stays in place.": "На некоторых телефонах меню могло сдвинуться в сторону и обрезаться после появления достижения. Теперь экран всегда остаётся на месте."
+"On some phones the menus could slide to the side and get cut off after an achievement popped up. The screen now always stays in place.": "На некоторых телефонах меню могло сдвинуться в сторону и обрезаться после появления достижения. Теперь экран всегда остаётся на месте.",
+"TODAY": "СЕГОДНЯ",
+"REWARD READY": "НАГРАДА ЖДЁТ",
+"{0} ACTIVE": "АКТИВНО: {0}",
+"QUICK PLAY": "БЫСТРАЯ ИГРА",
+"NEW ON THE TITLE SCREEN": "НОВОЕ НА ГЛАВНОМ ЭКРАНЕ",
+"GOT IT": "ПОНЯТНО",
+"WEAPONS AND HEROES IN 3D": "ОРУЖИЕ И ГЕРОИ В 3D",
+"Every weapon has its own 3D model now: blades, twin daggers, hammer, cleaver, spears, scythe, chain, chakram, fan, bow, drill and gauntlets. Every hero skin dresses the 3D ninja its own way: horns, ears, tails, a straw hat, a crest, a halo and wings, and more.": "Теперь у каждого оружия своя 3D-модель: клинки, парные кинжалы, молот, тесак, копья, коса, цепь, чакрам, веер, лук, бур и перчатки. Каждый скин героя по-своему одевает 3D-ниндзя: рога, уши, хвосты, соломенная шляпа, гребень, нимб и крылья и не только.",
+"GLOWING BULLETS": "СВЕТЯЩИЕСЯ ПУЛИ",
+"Bullets are glowing 3D orbs: enemy fire is red, and shots you reflect turn cyan.": "Пули стали светящимися 3D-шарами: вражеский огонь красный, а отражённые выстрелы становятся бирюзовыми.",
+"SMOOTHER ON EVERY PHONE": "ПЛАВНЕЕ НА ЛЮБОМ ТЕЛЕФОНЕ",
+"With RESOLUTION on AUTO, the 3D picture lowers its resolution when frames slow down and raises it again when there is room.": "Если РАЗРЕШЕНИЕ стоит на АВТО, 3D-картинка снижает разрешение, когда кадры замедляются, и снова повышает его, когда есть запас.",
+"A SHORTER HOME SCREEN": "ГЛАВНЫЙ ЭКРАН КОРОЧЕ",
+"The daily bonus, events, the daily mission, legends, the daily run and bounties sit in one TODAY card that opens by itself when a reward is waiting. New buttons are announced in a card, NEW badges fade after a few visits, and QUICK PLAY starts your last arcade mode in one tap.": "Ежедневный бонус, события, задание дня, легенды, забег дня и награды собраны в одной карточке СЕГОДНЯ, которая сама открывается, когда ждёт награда. Новые кнопки показываются в карточке, значки НОВОЕ исчезают через несколько заходов, а БЫСТРАЯ ИГРА запускает последний аркадный режим одним касанием."
 });

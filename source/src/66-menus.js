@@ -3,13 +3,11 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 40
-  ["SCREEN FIX", "On some phones the menus could slide to the side and get cut off after an achievement popped up. The screen now always stays in place."],
-  ["JOIN WITH A 6-DIGIT CODE", "Live rooms use a code like 482 913. A mistyped digit is caught at once, the code itself is never sent, and rooms stay private unless the host opens them. Without claude.ai, friends join with the same short code instead of the long one."],
-  ["SEE YOUR FRIENDS", "In live games each friend is a 3D ninja in their own colors, with a ring and a name tag (their full hero in 2D and CLASSIC 3D). The countdown counts down, START waits for everyone, and if the host leaves another player takes over."],
-  ["THE WHOLE ROOF IN 3D", "The hackable turret no longer has a flat drawing on top of it, and mines, pickups, coins, data shards, the uplink, the cargo drone and portals are 3D models too. CLASSIC 3D gets new models for every enemy and bigger bosses."],
-  ["JOYSTICK, CONTROLLER, RESOLUTION", "New in Settings: an aim joystick (off unless you turn it on), the controller's status and button map, and one RESOLUTION setting from LOW to MAX that sets the 3D picture too."],
-  ["A STEADIER SCREEN", "The picture no longer jumps around: no zoom while aiming, a much smaller kick on hits (none with screen shake OFF), and automatic quality no longer switches back and forth."]
+const NEWS = [ // version 41
+  ["WEAPONS AND HEROES IN 3D", "Every weapon has its own 3D model now: blades, twin daggers, hammer, cleaver, spears, scythe, chain, chakram, fan, bow, drill and gauntlets. Every hero skin dresses the 3D ninja its own way: horns, ears, tails, a straw hat, a crest, a halo and wings, and more."],
+  ["GLOWING BULLETS", "Bullets are glowing 3D orbs: enemy fire is red, and shots you reflect turn cyan."],
+  ["SMOOTHER ON EVERY PHONE", "With RESOLUTION on AUTO, the 3D picture lowers its resolution when frames slow down and raises it again when there is room."],
+  ["A SHORTER HOME SCREEN", "The daily bonus, events, the daily mission, legends, the daily run and bounties sit in one TODAY card that opens by itself when a reward is waiting. New buttons are announced in a card, NEW badges fade after a few visits, and QUICK PLAY starts your last arcade mode in one tap."]
 ];
 function deathCause() { // what hit you last, and how to avoid it next time
   const s = G.lastHit, w = G.lastWho, en = k => lt(EDEF[k] ? EDEF[k].name : 'ENEMY');
