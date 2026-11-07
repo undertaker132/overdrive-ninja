@@ -3442,5 +3442,7 @@ Object.assign(AR, {
 "Now in English, Hebrew, Arabic and Russian.": "الآن بالإنجليزية والعبرية والعربية والروسية.",
 "TWO DEVICES": "جهازان",
 "Played on two phones? Choose which save to keep, or merge the best of both.": "لعبت على هاتفين؟ اختر أي حفظ تحتفظ به، أو ادمج أفضل ما فيهما.",
-"This copy of the game runs offline: your progress is saved on this device. The club, live play, cloud saves and Ask Mika are in the online version.": "هذه النسخة من اللعبة تعمل دون اتصال: يُحفظ تقدمك على هذا الجهاز. النادي واللعب المباشر والحفظ السحابي و«اسأل ميكا» متاحة في النسخة المتصلة."
+"This copy of the game runs offline: your progress is saved on this device. The club, live play, cloud saves and Ask Mika are in the online version.": "هذه النسخة من اللعبة تعمل دون اتصال: يُحفظ تقدمك على هذا الجهاز. النادي واللعب المباشر والحفظ السحابي و«اسأل ميكا» متاحة في النسخة المتصلة.",
+"SCREEN FIX": "إصلاح الشاشة",
+"On some phones the menus could slide to the side and get cut off after an achievement popped up. The screen now always stays in place.": "في بعض الهواتف كانت القوائم قد تنزاح إلى الجانب وتُقطع بعد ظهور إنجاز. الآن تبقى الشاشة دائمًا في مكانها."
 });

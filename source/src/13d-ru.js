@@ -3442,5 +3442,7 @@ Object.assign(RU, {
 "Now in English, Hebrew, Arabic and Russian.": "Теперь на английском, иврите, арабском и русском.",
 "TWO DEVICES": "ДВА УСТРОЙСТВА",
 "Played on two phones? Choose which save to keep, or merge the best of both.": "Играл на двух телефонах? Выбери, какое сохранение оставить, или объедини лучшее из обоих.",
-"This copy of the game runs offline: your progress is saved on this device. The club, live play, cloud saves and Ask Mika are in the online version.": "Эта копия игры работает офлайн: прогресс сохраняется на этом устройстве. Клуб, онлайн-игра, облачные сохранения и «Спроси Мику» есть в онлайн-версии."
+"This copy of the game runs offline: your progress is saved on this device. The club, live play, cloud saves and Ask Mika are in the online version.": "Эта копия игры работает офлайн: прогресс сохраняется на этом устройстве. Клуб, онлайн-игра, облачные сохранения и «Спроси Мику» есть в онлайн-версии.",
+"SCREEN FIX": "ИСПРАВЛЕНИЕ ЭКРАНА",
+"On some phones the menus could slide to the side and get cut off after an achievement popped up. The screen now always stays in place.": "На некоторых телефонах меню могло сдвинуться в сторону и обрезаться после появления достижения. Теперь экран всегда остаётся на месте."
 });

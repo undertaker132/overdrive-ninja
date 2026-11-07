@@ -4,6 +4,7 @@
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
 const NEWS = [ // version 40
+  ["SCREEN FIX", "On some phones the menus could slide to the side and get cut off after an achievement popped up. The screen now always stays in place."],
   ["JOIN WITH A 6-DIGIT CODE", "Live rooms use a code like 482 913. A mistyped digit is caught at once, the code itself is never sent, and rooms stay private unless the host opens them. Without claude.ai, friends join with the same short code instead of the long one."],
   ["SEE YOUR FRIENDS", "In live games each friend is a 3D ninja in their own colors, with a ring and a name tag (their full hero in 2D and CLASSIC 3D). The countdown counts down, START waits for everyone, and if the host leaves another player takes over."],
   ["THE WHOLE ROOF IN 3D", "The hackable turret no longer has a flat drawing on top of it, and mines, pickups, coins, data shards, the uplink, the cargo drone and portals are 3D models too. CLASSIC 3D gets new models for every enemy and bigger bosses."],
