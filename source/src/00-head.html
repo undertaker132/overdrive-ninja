@@ -524,4 +524,23 @@ body.pc .sk { max-width: 84px; }
 #rsGrade { display: grid; grid-template-columns: 74px 1fr; gap: 4px 14px; align-items: center; }
 #rsGrade .gl { grid-row: span 3; font: italic 700 54px/1 var(--fd); text-align: center; text-shadow: 0 0 18px currentColor; animation: slam .5s .2s cubic-bezier(.2, 1.6, .4, 1) both; }
 #rsGrade .gt { font: 700 12px var(--fm); color: var(--mute); letter-spacing: 1px; } #rsGrade .gs { font: 700 13px var(--fm); color: var(--fg); } #rsGrade .tip { font-size: 14px; color: var(--gold); }
+/* =====================================================================
+   NO SIDEWAYS SHIFT (version 40.1). On a phone, anything that sticks out
+   past the screen edge, even for a moment, makes the browser widen the
+   whole page, and the menus then sit off to one side until the app is
+   restarted. The achievement popup did this: it was centered with
+   left: 50% and pulled back with a transform, but its untransformed box
+   reached past the right edge.
+   · the popup is centered without leaving the screen (left/right 0,
+     margin auto) and only moves up and down
+   · the page clips everything to the screen, so no other element can
+     widen it again
+   ===================================================================== */
+html { overflow: hidden; height: 100%; overscroll-behavior: none; }
+body { overflow: hidden; overflow: clip; width: 100%; max-width: 100vw; overscroll-behavior: none; }
+#ov, .scr { overflow-x: hidden; }
+#achPop { left: 0; right: 0; margin-inline: auto; width: fit-content; max-width: calc(100% - 32px); transform: translateY(-140%); overflow: hidden; }
+#achPop.show { transform: none; }
+body.inrun #achPop { max-width: calc(100% - 150px); transform: translateY(-60px); }
+body.inrun #achPop.show { transform: none; }
 </style>
