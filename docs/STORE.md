@@ -18,6 +18,32 @@ A neon cyberpunk ninja action game. Dash, slash and parry across the rooftops of
 ## Tags
 Action · Hack and Slash · Cyberpunk · Ninja · Roguelite · Arcade · Boss Rush · Singleplayer · Controller · Neon
 
+## Ready-made images (version 48) — in [`docs/store/`](store)
+Phone screenshots at 1080×1920 (Google Play and the App Store accept this size) and a 1024×500 feature graphic for Google Play:
+
+| File | What it shows |
+|---|---|
+| `1_home.png` | The home screen: rank strip, story card and the nav bar |
+| `2_fight_3d.png` | A 3D fight on the train roof |
+| `3_boss_3d.png` | A 3D boss fight (SHOGUN.EXE) with a perfect parry |
+| `4_hero_forge.png` | The Hero Forge: classes, abilities and the weapon workshop |
+| `5_journey.png` | Your Journey: rank, completion and goals |
+| `6_crates.png` | The three crates with their odds |
+| `7_legendary_crate.png` | A legendary crate film: the giant ninja cuts a truck in half |
+| `feature_1024x500.png` | Feature graphic (the synthwave title) |
+
+### Google Play listing (short ≤ 80 characters)
+Neon ninja action: dash, slash and parry across a cyberpunk city in 3D.
+
+### Hebrew short description
+אקשן נינג'ה בניאון: לזנק, לחתוך ולהדוף ברחבי עיר סייברפאנק בתלת־ממד.
+
+### What's new to mention in the long description
+- **Real 3D** with lit models, shadows and boss animations
+- **Your own hero:** four classes, abilities and a forged weapon; HERO TRIALS and a weekly **World Boss** with rare drops
+- **Crates** with a film for every rarity (odds shown, no real money), the forge and evolution
+- **A rank from Bronze to Legend**, completion %, boss crowns and duels with friends by link
+
 ## Screenshots to take (1920×1080)
 1. The home screen (the sliced moon behind the menu)
 2. A boss fight in 3D (Hydra Carrier or Kurogane Prime)
