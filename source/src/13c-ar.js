@@ -3742,5 +3742,18 @@ Object.assign(AR, {
 "Spirits, shield me!": "أيتها الأرواح، احميني!",
 "The seal holds.": "الختم صامد.",
 "YOUR HERO SPEAKS": "بطلك يتكلم",
-"Each class of your own hero has its own voice and lines: at the start of a run, on kill streaks, when a boss arrives, on your last shield and when a boss falls.": "لكل فئة من بطلك صوتها وعباراتها: في بداية الجولة، وعند سلاسل القتل، وعند وصول زعيم، وعند آخر درع، وعند سقوط زعيم."
+"Each class of your own hero has its own voice and lines: at the start of a run, on kill streaks, when a boss arrives, on your last shield and when a boss falls.": "لكل فئة من بطلك صوتها وعباراتها: في بداية الجولة، وعند سلاسل القتل، وعند وصول زعيم، وعند آخر درع، وعند سقوط زعيم.",
+"EXECUTION": "إعدام",
+"EXECUTE!": "نفّذ الإعدام!",
+"A wounded elite can be EXECUTED: dash through it to finish it at once.": "يمكن إعدام نخبة جريح: اندفع عبره لتقضي عليه فورًا.",
+"YOUR BUILD": "بنيتك",
+"NO MERCY": "بلا رحمة",
+"Execute a wounded elite": "أعدم نخبة جريحًا",
+"EXECUTIONER": "الجلاد",
+"Execute 25 elites in total": "أعدم 25 من النخبة إجمالًا",
+"A wounded elite, mini-boss or champion below 30% health is marked with a red diamond: dash through it to EXECUTE it at once. It refills your dashes, fills Overdrive and pays a big bonus.": "النخبة أو الزعيم الصغير أو البطل الجريح تحت 30% من الصحة يُعلَّم بماسة حمراء: اندفع عبره لتعدمه فورًا. يعيد شحن اندفاعاتك ويملأ الأوفردرايف ويمنح مكافأة كبيرة.",
+"THE CINEMATIC UPDATE": "التحديث السينمائي",
+"Overdrive now cuts in with your hero across the screen. In 3D the camera circles every boss as it arrives and pushes in as it falls. Your hero now stands in 3D on the home screen and in the Hero Forge: tap it to see it slash.": "الأوفردرايف يدخل الآن مع بطلك عبر الشاشة. في الوضع ثلاثي الأبعاد تدور الكاميرا حول كل زعيم عند وصوله وتقترب منه عند سقوطه. بطلك يقف الآن ثلاثي الأبعاد في الشاشة الرئيسية وفي مصهر الأبطال: المسه لتراه يضرب.",
+"YOUR BUILD IN THE PAUSE MENU": "بنيتك في قائمة الإيقاف",
+"Pause shows every perk you picked as a chip, and a neon wipe now moves you between menu screens.": "الإيقاف يعرض كل ميزة اخترتها كشارة، وانتقال نيون ينقلك الآن بين شاشات القائمة."
 });

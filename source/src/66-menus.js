@@ -3,7 +3,10 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 48
+const NEWS = [ // version 49
+  ["EXECUTIONS", "A wounded elite, mini-boss or champion below 30% health is marked with a red diamond: dash through it to EXECUTE it at once. It refills your dashes, fills Overdrive and pays a big bonus."],
+  ["THE CINEMATIC UPDATE", "Overdrive now cuts in with your hero across the screen. In 3D the camera circles every boss as it arrives and pushes in as it falls. Your hero now stands in 3D on the home screen and in the Hero Forge: tap it to see it slash."],
+  ["YOUR BUILD IN THE PAUSE MENU", "Pause shows every perk you picked as a chip, and a neon wipe now moves you between menu screens."],
   ["YOUR HERO SPEAKS", "Each class of your own hero has its own voice and lines: at the start of a run, on kill streaks, when a boss arrives, on your last shield and when a boss falls."],
   ["DUEL A FRIEND WITH A LINK", "The challenge text now has a link: whoever opens it gets your challenge and plays the very same roof. During the run a rival bar shows their score against yours, and tells you the moment you pass them."],
   ["A GUIDE FOR NEW PLAYERS", "Crates, your rank and the Hero Forge now open step by step as you play the story, and the first time each one is there a spotlight shows what it is. One at a time, once each."],

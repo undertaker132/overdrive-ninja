@@ -3742,5 +3742,18 @@ Object.assign(RU, {
 "Spirits, shield me!": "Духи, защитите меня!",
 "The seal holds.": "Печать держится.",
 "YOUR HERO SPEAKS": "ТВОЙ ГЕРОЙ ГОВОРИТ",
-"Each class of your own hero has its own voice and lines: at the start of a run, on kill streaks, when a boss arrives, on your last shield and when a boss falls.": "У каждого класса твоего героя свой голос и реплики: в начале забега, на сериях убийств, при появлении босса, на последнем щите и когда босс падает."
+"Each class of your own hero has its own voice and lines: at the start of a run, on kill streaks, when a boss arrives, on your last shield and when a boss falls.": "У каждого класса твоего героя свой голос и реплики: в начале забега, на сериях убийств, при появлении босса, на последнем щите и когда босс падает.",
+"EXECUTION": "КАЗНЬ",
+"EXECUTE!": "КАЗНИТЬ!",
+"A wounded elite can be EXECUTED: dash through it to finish it at once.": "Раненого элитного врага можно КАЗНИТЬ: пронесись сквозь него, чтобы добить сразу.",
+"YOUR BUILD": "ТВОЙ БИЛД",
+"NO MERCY": "БЕЗ ПОЩАДЫ",
+"Execute a wounded elite": "Казни раненого элитного врага",
+"EXECUTIONER": "ПАЛАЧ",
+"Execute 25 elites in total": "Казни 25 элитных врагов всего",
+"A wounded elite, mini-boss or champion below 30% health is marked with a red diamond: dash through it to EXECUTE it at once. It refills your dashes, fills Overdrive and pays a big bonus.": "Раненый элитный враг, мини-босс или чемпион ниже 30% здоровья отмечен красным ромбом: пронесись сквозь него, чтобы КАЗНИТЬ его сразу. Это восполняет рывки, заполняет Овердрайв и даёт большой бонус.",
+"THE CINEMATIC UPDATE": "КИНОШНОЕ ОБНОВЛЕНИЕ",
+"Overdrive now cuts in with your hero across the screen. In 3D the camera circles every boss as it arrives and pushes in as it falls. Your hero now stands in 3D on the home screen and in the Hero Forge: tap it to see it slash.": "Овердрайв теперь врывается с твоим героем через весь экран. В 3D камера облетает каждого босса при появлении и наезжает на него, когда он падает. Твой герой теперь стоит в 3D на главном экране и в Кузнице героя: коснись, чтобы увидеть удар.",
+"YOUR BUILD IN THE PAUSE MENU": "ТВОЙ БИЛД В МЕНЮ ПАУЗЫ",
+"Pause shows every perk you picked as a chip, and a neon wipe now moves you between menu screens.": "Пауза показывает каждый выбранный перк значком, а неоновая шторка теперь переносит между экранами меню."
 });
