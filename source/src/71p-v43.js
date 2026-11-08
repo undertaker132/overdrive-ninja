@@ -26,7 +26,8 @@
 const RAR = [{ n: 'COMMON', c: '#e8f0ff' }, { n: 'RARE', c: '#00b4ff' }, { n: 'EPIC', c: '#c45bff' }, { n: 'LEGENDARY', c: '#ffb000' }, { n: 'MYTHIC', c: '#ff2b5e' }];
 const RAR_ODDS = [52, 28, 14, 5, 1];
 const CRATE_PRICE = 1500, PITY_LEG = 30, PITY_MYTH = 100, FORGE_COST = [0, 0, 0, 0, 300, 800];
-const EVO_REQ = [[1, 10, 0], [2, 25, 2], [4, 50, 6]]; // level gate (mastery / hero level), cores, prisms
+const EVO_REQ = [[1, 10, 0], [2, 25, 2], [4, 50, 6]];
+const NAV = ['bArcade', 'bArsenal', 'bCrates', 'bForge', 'bDojo', 'bPuzzle', 'bLive', 'bWeekly', 'bSeason', 'bClub', 'bProfile', 'bHideout', 'bEditor', 'bSettings']; // the home screen nav bar, in order (missing buttons are skipped) // level gate (mastery / hero level), cores, prisms
 const Crates = {
   bag() { const d = Store.data; if (!d.bag || typeof d.bag !== 'object') d.bag = { crates: 3, opened: 0, sl: 0, sm: 0, shards: 0, cores: 0, prisms: 0 }; return d.bag; },
   pool(r) { // things you do not own yet, of item tier r + 1 (COMMON = tier 1 ... MYTHIC = tier 5)
@@ -296,7 +297,6 @@ const Evo = {
     if (n > 0) { Crates.bag().crates += n; Store.touch(); for (const c of cards) c[2].push('+' + n + ' ' + lt('CRATES')); } return cards; };
 
   /* ---------- the nav bar at the bottom of the home screen ---------- */
-  const NAV = ['bArcade', 'bArsenal', 'bCrates', 'bDojo', 'bPuzzle', 'bLive', 'bWeekly', 'bSeason', 'bClub', 'bProfile', 'bHideout', 'bEditor', 'bSettings'];
   const Nav = {
     build() {
       const sec = $('s-title'), grid = $('tGrid') || ($('bArcade') && $('bArcade').parentElement); if (!sec || !grid) return; if (!grid.id && grid.classList.contains('grid2')) grid.id = 'tGrid';

@@ -3,12 +3,12 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 43
-  ["CRATES", "Open neon crates for blades, heroes, blade skins and pets you do not own yet. Five rarities with the odds shown, a LEGENDARY or better within 30 crates and a MYTHIC within 100. You start with 3; more come from rank ups, the star road, the boss of the week, rare stage drops and the shop. No real money anywhere."],
-  ["EVERY RARITY HAS ITS OWN FILM", "Common: your ninja cuts a fruit. Rare: a bamboo grove. Epic: a car. Legendary: you power up into a giant and cut a truck in half. Mythic: a whole train car, and the screen shatters."],
-  ["THE FORGE", "LEGENDARY and MYTHIC blades you do not own now come only from crates or the forge, where you spend shards from big pulls. Everything you already own stays yours."],
-  ["EVOLUTION", "Blades and heroes evolve three times with mastery, cores and rare prisms that drop from stages. Brighter blades, sparks, orbiting runes and golden kill bursts; stronger auras, spirit embers, a halo and dash bursts."],
-  ["A NAV BAR AND SETTINGS TABS", "The home screen buttons sit in a bar at the bottom you scroll through, and the settings are split into tabs."]
+const NEWS = [ // version 44
+  ["HERO FORGE", "Build your own fighter: NINJA, SAMURAI, SHINOBI or ONMYOJI, each with four abilities that open as the class levels up. Pick a body and two colors, and build your own weapon: short, mid or long range, with an EDGE, GRIP and CORE you upgrade with materials."],
+  ["HERO TRIALS", "Endless train cars with your own hero. Every run gives class XP."],
+  ["THE WORLD BOSS", "Thursday to Sunday: a boss with much more health, fought with your hero, alone or with friends in a live raid. It drops materials, and with luck a broken relic piece (three restore the mythic WORLD-EATER blade) or the very rare WORLD-EATER hero."],
+  ["THREE CRATES", "BASIC (600 CR, a very small chance of the best), NEON (1,500 CR) and a LIMITED crate (3,000 CR) with a blade that exists nowhere else, in the shop for two weeks at a time: ECLIPSE FANG, then STORM CALLER."],
+  ["THE CRATE OPENS FIRST", "Every opening starts with the crate itself: it lands, shakes and cracks open in light that climbs through the rarity colors. The reveal spins rays in the rarity color."]
 ];
 function deathCause() { // what hit you last, and how to avoid it next time
   const s = G.lastHit, w = G.lastWho, en = k => lt(EDEF[k] ? EDEF[k].name : 'ENEMY');
