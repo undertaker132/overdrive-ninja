@@ -3675,5 +3675,15 @@ Object.assign(AR, {
 "Endless train cars with your own hero. Every run gives class XP.": "عربات قطار لا تنتهي مع بطلك. كل جولة تمنح خبرة للفئة.",
 "Thursday to Sunday: a boss with much more health, fought with your hero, alone or with friends in a live raid. It drops materials, and with luck a broken relic piece (three restore the mythic WORLD-EATER blade) or the very rare WORLD-EATER hero.": "من الخميس إلى الأحد: زعيم بصحة أكبر بكثير، تقاتله ببطلك وحدك أو مع أصدقائك في غارة مباشرة. يُسقط مواد، ومع الحظ قطعة أثرية مكسورة (ثلاث ترمّم نصل آكل العوالم الخرافي) أو بطل آكل العوالم النادر جدًا.",
 "BASIC (600 CR, a very small chance of the best), NEON (1,500 CR) and a LIMITED crate (3,000 CR) with a blade that exists nowhere else, in the shop for two weeks at a time: ECLIPSE FANG, then STORM CALLER.": "الأساسي (600 CR، فرصة ضئيلة جدًا للأفضل)، والنيون (1,500 CR)، وصندوق محدود (3,000 CR) فيه نصل لا يوجد في أي مكان آخر، في المتجر لأسبوعين كل مرة: ناب الكسوف ثم مستدعي العاصفة.",
-"Every opening starts with the crate itself: it lands, shakes and cracks open in light that climbs through the rarity colors. The reveal spins rays in the rarity color.": "كل فتح يبدأ بالصندوق نفسه: يهبط ويهتز ويتشقق بضوء يصعد عبر ألوان الندرة. والكشف يدير أشعة بلون الندرة."
+"Every opening starts with the crate itself: it lands, shakes and cracks open in light that climbs through the rarity colors. The reveal spins rays in the rarity color.": "كل فتح يبدأ بالصندوق نفسه: يهبط ويهتز ويتشقق بضوء يصعد عبر ألوان الندرة. والكشف يدير أشعة بلون الندرة.",
+"DEFEND THE UPLINK": "دافع عن المرسل",
+"SURVIVE": "انجُ",
+"ESCORT THE DRONE": "رافق الطائرة المسيّرة",
+"ENEMIES DESTROYED": "أعداء دُمّروا",
+"REFLECTED KILLS": "قتلى بالارتداد",
+"TERMINALS HACKED": "محطات مخترقة",
+"NODES DESTROYED": "عُقد مدمّرة",
+"COMBO": "كومبو",
+"THE OBJECTIVE BAR": "شريط المهمة",
+"Story stages show their goal at the top of the screen: the time left to defend or survive, with a bar that drains and turns red in the last 10 seconds, or how many enemies, shards, terminals or nodes you have done so far.": "تعرض مراحل القصة هدفها أعلى الشاشة: الوقت المتبقي للدفاع أو النجاة، مع شريط ينفد ويحمرّ في آخر 10 ثوانٍ، أو كم عدوًا أو شظية أو محطة أو عقدة أنجزت."
 });

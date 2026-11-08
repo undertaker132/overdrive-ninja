@@ -3675,5 +3675,15 @@ Object.assign(RU, {
 "Endless train cars with your own hero. Every run gives class XP.": "Бесконечные вагоны с твоим героем. Каждый забег даёт опыт класса.",
 "Thursday to Sunday: a boss with much more health, fought with your hero, alone or with friends in a live raid. It drops materials, and with luck a broken relic piece (three restore the mythic WORLD-EATER blade) or the very rare WORLD-EATER hero.": "С четверга по воскресенье: босс с намного большим здоровьем, против которого ты сражаешься своим героем, один или с друзьями в онлайн-рейде. Падают материалы, а если повезёт — часть реликвии (три восстанавливают мифический клинок ПОЖИРАТЕЛЬ МИРОВ) или очень редкий герой ПОЖИРАТЕЛЬ МИРОВ.",
 "BASIC (600 CR, a very small chance of the best), NEON (1,500 CR) and a LIMITED crate (3,000 CR) with a blade that exists nowhere else, in the shop for two weeks at a time: ECLIPSE FANG, then STORM CALLER.": "БАЗОВЫЙ (600 CR, очень маленький шанс на лучшее), НЕОНОВЫЙ (1 500 CR) и ОГРАНИЧЕННЫЙ ящик (3 000 CR) с клинком, которого больше нигде нет, в магазине по две недели: КЛЫК ЗАТМЕНИЯ, затем ПРИЗЫВАТЕЛЬ БУРИ.",
-"Every opening starts with the crate itself: it lands, shakes and cracks open in light that climbs through the rarity colors. The reveal spins rays in the rarity color.": "Каждое открытие начинается с самого ящика: он падает, трясётся и трескается светом, который проходит по цветам редкости. При показе вращаются лучи цвета редкости."
+"Every opening starts with the crate itself: it lands, shakes and cracks open in light that climbs through the rarity colors. The reveal spins rays in the rarity color.": "Каждое открытие начинается с самого ящика: он падает, трясётся и трескается светом, который проходит по цветам редкости. При показе вращаются лучи цвета редкости.",
+"DEFEND THE UPLINK": "ЗАЩИТИ ПЕРЕДАТЧИК",
+"SURVIVE": "ВЫЖИВИ",
+"ESCORT THE DRONE": "СОПРОВОДИ ДРОН",
+"ENEMIES DESTROYED": "УНИЧТОЖЕНО ВРАГОВ",
+"REFLECTED KILLS": "УБИЙСТВА ОТРАЖЕНИЕМ",
+"TERMINALS HACKED": "ВЗЛОМАНО ТЕРМИНАЛОВ",
+"NODES DESTROYED": "УНИЧТОЖЕНО УЗЛОВ",
+"COMBO": "КОМБО",
+"THE OBJECTIVE BAR": "ПАНЕЛЬ ЦЕЛИ",
+"Story stages show their goal at the top of the screen: the time left to defend or survive, with a bar that drains and turns red in the last 10 seconds, or how many enemies, shards, terminals or nodes you have done so far.": "Этапы сюжета показывают цель вверху экрана: сколько осталось защищаться или выживать, с полосой, которая тает и краснеет в последние 10 секунд, или сколько врагов, осколков, терминалов или узлов уже готово."
 });
