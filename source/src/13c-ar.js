@@ -3696,5 +3696,15 @@ Object.assign(AR, {
 "LATER": "لاحقًا",
 "SHOW ME": "أرني",
 "A GUIDE FOR NEW PLAYERS": "دليل للاعبين الجدد",
-"Crates, your rank and the Hero Forge now open step by step as you play the story, and the first time each one is there a spotlight shows what it is. One at a time, once each.": "الصناديق ورتبتك ومصهر الأبطال تُفتح الآن تدريجيًا أثناء القصة، وفي أول مرة يظهر كل منها يوضح ضوء كاشف ما هو. واحدًا في كل مرة، ومرة واحدة فقط."
+"Crates, your rank and the Hero Forge now open step by step as you play the story, and the first time each one is there a spotlight shows what it is. One at a time, once each.": "الصناديق ورتبتك ومصهر الأبطال تُفتح الآن تدريجيًا أثناء القصة، وفي أول مرة يظهر كل منها يوضح ضوء كاشف ما هو. واحدًا في كل مرة، ومرة واحدة فقط.",
+"CHALLENGE": "تحدٍّ",
+"{0} CHALLENGES YOU": "{0} يتحداك",
+"SCORE TO BEAT: {0}": "النتيجة المطلوب تجاوزها: {0}",
+"The very same roof: same cars, same enemies, same order.": "السطح نفسه تمامًا: العربات نفسها والأعداء أنفسهم وبالترتيب نفسه.",
+"ACCEPT": "اقبل",
+"VS {0} · {1}": "ضد {0} · {1}",
+"YOU PASSED {0}!": "تجاوزت {0}!",
+"Play my exact run here:": "العب جولتي نفسها هنا:",
+"DUEL A FRIEND WITH A LINK": "نازل صديقًا برابط",
+"The challenge text now has a link: whoever opens it gets your challenge and plays the very same roof. During the run a rival bar shows their score against yours, and tells you the moment you pass them.": "نص التحدي فيه الآن رابط: من يفتحه يحصل على تحديك ويلعب على السطح نفسه تمامًا. أثناء الجولة يعرض شريط المنافس نتيجته مقابل نتيجتك ويخبرك لحظة تتجاوزه."
 });

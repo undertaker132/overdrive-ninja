@@ -284,3 +284,13 @@ LATER	لاحقًا	ПОЗЖЕ
 SHOW ME	أرني	ПОКАЖИ
 A GUIDE FOR NEW PLAYERS	دليل للاعبين الجدد	ГИД ДЛЯ НОВЫХ ИГРОКОВ
 Crates, your rank and the Hero Forge now open step by step as you play the story, and the first time each one is there a spotlight shows what it is. One at a time, once each.	الصناديق ورتبتك ومصهر الأبطال تُفتح الآن تدريجيًا أثناء القصة، وفي أول مرة يظهر كل منها يوضح ضوء كاشف ما هو. واحدًا في كل مرة، ومرة واحدة فقط.	Ящики, ранг и Кузница героя теперь открываются постепенно по ходу сюжета, а в первый раз прожектор показывает, что это. По одному, по разу.
+CHALLENGE	تحدٍّ	ВЫЗОВ
+{0} CHALLENGES YOU	{0} يتحداك	{0} БРОСАЕТ ТЕБЕ ВЫЗОВ
+SCORE TO BEAT: {0}	النتيجة المطلوب تجاوزها: {0}	НУЖНО ПОБИТЬ: {0}
+The very same roof: same cars, same enemies, same order.	السطح نفسه تمامًا: العربات نفسها والأعداء أنفسهم وبالترتيب نفسه.	Та же самая крыша: те же вагоны, те же враги, тот же порядок.
+ACCEPT	اقبل	ПРИНЯТЬ
+VS {0} · {1}	ضد {0} · {1}	ПРОТИВ {0} · {1}
+YOU PASSED {0}!	تجاوزت {0}!	ТЫ ОБОГНАЛ {0}!
+Play my exact run here:	العب جولتي نفسها هنا:	Сыграй мой забег здесь:
+DUEL A FRIEND WITH A LINK	نازل صديقًا برابط	ДУЭЛЬ С ДРУГОМ ПО ССЫЛКЕ
+The challenge text now has a link: whoever opens it gets your challenge and plays the very same roof. During the run a rival bar shows their score against yours, and tells you the moment you pass them.	نص التحدي فيه الآن رابط: من يفتحه يحصل على تحديك ويلعب على السطح نفسه تمامًا. أثناء الجولة يعرض شريط المنافس نتيجته مقابل نتيجتك ويخبرك لحظة تتجاوزه.	В тексте вызова теперь есть ссылка: кто её откроет, получит твой вызов и сыграет на той же самой крыше. Во время забега полоса соперника показывает его счёт против твоего и сообщает, когда ты его обогнал.

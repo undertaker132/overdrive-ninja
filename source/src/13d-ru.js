@@ -3696,5 +3696,15 @@ Object.assign(RU, {
 "LATER": "ПОЗЖЕ",
 "SHOW ME": "ПОКАЖИ",
 "A GUIDE FOR NEW PLAYERS": "ГИД ДЛЯ НОВЫХ ИГРОКОВ",
-"Crates, your rank and the Hero Forge now open step by step as you play the story, and the first time each one is there a spotlight shows what it is. One at a time, once each.": "Ящики, ранг и Кузница героя теперь открываются постепенно по ходу сюжета, а в первый раз прожектор показывает, что это. По одному, по разу."
+"Crates, your rank and the Hero Forge now open step by step as you play the story, and the first time each one is there a spotlight shows what it is. One at a time, once each.": "Ящики, ранг и Кузница героя теперь открываются постепенно по ходу сюжета, а в первый раз прожектор показывает, что это. По одному, по разу.",
+"CHALLENGE": "ВЫЗОВ",
+"{0} CHALLENGES YOU": "{0} БРОСАЕТ ТЕБЕ ВЫЗОВ",
+"SCORE TO BEAT: {0}": "НУЖНО ПОБИТЬ: {0}",
+"The very same roof: same cars, same enemies, same order.": "Та же самая крыша: те же вагоны, те же враги, тот же порядок.",
+"ACCEPT": "ПРИНЯТЬ",
+"VS {0} · {1}": "ПРОТИВ {0} · {1}",
+"YOU PASSED {0}!": "ТЫ ОБОГНАЛ {0}!",
+"Play my exact run here:": "Сыграй мой забег здесь:",
+"DUEL A FRIEND WITH A LINK": "ДУЭЛЬ С ДРУГОМ ПО ССЫЛКЕ",
+"The challenge text now has a link: whoever opens it gets your challenge and plays the very same roof. During the run a rival bar shows their score against yours, and tells you the moment you pass them.": "В тексте вызова теперь есть ссылка: кто её откроет, получит твой вызов и сыграет на той же самой крыше. Во время забега полоса соперника показывает его счёт против твоего и сообщает, когда ты его обогнал."
 });
