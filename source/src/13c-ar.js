@@ -3685,5 +3685,16 @@ Object.assign(AR, {
 "NODES DESTROYED": "عُقد مدمّرة",
 "COMBO": "كومبو",
 "THE OBJECTIVE BAR": "شريط المهمة",
-"Story stages show their goal at the top of the screen: the time left to defend or survive, with a bar that drains and turns red in the last 10 seconds, or how many enemies, shards, terminals or nodes you have done so far.": "تعرض مراحل القصة هدفها أعلى الشاشة: الوقت المتبقي للدفاع أو النجاة، مع شريط ينفد ويحمرّ في آخر 10 ثوانٍ، أو كم عدوًا أو شظية أو محطة أو عقدة أنجزت."
+"Story stages show their goal at the top of the screen: the time left to defend or survive, with a bar that drains and turns red in the last 10 seconds, or how many enemies, shards, terminals or nodes you have done so far.": "تعرض مراحل القصة هدفها أعلى الشاشة: الوقت المتبقي للدفاع أو النجاة، مع شريط ينفد ويحمرّ في آخر 10 ثوانٍ، أو كم عدوًا أو شظية أو محطة أو عقدة أنجزت.",
+"YOUR RANK": "رتبتك",
+"Everything you do raises your rank. Tap it to see your journey and your next goals.": "كل ما تفعله يرفع رتبتك. انقر عليها لترى رحلتك وأهدافك التالية.",
+"Open crates for blades, heroes and pets you do not own yet. Some are waiting for you.": "افتح الصناديق لتحصل على نصال وأبطال وحيوانات أليفة لا تملكها. بعضها ينتظرك.",
+"Daily rewards, events, missions and the boss of the week live here. It opens by itself when a reward is waiting.": "هنا المكافآت اليومية والأحداث والمهام وزعيم الأسبوع. يُفتح وحده عندما تنتظرك مكافأة.",
+"Build your own fighter and weapon, then play HERO TRIALS and the WORLD BOSS.": "ابنِ مقاتلك وسلاحك، ثم العب تجارب البطل وزعيم العالم.",
+"You have enough materials to evolve a blade or hero. Open the Arsenal and pick it.": "لديك مواد كافية لتطوير نصل أو بطل. افتح الترسانة واختره.",
+"The World Boss is open until Sunday. Fight it with your own hero for rare drops.": "زعيم العالم مفتوح حتى الأحد. قاتله ببطلك لتحصل على غنائم نادرة.",
+"LATER": "لاحقًا",
+"SHOW ME": "أرني",
+"A GUIDE FOR NEW PLAYERS": "دليل للاعبين الجدد",
+"Crates, your rank and the Hero Forge now open step by step as you play the story, and the first time each one is there a spotlight shows what it is. One at a time, once each.": "الصناديق ورتبتك ومصهر الأبطال تُفتح الآن تدريجيًا أثناء القصة، وفي أول مرة يظهر كل منها يوضح ضوء كاشف ما هو. واحدًا في كل مرة، ومرة واحدة فقط."
 });

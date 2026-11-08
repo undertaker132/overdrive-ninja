@@ -273,3 +273,14 @@ NODES DESTROYED	عُقد مدمّرة	УНИЧТОЖЕНО УЗЛОВ
 COMBO	كومبو	КОМБО
 THE OBJECTIVE BAR	شريط المهمة	ПАНЕЛЬ ЦЕЛИ
 Story stages show their goal at the top of the screen: the time left to defend or survive, with a bar that drains and turns red in the last 10 seconds, or how many enemies, shards, terminals or nodes you have done so far.	تعرض مراحل القصة هدفها أعلى الشاشة: الوقت المتبقي للدفاع أو النجاة، مع شريط ينفد ويحمرّ في آخر 10 ثوانٍ، أو كم عدوًا أو شظية أو محطة أو عقدة أنجزت.	Этапы сюжета показывают цель вверху экрана: сколько осталось защищаться или выживать, с полосой, которая тает и краснеет в последние 10 секунд, или сколько врагов, осколков, терминалов или узлов уже готово.
+YOUR RANK	رتبتك	ТВОЙ РАНГ
+Everything you do raises your rank. Tap it to see your journey and your next goals.	كل ما تفعله يرفع رتبتك. انقر عليها لترى رحلتك وأهدافك التالية.	Всё, что ты делаешь, повышает ранг. Нажми, чтобы увидеть свой путь и следующие цели.
+Open crates for blades, heroes and pets you do not own yet. Some are waiting for you.	افتح الصناديق لتحصل على نصال وأبطال وحيوانات أليفة لا تملكها. بعضها ينتظرك.	Открывай ящики: клинки, герои и питомцы, которых у тебя ещё нет. Несколько уже ждут тебя.
+Daily rewards, events, missions and the boss of the week live here. It opens by itself when a reward is waiting.	هنا المكافآت اليومية والأحداث والمهام وزعيم الأسبوع. يُفتح وحده عندما تنتظرك مكافأة.	Здесь ежедневные награды, события, задания и босс недели. Открывается сам, когда ждёт награда.
+Build your own fighter and weapon, then play HERO TRIALS and the WORLD BOSS.	ابنِ مقاتلك وسلاحك، ثم العب تجارب البطل وزعيم العالم.	Создай своего бойца и оружие, затем играй ИСПЫТАНИЯ ГЕРОЯ и БОССА МИРА.
+You have enough materials to evolve a blade or hero. Open the Arsenal and pick it.	لديك مواد كافية لتطوير نصل أو بطل. افتح الترسانة واختره.	Хватает материалов для эволюции клинка или героя. Открой Арсенал и выбери его.
+The World Boss is open until Sunday. Fight it with your own hero for rare drops.	زعيم العالم مفتوح حتى الأحد. قاتله ببطلك لتحصل على غنائم نادرة.	Босс мира открыт до воскресенья. Сражайся своим героем ради редкой добычи.
+LATER	لاحقًا	ПОЗЖЕ
+SHOW ME	أرني	ПОКАЖИ
+A GUIDE FOR NEW PLAYERS	دليل للاعبين الجدد	ГИД ДЛЯ НОВЫХ ИГРОКОВ
+Crates, your rank and the Hero Forge now open step by step as you play the story, and the first time each one is there a spotlight shows what it is. One at a time, once each.	الصناديق ورتبتك ومصهر الأبطال تُفتح الآن تدريجيًا أثناء القصة، وفي أول مرة يظهر كل منها يوضح ضوء كاشف ما هو. واحدًا في كل مرة، ومرة واحدة فقط.	Ящики, ранг и Кузница героя теперь открываются постепенно по ходу сюжета, а в первый раз прожектор показывает, что это. По одному, по разу.

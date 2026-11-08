@@ -3,7 +3,8 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 45
+const NEWS = [ // version 46
+  ["A GUIDE FOR NEW PLAYERS", "Crates, your rank and the Hero Forge now open step by step as you play the story, and the first time each one is there a spotlight shows what it is. One at a time, once each."],
   ["THE OBJECTIVE BAR", "Story stages show their goal at the top of the screen: the time left to defend or survive, with a bar that drains and turns red in the last 10 seconds, or how many enemies, shards, terminals or nodes you have done so far."],
   ["HERO FORGE", "Build your own fighter: NINJA, SAMURAI, SHINOBI or ONMYOJI, each with four abilities that open as the class levels up. Pick a body and two colors, and build your own weapon: short, mid or long range, with an EDGE, GRIP and CORE you upgrade with materials."],
   ["HERO TRIALS", "Endless train cars with your own hero. Every run gives class XP."],

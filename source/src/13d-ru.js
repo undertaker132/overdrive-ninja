@@ -3685,5 +3685,16 @@ Object.assign(RU, {
 "NODES DESTROYED": "УНИЧТОЖЕНО УЗЛОВ",
 "COMBO": "КОМБО",
 "THE OBJECTIVE BAR": "ПАНЕЛЬ ЦЕЛИ",
-"Story stages show their goal at the top of the screen: the time left to defend or survive, with a bar that drains and turns red in the last 10 seconds, or how many enemies, shards, terminals or nodes you have done so far.": "Этапы сюжета показывают цель вверху экрана: сколько осталось защищаться или выживать, с полосой, которая тает и краснеет в последние 10 секунд, или сколько врагов, осколков, терминалов или узлов уже готово."
+"Story stages show their goal at the top of the screen: the time left to defend or survive, with a bar that drains and turns red in the last 10 seconds, or how many enemies, shards, terminals or nodes you have done so far.": "Этапы сюжета показывают цель вверху экрана: сколько осталось защищаться или выживать, с полосой, которая тает и краснеет в последние 10 секунд, или сколько врагов, осколков, терминалов или узлов уже готово.",
+"YOUR RANK": "ТВОЙ РАНГ",
+"Everything you do raises your rank. Tap it to see your journey and your next goals.": "Всё, что ты делаешь, повышает ранг. Нажми, чтобы увидеть свой путь и следующие цели.",
+"Open crates for blades, heroes and pets you do not own yet. Some are waiting for you.": "Открывай ящики: клинки, герои и питомцы, которых у тебя ещё нет. Несколько уже ждут тебя.",
+"Daily rewards, events, missions and the boss of the week live here. It opens by itself when a reward is waiting.": "Здесь ежедневные награды, события, задания и босс недели. Открывается сам, когда ждёт награда.",
+"Build your own fighter and weapon, then play HERO TRIALS and the WORLD BOSS.": "Создай своего бойца и оружие, затем играй ИСПЫТАНИЯ ГЕРОЯ и БОССА МИРА.",
+"You have enough materials to evolve a blade or hero. Open the Arsenal and pick it.": "Хватает материалов для эволюции клинка или героя. Открой Арсенал и выбери его.",
+"The World Boss is open until Sunday. Fight it with your own hero for rare drops.": "Босс мира открыт до воскресенья. Сражайся своим героем ради редкой добычи.",
+"LATER": "ПОЗЖЕ",
+"SHOW ME": "ПОКАЖИ",
+"A GUIDE FOR NEW PLAYERS": "ГИД ДЛЯ НОВЫХ ИГРОКОВ",
+"Crates, your rank and the Hero Forge now open step by step as you play the story, and the first time each one is there a spotlight shows what it is. One at a time, once each.": "Ящики, ранг и Кузница героя теперь открываются постепенно по ходу сюжета, а в первый раз прожектор показывает, что это. По одному, по разу."
 });
