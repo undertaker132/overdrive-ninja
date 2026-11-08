@@ -29897,6 +29897,7 @@ const Mini = {
     if (this.g) { this.inner.remove(this.g); this.g.traverse(o => { if (o.geometry && !o.geometry.userData.shared) o.geometry.dispose(); }); }
     const g = R3.hero(L.a, L.b); R3.weapon(g, L.w); R3.dress(g, L.body, L.a, L.b); if (g.pool) g.pool.visible = false; this.g = g; this.inner.add(g); this.disc.material.color.set(L.a); this.fill.color.set(L.a); },
   mount(host, el0) { if (!this.init()) return false; this.host = host; this.el0 = el0; const p = el0.parentElement; if (this.cv.parentElement !== p || this.cv.previousElementSibling !== el0) el0.after(this.cv); el0.classList.add('mini-hidden'); this.cv.dataset.host = host; this.loop(); return true; },
+  unmount(c) { if (c) c.classList.remove('mini-hidden'); if (this.cv && this.cv.previousElementSibling === c) this.cv.remove(); },
   loop() { if (this.raf) return; const f = now => { const vis = (this.host === 'title' && UI.cur === 'title') || (this.host === 'forge' && UI.cur === 'forge'); if (!vis || !this.cv.isConnected) { this.raf = 0; return; }
       this.raf = requestAnimationFrame(f); if (now - this.last < 33) return; const rd = Math.min(.05, (now - (this.last || now)) / 1000); this.last = now; this.t += rd; try { this.frame(rd); } catch (e) { errLog(e); this.dead = 1; this.raf = 0; } };
     this.raf = requestAnimationFrame(f); },
@@ -29913,11 +29914,11 @@ const Mini = {
 };
 {
   // the home screen: the hero strip gets the 3D hero
-  const ot6 = UI.openTitle.bind(UI); UI.openTitle = function () { const r = ot6.apply(this, arguments); try { const c = $('thCv'); if (c && Mini.ok()) { if (!Mini.mount('title', c)) c.classList.remove('mini-hidden'); } } catch (e) { errLog(e); } return r; };
+  const ot6 = UI.openTitle.bind(UI); UI.openTitle = function () { const r = ot6.apply(this, arguments); try { const c = $('thCv'); if (c && !(Mini.ok() && Mini.mount('title', c))) Mini.unmount(c); } catch (e) { errLog(e); } return r; };
   // the Hero Forge: the 3D hero over the stage (the 2D drawing keeps only the floor)
   const hs0 = Hero.screen.bind(Hero); Hero.screen = function () { hs0(); try { const c = $('hfCv'); if (c && Mini.ok() && Mini.mount('forge', c)) { c.classList.remove('mini-hidden'); c.classList.add('mini-under'); } } catch (e) { errLog(e); } };
   const hr0 = Hero.render.bind(Hero); Hero.render = function () { hr0(); try { const c = $('hfCv'); if (c && Mini.ok() && Mini.mount('forge', c)) { c.classList.remove('mini-hidden'); c.classList.add('mini-under'); Mini.sig = ''; } } catch (e) { errLog(e); } };
-  const dp0 = Hero.drawPrev.bind(Hero); Hero.drawPrev = function () { if (!(Mini.rn && Mini.host === 'forge' && Mini.cv.isConnected)) return dp0(); const cv = $('hfCv'); if (!cv) return; const g = cv.getContext('2d'), S = cv.width, C = this.cls();
+  const dp0 = Hero.drawPrev.bind(Hero); Hero.drawPrev = function () { const hc = $('hfCv'); if (!(Mini.rn && Mini.ok() && Mini.host === 'forge' && hc && Mini.cv.previousElementSibling === hc)) return dp0(); const cv = $('hfCv'); if (!cv) return; const g = cv.getContext('2d'), S = cv.width, C = this.cls();
     g.setTransform(1, 0, 0, 1, 0, 0); const bg = g.createLinearGradient(0, 0, 0, cv.height); bg.addColorStop(0, '#0a0e26'); bg.addColorStop(1, '#05060f'); g.fillStyle = bg; g.fillRect(0, 0, S, cv.height);
     g.save(); g.globalCompositeOperation = 'lighter'; const gr = g.createRadialGradient(S / 2, cv.height * .7, 10, S / 2, cv.height * .7, S * .45); gr.addColorStop(0, hexA(C.c, .35)); gr.addColorStop(1, hexA(C.c, 0)); g.fillStyle = gr; g.fillRect(0, 0, S, cv.height); g.restore(); };
   // presentation ticks
