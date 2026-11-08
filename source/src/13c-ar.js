@@ -3755,5 +3755,9 @@ Object.assign(AR, {
 "THE CINEMATIC UPDATE": "التحديث السينمائي",
 "Overdrive now cuts in with your hero across the screen. In 3D the camera circles every boss as it arrives and pushes in as it falls. Your hero now stands in 3D on the home screen and in the Hero Forge: tap it to see it slash.": "الأوفردرايف يدخل الآن مع بطلك عبر الشاشة. في الوضع ثلاثي الأبعاد تدور الكاميرا حول كل زعيم عند وصوله وتقترب منه عند سقوطه. بطلك يقف الآن ثلاثي الأبعاد في الشاشة الرئيسية وفي مصهر الأبطال: المسه لتراه يضرب.",
 "YOUR BUILD IN THE PAUSE MENU": "بنيتك في قائمة الإيقاف",
-"Pause shows every perk you picked as a chip, and a neon wipe now moves you between menu screens.": "الإيقاف يعرض كل ميزة اخترتها كشارة، وانتقال نيون ينقلك الآن بين شاشات القائمة."
+"Pause shows every perk you picked as a chip, and a neon wipe now moves you between menu screens.": "الإيقاف يعرض كل ميزة اخترتها كشارة، وانتقال نيون ينقلك الآن بين شاشات القائمة.",
+"CRATES LIKE A MOVIE": "صناديق كأنها فيلم",
+"Crate openings now have a real camera: cinema bars, a slow push-in, slow motion and a punch-in on every cut, focus lines, light rays in the rarity's color and film grain. The crate lands in a cloud of dust, pulses with every rarity step and opens with a beam of light.": "فتح الصناديق له الآن كاميرا حقيقية: أشرطة سينمائية، واقتراب بطيء، وحركة بطيئة وتقريب حاد مع كل ضربة، وخطوط تركيز، وأشعة ضوء بلون الندرة، وحبيبات فيلم. يهبط الصندوق في سحابة غبار، وينبض مع كل درجة ندرة، ويُفتح بشعاع من الضوء.",
+"A HERO THAT IS ALIVE": "بطل حيّ",
+"Stand still and your 3D hero breathes, shifts its weight, looks around and lowers its blade, and every few seconds it twirls the blade, stretches, takes a battle stance or lays the blade back. On the home screen and in the Hero Forge it also runs a short kata.": "قف ساكنًا وسيتنفس بطلك ثلاثي الأبعاد، وينقل وزنه، وينظر حوله ويخفض نصله، وكل بضع ثوانٍ يدير النصل أو يتمطى أو يتخذ وضعية قتال أو يُرجع النصل للخلف. في الشاشة الرئيسية وفي مصهر الأبطال يؤدي أيضًا كاتا قصيرة."
 });

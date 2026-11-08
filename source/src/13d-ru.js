@@ -3755,5 +3755,9 @@ Object.assign(RU, {
 "THE CINEMATIC UPDATE": "КИНОШНОЕ ОБНОВЛЕНИЕ",
 "Overdrive now cuts in with your hero across the screen. In 3D the camera circles every boss as it arrives and pushes in as it falls. Your hero now stands in 3D on the home screen and in the Hero Forge: tap it to see it slash.": "Овердрайв теперь врывается с твоим героем через весь экран. В 3D камера облетает каждого босса при появлении и наезжает на него, когда он падает. Твой герой теперь стоит в 3D на главном экране и в Кузнице героя: коснись, чтобы увидеть удар.",
 "YOUR BUILD IN THE PAUSE MENU": "ТВОЙ БИЛД В МЕНЮ ПАУЗЫ",
-"Pause shows every perk you picked as a chip, and a neon wipe now moves you between menu screens.": "Пауза показывает каждый выбранный перк значком, а неоновая шторка теперь переносит между экранами меню."
+"Pause shows every perk you picked as a chip, and a neon wipe now moves you between menu screens.": "Пауза показывает каждый выбранный перк значком, а неоновая шторка теперь переносит между экранами меню.",
+"CRATES LIKE A MOVIE": "ЯЩИКИ КАК В КИНО",
+"Crate openings now have a real camera: cinema bars, a slow push-in, slow motion and a punch-in on every cut, focus lines, light rays in the rarity's color and film grain. The crate lands in a cloud of dust, pulses with every rarity step and opens with a beam of light.": "У открытия ящиков теперь настоящая камера: киношные полосы, медленный наезд, замедление и резкий зум на каждом ударе, линии фокуса, лучи цвета редкости и зерно плёнки. Ящик приземляется в облаке пыли, пульсирует на каждой ступени редкости и открывается лучом света.",
+"A HERO THAT IS ALIVE": "ЖИВОЙ ГЕРОЙ",
+"Stand still and your 3D hero breathes, shifts its weight, looks around and lowers its blade, and every few seconds it twirls the blade, stretches, takes a battle stance or lays the blade back. On the home screen and in the Hero Forge it also runs a short kata.": "Стой на месте — и твой 3D-герой дышит, переносит вес, оглядывается и опускает клинок, а каждые несколько секунд крутит клинок, потягивается, встаёт в боевую стойку или отводит клинок назад. На главном экране и в Кузнице героя он ещё и показывает короткое ката."
 });
