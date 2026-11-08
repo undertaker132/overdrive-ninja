@@ -124,7 +124,7 @@ Object.assign(R3, {
     const now = performance.now(), dt = this.tPrev ? now - this.tPrev : 16; this.tPrev = now;
     if (dt < 250) { this.ema = this.ema == null ? dt : this.ema * .94 + dt * .06; this.slowT = this.ema > 24 ? (this.slowT || 0) + dt : 0; this.fastT = this.ema < 14 ? (this.fastT || 0) + dt : 0; }
     if (!resK()) { if (this.slowT > 1500) { this.dyn = Math.max(.55, (this.dyn || 1) - .15); this.slowT = 0; this.fastT = 0; } else if (this.fastT > 5000 && (this.dyn || 1) < 1) { this.dyn = Math.min(1, this.dyn + .1); this.fastT = 0; } } else this.dyn = 1;
-    rn0(rd); try { this.bullets(); } catch (e) { errLog(e); }
+    rn0(rd); // (version 42: bullets are placed in the sweep hook, before the frame is drawn)
   };
 }
 

@@ -35,6 +35,7 @@
 ### מה יש במשחק
 - **מצב סיפור** — 8 מערכות, יותר מ-70 שלבים, דיאלוג מדובב, בוסים עם כניסות ונפילות משלהם, קומיקס בין הפרקים ו-New Game+.
 - **ארקייד** — Maglev אינסופי, התקפת בוסים, מגדל רוגלייט, מרדף על אופנוע, אתגר יומי ושבועי, פאזלים ודוג'ו.
+- **אחרי הסוף** — דרגת שחקן מברונזה ועד אגדה, אחוז השלמה, כתרי בוסים לכל רמת קושי, מסלול כוכבים, בוס השבוע וגיבורים שאפשר רק להרוויח.
 - **ארסנל** — עשרות להבים, גיבורים, סקינים לחרבות, חיות מחמד ועץ שדרוגים.
 - **חברים** — משחק חי עם חברים: המארח מקבל קוד של 6 ספרות והחברים מקלידים אותו, וכל חבר מופיע על הגג כנינג׳ה בצבעים שלו. בנוסף רוחות (ghosts) של שיאים, ריפליי וקליפים, צוותים ועורך שלבים.
 - **תלת־ממד אמיתי** (מנוע three.js): מודלים מוארים עם צללים לגיבור, לאויבים, לבוסים ולחיות, גג רכבת רטוב שמשקף את הניאון והעיר למטה. אפשר גם תלת־ממד קלאסי או דו־ממד.
@@ -63,6 +64,7 @@ The game runs straight in the browser and can also be installed as a real app (h
 ### What's inside
 - **Story** — 8 acts, 70+ stages, voiced dialogue, bosses with their own entrances and falls, comics between chapters, New Game+.
 - **Arcade** — endless Maglev Run, boss rush, a rogue-lite tower, a highway chase, daily and weekly challenges, puzzles and a training dojo.
+- **After the credits** — a player rank from Bronze to Legend, a completion %, boss crowns for every difficulty, a star road, a boss of the week and heroes you can only earn.
 - **Arsenal** — dozens of blades, heroes, blade skins, pets and an upgrade tree.
 - **Social** — live play with friends (the host gets a 6-digit code, friends type it in, and each friend is a ninja in their own colors on your roof), ghost runs, replays and clips, crews and a level editor.
 - **Real 3D** (three.js engine): lit, shadowed models for the hero, enemies, bosses and pets, a wet train roof that reflects the neon, and the city far below. Classic 3D and 2D are still there.
