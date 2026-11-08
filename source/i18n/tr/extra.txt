@@ -46,3 +46,70 @@ SMOOTHER ON EVERY PHONE	أكثر سلاسة على كل هاتف	ПЛАВНЕЕ 
 With RESOLUTION on AUTO, the 3D picture lowers its resolution when frames slow down and raises it again when there is room.	عندما تكون الدقة على تلقائي، تخفض صورة الأبعاد الثلاثية دقتها عند تباطؤ الإطارات وترفعها مجددًا عند توفر المجال.	Если РАЗРЕШЕНИЕ стоит на АВТО, 3D-картинка снижает разрешение, когда кадры замедляются, и снова повышает его, когда есть запас.
 A SHORTER HOME SCREEN	شاشة رئيسية أقصر	ГЛАВНЫЙ ЭКРАН КОРОЧЕ
 The daily bonus, events, the daily mission, legends, the daily run and bounties sit in one TODAY card that opens by itself when a reward is waiting. New buttons are announced in a card, NEW badges fade after a few visits, and QUICK PLAY starts your last arcade mode in one tap.	المكافأة اليومية والأحداث والمهمة اليومية والأساطير والجولة اليومية والمكافآت في بطاقة واحدة، اليوم، تُفتح وحدها عندما تنتظرك مكافأة. تُعرض الأزرار الجديدة في بطاقة، وتختفي شارات جديد بعد بضع زيارات، ويبدأ اللعب السريع آخر وضع أركيد بنقرة واحدة.	Ежедневный бонус, события, задание дня, легенды, забег дня и награды собраны в одной карточке СЕГОДНЯ, которая сама открывается, когда ждёт награда. Новые кнопки показываются в карточке, значки НОВОЕ исчезают через несколько заходов, а БЫСТРАЯ ИГРА запускает последний аркадный режим одним касанием.
+BRONZE	برونزي	БРОНЗА
+SILVER	فضي	СЕРЕБРО
+PLATINUM	بلاتيني	ПЛАТИНА
+DIAMOND	ماسي	АЛМАЗ
+MASTER	أستاذ	МАСТЕР
+NEW GAME+ STARS	نجوم اللعبة الجديدة+	ЗВЁЗДЫ NG+
+BOSSES BEATEN	زعماء هُزموا	ПОБЕЖДЁННЫЕ БОССЫ
+LEGEND STARS	نجوم الأساطير	ЗВЁЗДЫ ЛЕГЕНД
+BOSS CROWNS	تيجان الزعماء	КОРОНЫ БОССОВ
+Finish the story to open the endgame	أنهِ القصة لفتح نهاية اللعبة	Пройди сюжет, чтобы открыть эндгейм
+Earn {0} more story stars: +{1} CR on the star road	اجمع {0} نجوم قصة أخرى: +{1} CR على طريق النجوم	Ещё {0} звёзд сюжета: +{1} CR на звёздном пути
+Clear {0} on SAMURAI for its first crown	اهزم {0} على SAMURAI لتنال تاجه الأول	Победи {0} на SAMURAI ради первой короны
+Boss of the week: clear the legend {0} for +1,000 CR	زعيم الأسبوع: اهزم أسطورة {0} مقابل +1,000 CR	Босс недели: победи легенду {0} и получи +1 000 CR
+Take {0} as a legend without a hit for 3 stars	اهزم {0} كأسطورة دون أن تُصاب لتنال 3 نجوم	Победи легенду {0} без единого попадания ради 3 звёзд
+Beat any chapter boss on SHINIGAMI to earn the reaper hero	اهزم أي زعيم فصل على SHINIGAMI لتنال بطل إله الموت	Победи любого босса главы на SHINIGAMI ради героя-жнеца
+RANK UP	ترقية الرتبة	НОВЫЙ РАНГ
+STAR ROAD	طريق النجوم	ЗВЁЗДНЫЙ ПУТЬ
+{0} STORY STARS	{0} نجمة قصة	ЗВЁЗД СЮЖЕТА: {0}
+YOUR JOURNEY	رحلتك	ТВОЙ ПУТЬ
+THE STORY IS OVER	انتهت القصة	СЮЖЕТ ОКОНЧЕН
+THE REAL GAME STARTS NOW	اللعبة الحقيقية تبدأ الآن	НАСТОЯЩАЯ ИГРА НАЧИНАЕТСЯ СЕЙЧАС
+Raise the difficulty, earn crowns, hunt legends and climb to LEGEND rank. Everything below counts.	ارفع الصعوبة، واكسب التيجان، وطارد الأساطير، واصعد إلى رتبة أسطورة. كل ما في الأسفل يُحتسب.	Повышай сложность, добывай короны, охоться на легенд и поднимайся до ранга ЛЕГЕНДА. Всё ниже идёт в зачёт.
+PLAYER RANK	رتبة اللاعب	РАНГ ИГРОКА
+MAX RANK	أعلى رتبة	МАКС. РАНГ
+{0} / {1} XP · next rank +{2} CR	{0} / {1} XP · الرتبة التالية +{2} CR	{0} / {1} XP · следующий ранг +{2} CR
+COMPLETION	الإنجاز	ПРОХОЖДЕНИЕ
+NEXT GOALS	الأهداف التالية	СЛЕДУЮЩИЕ ЦЕЛИ
+Clear each chapter boss on SAMURAI, OVERDRIVE and SHINIGAMI.	اهزم كل زعيم فصل على SAMURAI وOVERDRIVE وSHINIGAMI.	Победи каждого босса главы на SAMURAI, OVERDRIVE и SHINIGAMI.
+BOSS OF THE WEEK	زعيم الأسبوع	БОСС НЕДЕЛИ
+Cleared this week. A new boss on Monday.	هُزم هذا الأسبوع. زعيم جديد يوم الاثنين.	Побеждён на этой неделе. Новый босс в понедельник.
+First legend clear this week: +1,000 CR	أول فوز بالأسطورة هذا الأسبوع: +1,000 CR	Первая победа над легендой на неделе: +1 000 CR
+{0}% COMPLETE · YOUR JOURNEY	{0}% مكتمل · رحلتك	ПРОЙДЕНО {0}% · ТВОЙ ПУТЬ
+APEX RONIN	رونين القمة	РОНИН ВЕРШИНЫ
+White chrome and gold. Reach PLATINUM rank.	كروم أبيض وذهب. اصل إلى رتبة بلاتيني.	Белый хром и золото. Достигни ранга ПЛАТИНА.
+NEON MASTER	سيد النيون	НЕОНОВЫЙ МАСТЕР
+The colors of the city itself. Reach MASTER rank.	ألوان المدينة نفسها. اصل إلى رتبة أستاذ.	Цвета самого города. Достигни ранга МАСТЕР.
+LIVING LEGEND	أسطورة حية	ЖИВАЯ ЛЕГЕНДА
+Worn by very few. Reach LEGEND rank.	يرتديه قلة قليلة. اصل إلى رتبة أسطورة.	Его носят немногие. Достигни ранга ЛЕГЕНДА.
+DEATH GOD	إله الموت	БОГ СМЕРТИ
+Beat any chapter boss on SHINIGAMI.	اهزم أي زعيم فصل على SHINIGAMI.	Победи любого босса главы на SHINIGAMI.
+CROWNED SHOGUN	الشوغون المتوّج	КОРОНОВАННЫЙ СЁГУН
+Win 8 OVERDRIVE crowns from chapter bosses.	اربح 8 تيجان OVERDRIVE من زعماء الفصول.	Добудь 8 корон OVERDRIVE у боссов глав.
+STARBORN	ابن النجوم	ЗВЁЗДНЫЙ
+A spirit fox made of starlight. Earn 150 story stars.	ثعلب روحي من ضوء النجوم. اجمع 150 نجمة قصة.	Лис-дух из звёздного света. Набери 150 звёзд сюжета.
+THE COMPLETE	الكامل	ЗАВЕРШЁННЫЙ
+Reach 75% completion.	اصل إلى 75% من الإنجاز.	Достигни 75% прохождения.
+Reach PLATINUM rank	اصل إلى رتبة بلاتيني	Достигни ранга ПЛАТИНА
+Reach MASTER rank	اصل إلى رتبة أستاذ	Достигни ранга МАСТЕР
+Reach LEGEND rank	اصل إلى رتبة أسطورة	Достигни ранга ЛЕГЕНДА
+Beat any chapter boss on SHINIGAMI	اهزم أي زعيم فصل على SHINIGAMI	Победи любого босса главы на SHINIGAMI
+Win 8 OVERDRIVE boss crowns	اربح 8 تيجان زعماء على OVERDRIVE	Добудь 8 корон боссов на OVERDRIVE
+Reach 75% completion	اصل إلى 75% من الإنجاز	Достигни 75% прохождения
+ASCENDED	المتسامي	ВОЗНЁСШИЙСЯ
+Clear every chapter boss on OVERDRIVE	اهزم كل زعيم فصل على OVERDRIVE	Победи каждого босса главы на OVERDRIVE
+COMPLETIONIST	المُكمِل	ПЕРФЕКЦИОНИСТ
+Reach 100% completion	اصل إلى 100% من الإنجاز	Достигни 100% прохождения
+Climb from BRONZE to LEGEND. Your rank counts everything you have done, so you start at your real rank today. Every rank up pays credits, and PLATINUM, MASTER and LEGEND unlock heroes you can only earn.	اصعد من البرونزي إلى الأسطورة. رتبتك تحتسب كل ما فعلته، فتبدأ اليوم برتبتك الحقيقية. كل ترقية تمنح رصيدًا، والبلاتيني والأستاذ والأسطورة تفتح أبطالًا لا يُنالون إلا بالجدارة.	Поднимайся от БРОНЗЫ до ЛЕГЕНДЫ. Ранг учитывает всё, что ты сделал, так что сегодня ты начинаешь со своего настоящего ранга. Каждое повышение приносит кредиты, а ПЛАТИНА, МАСТЕР и ЛЕГЕНДА открывают героев, которых можно только заслужить.
+One screen with your rank, your completion %, boss crowns, the star road, the boss of the week and your next three goals. Tap your rank on the home screen. When the story ends it opens by itself: that is where the real game starts.	شاشة واحدة فيها رتبتك ونسبة الإنجاز وتيجان الزعماء وطريق النجوم وزعيم الأسبوع وأهدافك الثلاثة التالية. انقر على رتبتك في الشاشة الرئيسية. عندما تنتهي القصة تُفتح وحدها: هناك تبدأ اللعبة الحقيقية.	Один экран с рангом, процентом прохождения, коронами боссов, звёздным путём, боссом недели и тремя следующими целями. Нажми на ранг на главном экране. Когда сюжет закончится, он откроется сам: там и начинается настоящая игра.
+BOSS CROWNS AND THE STAR ROAD	تيجان الزعماء وطريق النجوم	КОРОНЫ БОССОВ И ЗВЁЗДНЫЙ ПУТЬ
+Every chapter boss has three crowns: clear it on SAMURAI, OVERDRIVE and SHINIGAMI. Story stars pay out on the star road at 20, 40 and up to 243.	لكل زعيم فصل ثلاثة تيجان: اهزمه على SAMURAI وOVERDRIVE وSHINIGAMI. نجوم القصة تُكافأ على طريق النجوم عند 20 و40 وحتى 243.	У каждого босса главы три короны: победи его на SAMURAI, OVERDRIVE и SHINIGAMI. Звёзды сюжета приносят награды на звёздном пути на 20, 40 и до 243.
+Every week one legend boss pays 1,000 CR on its first clear.	كل أسبوع يمنح زعيم أسطوري واحد 1,000 CR عند أول فوز عليه.	Каждую неделю один босс-легенда приносит 1 000 CR за первую победу.
+HEROES MONEY CANNOT BUY	أبطال لا يُشترون بالمال	ГЕРОИ, КОТОРЫХ НЕ КУПИШЬ
+Seven new heroes and five titles that only come from feats: ranks, crowns, 150 stars, 75% completion and a SHINIGAMI boss.	سبعة أبطال جدد وخمسة ألقاب لا تأتي إلا من الإنجازات: الرتب والتيجان و150 نجمة و75% من الإنجاز وزعيم على SHINIGAMI.	Семь новых героев и пять титулов, которые даются только за подвиги: ранги, короны, 150 звёзд, 75% прохождения и босс на SHINIGAMI.
+3D IN MOTION	ثلاثي الأبعاد في حركة	3D В ДВИЖЕНИИ
+Blade trails in 3D, dash afterimages and a hero who leans, stretches and lands. Enemies glow as they form and recoil when hit.	آثار الشفرة بالأبعاد الثلاثية، وصور خاطفة خلف الاندفاع، وبطل يميل ويتمدد ويهبط. الأعداء يتوهجون عند ظهورهم ويرتدّون عند إصابتهم.	Следы клинка в 3D, призрачные копии при рывке и герой, который наклоняется, вытягивается и приземляется. Враги светятся при появлении и отшатываются от ударов.
+BOSSES COME ALIVE	الزعماء ينبضون بالحياة	БОССЫ ОЖИВАЮТ
+Shockwaves when a boss lands or changes phase, a glowing crouch before every attack, stomping mechs and banking gunships, sparks when staggered, and deaths that shake and break them apart.	موجات صادمة عندما يهبط الزعيم أو يغيّر مرحلته، وانحناءة متوهجة قبل كل هجوم، وآليات تدبّ وسفن حربية تميل في المنعطفات، وشرارات عند الترنح، وموت يهزّهم ويحطّمهم.	Ударные волны, когда босс приземляется или меняет фазу, светящийся присед перед каждой атакой, топающие мехи и кренящиеся корабли, искры при оглушении и гибель, которая трясёт и разносит их на куски.

@@ -3,11 +3,14 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 41
-  ["WEAPONS AND HEROES IN 3D", "Every weapon has its own 3D model now: blades, twin daggers, hammer, cleaver, spears, scythe, chain, chakram, fan, bow, drill and gauntlets. Every hero skin dresses the 3D ninja its own way: horns, ears, tails, a straw hat, a crest, a halo and wings, and more."],
-  ["GLOWING BULLETS", "Bullets are glowing 3D orbs: enemy fire is red, and shots you reflect turn cyan."],
-  ["SMOOTHER ON EVERY PHONE", "With RESOLUTION on AUTO, the 3D picture lowers its resolution when frames slow down and raises it again when there is room."],
-  ["A SHORTER HOME SCREEN", "The daily bonus, events, the daily mission, legends, the daily run and bounties sit in one TODAY card that opens by itself when a reward is waiting. New buttons are announced in a card, NEW badges fade after a few visits, and QUICK PLAY starts your last arcade mode in one tap."]
+const NEWS = [ // version 42
+  ["PLAYER RANK", "Climb from BRONZE to LEGEND. Your rank counts everything you have done, so you start at your real rank today. Every rank up pays credits, and PLATINUM, MASTER and LEGEND unlock heroes you can only earn."],
+  ["YOUR JOURNEY", "One screen with your rank, your completion %, boss crowns, the star road, the boss of the week and your next three goals. Tap your rank on the home screen. When the story ends it opens by itself: that is where the real game starts."],
+  ["BOSS CROWNS AND THE STAR ROAD", "Every chapter boss has three crowns: clear it on SAMURAI, OVERDRIVE and SHINIGAMI. Story stars pay out on the star road at 20, 40 and up to 243."],
+  ["BOSS OF THE WEEK", "Every week one legend boss pays 1,000 CR on its first clear."],
+  ["HEROES MONEY CANNOT BUY", "Seven new heroes and five titles that only come from feats: ranks, crowns, 150 stars, 75% completion and a SHINIGAMI boss."],
+  ["3D IN MOTION", "Blade trails in 3D, dash afterimages and a hero who leans, stretches and lands. Enemies glow as they form and recoil when hit."],
+  ["BOSSES COME ALIVE", "Shockwaves when a boss lands or changes phase, a glowing crouch before every attack, stomping mechs and banking gunships, sparks when staggered, and deaths that shake and break them apart."]
 ];
 function deathCause() { // what hit you last, and how to avoid it next time
   const s = G.lastHit, w = G.lastWho, en = k => lt(EDEF[k] ? EDEF[k].name : 'ENEMY');
