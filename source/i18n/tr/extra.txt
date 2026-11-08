@@ -113,3 +113,52 @@ Seven new heroes and five titles that only come from feats: ranks, crowns, 150 s
 Blade trails in 3D, dash afterimages and a hero who leans, stretches and lands. Enemies glow as they form and recoil when hit.	آثار الشفرة بالأبعاد الثلاثية، وصور خاطفة خلف الاندفاع، وبطل يميل ويتمدد ويهبط. الأعداء يتوهجون عند ظهورهم ويرتدّون عند إصابتهم.	Следы клинка в 3D, призрачные копии при рывке и герой, который наклоняется, вытягивается и приземляется. Враги светятся при появлении и отшатываются от ударов.
 BOSSES COME ALIVE	الزعماء ينبضون بالحياة	БОССЫ ОЖИВАЮТ
 Shockwaves when a boss lands or changes phase, a glowing crouch before every attack, stomping mechs and banking gunships, sparks when staggered, and deaths that shake and break them apart.	موجات صادمة عندما يهبط الزعيم أو يغيّر مرحلته، وانحناءة متوهجة قبل كل هجوم، وآليات تدبّ وسفن حربية تميل في المنعطفات، وشرارات عند الترنح، وموت يهزّهم ويحطّمهم.	Ударные волны, когда босс приземляется или меняет фазу, светящийся присед перед каждой атакой, топающие мехи и кренящиеся корабли, искры при оглушении и гибель, которая трясёт и разносит их на куски.
+CRATES	صناديق	ЯЩИКИ
+NEON CRATES	صناديق النيون	НЕОНОВЫЕ ЯЩИКИ
+OPEN	افتح	ОТКРЫТЬ
+BUY 1 · {0} CR	اشترِ 1 · {0} CR	КУПИТЬ 1 · {0} CR
+LEGENDARY or better in at most {0} crates	أسطوري أو أفضل خلال {0} صناديق على الأكثر	ЛЕГЕНДАРНЫЙ или лучше не позже чем через {0} ящиков
+MYTHIC in at most {0} crates	أسطوري خارق خلال {0} صناديق على الأكثر	МИФИЧЕСКИЙ не позже чем через {0} ящиков
+ODDS	الاحتمالات	ШАНСЫ
+Every crate gives a blade, hero, blade skin or pet you do not own yet, or credits and materials.	كل صندوق يعطي نصلًا أو بطلًا أو مظهر نصل أو حيوانًا أليفًا لا تملكه بعد، أو رصيدًا ومواد.	Каждый ящик даёт клинок, героя, скин клинка или питомца, которых у тебя ещё нет, либо кредиты и материалы.
+MATERIALS	المواد	МАТЕРИАЛЫ
+{0} CORES	{0} نوى	ЯДРА: {0}
+{0} PRISMS	{0} مواشير	ПРИЗМЫ: {0}
+Drop from stages and runs. Used to evolve blades and heroes.	تسقط في المراحل والجولات. تُستخدم لتطوير النصال والأبطال.	Выпадают в этапах и забегах. Нужны для эволюции клинков и героев.
+Rare. Drop from stages, legends and big crates.	نادرة. تسقط في المراحل والأساطير والصناديق الكبيرة.	Редкие. Выпадают в этапах, легендах и больших ящиках.
+From legendary and mythic crates. Spend them in the forge.	من الصناديق الأسطورية والخرافية. أنفقها في المصهر.	Из легендарных и мифических ящиков. Трать их в кузнице.
+THE FORGE	المصهر	КУЗНИЦА
+LEGENDARY and MYTHIC blades come only from crates or the forge.	النصال الأسطورية والخرافية تأتي فقط من الصناديق أو المصهر.	ЛЕГЕНДАРНЫЕ и МИФИЧЕСКИЕ клинки — только из ящиков или кузницы.
+You own every forgeable blade.	تملك كل نصل يمكن صهره.	У тебя есть все клинки кузницы.
+WHERE CRATES COME FROM	من أين تأتي الصناديق	ОТКУДА БЕРУТСЯ ЯЩИКИ
+Every rank up	كل ترقية في الرتبة	Каждое повышение ранга
+Every step of the star road	كل خطوة على طريق النجوم	Каждый шаг звёздного пути
+The boss of the week	زعيم الأسبوع	Босс недели
+A rare drop at the end of stages and runs	سقوط نادر في نهاية المراحل والجولات	Редкий дроп в конце этапов и забегов
+The shop: 1,500 CR	المتجر: 1,500 CR	Магазин: 1 500 CR
+FORGED	صُهر	ВЫКОВАН
+SHARDS	شظايا	ОСКОЛКИ
+OPEN ANOTHER ({0})	افتح آخر ({0})	ОТКРЫТЬ ЕЩЁ ({0})
+POWER UP	شحن القوة	НАКАЧКА СИЛЫ
+CORES	نوى	ЯДРА
+CRATE	صندوق	ЯЩИК
+A brighter blade and trail	نصل وأثر أكثر سطوعًا	Ярче клинок и след
+Sparks fly from every swing	شرارات تتطاير من كل ضربة	Искры летят от каждого взмаха
+Runes orbit the blade and every kill bursts in gold	رموز تدور حول النصل وكل قتل ينفجر بالذهب	Руны кружат вокруг клинка, каждое убийство вспыхивает золотом
+A stronger aura	هالة أقوى	Сильнее аура
+Spirit embers rise around you	جمرات روحية تتصاعد حولك	Вокруг тебя поднимаются искры духа
+A halo of light and a burst on every dash	هالة من نور وانفجار مع كل اندفاع	Нимб света и вспышка при каждом рывке
+EVOLUTION	التطور	ЭВОЛЮЦИЯ
+Fully evolved.	تطوّر بالكامل.	Полностью эволюционировал.
+HERO LEVEL {0}	مستوى البطل {0}	УРОВЕНЬ ГЕРОЯ {0}
+EVOLVE	طوّر	ЭВОЛЮЦИЯ!
+EVOLVED	تطوّر	ЭВОЛЮЦИЯ
+Only from crates or the forge	فقط من الصناديق أو المصهر	Только из ящиков или кузницы
+GENERAL	عام	ОБЩИЕ
+EVERY RARITY HAS ITS OWN FILM	لكل ندرة فيلمها الخاص	У КАЖДОЙ РЕДКОСТИ СВОЙ ФИЛЬМ
+A NAV BAR AND SETTINGS TABS	شريط تنقل وتبويبات للإعدادات	ПАНЕЛЬ НАВИГАЦИИ И ВКЛАДКИ НАСТРОЕК
+Open neon crates for blades, heroes, blade skins and pets you do not own yet. Five rarities with the odds shown, a LEGENDARY or better within 30 crates and a MYTHIC within 100. You start with 3; more come from rank ups, the star road, the boss of the week, rare stage drops and the shop. No real money anywhere.	افتح صناديق النيون لتحصل على نصال وأبطال ومظاهر نصال وحيوانات أليفة لا تملكها بعد. خمس درجات ندرة مع عرض الاحتمالات، أسطوري أو أفضل خلال 30 صندوقًا على الأكثر وخرافي خلال 100. تبدأ بـ3، والمزيد يأتي من الترقيات وطريق النجوم وزعيم الأسبوع والسقوط النادر في المراحل والمتجر. لا مال حقيقي إطلاقًا.	Открывай неоновые ящики: клинки, герои, скины клинков и питомцы, которых у тебя ещё нет. Пять редкостей с показанными шансами, ЛЕГЕНДАРНЫЙ или лучше не позже 30 ящиков, МИФИЧЕСКИЙ не позже 100. Для начала 3 ящика; ещё — за ранги, звёздный путь, босса недели, редкие дропы и в магазине. Никаких реальных денег.
+Common: your ninja cuts a fruit. Rare: a bamboo grove. Epic: a car. Legendary: you power up into a giant and cut a truck in half. Mythic: a whole train car, and the screen shatters.	عادي: النينجا يقطع فاكهة. نادر: بستان خيزران. ملحمي: سيارة. أسطوري: تشحن قوتك وتصبح عملاقًا وتشق شاحنة نصفين. خرافي: عربة قطار كاملة وتتحطم الشاشة.	Обычный: ниндзя рубит фрукт. Редкий: бамбуковую рощу. Эпический: машину. Легендарный: ты накачиваешься в великана и разрубаешь грузовик пополам. Мифический: целый вагон, и экран разлетается на куски.
+LEGENDARY and MYTHIC blades you do not own now come only from crates or the forge, where you spend shards from big pulls. Everything you already own stays yours.	النصال الأسطورية والخرافية التي لا تملكها تأتي الآن فقط من الصناديق أو المصهر، حيث تنفق شظايا الجوائز الكبيرة. كل ما تملكه يبقى لك.	ЛЕГЕНДАРНЫЕ и МИФИЧЕСКИЕ клинки, которых у тебя нет, теперь только из ящиков или кузницы, где тратятся осколки крупных выигрышей. Всё, что у тебя уже есть, остаётся твоим.
+Blades and heroes evolve three times with mastery, cores and rare prisms that drop from stages. Brighter blades, sparks, orbiting runes and golden kill bursts; stronger auras, spirit embers, a halo and dash bursts.	تتطور النصال والأبطال ثلاث مرات بالإتقان والنوى والمواشير النادرة التي تسقط في المراحل. نصال أسطع وشرارات ورموز دوّارة وانفجارات ذهبية عند القتل؛ هالات أقوى وجمرات روحية وهالة نور وانفجارات عند الاندفاع.	Клинки и герои эволюционируют трижды с мастерством, ядрами и редкими призмами из этапов. Ярче клинки, искры, кружащие руны и золотые вспышки при убийствах; сильнее аура, искры духа, нимб и вспышки при рывке.
+The home screen buttons sit in a bar at the bottom you scroll through, and the settings are split into tabs.	أزرار الشاشة الرئيسية في شريط أسفل الشاشة تمرّر فيه، والإعدادات مقسّمة إلى تبويبات.	Кнопки главного экрана — в нижней панели с прокруткой, а настройки разбиты на вкладки.

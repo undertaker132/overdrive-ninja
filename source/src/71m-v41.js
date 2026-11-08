@@ -150,7 +150,7 @@ Object.assign(R3, {
 const Today = {
   ids: ['tLogin', 'bEvent', 'bDop', 'bLegend', 'bDaily', 'tBountyBox'],
   build() {
-    const grid = $('bArcade') && $('bArcade').parentElement; if (!grid) return;
+    const grid = $('tGrid') || ($('bArcade') && $('bArcade').parentElement); if (!grid) return; // (version 43: the tiles moved to the nav bar; the card stays where the grid was)
     let box = $('tToday');
     if (!box) { box = el('div', 'panel today'); box.id = 'tToday'; const h = el('button', 'today-h'); h.id = 'tTodayH'; h.type = 'button'; const b = el('div', 'today-b'); b.id = 'tTodayB'; box.appendChild(h); box.appendChild(b);
       h.onclick = () => { Aud.sfx('ui'); const s = Store.data.settings; s.today = box.classList.contains('open') ? 0 : 1; Store.touch(); this.sync(); }; }

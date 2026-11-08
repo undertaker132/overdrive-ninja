@@ -3,14 +3,12 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 42
-  ["PLAYER RANK", "Climb from BRONZE to LEGEND. Your rank counts everything you have done, so you start at your real rank today. Every rank up pays credits, and PLATINUM, MASTER and LEGEND unlock heroes you can only earn."],
-  ["YOUR JOURNEY", "One screen with your rank, your completion %, boss crowns, the star road, the boss of the week and your next three goals. Tap your rank on the home screen. When the story ends it opens by itself: that is where the real game starts."],
-  ["BOSS CROWNS AND THE STAR ROAD", "Every chapter boss has three crowns: clear it on SAMURAI, OVERDRIVE and SHINIGAMI. Story stars pay out on the star road at 20, 40 and up to 243."],
-  ["BOSS OF THE WEEK", "Every week one legend boss pays 1,000 CR on its first clear."],
-  ["HEROES MONEY CANNOT BUY", "Seven new heroes and five titles that only come from feats: ranks, crowns, 150 stars, 75% completion and a SHINIGAMI boss."],
-  ["3D IN MOTION", "Blade trails in 3D, dash afterimages and a hero who leans, stretches and lands. Enemies glow as they form and recoil when hit."],
-  ["BOSSES COME ALIVE", "Shockwaves when a boss lands or changes phase, a glowing crouch before every attack, stomping mechs and banking gunships, sparks when staggered, and deaths that shake and break them apart."]
+const NEWS = [ // version 43
+  ["CRATES", "Open neon crates for blades, heroes, blade skins and pets you do not own yet. Five rarities with the odds shown, a LEGENDARY or better within 30 crates and a MYTHIC within 100. You start with 3; more come from rank ups, the star road, the boss of the week, rare stage drops and the shop. No real money anywhere."],
+  ["EVERY RARITY HAS ITS OWN FILM", "Common: your ninja cuts a fruit. Rare: a bamboo grove. Epic: a car. Legendary: you power up into a giant and cut a truck in half. Mythic: a whole train car, and the screen shatters."],
+  ["THE FORGE", "LEGENDARY and MYTHIC blades you do not own now come only from crates or the forge, where you spend shards from big pulls. Everything you already own stays yours."],
+  ["EVOLUTION", "Blades and heroes evolve three times with mastery, cores and rare prisms that drop from stages. Brighter blades, sparks, orbiting runes and golden kill bursts; stronger auras, spirit embers, a halo and dash bursts."],
+  ["A NAV BAR AND SETTINGS TABS", "The home screen buttons sit in a bar at the bottom you scroll through, and the settings are split into tabs."]
 ];
 function deathCause() { // what hit you last, and how to avoid it next time
   const s = G.lastHit, w = G.lastWho, en = k => lt(EDEF[k] ? EDEF[k].name : 'ENEMY');
