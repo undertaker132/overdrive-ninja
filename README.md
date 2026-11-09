@@ -129,4 +129,5 @@ The 3D view uses [three.js](https://threejs.org) r160 (MIT License, Copyright 20
 - Robot: "RobotExpressive" by Tomás Laulhé (Quaternius), CC0 1.0.
 - Fox: model by PixelMannen (CC0), rigging and animation by tomkranis (CC BY 4.0), glTF conversion by @AsoboStudio and @scurest (CC BY 4.0).
 - Hero bodies: "X Bot" and "Soldier" from Mixamo (Adobe), free to use in games.
+- Sword animations: "KayKit Character Animations" by Kay Lousberg, CC0.
 - three.js r160 and its GLTFLoader / SkeletonUtils (MIT License).
