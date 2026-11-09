@@ -3793,5 +3793,13 @@ Object.assign(RU, {
 "Signed in as {0}. Your progress is saved in the cloud.": "Ты вошёл как {0}. Прогресс сохраняется в облаке.",
 "SIGN IN TO SAVE IN THE CLOUD": "ВОЙДИ, ЧТОБЫ СОХРАНЯТЬ В ОБЛАКЕ",
 "REAL BODIES": "НАСТОЯЩИЕ ТЕЛА",
-"Every 3D hero now has a real body: thighs, knee pads, shin guards and boots, a belt, an armored chest, shoulder pads, arms with elbows and bracers, and gloved hands that hold the weapon. The free arm guards, swings and tucks in for a dash. Brutes and enforcers got arms, fists and legs too.": "У каждого 3D-героя теперь настоящее тело: бёдра, наколенники, поножи и сапоги, пояс, бронированная грудь, наплечники, руки с локтями и наручами и кисти в перчатках, держащие оружие. Свободная рука прикрывает, качается на бегу и прижимается в рывке. Громилы и силовики тоже получили руки, кулаки и ноги."
+"Every 3D hero now has a real body: thighs, knee pads, shin guards and boots, a belt, an armored chest, shoulder pads, arms with elbows and bracers, and gloved hands that hold the weapon. The free arm guards, swings and tucks in for a dash. Brutes and enforcers got arms, fists and legs too.": "У каждого 3D-героя теперь настоящее тело: бёдра, наколенники, поножи и сапоги, пояс, бронированная грудь, наплечники, руки с локтями и наручами и кисти в перчатках, держащие оружие. Свободная рука прикрывает, качается на бегу и прижимается в рывке. Громилы и силовики тоже получили руки, кулаки и ноги.",
+"THE SEALS": "ПЕЧАТИ",
+"Every crate now lands the same: steel, bound by four seals. Your hero strikes, and either it opens or a seal breaks, and how it breaks tells you what is coming: blue sparks, then purple lightning, then the roof cracking in gold, then darkness and a red moon. Watch it to the end.": "Каждый ящик теперь приземляется одинаково: сталь, скованная четырьмя печатями. Твой герой бьёт — и ящик открывается или ломается печать, а то, как она ломается, подсказывает, что внутри: синие искры, затем фиолетовая молния, затем крыша трескается золотым светом, затем тьма и красная луна. Досмотри до конца.",
+"EVERY SKIN ITS OWN LOOK": "У КАЖДОГО СКИНА СВОЙ ОБЛИК",
+"All 66 skins now wear their own colors in 3D, and every body type has its own shape: capes and coats, samurai shoulder guards and skirts, hoods, robes, wings, tails, a drum ring, extra arms. Capes fly when you run, tails sway, wings beat, and the body twists with every stride.": "Все 66 скинов теперь носят свои цвета в 3D, а у каждого типа тела своя форма: плащи и пальто, самурайские наплечники и юбки, капюшоны, мантии, крылья, хвосты, кольцо барабанов, лишние руки. Плащ развевается на бегу, хвосты качаются, крылья машут, а тело поворачивается с каждым шагом.",
+"IT HOLDS…": "ДЕРЖИТСЯ…",
+"SOMETHING STIRS": "ЧТО-ТО ПРОБУЖДАЕТСЯ",
+"THE SEALS ARE BREAKING": "ПЕЧАТИ ЛОМАЮТСЯ",
+"…": "…"
 });

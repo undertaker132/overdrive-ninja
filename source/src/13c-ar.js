@@ -3793,5 +3793,13 @@ Object.assign(AR, {
 "Signed in as {0}. Your progress is saved in the cloud.": "تم الدخول باسم {0}. تقدّمك محفوظ في السحابة.",
 "SIGN IN TO SAVE IN THE CLOUD": "سجّل الدخول للحفظ في السحابة",
 "REAL BODIES": "أجساد حقيقية",
-"Every 3D hero now has a real body: thighs, knee pads, shin guards and boots, a belt, an armored chest, shoulder pads, arms with elbows and bracers, and gloved hands that hold the weapon. The free arm guards, swings and tucks in for a dash. Brutes and enforcers got arms, fists and legs too.": "صار لكل بطل ثلاثي الأبعاد جسد حقيقي: فخذان، وواقيات ركبة، وواقيات ساق وأحذية، وحزام، وصدر مدرّع، وواقيات أكتاف، وذراعان بمرفقين وواقيات ساعد، وأيدٍ بقفازات تمسك السلاح. الذراع الحرة تحرس وتتأرجح أثناء الجري وتنضم عند الاندفاع. وحصل المتوحشون والمنفذون أيضًا على أذرع وقبضات وأرجل."
+"Every 3D hero now has a real body: thighs, knee pads, shin guards and boots, a belt, an armored chest, shoulder pads, arms with elbows and bracers, and gloved hands that hold the weapon. The free arm guards, swings and tucks in for a dash. Brutes and enforcers got arms, fists and legs too.": "صار لكل بطل ثلاثي الأبعاد جسد حقيقي: فخذان، وواقيات ركبة، وواقيات ساق وأحذية، وحزام، وصدر مدرّع، وواقيات أكتاف، وذراعان بمرفقين وواقيات ساعد، وأيدٍ بقفازات تمسك السلاح. الذراع الحرة تحرس وتتأرجح أثناء الجري وتنضم عند الاندفاع. وحصل المتوحشون والمنفذون أيضًا على أذرع وقبضات وأرجل.",
+"THE SEALS": "الأختام",
+"Every crate now lands the same: steel, bound by four seals. Your hero strikes, and either it opens or a seal breaks, and how it breaks tells you what is coming: blue sparks, then purple lightning, then the roof cracking in gold, then darkness and a red moon. Watch it to the end.": "كل صندوق يهبط الآن بالشكل نفسه: فولاذ مقيّد بأربعة أختام. يضرب بطلك، فإما أن يُفتح أو ينكسر ختم، وطريقة انكساره تخبرك بما هو قادم: شرر أزرق، ثم برق بنفسجي، ثم سطح يتشقق بضوء ذهبي، ثم ظلام وقمر أحمر. شاهده حتى النهاية.",
+"EVERY SKIN ITS OWN LOOK": "لكل مظهر شكله الخاص",
+"All 66 skins now wear their own colors in 3D, and every body type has its own shape: capes and coats, samurai shoulder guards and skirts, hoods, robes, wings, tails, a drum ring, extra arms. Capes fly when you run, tails sway, wings beat, and the body twists with every stride.": "كل المظاهر الـ66 ترتدي الآن ألوانها في الوضع ثلاثي الأبعاد، ولكل نوع جسد شكله: عباءات ومعاطف، وواقيات أكتاف وتنانير ساموراي، وقلنسوات، وأردية، وأجنحة، وذيول، وحلقة طبول، وأذرع إضافية. ترفرف العباءة عند الجري وتتمايل الذيول وتخفق الأجنحة ويلتف الجسد مع كل خطوة.",
+"IT HOLDS…": "إنه صامد…",
+"SOMETHING STIRS": "شيء ما يتحرك",
+"THE SEALS ARE BREAKING": "الأختام تتحطم",
+"…": "…"
 });

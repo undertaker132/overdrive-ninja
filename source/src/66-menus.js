@@ -3,7 +3,9 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 52
+const NEWS = [ // version 53
+  ["THE SEALS", "Every crate now lands the same: steel, bound by four seals. Your hero strikes, and either it opens or a seal breaks, and how it breaks tells you what is coming: blue sparks, then purple lightning, then the roof cracking in gold, then darkness and a red moon. Watch it to the end."],
+  ["EVERY SKIN ITS OWN LOOK", "All 66 skins now wear their own colors in 3D, and every body type has its own shape: capes and coats, samurai shoulder guards and skirts, hoods, robes, wings, tails, a drum ring, extra arms. Capes fly when you run, tails sway, wings beat, and the body twists with every stride."],
   ["REAL BODIES", "Every 3D hero now has a real body: thighs, knee pads, shin guards and boots, a belt, an armored chest, shoulder pads, arms with elbows and bracers, and gloved hands that hold the weapon. The free arm guards, swings and tucks in for a dash. Brutes and enforcers got arms, fists and legs too."],
   ["LEGENDARY PERKS", "An upgrade screen sometimes holds a gold LEGENDARY card that changes the whole run: STORMCALLER, REAPER, OVERCLOCK, GLASS CANNON or ECHO EDGE. One per run, so choose well."],
   ["CRATES LIKE A MOVIE", "Crate openings now have a real camera: cinema bars, a slow push-in, slow motion and a punch-in on every cut, focus lines, light rays in the rarity's color and film grain. The crate lands in a cloud of dust, pulses with every rarity step and opens with a beam of light."],
