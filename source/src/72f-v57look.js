@@ -19,7 +19,7 @@ const Look = {
     mat.customProgramCacheKey = () => 'rim57' + (prev ? 'p' : ''); mat.needsUpdate = true; },
   /* ink + rim on a hero model, once */
   dress(g) {
-    if (!g || g.look57 || CALM || (typeof Q !== 'undefined' && Q.lvl === 0)) return; g.look57 = 1; // (the lowest quality tier draws no outlines) const ink = this.inkMat(), add = [];
+    if (!g || g.look57 || CALM || (typeof Q !== 'undefined' && Q.lvl === 0)) return; g.look57 = 1; /* (the lowest quality tier draws no outlines) */ const ink = this.inkMat(), add = [];
     g.traverse(o => { if (!o.isMesh || o.isSkinnedMesh || !o.geometry || o.userData.ink) return; const m = o.material; if (!m || m.transparent || m.blending === THREE.AdditiveBlending || m.isMeshBasicMaterial && m.color && m.color.getHex() > 0x888888) return;
       this.rim(m); const p = o.geometry.parameters || {}; if (o === g.pool || (p.radius && p.radius > 20)) return; add.push(o); });
     for (const o of add) { const l = new THREE.Mesh(o.geometry, ink); l.userData.ink = 1; l.castShadow = false; l.receiveShadow = false; o.add(l); }
