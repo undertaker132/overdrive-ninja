@@ -395,3 +395,23 @@ IT HOLDS…	إنه صامد…	ДЕРЖИТСЯ…
 SOMETHING STIRS	شيء ما يتحرك	ЧТО-ТО ПРОБУЖДАЕТСЯ
 THE SEALS ARE BREAKING	الأختام تتحطم	ПЕЧАТИ ЛОМАЮТСЯ
 …	…	…
+GIANTS AND MONSTERS	عمالقة ووحوش	ГИГАНТЫ И ЧУДОВИЩА
+The war-machine bosses are now armored giants with real bodies and their own weapons: a paladin with a hammer, a samurai lord with a nodachi, a warrior monk with a spear, a war frame with a cleaver, a winged sovereign with a scythe. Gunships flare their engines and track you with turrets, RAIJIN spins a ring of thunder drums, CHIMERA grows three serpent heads, and the LEVIATHAN opens its jaw. Drones beat their wings, phantoms float in tattered cloaks, bombers breathe with a lit fuse.	زعماء آلات الحرب صاروا عمالقة مدرّعين بأجساد حقيقية وأسلحتهم الخاصة: فارس بمطرقة، وسيد ساموراي بسيف نوداتشي، وراهب محارب برمح، وهيكل حربي بساطور، وملك مجنّح بمنجل. السفن الحربية تشعل محركاتها وتتعقبك بأبراجها، ورايجين يدير حلقة طبول الرعد، وتنبت للكيميرا ثلاثة رؤوس أفاعٍ، ويفتح اللوياثان فكه. الطائرات المسيّرة تخفق بأجنحتها، والأشباح تطفو بعباءات ممزقة، والمفجرون يتنفسون بفتيل مشتعل.	Боссы-машины теперь бронированные гиганты с настоящими телами и своим оружием: паладин с молотом, самурай-владыка с нодати, монах-воин с копьём, боевой каркас с тесаком и крылатый владыка с косой. Канонерки разжигают двигатели и следят за тобой турелями, РАЙДЗИН вращает кольцо громовых барабанов, у ХИМЕРЫ вырастают три змеиные головы, а ЛЕВИАФАН раскрывает пасть. Дроны машут крыльями, фантомы парят в рваных плащах, бомберы дышат с горящим фитилём.
+EIGHT ANIME-STYLE HEROES	ثمانية أبطال بأسلوب الأنمي	ВОСЕМЬ ГЕРОЕВ В СТИЛЕ АНИМЕ
+SUPER SURGE, SOUL CLEAVER, WILD HUNTER, STORM KID, FOX SAGE, VEIL SORCERER, WAVE BREATHER and SEA CAPTAIN: original heroes in the style of the great fighting anime, with their own hair, outfits and auras in 3D, in 2D and on their portraits. In the shop and in crates.	سوبر سيرج، وقاطع الأرواح، والصياد البري، وفتى العاصفة، وحكيم الثعلب، وساحر الحجاب، ومتنفس الأمواج، وقبطان البحر: أبطال أصليون بأسلوب أنمي القتال الكبير، بشعرهم وأزيائهم وهالاتهم في الوضع ثلاثي وثنائي الأبعاد وفي صورهم. في المتجر والصناديق.	СУПЕР ВСПЛЕСК, ДУШЕРУБ, ДИКИЙ ОХОТНИК, ГРОЗОВОЙ ПАЦАН, ЛИСИЙ МУДРЕЦ, ЧАРОДЕЙ ПОД ВУАЛЬЮ, ДЫШАЩИЙ ВОЛНОЙ и МОРСКОЙ КАПИТАН: оригинальные герои в стиле великих боевых аниме, со своими причёсками, нарядами и аурами в 3D, в 2D и на портретах. В магазине и в ящиках.
+SUPER SURGE	سوبر سيرج	СУПЕР ВСПЛЕСК
+Golden hair that stands on end and an aura that crackles. Power level: rising.	شعر ذهبي منتصب وهالة تطقطق. مستوى القوة: يرتفع.	Золотые волосы дыбом и потрескивающая аура. Уровень силы: растёт.
+SOUL CLEAVER	قاطع الأرواح	ДУШЕРУБ
+A black robe, a white sash, half a mask and a blade as big as a door.	رداء أسود، وحزام أبيض، ونصف قناع، ونصل بحجم باب.	Чёрный халат, белый пояс, полмаски и клинок размером с дверь.
+WILD HUNTER	الصياد البري	ДИКИЙ ОХОТНИК
+Spiky hair, a green jacket and an aura that never runs dry.	شعر شائك، وسترة خضراء، وهالة لا تنضب.	Колючие волосы, зелёная куртка и неиссякаемая аура.
+STORM KID	فتى العاصفة	ГРОЗОВОЙ ПАЦАН
+White hair, quick feet and lightning dancing on the skin.	شعر أبيض، وقدمان سريعتان، وبرق يرقص على الجلد.	Белые волосы, быстрые ноги и молнии, пляшущие на коже.
+FOX SAGE	حكيم الثعلب	ЛИСИЙ МУДРЕЦ
+A metal headband, an orange jacket and a fox cloak of flame.	عصابة رأس معدنية، وسترة برتقالية، وعباءة ثعلب من اللهب.	Металлическая повязка, оранжевая куртка и лисий плащ из пламени.
+VEIL SORCERER	ساحر الحجاب	ЧАРОДЕЙ ПОД ВУАЛЬЮ
+White hair, a blindfold and a blue orb that bends space.	شعر أبيض، وعصابة عينين، وكرة زرقاء تثني الفضاء.	Белые волосы, повязка на глазах и синяя сфера, искривляющая пространство.
+WAVE BREATHER	متنفس الأمواج	ДЫШАЩИЙ ВОЛНОЙ
+A long coat, a calm breath, and water that follows the blade.	معطف طويل، ونَفَس هادئ، وماء يتبع النصل.	Длинное пальто, спокойное дыхание и вода, что следует за клинком.
+SEA CAPTAIN	قبطان البحر	МОРСКОЙ КАПИТАН
+A straw hat, an open red vest and a grin that never leaves.	قبعة قش، وسترة حمراء مفتوحة، وابتسامة لا تغيب.	Соломенная шляпа, распахнутый красный жилет и неизменная ухмылка.

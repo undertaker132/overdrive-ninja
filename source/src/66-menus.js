@@ -3,7 +3,9 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 53
+const NEWS = [ // version 54
+  ["GIANTS AND MONSTERS", "The war-machine bosses are now armored giants with real bodies and their own weapons: a paladin with a hammer, a samurai lord with a nodachi, a warrior monk with a spear, a war frame with a cleaver, a winged sovereign with a scythe. Gunships flare their engines and track you with turrets, RAIJIN spins a ring of thunder drums, CHIMERA grows three serpent heads, and the LEVIATHAN opens its jaw. Drones beat their wings, phantoms float in tattered cloaks, bombers breathe with a lit fuse."],
+  ["EIGHT ANIME-STYLE HEROES", "SUPER SURGE, SOUL CLEAVER, WILD HUNTER, STORM KID, FOX SAGE, VEIL SORCERER, WAVE BREATHER and SEA CAPTAIN: original heroes in the style of the great fighting anime, with their own hair, outfits and auras in 3D, in 2D and on their portraits. In the shop and in crates."],
   ["THE SEALS", "Every crate now lands the same: steel, bound by four seals. Your hero strikes, and either it opens or a seal breaks, and how it breaks tells you what is coming: blue sparks, then purple lightning, then the roof cracking in gold, then darkness and a red moon. Watch it to the end."],
   ["EVERY SKIN ITS OWN LOOK", "All 66 skins now wear their own colors in 3D, and every body type has its own shape: capes and coats, samurai shoulder guards and skirts, hoods, robes, wings, tails, a drum ring, extra arms. Capes fly when you run, tails sway, wings beat, and the body twists with every stride."],
   ["REAL BODIES", "Every 3D hero now has a real body: thighs, knee pads, shin guards and boots, a belt, an armored chest, shoulder pads, arms with elbows and bracers, and gloved hands that hold the weapon. The free arm guards, swings and tucks in for a dash. Brutes and enforcers got arms, fists and legs too."],
