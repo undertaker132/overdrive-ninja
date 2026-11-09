@@ -3,7 +3,8 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 56
+const NEWS = [ // version 57
+  ["LIGHT AND LINE", "Heroes are now drawn like an anime game: a dark ink outline around every part and a rim of cool light along their edges. On the home screen and in the Hero Forge your hero stands in a small studio: a glossy floor, a backlight in their color and a glow on everything that shines."],
   ["REAL 3D MODELS", "The 3D view now uses real, artist-made models with recorded animations: brutes, enforcers, wardens and snipers are robots that walk, run, punch and fall, each in its own colors, and the dog-family pets are a fox that looks around, walks and runs with you. The moving parts on every enemy now animate in runs too."],
   ["FACES AND PETS", "The anime-style heroes now have real portraits, each with its own face, eyes, hairstyle and outfit, and a face in 3D too, and names that nod to the legends behind them. Every pet was reworked: dogs wag, look around, wear a collar and sit when you stop; birds beat their wings and fan their tails, the phoenix burns, fish swim with fins, the saucer beams, and they all breathe and blink."],
   ["GIANTS AND MONSTERS", "The war-machine bosses are now armored giants with real bodies and their own weapons: a paladin with a hammer, a samurai lord with a nodachi, a warrior monk with a spear, a war frame with a cleaver, a winged sovereign with a scythe. Gunships flare their engines and track you with turrets, RAIJIN spins a ring of thunder drums, CHIMERA grows three serpent heads, and the LEVIATHAN opens its jaw. Drones beat their wings, phantoms float in tattered cloaks, bombers breathe with a lit fuse."],

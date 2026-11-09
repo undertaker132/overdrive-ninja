@@ -20,6 +20,7 @@ const Models = {
   ok(id) { return !!this.got[id]; },
   load(id) {
     if (this.got[id] || this.busy[id] || this.failed[id] || typeof THREE_EX === 'undefined') return;
+    if (location.protocol === 'file:') { this.failed[id] = 1; return; } // (opened from disk, or the desktop app: a browser cannot fetch files there, the built-in models stay)
     this.busy[id] = 1;
     try { new THREE_EX.GLTFLoader().load(this.src[id], gl => { this.busy[id] = 0;
         gl.scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; if (o.geometry) o.geometry.userData.shared = true; } });
