@@ -3,7 +3,8 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 63
+const NEWS = [ // version 64
+  ["ONI OF THE CYBER CITY", "Three more enemies are real animated monsters: the brute is a hulking green orc, the void wraith a horned purple demon, the phantom a red demon glowing ghostly cyan. They walk, run, strike and flinch when you hit them. The 3D models now load about twice as fast."],
   ["REAL SWORD ANIMATIONS", "Your hero's cuts are now recorded sword animations: a chop, a diagonal slice, a horizontal slice and a stab, one per dash, and dual-blade versions for twin weapons. The swordsman bosses fight with them too."],
   ["PORTRAITS FROM THE REAL MODEL", "Every hero portrait in the shop, the Arsenal, crate rewards and your profile is now a render of the very body you play with: the armor, the gear, the hair and the face, in the studio light of the Hero Forge."],
   ["THE SWORD COMBO", "Your hero now fights with real moves: every dash is the next cut of a three-cut combo (an overhead chop, a wide sweep, a rising cut), you flinch when you lose a shield, and you raise the blade when a stage is cleared. Tap your hero on the home screen or in the Hero Forge to see the combo."],
