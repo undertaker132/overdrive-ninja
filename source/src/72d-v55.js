@@ -102,7 +102,7 @@ function animeBust(g, sk, S, t) {
     b1(g, body, ca, cb); const F = FACE[body]; if (!F) return;
     const Th = THREE, P0 = R3.part.bind(R3), H = g.head; H.children[0].material = this.tint(F.skin, F.skin, 0, 0, .7);
     for (let i = 1; i < 4 && i < H.children.length; i++) H.children[i].visible = false; // the visor, the face mask, the hood ridge
-    if (!F.blind) for (const s of [-1, 1]) { P0(new Th.SphereGeometry(.75, 10, 8), R3.M.white, 3.25, s * 1.35, .5, H).scale.set(.5, 1, 1.2); P0(new Th.SphereGeometry(.45, 8, 6), this.tint(F.iris, F.iris, 0, .2, .3), 3.6, s * 1.35, .45, H); }
+    if (!F.blind) for (const s of [-1, 1]) { const e1 = P0(new Th.SphereGeometry(.75, 10, 8), R3.M.white, 3.25, s * 1.35, .5, H); e1.scale.set(.5, 1, 1.2); e1.userData.eye = 1; P0(new Th.SphereGeometry(.45, 8, 6), this.tint(F.iris, F.iris, 0, .2, .3), 3.6, s * 1.35, .45, H).userData.eye = 1; }
     if (F.blind) P0(R3.zUp(new Th.TorusGeometry(3.8, .75, 6, 24)), R3.M.dark, .1, 0, .5, H);
   };
 }

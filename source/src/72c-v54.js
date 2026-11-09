@@ -123,7 +123,7 @@ const ANIME = {
     const hairM = this.tint('#000000', A.hair, 1, .1, .55), tipM = A.tip ? this.tint('#000000', A.tip, 1, .1, .55) : hairM;
     // hair: spikes that grow out of the head (up, back and to the sides), a few bangs over the visor
     const up = new Th.Vector3(0, 0, 1), V = (x, y, z) => new Th.Vector3(x, y, z).normalize();
-    const spike = (d, len, r, m) => { const q = P0(new Th.ConeGeometry(r, len, 6).rotateX(Math.PI / 2).translate(0, 0, len / 2), m, d.x * 2.6, d.y * 2.6, d.z * 2.6 + .4, H); q.quaternion.setFromUnitVectors(up, d); };
+    const spike = (d, len, r, m) => { const q = P0(new Th.ConeGeometry(r, len, 6).rotateX(Math.PI / 2).translate(0, 0, len / 2), m, d.x * 2.6, d.y * 2.6, d.z * 2.6 + .4, H); q.quaternion.setFromUnitVectors(up, d); q.userData.hair = 1; };
     for (let i = 0; i < A.spikes; i++) { const u = A.spikes > 1 ? i / (A.spikes - 1) : .5, az = Math.PI + (u - .5) * 3.4, el = .35 + A.up * .35 + (i % 2) * .25;
       spike(V(Math.cos(az) * Math.cos(el), Math.sin(az) * Math.cos(el), Math.sin(el) + .15), A.len * (.8 + (i % 3) * .2), 1.25, i % 2 && A.tip ? tipM : hairM); }
     for (let i = 0; i < 3; i++) spike(V(.55, (i - 1) * .5, A.up > .9 ? .9 : .35), A.len * .55, .9, hairM); // bangs
