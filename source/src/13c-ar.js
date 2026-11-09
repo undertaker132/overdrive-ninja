@@ -3791,5 +3791,7 @@ Object.assign(AR, {
 "That code did not work. Check it, or ask for a new one.": "لم يعمل هذا الرمز. تحقق منه أو اطلب رمزًا جديدًا.",
 "Could not send right now. Try again in a minute.": "تعذّر الإرسال الآن. حاول بعد دقيقة.",
 "Signed in as {0}. Your progress is saved in the cloud.": "تم الدخول باسم {0}. تقدّمك محفوظ في السحابة.",
-"SIGN IN TO SAVE IN THE CLOUD": "سجّل الدخول للحفظ في السحابة"
+"SIGN IN TO SAVE IN THE CLOUD": "سجّل الدخول للحفظ في السحابة",
+"REAL BODIES": "أجساد حقيقية",
+"Every 3D hero now has a real body: thighs, knee pads, shin guards and boots, a belt, an armored chest, shoulder pads, arms with elbows and bracers, and gloved hands that hold the weapon. The free arm guards, swings and tucks in for a dash. Brutes and enforcers got arms, fists and legs too.": "صار لكل بطل ثلاثي الأبعاد جسد حقيقي: فخذان، وواقيات ركبة، وواقيات ساق وأحذية، وحزام، وصدر مدرّع، وواقيات أكتاف، وذراعان بمرفقين وواقيات ساعد، وأيدٍ بقفازات تمسك السلاح. الذراع الحرة تحرس وتتأرجح أثناء الجري وتنضم عند الاندفاع. وحصل المتوحشون والمنفذون أيضًا على أذرع وقبضات وأرجل."
 });

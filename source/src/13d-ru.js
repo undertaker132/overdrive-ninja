@@ -3791,5 +3791,7 @@ Object.assign(RU, {
 "That code did not work. Check it, or ask for a new one.": "Код не подошёл. Проверь его или запроси новый.",
 "Could not send right now. Try again in a minute.": "Сейчас отправить не получилось. Попробуй через минуту.",
 "Signed in as {0}. Your progress is saved in the cloud.": "Ты вошёл как {0}. Прогресс сохраняется в облаке.",
-"SIGN IN TO SAVE IN THE CLOUD": "ВОЙДИ, ЧТОБЫ СОХРАНЯТЬ В ОБЛАКЕ"
+"SIGN IN TO SAVE IN THE CLOUD": "ВОЙДИ, ЧТОБЫ СОХРАНЯТЬ В ОБЛАКЕ",
+"REAL BODIES": "НАСТОЯЩИЕ ТЕЛА",
+"Every 3D hero now has a real body: thighs, knee pads, shin guards and boots, a belt, an armored chest, shoulder pads, arms with elbows and bracers, and gloved hands that hold the weapon. The free arm guards, swings and tucks in for a dash. Brutes and enforcers got arms, fists and legs too.": "У каждого 3D-героя теперь настоящее тело: бёдра, наколенники, поножи и сапоги, пояс, бронированная грудь, наплечники, руки с локтями и наручами и кисти в перчатках, держащие оружие. Свободная рука прикрывает, качается на бегу и прижимается в рывке. Громилы и силовики тоже получили руки, кулаки и ноги."
 });
