@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Zip the web game (for itch.io)
-        run: zip -r Overdrive-Cyber-Slash-web.zip index.html manifest.webmanifest sw.js icons
+        run: zip -r Overdrive-Cyber-Slash-web.zip index.html manifest.webmanifest sw.js icons models
       - uses: actions/upload-artifact@v4
         with:
           name: web
