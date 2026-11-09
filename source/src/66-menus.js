@@ -3,7 +3,8 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 57
+const NEWS = [ // version 58
+  ["A REAL BODY", "Your hero is now a real human body with real proportions and recorded motion for standing, walking and running, on the home screen, in the Hero Forge and in runs. Every skin keeps its look on it: a suit in its colors with glowing lines, its own helmet, hair, horns, ears, hat, cape, wings or tail, and the weapon in the hand."],
   ["LIGHT AND LINE", "Heroes are now drawn like an anime game: a dark ink outline around every part and a rim of cool light along their edges. On the home screen and in the Hero Forge your hero stands in a small studio: a glossy floor, a backlight in their color and a glow on everything that shines."],
   ["REAL 3D MODELS", "The 3D view now uses real, artist-made models with recorded animations: brutes, enforcers, wardens and snipers are robots that walk, run, punch and fall, each in its own colors, and the dog-family pets are a fox that looks around, walks and runs with you. The moving parts on every enemy now animate in runs too."],
   ["FACES AND PETS", "The anime-style heroes now have real portraits, each with its own face, eyes, hairstyle and outfit, and a face in 3D too, and names that nod to the legends behind them. Every pet was reworked: dogs wag, look around, wear a collar and sit when you stop; birds beat their wings and fan their tails, the phoenix burns, fish swim with fins, the saucer beams, and they all breathe and blink."],
