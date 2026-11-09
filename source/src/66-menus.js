@@ -3,7 +3,8 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 64
+const NEWS = [ // version 65
+  ["RECORDED SOUND", "The fight now sounds real: steel drawn and slicing on every cut, metal on hits and clashes, a heavy chop on Zandatsu, body blows when you are struck, crunching explosions, a force field on Overdrive, coins, lasers and short jingles when you win or lose."],
   ["ONI OF THE CYBER CITY", "Three more enemies are real animated monsters: the brute is a hulking green orc, the void wraith a horned purple demon, the phantom a red demon glowing ghostly cyan. They walk, run, strike and flinch when you hit them. The 3D models now load about twice as fast."],
   ["REAL SWORD ANIMATIONS", "Your hero's cuts are now recorded sword animations: a chop, a diagonal slice, a horizontal slice and a stab, one per dash, and dual-blade versions for twin weapons. The swordsman bosses fight with them too."],
   ["PORTRAITS FROM THE REAL MODEL", "Every hero portrait in the shop, the Arsenal, crate rewards and your profile is now a render of the very body you play with: the armor, the gear, the hair and the face, in the studio light of the Hero Forge."],

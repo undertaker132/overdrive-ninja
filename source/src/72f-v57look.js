@@ -19,7 +19,7 @@ const Look = {
     mat.customProgramCacheKey = () => 'rim57' + (prev ? 'p' : ''); mat.needsUpdate = true; },
   /* ink + rim on a hero model, once */
   dress(g) {
-    if (!g || g.look57 || CALM) return; g.look57 = 1; const ink = this.inkMat(), add = [];
+    if (!g || g.look57 || CALM || (typeof Q !== 'undefined' && Q.lvl === 0)) return; g.look57 = 1; // (the lowest quality tier draws no outlines) const ink = this.inkMat(), add = [];
     g.traverse(o => { if (!o.isMesh || o.isSkinnedMesh || !o.geometry || o.userData.ink) return; const m = o.material; if (!m || m.transparent || m.blending === THREE.AdditiveBlending || m.isMeshBasicMaterial && m.color && m.color.getHex() > 0x888888) return;
       this.rim(m); const p = o.geometry.parameters || {}; if (o === g.pool || (p.radius && p.radius > 20)) return; add.push(o); });
     for (const o of add) { const l = new THREE.Mesh(o.geometry, ink); l.userData.ink = 1; l.castShadow = false; l.receiveShadow = false; o.add(l); }
@@ -40,7 +40,7 @@ const Look = {
       this.scene.background = new T.Color(0x060815); this.rn.setClearColor(0x060815, 1);
       try { const C = THREE, comp = new C.EffectComposer(this.rn); comp.addPass(new C.RenderPass(this.scene, this.cam)); const bl = new C.UnrealBloomPass(new C.Vector2(256, 256), .45, .35, .88); comp.addPass(bl); comp.addPass(new C.OutputPass()); this.comp = comp; this.bloom = bl;
         const r0 = this.rn.render.bind(this.rn), sz0 = this.rn.setSize.bind(this.rn); let inner = false;
-        this.rn.render = (s, c) => { if (inner || !this.comp || s !== this.scene) return r0(s, c); inner = true; try { this.comp.render(); } finally { inner = false; } };
+        this.rn.render = (s, c) => { if (inner || !this.comp || s !== this.scene || (typeof Q !== 'undefined' && Q.lvl === 0)) return r0(s, c); inner = true; try { this.comp.render(); } finally { inner = false; } };
         this.rn.setSize = (w, h, u) => { sz0(w, h, u); try { this.comp.setSize(w, h); this.bloom.resolution.set(w, h); } catch (e) { errLog(e); } };
         const r = this.cv.getBoundingClientRect(); this.W = 0; void r; } catch (e) { errLog(e); this.comp = null; }
     }

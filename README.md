@@ -131,4 +131,5 @@ The 3D view uses [three.js](https://threejs.org) r160 (MIT License, Copyright 20
 - Hero bodies: "X Bot" and "Soldier" from Mixamo (Adobe), free to use in games.
 - Sword animations: "KayKit Character Animations" by Kay Lousberg, CC0.
 - Monsters (orc, demons): Quaternius "Ultimate Monsters", CC0.
+- Sound effects: Kenney audio packs (Impact Sounds, RPG Audio, Sci-Fi Sounds, Digital Audio, Music Jingles), CC0.
 - three.js r160 and its GLTFLoader / SkeletonUtils (MIT License).
