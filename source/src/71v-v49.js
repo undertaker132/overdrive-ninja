@@ -114,7 +114,7 @@ const Mini = {
     this.raf = requestAnimationFrame(f); },
   frame(rd) {
     this.build(); const r = this.cv.getBoundingClientRect(), W = Math.max(2, Math.round(r.width)), H = Math.max(2, Math.round(r.height));
-    if (this.W !== W || this.H !== H || this.camH !== this.host) { this.W = W; this.H = H; this.camH = this.host; const fz = this.host === 'forge'; this.cam.position.set(0, fz ? 1.1 : 1.0, fz ? 6.4 : 4.4); this.cam.lookAt(0, fz ? .78 : .82, 0); this.rn.setSize(W, H, false); this.cam.aspect = W / H; this.cam.updateProjectionMatrix(); }
+    if (this.W !== W || this.H !== H || this.camH !== this.host) { this.W = W; this.H = H; this.camH = this.host; const fz = this.host === 'forge'; this.cam.position.set(0, fz ? 1.05 : 1.0, fz ? 5.1 : 4.4); this.cam.lookAt(0, fz ? .8 : .82, 0); this.rn.setSize(W, H, false); this.cam.aspect = W / H; this.cam.updateProjectionMatrix(); }
     const t = this.t, sl = this.slashT > 0; this.slashT = Math.max(0, this.slashT - rd); const flo = (t % 6) > 5.2;
     const face = Math.PI / 2 + Math.sin(t * .45) * .7 + (sl ? Math.sin((.5 - this.slashT) * 12) * .3 : 0);
     const blade = sl ? face - 1.2 + (.5 - this.slashT) / .5 * 3.4 : flo ? face + 1.8 + ((t % 6) - 5.2) / .8 * TAU : face + 1.8 + Math.sin(t * 2) * .15;
