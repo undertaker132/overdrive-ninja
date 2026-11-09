@@ -26,6 +26,7 @@
     "productName": "Overdrive Cyber Slash",
     "files": [
       "main.js",
+      "preload.js",
       "web/**/*"
     ],
     "directories": {

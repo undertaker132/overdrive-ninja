@@ -20,7 +20,8 @@ const Models = {
   ok(id) { return !!this.got[id]; },
   load(id) {
     if (this.got[id] || this.busy[id] || this.failed[id] || typeof THREE_EX === 'undefined') return;
-    if (location.protocol === 'file:') { this.failed[id] = 1; return; } // (opened from disk, or the desktop app: a browser cannot fetch files there, the built-in models stay)
+    const desk = location.protocol === 'file:' && typeof window !== 'undefined' && window.odDesktop && typeof window.odDesktop.model === 'function'; // (the desktop app reads the files for the page)
+    if (location.protocol === 'file:' && !desk) { this.failed[id] = 1; return; } // (opened from disk, or the desktop app: a browser cannot fetch files there, the built-in models stay)
     this.busy[id] = 1;
     const done = gl => { this.busy[id] = 0;
         gl.scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; if (o.geometry) o.geometry.userData.shared = true; } });
@@ -29,6 +30,7 @@ const Models = {
       }, fail = () => { this.busy[id] = 0; this.failed[id] = 1; }; // (no file next to the page: the built-in models stay)
     const L = new THREE_EX.GLTFLoader(), viaJson = () => fetch(this.src[id].replace(/\.glb$/, '.json')).then(r => r.ok ? r.json() : Promise.reject(r.status)) // (where .glb files are not served: the same model as base64 in JSON)
       .then(j => { const b = atob(j.b64), u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); L.parse(u.buffer, '', done, fail); }).catch(fail);
+    if (desk) { window.odDesktop.model(this.src[id].split('/').pop()).then(u => { const b = u instanceof ArrayBuffer ? u : u.buffer.slice(u.byteOffset, u.byteOffset + u.byteLength); L.parse(b, '', done, fail); }, fail); return; }
     try { L.load(this.src[id], done, undefined, viaJson); } catch (e) { fail(); }
   },
   /* one animated copy: its own skeleton, materials in the given colors, a mixer with every clip */
