@@ -3,7 +3,8 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 60
+const NEWS = [ // version 61
+  ["THE SWORD COMBO", "Your hero now fights with real moves: every dash is the next cut of a three-cut combo (an overhead chop, a wide sweep, a rising cut), you flinch when you lose a shield, and you raise the blade when a stage is cleared. Tap your hero on the home screen or in the Hero Forge to see the combo."],
   ["BOSSES IN THE FLESH", "The swordsman bosses and the armored giants now stand on real bodies too, with recorded motion, in their own colors and with their own weapons. Your hero swings the sword overhead on every dash, and the desktop app now shows the real 3D models as well."],
   ["A BODY FOR EVERY HERO", "The armored and heavy heroes (knights, samurai lords, war frames, titans, oni) now wear a realistic armored soldier's body, and the agile ones a smooth athlete's body. Heads are fitted to the real head size: the anime-style heroes get a real face with eyes and full spiky hair, the ninjas a fitted hood, mask and visor, and horns, ears and hats sit where they belong."],
   ["A REAL BODY", "Your hero is now a real human body with real proportions and recorded motion for standing, walking and running, on the home screen, in the Hero Forge and in runs. Every skin keeps its look on it: a suit in its colors with glowing lines, its own helmet, hair, horns, ears, hat, cape, wings or tail, and the weapon in the hand."],
