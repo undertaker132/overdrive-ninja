@@ -3,7 +3,8 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 50
+const NEWS = [ // version 51
+  ["LEGENDARY PERKS", "An upgrade screen sometimes holds a gold LEGENDARY card that changes the whole run: STORMCALLER, REAPER, OVERCLOCK, GLASS CANNON or ECHO EDGE. One per run, so choose well."],
   ["CRATES LIKE A MOVIE", "Crate openings now have a real camera: cinema bars, a slow push-in, slow motion and a punch-in on every cut, focus lines, light rays in the rarity's color and film grain. The crate lands in a cloud of dust, pulses with every rarity step and opens with a beam of light."],
   ["A HERO THAT IS ALIVE", "Stand still and your 3D hero breathes, shifts its weight, looks around and lowers its blade, and every few seconds it twirls the blade, stretches, takes a battle stance or lays the blade back. On the home screen and in the Hero Forge it also runs a short kata."],
   ["EXECUTIONS", "A wounded elite, mini-boss or champion below 30% health is marked with a red diamond: dash through it to EXECUTE it at once. It refills your dashes, fills Overdrive and pays a big bonus."],

@@ -26,12 +26,12 @@ ACHS.push({ id: 'exec1', name: 'NO MERCY', d: 'Execute a wounded elite', r: 100 
       e.hid = P.seq; const a = Math.atan2(P.vy, P.vx) || P.ang; e.exec = 0; e.bub = 0; damageEnemy(e, e.hp + 1e6, a, 0);
       addOD(20); P.ch = P.maxCh; P.inv = Math.max(P.inv, .5); G.score += Math.round(800 * G.diff.score * G.scoreMul); G.hs = Math.max(G.hs, .14); G.execN = (G.execN | 0) + 1;
       shake(.6); flash(.35, '#ff2a4a'); FX.call(lt('EXECUTION'), '#ff2a4a', 1.4, 30); FX.ring(e.x, e.y, 150, '#ff2a4a', 6); FX.ring(e.x, e.y, 80, '#ffffff', 4); FX.spark(e.x, e.y, '#ffffff', 22);
-      Aud.sfx('zan'); vibe('od');
+      Aud.sfx('zan'); vibe('od'); if (typeof Leg !== 'undefined') Leg.onExec(e);
       if (!REPLAY.on) { const d = Store.data; d.execT = (d.execT | 0) + 1; ach('exec1'); if (d.execT >= 25) ach('exec25'); }
       return;
     }
     he0(e);
-    if (simV(49) && e && e.alive && !e.exec && (e.elite || e.mb) && e.type !== ET.COURIER && e.type !== ET.TREASURE && e.mhp > 1.5 && e.hp > 0 && e.hp <= e.mhp * .3) {
+    if (simV(49) && e && e.alive && !e.exec && (e.elite || e.mb) && e.type !== ET.COURIER && e.type !== ET.TREASURE && e.mhp > 1.5 && e.hp > 0 && e.hp <= e.mhp * (typeof Leg !== 'undefined' ? Leg.execT() : .3)) {
       e.exec = 1; FX.text(e.x, e.y - e.r - 18, lt('EXECUTE!'), '#ff2a4a', 15, true); Aud.sfx('lock');
       hint('exec', lt('A wounded elite can be EXECUTED: dash through it to finish it at once.'));
     }
@@ -142,7 +142,7 @@ const Mini = {
         const ks = Object.keys(P.perks || {}).filter(k => P.perks[k] > 0); if (!ks.length && !G.hero) return;
         const b = el('div', 'ps-build'); b.id = 'psBuild'; b.appendChild(el('div', 'eyebrow', lt('YOUR BUILD')));
         if (G.hero) b.appendChild(el('span', 'chip gold', lt(Hero.cls().n) + ' · ' + ltf('LV {0}', Hero.lvl())));
-        for (const k of ks) { const pk = PERKS.find(q => q.id === k) || (typeof SYNERGIES !== 'undefined' && SYNERGIES.find(q => q.id === k)) || RELIC_BY_ID[k], c = el('span', 'chip' + (PERKS.some(q => q.id === k) ? '' : ' syn'), (pk ? lt(pk.name) : k) + (P.perks[k] > 1 ? ' ×' + P.perks[k] : '')); if (pk && pk.desc) c.title = lt(pk.desc); b.appendChild(c); }
+        for (const k of ks) { const pk = PERKS.find(q => q.id === k) || (typeof SYNERGIES !== 'undefined' && SYNERGIES.find(q => q.id === k)) || RELIC_BY_ID[k] || (typeof LEG_BY !== 'undefined' && LEG_BY[k]), c = el('span', 'chip' + (PERKS.some(q => q.id === k) ? '' : ' syn'), (pk ? lt(pk.name) : k) + (P.perks[k] > 1 ? ' ×' + P.perks[k] : '')); if (pk && pk.desc) c.title = lt(pk.desc); b.appendChild(c); }
         const pre = lt('PERKS') + ': '; for (const d of box.querySelectorAll('.mute')) if (d.textContent.indexOf(pre) === 0) d.remove();
         box.after(b); }, 0);
       // a neon wipe between menu screens

@@ -348,3 +348,40 @@ CRATES LIKE A MOVIE	صناديق كأنها فيلم	ЯЩИКИ КАК В КИН
 Crate openings now have a real camera: cinema bars, a slow push-in, slow motion and a punch-in on every cut, focus lines, light rays in the rarity's color and film grain. The crate lands in a cloud of dust, pulses with every rarity step and opens with a beam of light.	فتح الصناديق له الآن كاميرا حقيقية: أشرطة سينمائية، واقتراب بطيء، وحركة بطيئة وتقريب حاد مع كل ضربة، وخطوط تركيز، وأشعة ضوء بلون الندرة، وحبيبات فيلم. يهبط الصندوق في سحابة غبار، وينبض مع كل درجة ندرة، ويُفتح بشعاع من الضوء.	У открытия ящиков теперь настоящая камера: киношные полосы, медленный наезд, замедление и резкий зум на каждом ударе, линии фокуса, лучи цвета редкости и зерно плёнки. Ящик приземляется в облаке пыли, пульсирует на каждой ступени редкости и открывается лучом света.
 A HERO THAT IS ALIVE	بطل حيّ	ЖИВОЙ ГЕРОЙ
 Stand still and your 3D hero breathes, shifts its weight, looks around and lowers its blade, and every few seconds it twirls the blade, stretches, takes a battle stance or lays the blade back. On the home screen and in the Hero Forge it also runs a short kata.	قف ساكنًا وسيتنفس بطلك ثلاثي الأبعاد، وينقل وزنه، وينظر حوله ويخفض نصله، وكل بضع ثوانٍ يدير النصل أو يتمطى أو يتخذ وضعية قتال أو يُرجع النصل للخلف. في الشاشة الرئيسية وفي مصهر الأبطال يؤدي أيضًا كاتا قصيرة.	Стой на месте — и твой 3D-герой дышит, переносит вес, оглядывается и опускает клинок, а каждые несколько секунд крутит клинок, потягивается, встаёт в боевую стойку или отводит клинок назад. На главном экране и в Кузнице героя он ещё и показывает короткое ката.
+LEGENDARY PERKS	مزايا أسطورية	ЛЕГЕНДАРНЫЕ ПЕРКИ
+An upgrade screen sometimes holds a gold LEGENDARY card that changes the whole run: STORMCALLER, REAPER, OVERCLOCK, GLASS CANNON or ECHO EDGE. One per run, so choose well.	تعرض شاشة الترقية أحيانًا بطاقة أسطورية ذهبية تغيّر الجولة كلها: مستدعي العاصفة، الحاصد، كسر السرعة، المدفع الزجاجي أو نصل الصدى. واحدة لكل جولة، فاختر بحكمة.	Иногда на экране улучшений появляется золотая ЛЕГЕНДАРНАЯ карта, меняющая весь забег: ПОВЕЛИТЕЛЬ БУРИ, ЖНЕЦ, РАЗГОН, СТЕКЛЯННАЯ ПУШКА или КЛИНОК-ЭХО. Одна за забег — выбирай с умом.
+STORMCALLER	مستدعي العاصفة	ПОВЕЛИТЕЛЬ БУРИ
+Every kill calls lightning onto the nearest enemy	كل قتل يستدعي برقًا على أقرب عدو	Каждое убийство обрушивает молнию на ближайшего врага
+REAPER	الحاصد	ЖНЕЦ
+Execute elites below 50% health; every execution blasts the weak enemies around it	أعدم النخبة تحت 50% من الصحة، وكل إعدام يفجّر الأعداء الضعفاء حوله	Казни элиту ниже 50% здоровья; каждая казнь взрывает слабых врагов вокруг
+OVERCLOCK	كسر السرعة	РАЗГОН
+Overdrive lasts 80% longer, and kills during it refill a dash charge	يدوم الأوفردرايف أطول بنسبة 80%، والقتل خلاله يعيد شحنة اندفاع	Овердрайв длится на 80% дольше, а убийства во время него восполняют заряд рывка
+GLASS CANNON	المدفع الزجاجي	СТЕКЛЯННАЯ ПУШКА
++120% damage, but only 1 shield for the rest of the run	‎+120% ضرر، لكن درع واحد فقط لبقية الجولة	+120% урона, но лишь 1 щит до конца забега
+ECHO EDGE	نصل الصدى	КЛИНОК-ЭХО
+Every dash hit strikes twice	كل إصابة اندفاع تضرب مرتين	Каждый удар рывком бьёт дважды
+Sign-in failed:	فشل تسجيل الدخول:	Вход не удался:
+ACCOUNT	الحساب	АККАУНТ
+YOUR PROGRESS IS SAFE	تقدّمك في أمان	ТВОЙ ПРОГРЕСС В БЕЗОПАСНОСТИ
+CONNECTING…	جارٍ الاتصال…	ПОДКЛЮЧЕНИЕ…
+PLAYER NAME	اسم اللاعب	ИМЯ ИГРОКА
+SIGN OUT	تسجيل الخروج	ВЫЙТИ
+Signed out. This device keeps a local copy.	تم تسجيل الخروج. يحتفظ هذا الجهاز بنسخة محلية.	Ты вышел. На этом устройстве осталась локальная копия.
+DELETE MY ACCOUNT	احذف حسابي	УДАЛИТЬ МОЙ АККАУНТ
+TAP AGAIN TO DELETE FOREVER	اضغط مجددًا للحذف نهائيًا	НАЖМИ ЕЩЁ РАЗ, ЧТОБЫ УДАЛИТЬ НАВСЕГДА
+Your account and cloud save were deleted.	تم حذف حسابك وحفظك السحابي.	Аккаунт и облачное сохранение удалены.
+Could not delete right now. Try again later.	تعذّر الحذف الآن. حاول لاحقًا.	Сейчас удалить не получилось. Попробуй позже.
+SAVE YOUR PROGRESS	احفظ تقدّمك	СОХРАНИ ПРОГРЕСС
+Sign in and your progress is kept in the cloud: play on any device, and nothing is lost if the browser is cleared. Your progress so far comes with you.	سجّل الدخول وسيُحفظ تقدّمك في السحابة: العب على أي جهاز، ولن يضيع شيء إذا مُسح المتصفح. تقدّمك الحالي ينتقل معك.	Войди — и прогресс хранится в облаке: играй на любом устройстве, ничего не пропадёт при очистке браузера. Текущий прогресс перейдёт с тобой.
+CONTINUE WITH GOOGLE	المتابعة باستخدام Google	ПРОДОЛЖИТЬ С GOOGLE
+OR WITH EMAIL	أو بالبريد الإلكتروني	ИЛИ ПО ПОЧТЕ
+SEND ME A SIGN-IN LINK	أرسل لي رابط الدخول	ПРИШЛИТЕ ССЫЛКУ ДЛЯ ВХОДА
+Type a valid email address.	اكتب عنوان بريد صالحًا.	Введи правильный адрес почты.
+Sending…	جارٍ الإرسال…	Отправка…
+Check your email: tap the link in it on this device, or type the code from it here.	تحقق من بريدك: اضغط الرابط على هذا الجهاز، أو اكتب الرمز هنا.	Проверь почту: нажми ссылку на этом устройстве или введи код из письма здесь.
+CODE	الرمز	КОД
+SIGN IN	تسجيل الدخول	ВОЙТИ
+That code did not work. Check it, or ask for a new one.	لم يعمل هذا الرمز. تحقق منه أو اطلب رمزًا جديدًا.	Код не подошёл. Проверь его или запроси новый.
+Could not send right now. Try again in a minute.	تعذّر الإرسال الآن. حاول بعد دقيقة.	Сейчас отправить не получилось. Попробуй через минуту.
+Signed in as {0}. Your progress is saved in the cloud.	تم الدخول باسم {0}. تقدّمك محفوظ في السحابة.	Ты вошёл как {0}. Прогресс сохраняется в облаке.
+SIGN IN TO SAVE IN THE CLOUD	سجّل الدخول للحفظ في السحابة	ВОЙДИ, ЧТОБЫ СОХРАНЯТЬ В ОБЛАКЕ
