@@ -18,6 +18,7 @@ const Human = {
   /* which body suits which skin: the armored and heavy ones wear the soldier (armor, helmet, gear), the agile ones the smooth body */
   HEAVY: { knight: 1, shogun: 1, chromesam: 1, sovereign: 1, mecha: 1, exo: 1, viking: 1, rider: 1, oni: 1, raijin: 1, ashura: 1 },
   base(body) { return this.HEAVY[body] && Models.ok('soldier') ? 'soldier' : 'xbot'; },
+  SW: { a1: new THREE.Vector3(0, 1, 0), k1: 1.3, a2: new THREE.Vector3(0, 0, 1), k2: 0, tw: 1 }, // (the swing: axes of the arm bones, found by eye)
   clip(r, n) { return r.acts[n] ? n : r.acts[n[0].toUpperCase() + n.slice(1)] ? n[0].toUpperCase() + n.slice(1) : n; },
   build(L, wid) {
     const T = THREE, g = new T.Group(), wrap = new T.Group(); wrap.rotation.z = Math.PI / 2; g.add(wrap);
@@ -29,7 +30,7 @@ const Human = {
     r.o.rotation.x = Math.PI / 2; Models.play(r, this.clip(r, 'idle'), .01); r.mixer.update(0); g.updateMatrixWorld(true);
     const hb = this.bone(r.o, 'Head'), fb = this.bone(r.o, 'LeftToeBase') || this.bone(r.o, 'LeftFoot'), hv = new T.Vector3(), fv = new T.Vector3(); hb.getWorldPosition(hv); fb.getWorldPosition(fv); g.worldToLocal(hv); g.worldToLocal(fv);
     const k = this.H / Math.max(1e-6, (hv.z - fv.z) * 1.12); r.o.scale.multiplyScalar(k); g.updateMatrixWorld(true); fb.getWorldPosition(fv); g.worldToLocal(fv); wrap.position.z = -fv.z + 1.2; g.updateMatrixWorld(true);
-    const B = { hips: this.bone(r.o, 'Hips'), spine: this.bone(r.o, 'Spine1'), spine2: this.bone(r.o, 'Spine2'), head: hb, top: this.bone(r.o, 'HeadTop_End'), rHand: this.bone(r.o, 'RightHand'), lHand: this.bone(r.o, 'LeftHand') };
+    const B = { hips: this.bone(r.o, 'Hips'), spine: this.bone(r.o, 'Spine1'), spine2: this.bone(r.o, 'Spine2'), head: hb, top: this.bone(r.o, 'HeadTop_End'), rArm: this.bone(r.o, 'RightArm'), rFore: this.bone(r.o, 'RightForeArm'), rHand: this.bone(r.o, 'RightHand'), lHand: this.bone(r.o, 'LeftHand') };
     // the skin's gear: built on the code hero, then moved onto the bones
     const pr = R3.hero(L.a, L.b, false); try { R3.weapon(pr, wid); R3.dress(pr, body, L.a, L.b); } catch (e) { errLog(e); }
     const map = new T.Matrix4().makeBasis(new T.Vector3(0, 0, 1), new T.Vector3(1, 0, 0), new T.Vector3(0, 1, 0)); // (code-hero axes: x forward, y side, z up  ->  bone axes: z forward, x side, y up)
@@ -88,6 +89,10 @@ const Human = {
     Models.play(r, this.clip(r, dash || sp > 260 ? 'run' : sp > 30 ? 'walk' : 'idle'), .22); r.mixer.update(Math.min(.05, rd || 0) * (dash ? 1.6 : 1));
     const B = h.B; if (g.headK && B.head) B.head.scale.setScalar(g.headK);
     if (dash && B.spine) B.spine.rotation.x += .45;
+    // the cut: on a dash (or a tap in the Hero Forge) the sword arm swings across, on top of the recorded motion
+    g.sw = dash ? Math.min(1, (g.sw || 0) + (rd || 0) * 6) : Math.max(0, (g.sw || 0) - (rd || 0) * 3);
+    if (g.sw > 0 && B.rArm) { const e = Math.sin(g.sw * Math.PI * .5), ax = this.SW;
+      B.rArm.rotateOnAxis(ax.a1, ax.k1 * e); if (B.rFore) B.rFore.rotateOnAxis(ax.a2, ax.k2 * e); if (B.spine2) B.spine2.rotateY(.45 * e * ax.tw); }
     try { Skin3D.anim(h.dum, o, rd, t); } catch (e) { errLog(e); }
     if (g.spin) g.spin.rotation.z = t * 14;
     if (g.pool) g.pool.material.opacity = (dash ? .55 : .38) + Math.sin(t * 4) * .04;
@@ -119,4 +124,20 @@ const Human = {
   };
   const mt = Mini.mount.bind(Mini); Mini.mount = function () { const r = mt.apply(this, arguments); if (r) { Models.load('xbot'); Models.load('soldier'); } return r; };
   Pipe.on('post', 'models58', () => { if (R3.ok && W3D.live) { if (!Models.got.xbot) Models.load('xbot'); if (!Models.got.soldier && Human.HEAVY[(P.skin && P.skin.body) || 'ninja']) Models.load('soldier'); } if (Models.got.xbot && Mini.g && !Mini.g.human && Mini.raf) Mini.sig = ''; }, 99);
+}
+
+{ // the human-shaped bosses on the real bodies: the ronin swordsmen and the armored giants
+  const BODY = { kage: ['shinobi2', 'katana', '#14141e', 1], renull: ['ninja', 'katana', '#ff0844', 1], izanami: ['lich', 'katana', '#14141e', 1],
+    warden: ['knight', 'hammer', '#c8d4ff', 1.18], shogun: ['shogun', 'nodachi', '#ffd23f', 1.18], benkei: ['oni', 'spear', '#ff9a3d', 1.18], prime: ['mecha', 'cleaver', '#ff2a4a', 1.18], genesis: ['sovereign', 'scythe', '#ffd700', 1.3] };
+  const bm9 = R3.bossModel.bind(R3);
+  R3.bossModel = function (b) {
+    const D = BODY[b.id]; if (!D || Array.isArray(b.seg) || !Models.ok('xbot') || CALM) return bm9(b);
+    if (Human.HEAVY[D[0]] && !Models.ok('soldier')) Models.load('soldier');
+    try { const T = THREE, g = new T.Group(), col = (BOSS_INFO[b.id] && BOSS_INFO[b.id].col) || '#ff0844', h = Human.build({ body: D[0], a: col, b: D[2] }, D[1]);
+      if (h.pool) h.pool.visible = false; const k = D[3] / 9; h.scale.setScalar(k); h.s0 = k; g.add(h); g.ronin = h; g.kind = 'ronin';
+      let bm = null; h.traverse(o => { if (!bm && o.isSkinnedMesh && o.material && o.material.emissive) { bm = o.material.clone(); } }); // (the boss's own copy, so its hit flash does not light up the hero)
+      if (bm) { const src = []; h.traverse(o => { if (o.isSkinnedMesh) src.push(o); }); for (const o of src) if (o.material && o.material.emissive && !/Joints/i.test(o.material.name || '')) o.material = bm; g.bodyMat = bm; } else g.bodyMat = h.plate;
+      g.add(this.pool(col, 4.2, .32)); return g; } catch (e) { errLog(e); return bm9(b); }
+  };
+  Pipe.on('post', 'models59', () => { if (Boss.cur && BODY[Boss.cur.id] && R3.ok && W3D.live && !Models.got.xbot) Models.load('xbot'); }, 99);
 }

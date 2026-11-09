@@ -1,6 +1,7 @@
 // The desktop app: one window that runs the game file, full screen with F11.
-const { app, BrowserWindow, shell, Menu } = require('electron');
+const { app, BrowserWindow, shell, Menu, ipcMain } = require('electron');
 const path = require('path');
+const fs = require('fs');
 
 app.commandLine.appendSwitch('ignore-gpu-blocklist'); // the 3D view wants the GPU even on older drivers
 
@@ -14,7 +15,7 @@ function createWindow() {
     title: 'Overdrive: Cyber Slash',
     icon: path.join(__dirname, 'web', 'icons', 'icon-512.png'),
     autoHideMenuBar: true,
-    webPreferences: { contextIsolation: true, sandbox: true, backgroundThrottling: false }
+    webPreferences: { contextIsolation: true, sandbox: true, backgroundThrottling: false, preload: path.join(__dirname, 'preload.js') }
   });
   win.loadFile(path.join(__dirname, 'web', 'index.html'));
   // links (feedback on GitHub, sharing) open in the player's browser, not inside the game
@@ -24,6 +25,9 @@ function createWindow() {
     if (input.type === 'keyDown' && input.key === 'F11') { win.setFullScreen(!win.isFullScreen()); e.preventDefault(); }
   });
 }
+
+// the real 3D models, read for the page (only plain file names inside web/models)
+ipcMain.handle('od-model', (e, name) => { if (!/^[a-z0-9_-]+\.glb$/i.test(name)) throw new Error('bad model name'); return fs.readFileSync(path.join(__dirname, 'web', 'models', name)); });
 
 Menu.setApplicationMenu(null);
 app.whenReady().then(() => {
