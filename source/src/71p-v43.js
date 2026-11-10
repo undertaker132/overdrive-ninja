@@ -137,7 +137,7 @@ const CrateFilm = {
     skip.onclick = e => { e.stopPropagation(); finish(); }; ov.addEventListener('click', () => { if (S.t > .5) finish(); });
     const once = (key, f) => { if (!S.sfx[key]) { S.sfx[key] = 1; try { f(); } catch (e) { } } };
     const step = now => {
-      if (end) return; const dt = Math.min(.05, (now - last) / 1000); last = now; S.t += dt;
+      if (end) return; const dt = Math.min(.05, Math.max(0, (now - last) / 1000)); last = now; S.t += dt;
       g.setTransform(dpr, 0, 0, dpr, 0, 0); g.fillStyle = '#04050c'; g.fillRect(0, 0, W, H);
       const sh = S.shake > 0 ? S.shake * 8 * k : 0; S.shake = Math.max(0, S.shake - dt * 2.5);
       g.setTransform(dpr * k, 0, 0, dpr * k, dpr * (ox + (Math.random() - .5) * sh), dpr * (oy + (Math.random() - .5) * sh));

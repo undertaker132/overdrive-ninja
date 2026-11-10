@@ -59,7 +59,7 @@ const CineFX = {
     skip.onclick = e => { e.stopPropagation(); finish(); }; ov.addEventListener('click', () => { if (S.t > .5) finish(); });
     const once = (key, f) => { if (!S.sfx[key]) { S.sfx[key] = 1; try { f(); } catch (e) { } } };
     const step = now => {
-      if (end) return; let dt = Math.min(.05, (now - last) / 1000); last = now; if (!calm) dt = CineFX.time(S, dt); S.t += dt;
+      if (end) return; let dt = Math.min(.05, Math.max(0, (now - last) / 1000)); last = now; if (!calm) dt = CineFX.time(S, dt); S.t += dt;
       g.setTransform(dpr, 0, 0, dpr, 0, 0); g.fillStyle = '#04050c'; g.fillRect(0, 0, W, H);
       const sh = S.shake > 0 ? S.shake * 8 * k : 0; S.shake = Math.max(0, S.shake - dt * 2.5);
       const cam = calm ? { z: 1, rot: 0 } : CineFX.cam(S, dt);
@@ -81,7 +81,7 @@ const CineFX = {
     const T = CRATE_T[res.t || 'neon'], steps = RAR.slice(0, res.r + 1).map(x => x.c), dur = 1.5 + res.r * .34, calm = !!CALM, label = lt(T.n);
     const S = { t: 0, flash: 0, rings: [], dust: [], pulse: 0 }; let last = performance.now(), end = false, tick = -1;
     const finish = () => { if (end) return; end = true; ov.remove(); done(); }; ov.addEventListener('click', () => { if (S.t > .3) finish(); });
-    const step = now => { if (end) return; const dt = Math.min(.05, (now - last) / 1000); last = now; const t = S.t += dt;
+    const step = now => { if (end) return; const dt = Math.min(.05, Math.max(0, (now - last) / 1000)); last = now; const t = S.t += dt;
       const u = t / dur, land = Math.min(1, t / .35), y = (1 - (1 - Math.pow(1 - land, 3))) * -H * .6 * dpr, sh = t > .35 ? Math.pow(Math.min(1, (t - .35) / (dur - .5)), 2) * 18 * dpr : 0;
       const ci = Math.min(steps.length - 1, Math.floor(Math.max(0, (t - .45) / Math.max(.2, (dur - .7) / steps.length)))), col = steps[Math.max(0, ci)], crack = t > .45 ? Math.min(1, (t - .45) / (dur - .7)) : 0;
       const bx = cv.width / 2, by = cv.height / 2;

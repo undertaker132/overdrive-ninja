@@ -3,7 +3,9 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 72
+const NEWS = [ // version 73
+  ["ANIMATION FIXES", "The blade now sits in your hero's fist, pointing forward, at a real sword's length (it stuck out sideways from the hip, twice too long). The scarf hangs down the back and streams out behind on a dash. Enemies walk and run instead of gliding, the slime and the yeti lost their giant bubble, executions show the real damage, and a tap in the Hero Forge shows the whole cut."],
+  ["THE SEALS KEEP THEIR SECRET", "Crate films sometimes flashed the crate's true color for a moment before the first strike, giving the ending away. They now always start on the plain steel crate."],
   ["EVERY STAGE ITS OWN AIR", "In 3D the stages now feel like their places: snow drifts over winter and the summit and turns the roof white, cherry petals fall at the shrines on warm wood, embers rise around the core and the ruins, and motes of light float through the data void and the stars."],
   ["THE WALLET", "Tap your credits at the top of the screen to see everything you hold: credits, crates, cores, prisms, shards and your season tier, with where each comes from and what it is for."],
   ["CHAPTER 23: THE ONI KING", "A new chapter of four stages through the oni's city, ending with a new giant boss: OTAKEMARU.EXE, the oni king of the old legends, as tall as a building. Get out of the red circles when his fists fall, cut the fists while they are down, and bring the king to his knees."],

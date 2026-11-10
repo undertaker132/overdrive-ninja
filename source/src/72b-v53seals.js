@@ -32,7 +32,7 @@ const Seals = {
     const once = (key, f) => { if (!S.sfx[key]) { S.sfx[key] = 1; try { f(); } catch (e) { } } };
     const CF = CrateFilm, sfx = n => { try { Aud.sfx(n); } catch (e) { } };
     const step = now => {
-      if (end) return; let dt = Math.min(.05, (now - last) / 1000); last = now; if (!calm) dt = CineFX.time(S, dt); S.t += dt; const t = S.t;
+      if (end) return; let dt = Math.min(.05, Math.max(0, (now - last) / 1000)); last = now; if (!calm) dt = CineFX.time(S, dt); S.t += Math.max(0, dt); /* (a frame stamped before the film began gave a negative step: the film opened on its last scene, the reveal in the rarity's color) */ const t = S.t;
       let st = P.L[P.L.length - 1]; for (const s of P.L) if (t >= s.t0 && t < s.t0 + s.d) { st = s; break; } const u = clamp((t - st.t0) / st.d, 0, 1);
       g.setTransform(dpr, 0, 0, dpr, 0, 0); g.fillStyle = '#04050c'; g.fillRect(0, 0, W, H);
       const sh = S.shake > 0 ? S.shake * 9 * k : 0; S.shake = Math.max(0, S.shake - dt * 2.4); const cam = calm ? { z: 1, rot: 0 } : CineFX.cam(S, dt);
