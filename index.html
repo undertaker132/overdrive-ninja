@@ -32847,6 +32847,11 @@ const SeasonArt = {
 @keyframes se77 { to { box-shadow: 0 0 14px var(--sc); } } @media (prefers-reduced-motion: reduce) { .list.se77 .se77next .se77n { animation: none; } }`;
   document.head.appendChild(css);
 }
+/* the results screen films the hero like a showcase: the camera drifts slowly around it */
+{
+  const fr7 = Mini.frame.bind(Mini);
+  Mini.frame = function (rd) { if (this.floor57) { this.floor57.material.roughness = this.host === 'result' ? .55 : .28; this.floor57.scale.setScalar(this.host === 'result' ? 2.6 : 1); } if (this.host === 'result' && this.cam && !CALM) { const a = Math.sin((this.t || 0) * .35) * .38, d = 4.4; this.cam.position.set(Math.sin(a) * d, 1.05 + Math.sin((this.t || 0) * .5) * .08, Math.cos(a) * d); this.cam.lookAt(0, .85, 0); if (this.back57) { this.back57.position.set(-Math.sin(a) * 1.6, 1.0, -Math.cos(a) * 1.6); this.back57.lookAt(this.cam.position); } } return fr7(rd); }; /* (the glow behind the hero turns with the camera, so it is never seen edge-on) */
+}
 
 </script>
 </body></html>
