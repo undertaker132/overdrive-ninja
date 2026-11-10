@@ -33003,8 +33003,11 @@ const Cast = {
     K.dash = dash; K.t = dash ? 0 : K.t + dt;
     if (shot) { if (r.cur !== shot[0]) this.play(r, shot[0], .2, shot[3] === 'hold'); }
     else if (!(r.once && r.left > 0)) { // locomotion when no move is playing
-      const want = dash ? 'Running_A' : sp > 260 ? 'Running_A' : sp > 30 ? 'Walking_A' : fight ? S[0] : (o.stance ? S[0] : 'Idle');
-      if (r.cur !== want) this.play(r, want, .22); }
+      const forge = g === Mini.g && Mini.host === 'forge', want = dash ? 'Running_A' : sp > 260 ? 'Running_A' : sp > 30 ? 'Walking_A' : fight || forge || o.stance ? S[0] : 'Idle';
+      // on the home screen the hero is never a statue: every few seconds it looks around, stretches or cheers
+      K.idle = (K.idle == null ? 4 + Math.random() * 3 : K.idle) - dt;
+      if (want === 'Idle' && g === Mini.g && K.idle <= 0) { K.idle = 6 + Math.random() * 5; const pick = ['Idle_B', 'Cheer', 'Idle_B', S[0] === 'Idle_Combat' ? '1H_Melee_Attack_Stab' : S[1][0]]; this.play(r, pick[(Math.random() * pick.length) | 0], .3, true, 1); }
+      else if (r.cur !== want) this.play(r, want, .22); }
     r.mixer.update(dt * (dash && !r.once ? 1.5 : 1));
     const be = g.bladeMat && g.bladeMat.emissive; if (be && (be.r + be.g + be.b) > .05) for (const m of g.kayW) m.emissive.copy(be); // (the blade glows in the blade skin's color)
     if (g.pool) g.pool.material.opacity = (dash ? .5 : .32) + Math.sin(t * 4) * .04;
@@ -33045,7 +33048,7 @@ const Cast = {
   const ld0 = Models.load.bind(Models);
   Models.load = function (id) { if ((id === 'xbot' || id === 'soldier' || id === 'melee') && Cast.on() && !Models.failed.kk_anims) return; return ld0(id); };
   const preload = () => { if (!Cast.on()) return; const sk = skinLook(Store.data.skin) || {}; Cast.ready(sk.body || 'ninja', Store.data.weapon || 'katana'); };
-  Pipe.on('post', 'cast80', () => { try { preload(); if (R3.ok && W3D.live) Cast.ready((P.skin && P.skin.body) || 'ninja', (P.w && P.w.id) || 'katana'); if (Mini.g && !Mini.g.kay && Mini.raf) Mini.sig = ''; } catch (e) { errLog(e); } }, 99);
+  Pipe.on('post', 'cast80', () => { try { preload(); if (R3.ok && W3D.live) Cast.ready((P.skin && P.skin.body) || 'ninja', (P.w && P.w.id) || 'katana'); if (Mini.g && !Mini.g.kay && Mini.raf) { const L = Mini.look(); if (Cast.ready(L.body, L.w)) Mini.sig = ''; } /* (only once the cast is in: rebuilding every frame while it loads, or where it cannot load, would thrash) */ } catch (e) { errLog(e); } }, 99);
   const mt0 = Mini.mount.bind(Mini); Mini.mount = function () { try { preload(); } catch (e) { errLog(e); } return mt0.apply(this, arguments); };
 }
 /* ---------- portraits of the new cast: head and shoulders, framed on the head bone, a warm key light so faces keep their color ---------- */
