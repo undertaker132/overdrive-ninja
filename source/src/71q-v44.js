@@ -116,7 +116,7 @@ const CratePre = {
     const box = document.createElement('canvas'), BS = Math.round(Math.min(W, H) * .62 * dpr); box.width = box.height = BS; const bg = box.getContext('2d');
     const T = CRATE_T[res.t || 'neon'], steps = RAR.slice(0, res.r + 1).map(x => x.c), dur = 1.3 + res.r * .28; let t = 0, last = performance.now(), end = false, tick = -1;
     const finish = () => { if (end) return; end = true; ov.remove(); done(); }; ov.addEventListener('click', () => { if (t > .3) finish(); });
-    const step = now => { if (end) return; const dt = Math.min(.05, (now - last) / 1000); last = now; t += dt;
+    const step = now => { if (end) return; const dt = Math.min(.05, Math.max(0, (now - last) / 1000)); last = now; t += dt;
       const u = t / dur, land = Math.min(1, t / .35), y = (1 - (1 - Math.pow(1 - land, 3))) * -H * .6, sh = t > .35 ? Math.pow(Math.min(1, (t - .35) / (dur - .5)), 2) * 18 * dpr : 0;
       const ci = Math.min(steps.length - 1, Math.floor(Math.max(0, (t - .45) / Math.max(.2, (dur - .7) / steps.length)))), col = steps[Math.max(0, ci)], crack = t > .45 ? Math.min(1, (t - .45) / (dur - .7)) : 0;
       if (ci !== tick && t > .45) { tick = ci; try { Aud.sfx(ci >= 3 ? 'warn' : 'tick'); } catch (e) { } }
@@ -174,7 +174,7 @@ const Hero = {
       const bk = el('button', 'btn ghost', ''); bk.id = 'hfBack'; bk.onclick = () => { Aud.sfx('back'); UI.openTitle(); }; col.appendChild(bk); sc.appendChild(col); $('ov').appendChild(sc); }
     G.state = 'MENU'; UI.backFn = () => UI.openTitle(); UI.show('forge'); sc.querySelector('h2').textContent = lt('HERO FORGE'); $('hfBack').textContent = lt('BACK'); this.render(); this.loop();
   },
-  loop() { if (this.raf) return; let last = performance.now(); const f = now => { if (UI.cur !== 'forge') { this.raf = 0; return; } this.t = (this.t || 0) + Math.min(.05, (now - last) / 1000); last = now; this.drawPrev(); this.raf = requestAnimationFrame(f); }; this.raf = requestAnimationFrame(f); },
+  loop() { if (this.raf) return; let last = performance.now(); const f = now => { if (UI.cur !== 'forge') { this.raf = 0; return; } this.t = (this.t || 0) + Math.min(.05, Math.max(0, (now - last) / 1000)); last = now; this.drawPrev(); this.raf = requestAnimationFrame(f); }; this.raf = requestAnimationFrame(f); },
   drawPrev() {
     const cv = $('hfCv'); if (!cv) return; const g = cv.getContext('2d'), S = cv.width, f = this.f(), C = this.cls(), t = this.t || 0;
     g.setTransform(1, 0, 0, 1, 0, 0); const bg = g.createLinearGradient(0, 0, 0, S * .55); bg.addColorStop(0, '#0a0e26'); bg.addColorStop(1, '#05060f'); g.fillStyle = bg; g.fillRect(0, 0, S, cv.height);

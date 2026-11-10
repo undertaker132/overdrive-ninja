@@ -40,5 +40,5 @@ const Weather3D = {
   const ts0 = R3.themeSet.bind(R3);
   R3.themeSet = function (T0) { const was = this.theme; const r = ts0(T0); if (this.theme !== was || !Weather3D.applied) { Weather3D.applied = 1; try { Weather3D.set(this.theme); } catch (e) { errLog(e); } } return r; };
   let last = 0;
-  Pipe.on('pre', 'weather72', () => { const now = performance.now(), rd = last ? Math.min(.05, (now - last) / 1000) : .016; last = now; try { Weather3D.tick(rd); } catch (e) { errLog(e); } }, 60);
+  Pipe.on('pre', 'weather72', () => { const now = performance.now(), rd = last ? Math.min(.05, Math.max(0, (now - last) / 1000)) : .016; last = now; try { Weather3D.tick(rd); } catch (e) { errLog(e); } }, 60);
 }

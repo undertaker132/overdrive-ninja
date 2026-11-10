@@ -95,3 +95,5 @@ const Grip = {
   const ap7 = Moves.apply.bind(Moves);
   Moves.apply = function (g, o, rd) { const r = ap7(g, o, rd); try { const h = g && g.human, a = h && h.cutA; if (a && g === Mini.g && a.timeScale > 1.5) { a.setEffectiveTimeScale(1.05); h.cutT = (a.getClip().duration - a.time) / 1.05; } } catch (e) { errLog(e); } return r; };
 }
+/* (also in this version: the crate films and the crate landing could start on a frame stamped a moment before they began; that negative step
+   opened the seals film on its last scene, a flash and burst in the crate's true rarity color, before the seals had even been struck) */
