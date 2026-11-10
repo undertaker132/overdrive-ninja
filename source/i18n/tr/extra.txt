@@ -525,3 +525,11 @@ The old heroes cut you down anyway. So will I.	الأبطال القدامى أ�
 Watch the red circles, Ren. And cut the fists when they hit the ground!	انتبه للدوائر الحمراء يا رين. واقطع القبضتين حين تضربان الأرض!	Следи за красными кругами, Рен. И руби кулаки, когда они бьют о землю!
 The king is down. The oni are just machines again, standing still in the snow.	سقط الملك. عاد الأوني مجرد آلات، واقفة بلا حراك في الثلج.	Король повержен. Они снова просто машины, неподвижно стоящие в снегу.
 Every legend ends the same way. Someone has to finish it.	كل أسطورة تنتهي بالطريقة نفسها. على أحد أن يُنهيها.	Каждая легенда кончается одинаково. Кто-то должен её закончить.
+THE WALLET	المحفظة	КОШЕЛЁК
+Tap your credits at the top of the screen to see everything you hold: credits, crates, cores, prisms, shards and your season tier, with where each comes from and what it is for.	اضغط على رصيدك أعلى الشاشة لترى كل ما تملكه: الرصيد والصناديق والأنوية والمناشير والشظايا ومستوى الموسم، مع مصدر كل منها والغرض منه.	Нажми на кредиты вверху экрана, чтобы увидеть всё, что у тебя есть: кредиты, ящики, ядра, призмы, осколки и уровень сезона — откуда каждое берётся и для чего нужно.
+YOUR WALLET	محفظتك	ТВОЙ КОШЕЛЁК
+{0} CRATES	{0} صناديق	ЯЩИКОВ: {0}
+SEASON TIER {0} / {1}	مستوى الموسم {0} / {1}	УРОВЕНЬ СЕЗОНА {0} / {1}
+Earned in every run and stage, from bounties and achievements. Spent on weapons, heroes, upgrades and crates.	تُكسب في كل جولة ومرحلة ومن المكافآت والإنجازات. تُنفق على الأسلحة والأبطال والترقيات والصناديق.	Даются за каждый забег и этап, за награды и достижения. Тратятся на оружие, героев, улучшения и ящики.
+Earned with stage stars, the season and your journey. Open them on the CRATES screen.	تُكسب بنجوم المراحل والموسم ورحلتك. افتحها في شاشة الصناديق.	Даются за звёзды этапов, сезон и твой путь. Открывай их на экране ЯЩИКОВ.
+Every run earns season XP. Tiers pay credits and season-only rewards.	كل جولة تمنح خبرة الموسم. المستويات تمنح رصيدًا ومكافآت حصرية للموسم.	Каждый забег даёт опыт сезона. Уровни приносят кредиты и награды только этого сезона.

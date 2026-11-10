@@ -3,7 +3,8 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 70
+const NEWS = [ // version 71
+  ["THE WALLET", "Tap your credits at the top of the screen to see everything you hold: credits, crates, cores, prisms, shards and your season tier, with where each comes from and what it is for."],
   ["CHAPTER 23: THE ONI KING", "A new chapter of four stages through the oni's city, ending with a new giant boss: OTAKEMARU.EXE, the oni king of the old legends, as tall as a building. Get out of the red circles when his fists fall, cut the fists while they are down, and bring the king to his knees."],
   ["YOUR HERO OPENS THE CRATE", "In the crate film the hero who breaks the seals is now your own 3D hero, with your skin, gear and blade: it walks in, leaps and cuts with the recorded sword moves, and raises the blade when the crate bursts."],
   ["TEXT SIZE AND KEYBOARD", "A new Text size setting (Settings > Presentation) makes every menu and the words in a fight larger. Buttons show a clear ring when you move with Tab, and with the colorblind palette the element orbs carry a symbol."],

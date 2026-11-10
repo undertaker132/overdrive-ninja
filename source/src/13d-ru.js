@@ -3926,5 +3926,13 @@ Object.assign(RU, {
 "The old heroes cut you down anyway. So will I.": "Старые герои всё равно тебя сразили. И я сражу.",
 "Watch the red circles, Ren. And cut the fists when they hit the ground!": "Следи за красными кругами, Рен. И руби кулаки, когда они бьют о землю!",
 "The king is down. The oni are just machines again, standing still in the snow.": "Король повержен. Они снова просто машины, неподвижно стоящие в снегу.",
-"Every legend ends the same way. Someone has to finish it.": "Каждая легенда кончается одинаково. Кто-то должен её закончить."
+"Every legend ends the same way. Someone has to finish it.": "Каждая легенда кончается одинаково. Кто-то должен её закончить.",
+"THE WALLET": "КОШЕЛЁК",
+"Tap your credits at the top of the screen to see everything you hold: credits, crates, cores, prisms, shards and your season tier, with where each comes from and what it is for.": "Нажми на кредиты вверху экрана, чтобы увидеть всё, что у тебя есть: кредиты, ящики, ядра, призмы, осколки и уровень сезона — откуда каждое берётся и для чего нужно.",
+"YOUR WALLET": "ТВОЙ КОШЕЛЁК",
+"{0} CRATES": "ЯЩИКОВ: {0}",
+"SEASON TIER {0} / {1}": "УРОВЕНЬ СЕЗОНА {0} / {1}",
+"Earned in every run and stage, from bounties and achievements. Spent on weapons, heroes, upgrades and crates.": "Даются за каждый забег и этап, за награды и достижения. Тратятся на оружие, героев, улучшения и ящики.",
+"Earned with stage stars, the season and your journey. Open them on the CRATES screen.": "Даются за звёзды этапов, сезон и твой путь. Открывай их на экране ЯЩИКОВ.",
+"Every run earns season XP. Tiers pay credits and season-only rewards.": "Каждый забег даёт опыт сезона. Уровни приносят кредиты и награды только этого сезона."
 });

@@ -3926,5 +3926,13 @@ Object.assign(AR, {
 "The old heroes cut you down anyway. So will I.": "الأبطال القدامى أسقطوك على أي حال. وكذلك سأفعل.",
 "Watch the red circles, Ren. And cut the fists when they hit the ground!": "انتبه للدوائر الحمراء يا رين. واقطع القبضتين حين تضربان الأرض!",
 "The king is down. The oni are just machines again, standing still in the snow.": "سقط الملك. عاد الأوني مجرد آلات، واقفة بلا حراك في الثلج.",
-"Every legend ends the same way. Someone has to finish it.": "كل أسطورة تنتهي بالطريقة نفسها. على أحد أن يُنهيها."
+"Every legend ends the same way. Someone has to finish it.": "كل أسطورة تنتهي بالطريقة نفسها. على أحد أن يُنهيها.",
+"THE WALLET": "المحفظة",
+"Tap your credits at the top of the screen to see everything you hold: credits, crates, cores, prisms, shards and your season tier, with where each comes from and what it is for.": "اضغط على رصيدك أعلى الشاشة لترى كل ما تملكه: الرصيد والصناديق والأنوية والمناشير والشظايا ومستوى الموسم، مع مصدر كل منها والغرض منه.",
+"YOUR WALLET": "محفظتك",
+"{0} CRATES": "{0} صناديق",
+"SEASON TIER {0} / {1}": "مستوى الموسم {0} / {1}",
+"Earned in every run and stage, from bounties and achievements. Spent on weapons, heroes, upgrades and crates.": "تُكسب في كل جولة ومرحلة ومن المكافآت والإنجازات. تُنفق على الأسلحة والأبطال والترقيات والصناديق.",
+"Earned with stage stars, the season and your journey. Open them on the CRATES screen.": "تُكسب بنجوم المراحل والموسم ورحلتك. افتحها في شاشة الصناديق.",
+"Every run earns season XP. Tiers pay credits and season-only rewards.": "كل جولة تمنح خبرة الموسم. المستويات تمنح رصيدًا ومكافآت حصرية للموسم."
 });
