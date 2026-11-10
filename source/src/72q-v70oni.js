@@ -208,3 +208,12 @@ CHAPTERS.push({ n: 23, name: 'THE ONI KING', sub: 'The old legends wake in steel
 ACHS.push({ id: 'otakemaru', name: 'ONI SLAYER', d: 'Defeat OTAKEMARU', r: 2500 });
 SKINS.push({ id: 'oniking', name: 'ONI KING', body: 'oni', a: '#ff3b2f', b: '#1a0606', c1: '#2a2f3a', c2: '#ffb34d', cost: -1, unlock: { t: 'ach', id: 'otakemaru' }, desc: "The oni king's own armor, red iron over black. Defeat OTAKEMARU to claim it." });
 BLADE_FX.push({ id: 'kingsiron', name: "KING'S IRON", blade: '#ff3b2f', edge: '#ffb34d', trail: 'ember', kill: 'burn', deco: 'flame', cost: -1, unlock: { t: 'ach', id: 'otakemaru' }, desc: "Red-hot iron from the oni king's fists. Defeat OTAKEMARU to claim it." });
+/* ---------- the oni king in the codex, his entrance and fall, and his own boss theme (taiko war drums under a low guitar) ---------- */
+CODEX_B.otakemaru = 'The oni king of the old legends, rebuilt in iron as tall as a building. Leave the red circles when his fists fall, cut the fists while they are down, and break both to bring him to his knees.';
+BOSS_FX.otakemaru = ['rise', 'scrap'];
+TRACKS.otakemaru = mkTrack({ name: 'THE ONI KING', style: 'Boss taiko war metal', bpm: 152, root: 61.7, sc: 'pdom', prog: [0, 6, 5, 6], form: ['A', 'B', 'B', 'D', 'B'], taiko: 1,
+  dr: { A: { k: 'x.....x.x.......', t: 'X...X...X..XX...', h: 'x.x.x.x.x.x.x.x.' }, B: { k: 'x...x...x...x...', d: 'xxxxxxxxxxxxxxxx', s: '....x.......x...', t: 'X.X.X...X.X.X...' }, D: { t: 'X..X..X.X..X..X.' }, F: { d: 'xxxxxxxxxxxxxxxx', t: 'XXXXXXXXXXXXXXXX' } },
+  bass: { pat: [0, null, 0, 0, null, 0, null, 0, 0, null, 0, null, 6, null, 5, null], type: 'gtr', v: .055, len: .5 },
+  pad: { type: 'choir', oct: 2, v: .028 },
+  lead: { type: 'flute', oct: 3, v: .04, sec: 'B', n: [[0, 0, 4], [4, 1, 2], [6, 0, 2], [8, 6, 4], [12, 5, 4], [16, 4, 2], [18, 5, 2], [20, 6, 4], [24, 7, 8], [32, 7, 2], [34, 6, 2], [36, 5, 4], [40, 4, 4], [44, 1, 4], [48, 0, 16]] } });
+if (TRACK_LIST.indexOf('otakemaru') < 0) TRACK_LIST.push('otakemaru');

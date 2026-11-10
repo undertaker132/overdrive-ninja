@@ -22,4 +22,7 @@ Object.assign(HE, {
   "Red-hot iron from the oni king's fists. Defeat OTAKEMARU to claim it.": "ברזל לוהט מהאגרופים של מלך האוני. הביסו את אוטקמרו כדי לזכות בו.",
   "THE ONI KING'S SPOILS": "שלל מלך האוני",
   "Defeat OTAKEMARU to claim his armor as the ONI KING hero skin and his red-hot iron as the KING'S IRON blade. Chapters 21, 22 and 23 now open with comic pages, and the oni king has his own portrait.": "הביסו את אוטקמרו כדי לזכות בשריון שלו כסקין הגיבור מלך האוני ובברזל הלוהט שלו כלהב הברזל של המלך. פרקים 21, 22 ו־23 נפתחים עכשיו בדפי קומיקס, ולמלך האוני יש דיוקן משלו.",
+  "The oni king of the old legends, rebuilt in iron as tall as a building. Leave the red circles when his fists fall, cut the fists while they are down, and break both to bring him to his knees.": "מלך האוני מהאגדות הישנות, שנבנה מחדש מברזל וגבוה כמו בניין. צאו מהעיגולים האדומים כשהאגרופים שלו נופלים, חתכו את האגרופים כשהם על הקרקע, ושברו את שניהם כדי להוריד אותו על ברכיו.",
+  "THE ONI KING": "מלך האוני",
+  "Boss taiko war metal": "מטאל טאיקו מלחמתי של בוס",
 });
