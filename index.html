@@ -32628,7 +32628,7 @@ const BossLook = {
 const Corpse = {
   L: [], MAX: 10,
   take(k, r) {
-    const g = r.g, m = g && (g.mon || g.rob); if (!m || !m.acts || !m.acts.Death || this.L.length >= this.MAX || CALM) return false;
+    const g = r.g, m = g && (g.mon || g.rob); if (!m || !m.acts || !m.acts.Death || this.L.length >= this.MAX || CALM || (typeof Q !== 'undefined' && Q.lvl === 0)) return false; /* (not on the lowest quality tier) */
     const uid = +(String(k).slice(1).split(':')[0]); if (!(uid > 0)) return false;
     for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (e.uid === uid && e.alive) return false; } // (only the dead: an enemy that faded out for a moment is not a corpse)
     try { Models.play(m, 'Death', .08, true); } catch (e) { errLog(e); return false; }
