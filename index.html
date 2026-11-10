@@ -32663,6 +32663,18 @@ const OniFist = {
   R3.ent = function (key, mk) { if (typeof key === 'string' && key.slice(0, 11) === 'bpotakemaru' && !CALM) return en6(key, () => OniFist.build()); return en6(key, mk); };
   Pipe.on('pre', 'onifist76', () => { try { OniFist.tick(); } catch (e) { errLog(e); } }, 53);
 }
+/* after a lost run, the hero on the results screen no longer just flinches and goes back to its stand: it holds a defeated pose,
+   head down (the X Bot body's own recorded pose; the armored body, which has none, keeps the flinch). Back to normal when the screen changes. */
+{
+  const cl6 = Human.clip.bind(Human);
+  Human.clip = function (r, n) { if (r && r.pose76 && n === 'idle' && r.acts[r.pose76]) return r.pose76; return cl6(r, n); };
+  const or7 = UI.openResult.bind(UI);
+  UI.openResult = function (o) { const res = or7(o);
+    try { const won = G.state === 'CLEAR' || !!(o && o.stars && o.stars.some(Boolean)); setTimeout(() => { try { const h = Mini.g && Mini.g.human; if (h && UI.cur === 'result') h.r.pose76 = won ? null : 'sad_pose'; } catch (e) { errLog(e); } }, 700); } catch (e) { errLog(e); }
+    return res; };
+  const mt7 = Mini.mount.bind(Mini);
+  Mini.mount = function (host) { try { const h = Mini.g && Mini.g.human; if (h && host !== 'result') h.r.pose76 = null; } catch (e) { errLog(e); } return mt7.apply(this, arguments); };
+}
 
 </script>
 </body></html>
