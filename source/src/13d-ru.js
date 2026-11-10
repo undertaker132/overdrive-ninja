@@ -3886,5 +3886,7 @@ Object.assign(RU, {
 "TEXT SIZE AND KEYBOARD": "РАЗМЕР ТЕКСТА И КЛАВИАТУРА",
 "A new Text size setting (Settings > Presentation) makes every menu and the words in a fight larger. Buttons show a clear ring when you move with Tab, and with the colorblind palette the element orbs carry a symbol.": "Новая настройка размера текста (Настройки > Отображение) увеличивает все меню и надписи в бою. Кнопки показывают чёткую рамку при переходе клавишей Tab, а с палитрой для дальтоников стихийные сферы несут символ.",
 "READABILITY": "ЧИТАЕМОСТЬ",
-"LARGEST": "САМЫЙ КРУПНЫЙ"
+"LARGEST": "САМЫЙ КРУПНЫЙ",
+"YOUR HERO OPENS THE CRATE": "ТВОЙ ГЕРОЙ ОТКРЫВАЕТ ЯЩИК",
+"In the crate film the hero who breaks the seals is now your own 3D hero, with your skin, gear and blade: it walks in, leaps and cuts with the recorded sword moves, and raises the blade when the crate bursts.": "В ролике ящика печати теперь ломает твой 3D-герой — с твоим обликом, снаряжением и клинком: он входит, прыгает и рубит записанными движениями меча, а когда ящик раскрывается, поднимает клинок."
 });

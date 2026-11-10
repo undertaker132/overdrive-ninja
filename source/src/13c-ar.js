@@ -3886,5 +3886,7 @@ Object.assign(AR, {
 "TEXT SIZE AND KEYBOARD": "حجم النص ولوحة المفاتيح",
 "A new Text size setting (Settings > Presentation) makes every menu and the words in a fight larger. Buttons show a clear ring when you move with Tab, and with the colorblind palette the element orbs carry a symbol.": "إعداد جديد لحجم النص (الإعدادات > العرض) يكبّر كل قائمة والكلمات أثناء القتال. تُظهر الأزرار حلقة واضحة عند التنقل بزر Tab، ومع لوحة عمى الألوان تحمل كرات العناصر رمزًا.",
 "READABILITY": "سهولة القراءة",
-"LARGEST": "الأكبر"
+"LARGEST": "الأكبر",
+"YOUR HERO OPENS THE CRATE": "بطلك يفتح الصندوق",
+"In the crate film the hero who breaks the seals is now your own 3D hero, with your skin, gear and blade: it walks in, leaps and cuts with the recorded sword moves, and raises the blade when the crate bursts.": "في فيلم الصندوق، البطل الذي يكسر الأختام صار بطلك ثلاثي الأبعاد بمظهرك وعتادك وشفرتك: يدخل، يقفز ويقطع بحركات السيف المسجلة، ويرفع الشفرة حين ينفجر الصندوق."
 });

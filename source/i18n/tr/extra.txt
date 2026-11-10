@@ -485,3 +485,5 @@ Text size	حجم النص	Размер текста
 NORMAL	عادي	ОБЫЧНЫЙ
 LARGE	كبير	КРУПНЫЙ
 LARGEST	الأكبر	САМЫЙ КРУПНЫЙ
+YOUR HERO OPENS THE CRATE	بطلك يفتح الصندوق	ТВОЙ ГЕРОЙ ОТКРЫВАЕТ ЯЩИК
+In the crate film the hero who breaks the seals is now your own 3D hero, with your skin, gear and blade: it walks in, leaps and cuts with the recorded sword moves, and raises the blade when the crate bursts.	في فيلم الصندوق، البطل الذي يكسر الأختام صار بطلك ثلاثي الأبعاد بمظهرك وعتادك وشفرتك: يدخل، يقفز ويقطع بحركات السيف المسجلة، ويرفع الشفرة حين ينفجر الصندوق.	В ролике ящика печати теперь ломает твой 3D-герой — с твоим обликом, снаряжением и клинком: он входит, прыгает и рубит записанными движениями меча, а когда ящик раскрывается, поднимает клинок.
