@@ -3934,5 +3934,7 @@ Object.assign(RU, {
 "SEASON TIER {0} / {1}": "УРОВЕНЬ СЕЗОНА {0} / {1}",
 "Earned in every run and stage, from bounties and achievements. Spent on weapons, heroes, upgrades and crates.": "Даются за каждый забег и этап, за награды и достижения. Тратятся на оружие, героев, улучшения и ящики.",
 "Earned with stage stars, the season and your journey. Open them on the CRATES screen.": "Даются за звёзды этапов, сезон и твой путь. Открывай их на экране ЯЩИКОВ.",
-"Every run earns season XP. Tiers pay credits and season-only rewards.": "Каждый забег даёт опыт сезона. Уровни приносят кредиты и награды только этого сезона."
+"Every run earns season XP. Tiers pay credits and season-only rewards.": "Каждый забег даёт опыт сезона. Уровни приносят кредиты и награды только этого сезона.",
+"EVERY STAGE ITS OWN AIR": "У КАЖДОГО ЭТАПА СВОЙ ВОЗДУХ",
+"In 3D the stages now feel like their places: snow drifts over winter and the summit and turns the roof white, cherry petals fall at the shrines on warm wood, embers rise around the core and the ruins, and motes of light float through the data void and the stars.": "В 3D этапы теперь похожи на свои места: снег метёт зимой и на вершине и белит крышу, у святилищ на тёплое дерево падают лепестки сакуры, вокруг ядра и руин поднимаются искры, а в пустоте данных и среди звёзд плывут частицы света."
 });

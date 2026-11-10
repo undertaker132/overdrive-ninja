@@ -3934,5 +3934,7 @@ Object.assign(AR, {
 "SEASON TIER {0} / {1}": "مستوى الموسم {0} / {1}",
 "Earned in every run and stage, from bounties and achievements. Spent on weapons, heroes, upgrades and crates.": "تُكسب في كل جولة ومرحلة ومن المكافآت والإنجازات. تُنفق على الأسلحة والأبطال والترقيات والصناديق.",
 "Earned with stage stars, the season and your journey. Open them on the CRATES screen.": "تُكسب بنجوم المراحل والموسم ورحلتك. افتحها في شاشة الصناديق.",
-"Every run earns season XP. Tiers pay credits and season-only rewards.": "كل جولة تمنح خبرة الموسم. المستويات تمنح رصيدًا ومكافآت حصرية للموسم."
+"Every run earns season XP. Tiers pay credits and season-only rewards.": "كل جولة تمنح خبرة الموسم. المستويات تمنح رصيدًا ومكافآت حصرية للموسم.",
+"EVERY STAGE ITS OWN AIR": "لكل مرحلة هواؤها",
+"In 3D the stages now feel like their places: snow drifts over winter and the summit and turns the roof white, cherry petals fall at the shrines on warm wood, embers rise around the core and the ruins, and motes of light float through the data void and the stars.": "في الأبعاد الثلاثية صارت المراحل تشبه أماكنها: ثلج ينجرف في الشتاء والقمة ويبيّض السطح، وبتلات الكرز تتساقط عند المعابد على خشب دافئ، وجمرات تتصاعد حول النواة والأطلال، وذرات ضوء تطفو في فراغ البيانات وبين النجوم."
 });
