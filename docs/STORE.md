@@ -3,7 +3,7 @@
 Ready-to-paste text for itch.io, Steam or any store page. Hebrew below the English.
 
 ## Short description (≤ 300 characters)
-A neon cyberpunk ninja action game. Dash, slash and parry across the rooftops of Neo-Edo: 8 story acts, 20+ bosses, rogue-lite and arcade modes, 30 weapons, dozens of heroes, 2D or 3D graphics, up to 480 Hz, controller support.
+A neon cyberpunk ninja action game. Dash, slash and parry across the rooftops of Neo-Edo with real animated 3D heroes: 8 story acts, 20+ bosses, elemental reactions, rogue-lite and arcade modes, 30+ weapons, dozens of heroes, up to 480 Hz, controller support.
 
 ## Long description
 **Every dash is a cut.** Aim, release, and your blade crosses the roof in a blink. Chain kills, bounce off the rails for guaranteed criticals, slash bullets back at the snipers and finish staggered bosses with Zandatsu strikes.
@@ -11,22 +11,24 @@ A neon cyberpunk ninja action game. Dash, slash and parry across the rooftops of
 - **8 story acts, 70+ stages** with voiced dialogue, comic pages between chapters and a secret EX chapter
 - **20+ bosses**, each with its own entrance, phases and fall
 - **Arcade:** endless Maglev Run, boss rush, the Neon Tower rogue-lite, a highway chase, daily and weekly challenges, puzzles and a training dojo
-- **Arsenal:** 30 weapons that each swing their own way, dozens of heroes, blade skins and pets
+- **Real 3D fighters:** motion-captured heroes with recorded sword combos, animated oni, demons and robots, cinematic crates where the seals tell you the rarity
+- **Elements:** fire, frost, volt and venom; mix two on one enemy for MELT, OVERLOAD, SUPERCONDUCT, TOXIC FLARE, SHATTER or PARALYSIS
+- **Arsenal:** 30+ weapons that each swing their own way, dozens of heroes, blade skins and pets
 - **Made for PC and phone:** mouse aim at the cursor, rebindable keys, controllers with rumble, 120–480 Hz smooth motion, a wide roof on desktop, or touch controls on a phone
-- **2D or 3D**, accessibility options (calm effects, colorblind colors, high-contrast enemies, assist mode), English, Hebrew, Arabic and Russian
+- **2D or 3D**, accessibility options (calm effects, colorblind colors, high-contrast enemies, assist mode, text size, keyboard-only menus), English, Hebrew, Arabic and Russian
 
 ## Tags
 Action · Hack and Slash · Cyberpunk · Ninja · Roguelite · Arcade · Boss Rush · Singleplayer · Controller · Neon
 
-## Ready-made images (version 48) — in [`docs/store/`](store)
+## Ready-made images (screens 1–4 from version 68, 5–7 from version 48) — in [`docs/store/`](store)
 Phone screenshots at 1080×1920 (Google Play and the App Store accept this size) and a 1024×500 feature graphic for Google Play:
 
 | File | What it shows |
 |---|---|
 | `1_home.png` | The home screen: rank strip, story card and the nav bar |
-| `2_fight_3d.png` | A 3D fight on the train roof |
+| `2_fight_3d.png` | A 3D fight: the orc brutes, a void wraith and the robots |
 | `3_boss_3d.png` | A 3D boss fight (SHOGUN.EXE) with a perfect parry |
-| `4_hero_forge.png` | The Hero Forge: classes, abilities and the weapon workshop |
+| `4_hero_forge.png` | The Hero Forge: the 3D hero, classes and abilities |
 | `5_journey.png` | Your Journey: rank, completion and goals |
 | `6_crates.png` | The three crates with their odds |
 | `7_legendary_crate.png` | A legendary crate film: the giant ninja cuts a truck in half |
