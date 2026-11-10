@@ -3960,5 +3960,13 @@ Object.assign(RU, {
 "CHAPTER 23 · THE ONI KING": "ГЛАВА 23 · КОРОЛЬ ОНИ",
 "THE STORM IS GONE. THE CITY SLEEPS IN THE AFTERLIGHT.": "БУРЯ УШЛА. ГОРОД СПИТ В ПОСЛЕСВЕЧЕНИИ.",
 "ON THE MOUNTAIN AN OLD SHRINE WAKES. HORNS RISE FROM THE SNOW.": "НА ГОРЕ ПРОБУЖДАЕТСЯ СТАРОЕ СВЯТИЛИЩЕ. ИЗ СНЕГА ПОДНИМАЮТСЯ РОГА.",
-"THE OLD HEROES ARE DUST. I AM STILL KING.": "СТАРЫЕ ГЕРОИ — ПРАХ. А Я ВСЁ ЕЩЁ КОРОЛЬ."
+"THE OLD HEROES ARE DUST. I AM STILL KING.": "СТАРЫЕ ГЕРОИ — ПРАХ. А Я ВСЁ ЕЩЁ КОРОЛЬ.",
+"ONI SLAYER": "УБИЙЦА ОНИ",
+"Defeat OTAKEMARU": "Победи Отакэмару",
+"ONI KING": "КОРОЛЬ ОНИ",
+"The oni king's own armor, red iron over black. Defeat OTAKEMARU to claim it.": "Собственная броня короля они: красное железо поверх чёрного. Победи Отакэмару, чтобы получить её.",
+"KING'S IRON": "ЖЕЛЕЗО КОРОЛЯ",
+"Red-hot iron from the oni king's fists. Defeat OTAKEMARU to claim it.": "Раскалённое железо из кулаков короля они. Победи Отакэмару, чтобы получить его.",
+"THE ONI KING'S SPOILS": "ТРОФЕИ КОРОЛЯ ОНИ",
+"Defeat OTAKEMARU to claim his armor as the ONI KING hero skin and his red-hot iron as the KING'S IRON blade. Chapters 21, 22 and 23 now open with comic pages, and the oni king has his own portrait.": "Победи Отакэмару, чтобы получить его броню — облик героя КОРОЛЬ ОНИ — и его раскалённое железо — клинок ЖЕЛЕЗО КОРОЛЯ. Главы 21, 22 и 23 теперь открываются страницами комикса, а у короля они появился свой портрет."
 });

@@ -14,4 +14,12 @@ Object.assign(HE, {
   "THE STORM IS GONE. THE CITY SLEEPS IN THE AFTERLIGHT.": "הסערה חלפה. העיר ישנה באור שאחרי.",
   "ON THE MOUNTAIN AN OLD SHRINE WAKES. HORNS RISE FROM THE SNOW.": "על ההר מתעורר מקדש עתיק. קרניים עולות מתוך השלג.",
   "THE OLD HEROES ARE DUST. I AM STILL KING.": "הגיבורים של פעם הם אבק. אני עדיין המלך.",
+  "ONI SLAYER": "קוטל האוני",
+  "Defeat OTAKEMARU": "הביסו את אוטקמרו",
+  "ONI KING": "מלך האוני",
+  "The oni king's own armor, red iron over black. Defeat OTAKEMARU to claim it.": "השריון של מלך האוני עצמו, ברזל אדום על שחור. הביסו את אוטקמרו כדי לזכות בו.",
+  "KING'S IRON": "הברזל של המלך",
+  "Red-hot iron from the oni king's fists. Defeat OTAKEMARU to claim it.": "ברזל לוהט מהאגרופים של מלך האוני. הביסו את אוטקמרו כדי לזכות בו.",
+  "THE ONI KING'S SPOILS": "שלל מלך האוני",
+  "Defeat OTAKEMARU to claim his armor as the ONI KING hero skin and his red-hot iron as the KING'S IRON blade. Chapters 21, 22 and 23 now open with comic pages, and the oni king has his own portrait.": "הביסו את אוטקמרו כדי לזכות בשריון שלו כסקין הגיבור מלך האוני ובברזל הלוהט שלו כלהב הברזל של המלך. פרקים 21, 22 ו־23 נפתחים עכשיו בדפי קומיקס, ולמלך האוני יש דיוקן משלו.",
 });

@@ -3960,5 +3960,13 @@ Object.assign(AR, {
 "CHAPTER 23 · THE ONI KING": "الفصل 23 · ملك الأوني",
 "THE STORM IS GONE. THE CITY SLEEPS IN THE AFTERLIGHT.": "رحلت العاصفة. المدينة نائمة في الوهج الأخير.",
 "ON THE MOUNTAIN AN OLD SHRINE WAKES. HORNS RISE FROM THE SNOW.": "على الجبل يستيقظ معبد قديم. قرون ترتفع من الثلج.",
-"THE OLD HEROES ARE DUST. I AM STILL KING.": "الأبطال القدامى صاروا ترابًا. وما زلت الملك."
+"THE OLD HEROES ARE DUST. I AM STILL KING.": "الأبطال القدامى صاروا ترابًا. وما زلت الملك.",
+"ONI SLAYER": "قاتل الأوني",
+"Defeat OTAKEMARU": "اهزم أوتاكيمارو",
+"ONI KING": "ملك الأوني",
+"The oni king's own armor, red iron over black. Defeat OTAKEMARU to claim it.": "درع ملك الأوني نفسه، حديد أحمر فوق الأسود. اهزم أوتاكيمارو لتحصل عليه.",
+"KING'S IRON": "حديد الملك",
+"Red-hot iron from the oni king's fists. Defeat OTAKEMARU to claim it.": "حديد متوهج من قبضتي ملك الأوني. اهزم أوتاكيمارو لتحصل عليه.",
+"THE ONI KING'S SPOILS": "غنائم ملك الأوني",
+"Defeat OTAKEMARU to claim his armor as the ONI KING hero skin and his red-hot iron as the KING'S IRON blade. Chapters 21, 22 and 23 now open with comic pages, and the oni king has his own portrait.": "اهزم أوتاكيمارو لتحصل على درعه كمظهر البطل ملك الأوني وعلى حديده المتوهج كشفرة حديد الملك. والفصول 21 و22 و23 تُفتتح الآن بصفحات كوميك، ولملك الأوني صورته الخاصة."
 });

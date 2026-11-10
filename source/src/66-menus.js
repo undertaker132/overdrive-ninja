@@ -4,6 +4,7 @@
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
 const NEWS = [ // version 77
+  ["THE ONI KING'S SPOILS", "Defeat OTAKEMARU to claim his armor as the ONI KING hero skin and his red-hot iron as the KING'S IRON blade. Chapters 21, 22 and 23 now open with comic pages, and the oni king has his own portrait."],
   ["EMBLEMS AND A SEASON TRACK", "Every Arcade mode now carries its own neon emblem in its own color, and the chosen one glows. The season rewards are a track: every tier a node that lights up as you reach it, its reward drawn beside it, and the tier you are working on with its own progress bar."],
   ["THE ONI KING'S FISTS", "In 3D, OTAKEMARU now fights with great armored fists: iron plates, a burning cuff and glowing knuckles. A fist rises high over its red circle as the slam winds up, crashes into the roof and squashes, then floats back. The pets are drawn larger too."],
   ["A FIGHTER'S BODY", "Three more recorded sword moves for your hero in a run: a perfect parry is a real block with the blade across the body, Zandatsu is a leaping chop, and standing still in a fight your hero holds a two-handed guard."],

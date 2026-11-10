@@ -204,3 +204,7 @@ CHAPTERS.push({ n: 23, name: 'THE ONI KING', sub: 'The old legends wake in steel
     { k: 'city', th: 'temple', cap: 'ON THE MOUNTAIN AN OLD SHRINE WAKES. HORNS RISE FROM THE SNOW.' },
     { k: 'boss', id: 'otakemaru', who: 'OK', say: 'THE OLD HEROES ARE DUST. I AM STILL KING.' }] });
 }
+/* ---------- the reward for the oni king: an achievement, his armor as a hero skin, and his iron as a blade skin ---------- */
+ACHS.push({ id: 'otakemaru', name: 'ONI SLAYER', d: 'Defeat OTAKEMARU', r: 2500 });
+SKINS.push({ id: 'oniking', name: 'ONI KING', body: 'oni', a: '#ff3b2f', b: '#1a0606', c1: '#2a2f3a', c2: '#ffb34d', cost: -1, unlock: { t: 'ach', id: 'otakemaru' }, desc: "The oni king's own armor, red iron over black. Defeat OTAKEMARU to claim it." });
+BLADE_FX.push({ id: 'kingsiron', name: "KING'S IRON", blade: '#ff3b2f', edge: '#ffb34d', trail: 'ember', kill: 'burn', deco: 'flame', cost: -1, unlock: { t: 'ach', id: 'otakemaru' }, desc: "Red-hot iron from the oni king's fists. Defeat OTAKEMARU to claim it." });
