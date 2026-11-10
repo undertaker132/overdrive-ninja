@@ -33,6 +33,7 @@ Phone screenshots at 1080×1920 (Google Play and the App Store accept this size)
 | `6_crates.png` | The three crates with their odds |
 | `7_legendary_crate.png` | A legendary crate film: the giant ninja cuts a truck in half |
 | `feature_1024x500.png` | Feature graphic (the synthwave title) |
+| `trailer.mp4` | A 19-second vertical gameplay trailer (540×960, version 72): the home screen, a 3D fight with the oni, Overdrive and reactions, OTAKEMARU the oni king, a crate opening |
 
 ### Google Play listing (short ≤ 80 characters)
 Neon ninja action: dash, slash and parry across a cyberpunk city in 3D.
