@@ -31,7 +31,7 @@ const Melee = {
     if (sf * tf < 0) { src.rotation.y = Math.PI; src.updateMatrixWorld(true); }
     const rest = pairs.map(([a, b]) => [a.getWorldQuaternion(new T.Quaternion()), b.getWorldQuaternion(new T.Quaternion()), b.quaternion.clone()]);
     const mixer = new T.AnimationMixer(src), out = {}, q = new T.Quaternion(), pw = new T.Quaternion(), d = new T.Quaternion();
-    for (const name of this.ONE.concat(this.DUAL)) {
+    for (const name of this.ONE.concat(this.DUAL, this.EXTRA || [])) {
       const clip = Models.got.melee.animations.find(c => c.name === name); if (!clip) continue;
       const act = mixer.clipAction(clip); act.reset().play(); const fps = 30, n = Math.max(2, Math.ceil(clip.duration * fps)), times = [], vals = pairs.map(() => []);
       for (let i = 0; i <= n; i++) { const t = Math.min(clip.duration, i / fps); mixer.setTime(t); src.updateMatrixWorld(true); times.push(t);
