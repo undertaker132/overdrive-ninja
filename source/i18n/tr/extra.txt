@@ -545,3 +545,28 @@ A FIGHTER'S BODY	جسد مقاتل	ТЕЛО БОЙЦА
 Three more recorded sword moves for your hero in a run: a perfect parry is a real block with the blade across the body, Zandatsu is a leaping chop, and standing still in a fight your hero holds a two-handed guard.	ثلاث حركات سيف مسجلة أخرى لبطلك أثناء الجولة: الصد المثالي صار صدًا حقيقيًا بالشفرة عبر الجسد، وزاندتسو ضربة قافزة، وعند الوقوف أثناء القتال يتخذ بطلك وضعية حراسة باليدين.	Ещё три записанных движения меча для героя в забеге: идеальное парирование — настоящий блок клинком поперёк тела, Зандацу — удар в прыжке, а стоя на месте в бою, герой держит двуручную стойку.
 THE ONI KING'S FISTS	قبضتا ملك الأوني	КУЛАКИ КОРОЛЯ ОНИ
 In 3D, OTAKEMARU now fights with great armored fists: iron plates, a burning cuff and glowing knuckles. A fist rises high over its red circle as the slam winds up, crashes into the roof and squashes, then floats back. The pets are drawn larger too.	في الأبعاد الثلاثية صار أوتاكيمارو يقاتل بقبضتين مدرعتين ضخمتين: صفائح حديد، وكُمّ مشتعل، ومفاصل متوهجة. ترتفع القبضة عاليًا فوق دائرتها الحمراء أثناء التحضير، ثم تهوي على السطح وتنضغط، وتطفو عائدة. وصارت الحيوانات الأليفة أكبر أيضًا.	В 3D Отакэмару теперь бьётся огромными бронированными кулаками: железные пластины, пылающий наруч и светящиеся костяшки. Кулак высоко поднимается над своим красным кругом, пока замах заряжается, врезается в крышу и сплющивается, а затем уплывает назад. Питомцы тоже стали крупнее.
+EMBLEMS AND A SEASON TRACK	شعارات ومسار الموسم	ЭМБЛЕМЫ И ДОРОЖКА СЕЗОНА
+Every Arcade mode now carries its own neon emblem in its own color, and the chosen one glows. The season rewards are a track: every tier a node that lights up as you reach it, its reward drawn beside it, and the tier you are working on with its own progress bar.	صار لكل وضع في الأركيد شعار نيون خاص بلونه، والوضع المختار يتوهج. ومكافآت الموسم صارت مسارًا: كل مستوى نقطة تضيء حين تبلغها، ومكافأتها مرسومة بجانبها، وللمستوى الذي تعمل عليه شريط تقدم خاص.	У каждого режима аркады теперь своя неоновая эмблема своего цвета, а выбранный режим светится. Награды сезона стали дорожкой: каждый уровень — точка, которая загорается, когда ты до неё доходишь, награда нарисована рядом, а у уровня, над которым ты работаешь, есть своя полоса прогресса.
+CHAPTER 21 · ENCORE	الفصل 21 · إعادة	ГЛАВА 21 · НА БИС
+THE TITAN EXPRESS RUNS AGAIN. EVERY OLD ENEMY IS ON BOARD.	قطار تيتان السريع يسير مجددًا. كل عدو قديم على متنه.	«ТИТАН-ЭКСПРЕСС» СНОВА В ПУТИ. НА БОРТУ ВСЕ СТАРЫЕ ВРАГИ.
+Someone is replaying our whole war, Ren. Car by car.	أحدهم يعيد حربنا كلها يا رين. عربة بعد عربة.	Кто-то переигрывает всю нашу войну, Рен. Вагон за вагоном.
+Then let us give them an encore.	إذن لنمنحهم إعادة.	Тогда устроим им выход на бис.
+CHAPTER 22 · AFTERGLOW	الفصل 22 · الوهج الأخير	ГЛАВА 22 · ПОСЛЕСВЕЧЕНИЕ
+THE LAST BOW. THE CROWD GOES QUIET.	الانحناءة الأخيرة. يصمت الجمهور.	ПОСЛЕДНИЙ ПОКЛОН. ЗАЛ ЗАТИХАЕТ.
+BUT ABOVE THE TOWER THE SKY FILLS WITH STATIC AGAIN.	لكن فوق البرج تمتلئ السماء بالكهرباء الساكنة مجددًا.	НО НАД БАШНЕЙ НЕБО СНОВА НАПОЛНЯЕТСЯ СТАТИКОЙ.
+THE STORM NEVER LEFT, LITTLE BLADE.	العاصفة لم تغادر قط أيها النصل الصغير.	БУРЯ НИКОГДА НЕ УХОДИЛА, МАЛЕНЬКИЙ КЛИНОК.
+CHAPTER 23 · THE ONI KING	الفصل 23 · ملك الأوني	ГЛАВА 23 · КОРОЛЬ ОНИ
+THE STORM IS GONE. THE CITY SLEEPS IN THE AFTERLIGHT.	رحلت العاصفة. المدينة نائمة في الوهج الأخير.	БУРЯ УШЛА. ГОРОД СПИТ В ПОСЛЕСВЕЧЕНИИ.
+ON THE MOUNTAIN AN OLD SHRINE WAKES. HORNS RISE FROM THE SNOW.	على الجبل يستيقظ معبد قديم. قرون ترتفع من الثلج.	НА ГОРЕ ПРОБУЖДАЕТСЯ СТАРОЕ СВЯТИЛИЩЕ. ИЗ СНЕГА ПОДНИМАЮТСЯ РОГА.
+THE OLD HEROES ARE DUST. I AM STILL KING.	الأبطال القدامى صاروا ترابًا. وما زلت الملك.	СТАРЫЕ ГЕРОИ — ПРАХ. А Я ВСЁ ЕЩЁ КОРОЛЬ.
+ONI SLAYER	قاتل الأوني	УБИЙЦА ОНИ
+Defeat OTAKEMARU	اهزم أوتاكيمارو	Победи Отакэмару
+ONI KING	ملك الأوني	КОРОЛЬ ОНИ
+The oni king's own armor, red iron over black. Defeat OTAKEMARU to claim it.	درع ملك الأوني نفسه، حديد أحمر فوق الأسود. اهزم أوتاكيمارو لتحصل عليه.	Собственная броня короля они: красное железо поверх чёрного. Победи Отакэмару, чтобы получить её.
+KING'S IRON	حديد الملك	ЖЕЛЕЗО КОРОЛЯ
+Red-hot iron from the oni king's fists. Defeat OTAKEMARU to claim it.	حديد متوهج من قبضتي ملك الأوني. اهزم أوتاكيمارو لتحصل عليه.	Раскалённое железо из кулаков короля они. Победи Отакэмару, чтобы получить его.
+THE ONI KING'S SPOILS	غنائم ملك الأوني	ТРОФЕИ КОРОЛЯ ОНИ
+Defeat OTAKEMARU to claim his armor as the ONI KING hero skin and his red-hot iron as the KING'S IRON blade. Chapters 21, 22 and 23 now open with comic pages, and the oni king has his own portrait.	اهزم أوتاكيمارو لتحصل على درعه كمظهر البطل ملك الأوني وعلى حديده المتوهج كشفرة حديد الملك. والفصول 21 و22 و23 تُفتتح الآن بصفحات كوميك، ولملك الأوني صورته الخاصة.	Победи Отакэмару, чтобы получить его броню — облик героя КОРОЛЬ ОНИ — и его раскалённое железо — клинок ЖЕЛЕЗО КОРОЛЯ. Главы 21, 22 и 23 теперь открываются страницами комикса, а у короля они появился свой портрет.
+The oni king of the old legends, rebuilt in iron as tall as a building. Leave the red circles when his fists fall, cut the fists while they are down, and break both to bring him to his knees.	ملك الأوني من الأساطير القديمة، أعيد بناؤه من الحديد بطول مبنى. اخرج من الدوائر الحمراء حين تسقط قبضتاه، واقطع القبضتين وهما على الأرض، وحطّمهما لتجبره على الركوع.	Король они из старых легенд, заново выкованный из железа, ростом с дом. Уходи из красных кругов, когда падают его кулаки, руби кулаки, пока они на земле, и разбей оба, чтобы поставить его на колени.
+THE ONI KING	ملك الأوني	КОРОЛЬ ОНИ
+Boss taiko war metal	ميتال طبول تايكو حربي للزعيم	Боевой тайко-метал босса

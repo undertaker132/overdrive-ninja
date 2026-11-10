@@ -16,13 +16,13 @@
    huge, in its own colors, punching when it slams.
    New stages only; arcade replays are unchanged.
    ===================================================================== */
-CHARS.O = { name: 'OTAKEMARU.EXE', role: 'The oni king', col: '#ff3b2f', pitch: 62 };
+CHARS.OK = { name: 'OTAKEMARU.EXE', role: 'The oni king', col: '#ff3b2f', pitch: 62 }; // (its own key: 'O' is ORYU.EXE)
 Object.assign(BOSS_INFO, { otakemaru: { name: 'OTAKEMARU.EXE', sub: 'THE ONI KING', col: '#ff3b2f' } });
 CODEX_BOSSES.push('otakemaru'); BOSS_CODE.otakemaru = 56; BOSS_THEME.otakemaru = 'temple'; LEGEND_TWIST.otakemaru = 'turbo';
 Object.assign(COMMS, {
-  oni2: [['O', 'THE OLD CITY REMEMBERS ITS KING. RISE, MY ONI!']],
+  oni2: [['OK', 'THE OLD CITY REMEMBERS ITS KING. RISE, MY ONI!']],
   oni3: [['M', 'The roof is coming down, Ren! Watch the marks where the rubble falls!']],
-  oni4: [['O', 'NO HANDS... THEN I WILL CRUSH YOU WITH THE SKY ITSELF.']]
+  oni4: [['OK', 'NO HANDS... THEN I WILL CRUSH YOU WITH THE SKY ITSELF.']]
 });
 BOSSDEF.otakemaru = {
   init(b) {
@@ -88,7 +88,7 @@ BOSSDEF.otakemaru = {
     // the slam marks
     for (const p of b.parts) if (p.alive && p.st === 'tele') { const k = 1 - p.t / p.d; cx.globalAlpha = .3 + k * .55; cx.strokeStyle = '#ff2a2a'; cx.lineWidth = 3; cx.beginPath(); cx.arc(p.tx, p.ty, 78, 0, TAU); cx.stroke();
       cx.globalAlpha = .18 + k * .3; cx.fillStyle = '#ff2a2a'; cx.beginPath(); cx.arc(p.tx, p.ty, 78 * k, 0, TAU); cx.fill(); cx.globalAlpha = 1; }
-    if (W3D.live) return; // (in 3D the giant itself is drawn by the 3D layer)
+    if (W3D.live && b === Boss.cur) return; // (in a 3D run the giant itself is drawn by the 3D layer; portraits and comics still draw it here)
     const col = '#ff3b2f', wh = b.fl > .3, kneel = b.stag > 0 ? 8 : 0;
     // arms
     for (const p of b.parts) { cx.strokeStyle = p.alive ? '#2a0c0c' : 'rgba(42,12,12,.4)'; cx.lineWidth = p.alive ? 16 : 9; cx.beginPath(); cx.moveTo(b.x + p.side * 44, b.y + 10 + kneel); cx.quadraticCurveTo(b.x + p.side * 90, b.y + 5, p.x, p.y); cx.stroke(); }
@@ -140,7 +140,7 @@ CHAPTERS.push({ n: 23, name: 'THE ONI KING', sub: 'The old legends wake in steel
     { id: '23-4', ch: CH, name: 'THE ONI KING', theme: 'temple', obj: { t: 'boss', b: 'otakemaru' },
       pool: { drone: 1, phantom: .5 }, max: 3, rate: 4,
       star: { t: 'time', n: 240, d: 'Win within 240s' },
-      pre: [['O', 'A LITTLE MAN WITH A LITTLE BLADE. THE OLD HEROES WERE TALLER.', 'איש קטן עם להב קטן. הגיבורים של פעם היו גבוהים יותר.'],
+      pre: [['OK', 'A LITTLE MAN WITH A LITTLE BLADE. THE OLD HEROES WERE TALLER.', 'איש קטן עם להב קטן. הגיבורים של פעם היו גבוהים יותר.'],
             ['R', 'The old heroes cut you down anyway. So will I.', 'הגיבורים של פעם הפילו אותך בכל זאת. גם אני אפיל.'],
             ['M', 'Watch the red circles, Ren. And cut the fists when they hit the ground!', 'שים לב לעיגולים האדומים, רן. ותחתוך את האגרופים כשהם פוגעים בקרקע!']],
       post: [['M', 'The king is down. The oni are just machines again, standing still in the snow.', 'המלך נפל. האוני הם שוב רק מכונות, עומדות בשקט בשלג.'],
@@ -169,3 +169,51 @@ CHAPTERS.push({ n: 23, name: 'THE ONI KING', sub: 'The old legends wake in steel
     const fl = b.fl > .3 || b._fl > .3; for (const m of bg.oniMats || []) { if (fl) { m.emissive.set('#ffffff'); m.emissiveIntensity = .55; } else if (b.stag > 0) { m.emissive.set('#ffd23f'); m.emissiveIntensity = .2 + Math.sin(now * 10) * .1; } else { m.emissive.set(BOSS_INFO.otakemaru.col); m.emissiveIntensity = b.ph >= 3 ? .22 : .1; } }
   }, 50);
 }
+/* the oni king's portrait in the dialogue and the comics: a red oni face, horns, burning eyes and fangs; the mouth glows as it speaks */
+{
+  const cp7 = charPortrait;
+  charPortrait = function (g, id, t, mouth, col) {
+    if (id !== 'OK') return cp7(g, id, t, mouth, col);
+    g.save(); const br = Math.sin(t * 1.4) * 1.5;
+    g.fillStyle = '#1a0606'; g.beginPath(); g.moveTo(-70, 80); g.quadraticCurveTo(-60, 30, -30, 26); g.lineTo(30, 26); g.quadraticCurveTo(60, 30, 70, 80); g.closePath(); g.fill(); // shoulders
+    g.fillStyle = '#2a2f3a'; g.fillRect(-56, 44, 112, 10); // the iron collar
+    g.fillStyle = '#e8d8b8'; for (const s of [-1, 1]) { g.beginPath(); g.moveTo(s * 18, -40); g.quadraticCurveTo(s * 50, -64, s * 42, -92 + br); g.quadraticCurveTo(s * 34, -62, s * 6, -48); g.closePath(); g.fill(); } // horns
+    const fg = g.createRadialGradient(-8, -18, 6, 0, -6, 52); fg.addColorStop(0, '#c4281e'); fg.addColorStop(1, '#5a0c08'); g.fillStyle = fg; g.beginPath(); g.ellipse(0, -6, 44, 50, 0, 0, TAU); g.fill();
+    g.strokeStyle = '#1a0404'; g.lineWidth = 4; for (const s of [-1, 1]) { g.beginPath(); g.moveTo(s * 34, -30); g.lineTo(s * 8, -20); g.stroke(); } // brows
+    g.shadowColor = '#ffe14d'; g.shadowBlur = 14; g.fillStyle = '#ffe14d'; for (const s of [-1, 1]) { g.beginPath(); g.ellipse(s * 18, -12, 9, 5, s * .35, 0, TAU); g.fill(); } g.shadowBlur = 0;
+    g.fillStyle = '#1a0404'; g.beginPath(); g.ellipse(0, 22, 24, 7 + mouth * 9, 0, 0, TAU); g.fill(); // the mouth
+    if (mouth > 0) { g.globalCompositeOperation = 'lighter'; g.fillStyle = 'rgba(255,120,40,' + (.5 * mouth) + ')'; g.beginPath(); g.ellipse(0, 22, 18, 4 + mouth * 7, 0, 0, TAU); g.fill(); g.globalCompositeOperation = 'source-over'; }
+    g.fillStyle = '#f4ecd8'; for (const s of [-1, 1]) { g.beginPath(); g.moveTo(s * 16, 16); g.lineTo(s * 10, 34 + mouth * 4); g.lineTo(s * 4, 16); g.fill(); } // fangs
+    g.restore();
+  };
+}
+/* ---------- the comic pages that open chapters 21, 22 and 23 (the later chapters had none) ---------- */
+{
+  const at = n => CHAPTERS.findIndex(c => c.n === n) + 1;
+  const add = (n, page) => { const k = at(n); if (k > 0 && !COMICS[k]) COMICS[k] = page; };
+  add(21, { t: 'CHAPTER 21 · ENCORE', p: [
+    { k: 'city', th: 'maglev', cap: 'THE TITAN EXPRESS RUNS AGAIN. EVERY OLD ENEMY IS ON BOARD.' },
+    { k: 'face', who: 'M', say: 'Someone is replaying our whole war, Ren. Car by car.' },
+    { k: 'jump', th: 'maglev', who: 'R', say: 'Then let us give them an encore.' }] });
+  add(22, { t: 'CHAPTER 22 · AFTERGLOW', p: [
+    { k: 'boss', id: 'hyakki', down: 1, cap: 'THE LAST BOW. THE CROWD GOES QUIET.' },
+    { k: 'ring', cap: 'BUT ABOVE THE TOWER THE SKY FILLS WITH STATIC AGAIN.' },
+    { k: 'boss', id: 'raijin', who: 'J', say: 'THE STORM NEVER LEFT, LITTLE BLADE.' }] });
+  add(23, { t: 'CHAPTER 23 · THE ONI KING', p: [
+    { k: 'boss', id: 'izanami', down: 1, cap: 'THE STORM IS GONE. THE CITY SLEEPS IN THE AFTERLIGHT.' },
+    { k: 'city', th: 'temple', cap: 'ON THE MOUNTAIN AN OLD SHRINE WAKES. HORNS RISE FROM THE SNOW.' },
+    { k: 'boss', id: 'otakemaru', who: 'OK', say: 'THE OLD HEROES ARE DUST. I AM STILL KING.' }] });
+}
+/* ---------- the reward for the oni king: an achievement, his armor as a hero skin, and his iron as a blade skin ---------- */
+ACHS.push({ id: 'otakemaru', name: 'ONI SLAYER', d: 'Defeat OTAKEMARU', r: 2500 });
+SKINS.push({ id: 'oniking', name: 'ONI KING', body: 'oni', a: '#ff3b2f', b: '#1a0606', c1: '#2a2f3a', c2: '#ffb34d', cost: -1, unlock: { t: 'ach', id: 'otakemaru' }, desc: "The oni king's own armor, red iron over black. Defeat OTAKEMARU to claim it." });
+BLADE_FX.push({ id: 'kingsiron', name: "KING'S IRON", blade: '#ff3b2f', edge: '#ffb34d', trail: 'ember', kill: 'burn', deco: 'flame', cost: -1, unlock: { t: 'ach', id: 'otakemaru' }, desc: "Red-hot iron from the oni king's fists. Defeat OTAKEMARU to claim it." });
+/* ---------- the oni king in the codex, his entrance and fall, and his own boss theme (taiko war drums under a low guitar) ---------- */
+CODEX_B.otakemaru = 'The oni king of the old legends, rebuilt in iron as tall as a building. Leave the red circles when his fists fall, cut the fists while they are down, and break both to bring him to his knees.';
+BOSS_FX.otakemaru = ['rise', 'scrap'];
+TRACKS.otakemaru = mkTrack({ name: 'THE ONI KING', style: 'Boss taiko war metal', bpm: 152, root: 61.7, sc: 'pdom', prog: [0, 6, 5, 6], form: ['A', 'B', 'B', 'D', 'B'], taiko: 1,
+  dr: { A: { k: 'x.....x.x.......', t: 'X...X...X..XX...', h: 'x.x.x.x.x.x.x.x.' }, B: { k: 'x...x...x...x...', d: 'xxxxxxxxxxxxxxxx', s: '....x.......x...', t: 'X.X.X...X.X.X...' }, D: { t: 'X..X..X.X..X..X.' }, F: { d: 'xxxxxxxxxxxxxxxx', t: 'XXXXXXXXXXXXXXXX' } },
+  bass: { pat: [0, null, 0, 0, null, 0, null, 0, 0, null, 0, null, 6, null, 5, null], type: 'gtr', v: .055, len: .5 },
+  pad: { type: 'choir', oct: 2, v: .028 },
+  lead: { type: 'flute', oct: 3, v: .04, sec: 'B', n: [[0, 0, 4], [4, 1, 2], [6, 0, 2], [8, 6, 4], [12, 5, 4], [16, 4, 2], [18, 5, 2], [20, 6, 4], [24, 7, 8], [32, 7, 2], [34, 6, 2], [36, 5, 4], [40, 4, 4], [44, 1, 4], [48, 0, 16]] } });
+if (TRACK_LIST.indexOf('otakemaru') < 0) TRACK_LIST.push('otakemaru');
