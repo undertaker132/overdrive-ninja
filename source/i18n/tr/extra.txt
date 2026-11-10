@@ -485,3 +485,53 @@ Text size	حجم النص	Размер текста
 NORMAL	عادي	ОБЫЧНЫЙ
 LARGE	كبير	КРУПНЫЙ
 LARGEST	الأكبر	САМЫЙ КРУПНЫЙ
+YOUR HERO OPENS THE CRATE	بطلك يفتح الصندوق	ТВОЙ ГЕРОЙ ОТКРЫВАЕТ ЯЩИК
+In the crate film the hero who breaks the seals is now your own 3D hero, with your skin, gear and blade: it walks in, leaps and cuts with the recorded sword moves, and raises the blade when the crate bursts.	في فيلم الصندوق، البطل الذي يكسر الأختام صار بطلك ثلاثي الأبعاد بمظهرك وعتادك وشفرتك: يدخل، يقفز ويقطع بحركات السيف المسجلة، ويرفع الشفرة حين ينفجر الصندوق.	В ролике ящика печати теперь ломает твой 3D-герой — с твоим обликом, снаряжением и клинком: он входит, прыгает и рубит записанными движениями меча, а когда ящик раскрывается, поднимает клинок.
+CHAPTER 23: THE ONI KING	الفصل 23: ملك الأوني	ГЛАВА 23: КОРОЛЬ ОНИ
+A new chapter of four stages through the oni's city, ending with a new giant boss: OTAKEMARU.EXE, the oni king of the old legends, as tall as a building. Get out of the red circles when his fists fall, cut the fists while they are down, and bring the king to his knees.	فصل جديد من أربع مراحل عبر مدينة الأوني، ينتهي بزعيم عملاق جديد: OTAKEMARU.EXE، ملك الأوني من الأساطير القديمة، بطول مبنى. اخرج من الدوائر الحمراء حين تسقط قبضتاه، واقطع القبضتين وهما على الأرض، وأجبر الملك على الركوع.	Новая глава из четырёх этапов по городу они, а в конце — новый гигантский босс: OTAKEMARU.EXE, король они из старых легенд, ростом с дом. Уходи из красных кругов, когда падают его кулаки, руби кулаки, пока они на земле, и поставь короля на колени.
+THE ONI KING	ملك الأوني	КОРОЛЬ ОНИ
+The old legends wake in steel	الأساطير القديمة تستيقظ في الفولاذ	Старые легенды просыпаются в стали
+Finish chapter 22 to unlock chapter 23	أنهِ الفصل 22 لفتح الفصل 23	Пройди главу 22, чтобы открыть главу 23
+HORNED SHADOWS	ظلال بقرون	РОГАТЫЕ ТЕНИ
+SHRINE OF A THOUSAND LANTERNS	معبد الألف فانوس	СВЯТИЛИЩЕ ТЫСЯЧИ ФОНАРЕЙ
+THE MOUNTAIN PASS	الممر الجبلي	ГОРНЫЙ ПЕРЕВАЛ
+Win within 240s	افز خلال 240 ثانية	Победи за 240 с
+LEFT FIST	القبضة اليسرى	ЛЕВЫЙ КУЛАК
+RIGHT FIST	القبضة اليمنى	ПРАВЫЙ КУЛАК
+{0} BROKEN	تحطمت {0}	{0} РАЗБИТ
+THE KING KNEELS	الملك يركع	КОРОЛЬ НА КОЛЕНЯХ
+WRATH	غضب	ГНЕВ
+CATACLYSM	كارثة	КАТАКЛИЗМ
+FIST SLAM	ضربة القبضة	УДАР КУЛАКОМ
+A red circle marks where a fist will fall. Get out, then cut the fist while it is down. Break both fists to bring the king to his knees.	دائرة حمراء تحدد أين ستسقط القبضة. اخرج منها، ثم اقطع القبضة وهي على الأرض. حطّم القبضتين لتجبر الملك على الركوع.	Красный круг показывает, куда упадёт кулак. Выйди из него, затем руби кулак, пока он на земле. Разбей оба кулака, чтобы поставить короля на колени.
+Crushed by the ONI KING's fist	سحقتك قبضة ملك الأوني	Раздавлен кулаком КОРОЛЯ ОНИ
+A red circle marks where a fist falls. Leave it, then cut the fist while it is down.	دائرة حمراء تحدد مكان سقوط القبضة. اتركها، ثم اقطع القبضة وهي على الأرض.	Красный круг показывает, куда падает кулак. Уйди из него и руби кулак, пока он на земле.
+Buried under the falling roof	دُفنت تحت السقف المتساقط	Погребён под падающей крышей
+Gold circles close where rubble lands. Step out before they close.	تنغلق دوائر ذهبية حيث يسقط الركام. اخرج قبل أن تنغلق.	Золотые круги сжимаются там, где падают обломки. Выйди, пока они не сомкнулись.
+THE OLD CITY REMEMBERS ITS KING. RISE, MY ONI!	المدينة القديمة تتذكر ملكها. انهضوا يا أونيّ!	СТАРЫЙ ГОРОД ПОМНИТ СВОЕГО КОРОЛЯ. ВОССТАНЬТЕ, МОИ ОНИ!
+The roof is coming down, Ren! Watch the marks where the rubble falls!	السقف ينهار يا رين! انتبه للعلامات حيث يسقط الركام!	Крыша рушится, Рен! Следи за метками, куда падают обломки!
+NO HANDS... THEN I WILL CRUSH YOU WITH THE SKY ITSELF.	بلا يدين... إذن سأسحقك بالسماء نفسها.	БЕЗ РУК... ТОГДА Я РАЗДАВЛЮ ТЕБЯ САМИМ НЕБОМ.
+The oni king	ملك الأوني	Король они
+Ren, the undercity is full of oni. Real horns, real fangs, running on machine hearts.	رين، المدينة السفلية مليئة بالأوني. قرون حقيقية وأنياب حقيقية، تعمل بقلوب آلية.	Рен, нижний город полон они. Настоящие рога, настоящие клыки, а сердца — машинные.
+Someone is building monsters out of old stories.	أحدهم يصنع وحوشًا من قصص قديمة.	Кто-то строит чудовищ из старых сказок.
+They all march the same way. Toward the old shrine on the mountain.	كلهم يسيرون في الاتجاه نفسه. نحو المعبد القديم على الجبل.	Все они идут в одну сторону. К старому святилищу на горе.
+The shrine guards shoot from behind the lanterns. Send their shots back through the paper.	حراس المعبد يطلقون من خلف الفوانيس. أعد طلقاتهم عبر الورق.	Стражи святилища стреляют из-за фонарей. Отправь их выстрелы обратно сквозь бумагу.
+There is a name carved on every gate here. OTAKEMARU. The oni king of the old tales.	على كل بوابة هنا اسم محفور. أوتاكيمارو. ملك الأوني في الحكايات القديمة.	На каждых воротах здесь вырезано имя. ОТАКЭМАРУ. Король они из старых сказаний.
+The pass is narrow and the oni come down it in waves. Hold until the snow stops.	الممر ضيق والأوني ينزلون فيه موجات. اصمد حتى يتوقف الثلج.	Перевал узкий, и они спускаются по нему волнами. Держись, пока не кончится снег.
+Let them come. One at a time or all at once.	فليأتوا. واحدًا تلو الآخر أو جميعًا معًا.	Пусть идут. По одному или все разом.
+The ground is shaking. Something as tall as the tower is standing up behind the shrine.	الأرض تهتز. شيء بطول البرج ينهض خلف المعبد.	Земля дрожит. За святилищем поднимается что-то высотой с башню.
+A LITTLE MAN WITH A LITTLE BLADE. THE OLD HEROES WERE TALLER.	رجل صغير بشفرة صغيرة. الأبطال القدامى كانوا أطول.	МАЛЕНЬКИЙ ЧЕЛОВЕК С МАЛЕНЬКИМ КЛИНКОМ. СТАРЫЕ ГЕРОИ БЫЛИ ВЫШЕ.
+The old heroes cut you down anyway. So will I.	الأبطال القدامى أسقطوك على أي حال. وكذلك سأفعل.	Старые герои всё равно тебя сразили. И я сражу.
+Watch the red circles, Ren. And cut the fists when they hit the ground!	انتبه للدوائر الحمراء يا رين. واقطع القبضتين حين تضربان الأرض!	Следи за красными кругами, Рен. И руби кулаки, когда они бьют о землю!
+The king is down. The oni are just machines again, standing still in the snow.	سقط الملك. عاد الأوني مجرد آلات، واقفة بلا حراك في الثلج.	Король повержен. Они снова просто машины, неподвижно стоящие в снегу.
+Every legend ends the same way. Someone has to finish it.	كل أسطورة تنتهي بالطريقة نفسها. على أحد أن يُنهيها.	Каждая легенда кончается одинаково. Кто-то должен её закончить.
+THE WALLET	المحفظة	КОШЕЛЁК
+Tap your credits at the top of the screen to see everything you hold: credits, crates, cores, prisms, shards and your season tier, with where each comes from and what it is for.	اضغط على رصيدك أعلى الشاشة لترى كل ما تملكه: الرصيد والصناديق والأنوية والمناشير والشظايا ومستوى الموسم، مع مصدر كل منها والغرض منه.	Нажми на кредиты вверху экрана, чтобы увидеть всё, что у тебя есть: кредиты, ящики, ядра, призмы, осколки и уровень сезона — откуда каждое берётся и для чего нужно.
+YOUR WALLET	محفظتك	ТВОЙ КОШЕЛЁК
+{0} CRATES	{0} صناديق	ЯЩИКОВ: {0}
+SEASON TIER {0} / {1}	مستوى الموسم {0} / {1}	УРОВЕНЬ СЕЗОНА {0} / {1}
+Earned in every run and stage, from bounties and achievements. Spent on weapons, heroes, upgrades and crates.	تُكسب في كل جولة ومرحلة ومن المكافآت والإنجازات. تُنفق على الأسلحة والأبطال والترقيات والصناديق.	Даются за каждый забег и этап, за награды и достижения. Тратятся на оружие, героев, улучшения и ящики.
+Earned with stage stars, the season and your journey. Open them on the CRATES screen.	تُكسب بنجوم المراحل والموسم ورحلتك. افتحها في شاشة الصناديق.	Даются за звёзды этапов, сезон и твой путь. Открывай их на экране ЯЩИКОВ.
+Every run earns season XP. Tiers pay credits and season-only rewards.	كل جولة تمنح خبرة الموسم. المستويات تمنح رصيدًا ومكافآت حصرية للموسم.	Каждый забег даёт опыт сезона. Уровни приносят кредиты и награды только этого сезона.
+EVERY STAGE ITS OWN AIR	لكل مرحلة هواؤها	У КАЖДОГО ЭТАПА СВОЙ ВОЗДУХ
+In 3D the stages now feel like their places: snow drifts over winter and the summit and turns the roof white, cherry petals fall at the shrines on warm wood, embers rise around the core and the ruins, and motes of light float through the data void and the stars.	في الأبعاد الثلاثية صارت المراحل تشبه أماكنها: ثلج ينجرف في الشتاء والقمة ويبيّض السطح، وبتلات الكرز تتساقط عند المعابد على خشب دافئ، وجمرات تتصاعد حول النواة والأطلال، وذرات ضوء تطفو في فراغ البيانات وبين النجوم.	В 3D этапы теперь похожи на свои места: снег метёт зимой и на вершине и белит крышу, у святилищ на тёплое дерево падают лепестки сакуры, вокруг ядра и руин поднимаются искры, а в пустоте данных и среди звёзд плывут частицы света.
