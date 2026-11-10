@@ -41,3 +41,5 @@ const Wallet = {
 @keyframes wal71 { from { opacity: 0; } } @media (prefers-reduced-motion: reduce) { .wal71 { animation: none; } }`;
   document.head.appendChild(css);
 }
+/* the boot screen counts what the game holds once every part has loaded (it counted before the later chapters, bosses and weapons joined) */
+try { BOOT_LINES[3] = '> LOADING ' + STAGES.length + ' STORY STAGES / ' + Object.keys(BOSS_INFO).length + ' BOSSES ... OK'; BOOT_LINES[5] = '> ARSENAL: ' + WEAPONS.length + ' WEAPONS / ' + PETS.length + ' COMPANIONS ... OK'; } catch (e) { errLog(e); }
