@@ -135,8 +135,10 @@ const Human = {
     if (Human.HEAVY[D[0]] && !Models.ok('soldier')) Models.load('soldier');
     try { const T = THREE, g = new T.Group(), col = (BOSS_INFO[b.id] && BOSS_INFO[b.id].col) || '#ff0844', h = Human.build({ body: D[0], a: col, b: D[2] }, D[1]);
       if (h.pool) h.pool.visible = false; const k = D[3] / 9; h.scale.setScalar(k); h.s0 = k; g.add(h); g.ronin = h; g.kind = 'ronin';
-      let bm = null; h.traverse(o => { if (!bm && o.isSkinnedMesh && o.material && o.material.emissive) { bm = o.material.clone(); } }); // (the boss's own copy, so its hit flash does not light up the hero)
-      if (bm) { const src = []; h.traverse(o => { if (o.isSkinnedMesh) src.push(o); }); for (const o of src) if (o.material && o.material.emissive && !/Joints/i.test(o.material.name || '')) o.material = bm; g.bodyMat = bm; } else g.bodyMat = h.plate;
+      // the boss's own copies of every material it wears (so its hit flash does not light up the hero, and its parts keep their own shades);
+      // the generic boss glow goes to a stand-in, and BossLook (version 74) turns it into a flash on the real ones
+      const own = new Map(), mats = []; h.traverse(o => { if (!o.isMesh || !o.material || !o.material.emissive || o.userData.ink) return; let c = own.get(o.material); if (!c) { c = o.material.clone(); c.userData.e0 = c.emissive.clone(); c.userData.i0 = c.emissiveIntensity; own.set(o.material, c); mats.push(c); } o.material = c; });
+      g.bossMats = mats; g.bodyMat = R3.std({ color: 0x000000 });
       g.add(this.pool(col, 4.2, .32)); return g; } catch (e) { errLog(e); return bm9(b); }
   };
   Pipe.on('post', 'models59', () => { if (Boss.cur && BODY[Boss.cur.id] && R3.ok && W3D.live && !Models.got.xbot) Models.load('xbot'); }, 99);

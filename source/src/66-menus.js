@@ -3,7 +3,10 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 73
+const NEWS = [ // version 76
+  ["THE ONI KING'S FISTS", "In 3D, OTAKEMARU now fights with great armored fists: iron plates, a burning cuff and glowing knuckles. A fist rises high over its red circle as the slam winds up, crashes into the roof and squashes, then floats back. The pets are drawn larger too."],
+  ["A FIGHTER'S BODY", "Three more recorded sword moves for your hero in a run: a perfect parry is a real block with the blade across the body, Zandatsu is a leaping chop, and standing still in a fight your hero holds a two-handed guard."],
+  ["BOSSES IN FULL COLOR, ENEMIES THAT FALL", "The swordsman bosses and the armored giants were painted in one flat color; every part of them now keeps its own shade, with the heroes' ink outline and rim light, a white flash when you hit them and a gold glow when they stagger. The oni, the demons and the robots now fall when they die, play their own death and sink into the roof, and your hero stands a little taller on the roof."],
   ["ANIMATION FIXES", "The blade now sits in your hero's fist, pointing forward, at a real sword's length (it stuck out sideways from the hip, twice too long). The scarf hangs down the back and streams out behind on a dash. Enemies walk and run instead of gliding, the slime and the yeti lost their giant bubble, executions show the real damage, and a tap in the Hero Forge shows the whole cut."],
   ["THE SEALS KEEP THEIR SECRET", "Crate films sometimes flashed the crate's true color for a moment before the first strike, giving the ending away. They now always start on the plain steel crate."],
   ["EVERY STAGE ITS OWN AIR", "In 3D the stages now feel like their places: snow drifts over winter and the summit and turns the roof white, cherry petals fall at the shrines on warm wood, embers rise around the core and the ruins, and motes of light float through the data void and the stars."],
