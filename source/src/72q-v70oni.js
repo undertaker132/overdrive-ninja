@@ -16,13 +16,13 @@
    huge, in its own colors, punching when it slams.
    New stages only; arcade replays are unchanged.
    ===================================================================== */
-CHARS.O = { name: 'OTAKEMARU.EXE', role: 'The oni king', col: '#ff3b2f', pitch: 62 };
+CHARS.OK = { name: 'OTAKEMARU.EXE', role: 'The oni king', col: '#ff3b2f', pitch: 62 }; // (its own key: 'O' is ORYU.EXE)
 Object.assign(BOSS_INFO, { otakemaru: { name: 'OTAKEMARU.EXE', sub: 'THE ONI KING', col: '#ff3b2f' } });
 CODEX_BOSSES.push('otakemaru'); BOSS_CODE.otakemaru = 56; BOSS_THEME.otakemaru = 'temple'; LEGEND_TWIST.otakemaru = 'turbo';
 Object.assign(COMMS, {
-  oni2: [['O', 'THE OLD CITY REMEMBERS ITS KING. RISE, MY ONI!']],
+  oni2: [['OK', 'THE OLD CITY REMEMBERS ITS KING. RISE, MY ONI!']],
   oni3: [['M', 'The roof is coming down, Ren! Watch the marks where the rubble falls!']],
-  oni4: [['O', 'NO HANDS... THEN I WILL CRUSH YOU WITH THE SKY ITSELF.']]
+  oni4: [['OK', 'NO HANDS... THEN I WILL CRUSH YOU WITH THE SKY ITSELF.']]
 });
 BOSSDEF.otakemaru = {
   init(b) {
@@ -140,7 +140,7 @@ CHAPTERS.push({ n: 23, name: 'THE ONI KING', sub: 'The old legends wake in steel
     { id: '23-4', ch: CH, name: 'THE ONI KING', theme: 'temple', obj: { t: 'boss', b: 'otakemaru' },
       pool: { drone: 1, phantom: .5 }, max: 3, rate: 4,
       star: { t: 'time', n: 240, d: 'Win within 240s' },
-      pre: [['O', 'A LITTLE MAN WITH A LITTLE BLADE. THE OLD HEROES WERE TALLER.', 'איש קטן עם להב קטן. הגיבורים של פעם היו גבוהים יותר.'],
+      pre: [['OK', 'A LITTLE MAN WITH A LITTLE BLADE. THE OLD HEROES WERE TALLER.', 'איש קטן עם להב קטן. הגיבורים של פעם היו גבוהים יותר.'],
             ['R', 'The old heroes cut you down anyway. So will I.', 'הגיבורים של פעם הפילו אותך בכל זאת. גם אני אפיל.'],
             ['M', 'Watch the red circles, Ren. And cut the fists when they hit the ground!', 'שים לב לעיגולים האדומים, רן. ותחתוך את האגרופים כשהם פוגעים בקרקע!']],
       post: [['M', 'The king is down. The oni are just machines again, standing still in the snow.', 'המלך נפל. האוני הם שוב רק מכונות, עומדות בשקט בשלג.'],
@@ -168,4 +168,22 @@ CHAPTERS.push({ n: 23, name: 'THE ONI KING', sub: 'The old legends wake in steel
     if (r.cur === 'Punch' && r.acts.Punch && !r.acts.Punch.isRunning()) r.cur = ''; r.mixer.update(dt);
     const fl = b.fl > .3 || b._fl > .3; for (const m of bg.oniMats || []) { if (fl) { m.emissive.set('#ffffff'); m.emissiveIntensity = .55; } else if (b.stag > 0) { m.emissive.set('#ffd23f'); m.emissiveIntensity = .2 + Math.sin(now * 10) * .1; } else { m.emissive.set(BOSS_INFO.otakemaru.col); m.emissiveIntensity = b.ph >= 3 ? .22 : .1; } }
   }, 50);
+}
+/* the oni king's portrait in the dialogue and the comics: a red oni face, horns, burning eyes and fangs; the mouth glows as it speaks */
+{
+  const cp7 = charPortrait;
+  charPortrait = function (g, id, t, mouth, col) {
+    if (id !== 'OK') return cp7(g, id, t, mouth, col);
+    g.save(); const br = Math.sin(t * 1.4) * 1.5;
+    g.fillStyle = '#1a0606'; g.beginPath(); g.moveTo(-70, 80); g.quadraticCurveTo(-60, 30, -30, 26); g.lineTo(30, 26); g.quadraticCurveTo(60, 30, 70, 80); g.closePath(); g.fill(); // shoulders
+    g.fillStyle = '#2a2f3a'; g.fillRect(-56, 44, 112, 10); // the iron collar
+    g.fillStyle = '#e8d8b8'; for (const s of [-1, 1]) { g.beginPath(); g.moveTo(s * 18, -40); g.quadraticCurveTo(s * 50, -64, s * 42, -92 + br); g.quadraticCurveTo(s * 34, -62, s * 6, -48); g.closePath(); g.fill(); } // horns
+    const fg = g.createRadialGradient(-8, -18, 6, 0, -6, 52); fg.addColorStop(0, '#c4281e'); fg.addColorStop(1, '#5a0c08'); g.fillStyle = fg; g.beginPath(); g.ellipse(0, -6, 44, 50, 0, 0, TAU); g.fill();
+    g.strokeStyle = '#1a0404'; g.lineWidth = 4; for (const s of [-1, 1]) { g.beginPath(); g.moveTo(s * 34, -30); g.lineTo(s * 8, -20); g.stroke(); } // brows
+    g.shadowColor = '#ffe14d'; g.shadowBlur = 14; g.fillStyle = '#ffe14d'; for (const s of [-1, 1]) { g.beginPath(); g.ellipse(s * 18, -12, 9, 5, s * .35, 0, TAU); g.fill(); } g.shadowBlur = 0;
+    g.fillStyle = '#1a0404'; g.beginPath(); g.ellipse(0, 22, 24, 7 + mouth * 9, 0, 0, TAU); g.fill(); // the mouth
+    if (mouth > 0) { g.globalCompositeOperation = 'lighter'; g.fillStyle = 'rgba(255,120,40,' + (.5 * mouth) + ')'; g.beginPath(); g.ellipse(0, 22, 18, 4 + mouth * 7, 0, 0, TAU); g.fill(); g.globalCompositeOperation = 'source-over'; }
+    g.fillStyle = '#f4ecd8'; for (const s of [-1, 1]) { g.beginPath(); g.moveTo(s * 16, 16); g.lineTo(s * 10, 34 + mouth * 4); g.lineTo(s * 4, 16); g.fill(); } // fangs
+    g.restore();
+  };
 }
