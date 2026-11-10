@@ -88,7 +88,7 @@ BOSSDEF.otakemaru = {
     // the slam marks
     for (const p of b.parts) if (p.alive && p.st === 'tele') { const k = 1 - p.t / p.d; cx.globalAlpha = .3 + k * .55; cx.strokeStyle = '#ff2a2a'; cx.lineWidth = 3; cx.beginPath(); cx.arc(p.tx, p.ty, 78, 0, TAU); cx.stroke();
       cx.globalAlpha = .18 + k * .3; cx.fillStyle = '#ff2a2a'; cx.beginPath(); cx.arc(p.tx, p.ty, 78 * k, 0, TAU); cx.fill(); cx.globalAlpha = 1; }
-    if (W3D.live) return; // (in 3D the giant itself is drawn by the 3D layer)
+    if (W3D.live && b === Boss.cur) return; // (in a 3D run the giant itself is drawn by the 3D layer; portraits and comics still draw it here)
     const col = '#ff3b2f', wh = b.fl > .3, kneel = b.stag > 0 ? 8 : 0;
     // arms
     for (const p of b.parts) { cx.strokeStyle = p.alive ? '#2a0c0c' : 'rgba(42,12,12,.4)'; cx.lineWidth = p.alive ? 16 : 9; cx.beginPath(); cx.moveTo(b.x + p.side * 44, b.y + 10 + kneel); cx.quadraticCurveTo(b.x + p.side * 90, b.y + 5, p.x, p.y); cx.stroke(); }
@@ -186,4 +186,21 @@ CHAPTERS.push({ n: 23, name: 'THE ONI KING', sub: 'The old legends wake in steel
     g.fillStyle = '#f4ecd8'; for (const s of [-1, 1]) { g.beginPath(); g.moveTo(s * 16, 16); g.lineTo(s * 10, 34 + mouth * 4); g.lineTo(s * 4, 16); g.fill(); } // fangs
     g.restore();
   };
+}
+/* ---------- the comic pages that open chapters 21, 22 and 23 (the later chapters had none) ---------- */
+{
+  const at = n => CHAPTERS.findIndex(c => c.n === n) + 1;
+  const add = (n, page) => { const k = at(n); if (k > 0 && !COMICS[k]) COMICS[k] = page; };
+  add(21, { t: 'CHAPTER 21 · ENCORE', p: [
+    { k: 'city', th: 'maglev', cap: 'THE TITAN EXPRESS RUNS AGAIN. EVERY OLD ENEMY IS ON BOARD.' },
+    { k: 'face', who: 'M', say: 'Someone is replaying our whole war, Ren. Car by car.' },
+    { k: 'jump', th: 'maglev', who: 'R', say: 'Then let us give them an encore.' }] });
+  add(22, { t: 'CHAPTER 22 · AFTERGLOW', p: [
+    { k: 'boss', id: 'hyakki', down: 1, cap: 'THE LAST BOW. THE CROWD GOES QUIET.' },
+    { k: 'ring', cap: 'BUT ABOVE THE TOWER THE SKY FILLS WITH STATIC AGAIN.' },
+    { k: 'boss', id: 'raijin', who: 'J', say: 'THE STORM NEVER LEFT, LITTLE BLADE.' }] });
+  add(23, { t: 'CHAPTER 23 · THE ONI KING', p: [
+    { k: 'boss', id: 'izanami', down: 1, cap: 'THE STORM IS GONE. THE CITY SLEEPS IN THE AFTERLIGHT.' },
+    { k: 'city', th: 'temple', cap: 'ON THE MOUNTAIN AN OLD SHRINE WAKES. HORNS RISE FROM THE SNOW.' },
+    { k: 'boss', id: 'otakemaru', who: 'OK', say: 'THE OLD HEROES ARE DUST. I AM STILL KING.' }] });
 }

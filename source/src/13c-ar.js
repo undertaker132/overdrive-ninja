@@ -3948,5 +3948,17 @@ Object.assign(AR, {
 "THE ONI KING'S FISTS": "قبضتا ملك الأوني",
 "In 3D, OTAKEMARU now fights with great armored fists: iron plates, a burning cuff and glowing knuckles. A fist rises high over its red circle as the slam winds up, crashes into the roof and squashes, then floats back. The pets are drawn larger too.": "في الأبعاد الثلاثية صار أوتاكيمارو يقاتل بقبضتين مدرعتين ضخمتين: صفائح حديد، وكُمّ مشتعل، ومفاصل متوهجة. ترتفع القبضة عاليًا فوق دائرتها الحمراء أثناء التحضير، ثم تهوي على السطح وتنضغط، وتطفو عائدة. وصارت الحيوانات الأليفة أكبر أيضًا.",
 "EMBLEMS AND A SEASON TRACK": "شعارات ومسار الموسم",
-"Every Arcade mode now carries its own neon emblem in its own color, and the chosen one glows. The season rewards are a track: every tier a node that lights up as you reach it, its reward drawn beside it, and the tier you are working on with its own progress bar.": "صار لكل وضع في الأركيد شعار نيون خاص بلونه، والوضع المختار يتوهج. ومكافآت الموسم صارت مسارًا: كل مستوى نقطة تضيء حين تبلغها، ومكافأتها مرسومة بجانبها، وللمستوى الذي تعمل عليه شريط تقدم خاص."
+"Every Arcade mode now carries its own neon emblem in its own color, and the chosen one glows. The season rewards are a track: every tier a node that lights up as you reach it, its reward drawn beside it, and the tier you are working on with its own progress bar.": "صار لكل وضع في الأركيد شعار نيون خاص بلونه، والوضع المختار يتوهج. ومكافآت الموسم صارت مسارًا: كل مستوى نقطة تضيء حين تبلغها، ومكافأتها مرسومة بجانبها، وللمستوى الذي تعمل عليه شريط تقدم خاص.",
+"CHAPTER 21 · ENCORE": "الفصل 21 · إعادة",
+"THE TITAN EXPRESS RUNS AGAIN. EVERY OLD ENEMY IS ON BOARD.": "قطار تيتان السريع يسير مجددًا. كل عدو قديم على متنه.",
+"Someone is replaying our whole war, Ren. Car by car.": "أحدهم يعيد حربنا كلها يا رين. عربة بعد عربة.",
+"Then let us give them an encore.": "إذن لنمنحهم إعادة.",
+"CHAPTER 22 · AFTERGLOW": "الفصل 22 · الوهج الأخير",
+"THE LAST BOW. THE CROWD GOES QUIET.": "الانحناءة الأخيرة. يصمت الجمهور.",
+"BUT ABOVE THE TOWER THE SKY FILLS WITH STATIC AGAIN.": "لكن فوق البرج تمتلئ السماء بالكهرباء الساكنة مجددًا.",
+"THE STORM NEVER LEFT, LITTLE BLADE.": "العاصفة لم تغادر قط أيها النصل الصغير.",
+"CHAPTER 23 · THE ONI KING": "الفصل 23 · ملك الأوني",
+"THE STORM IS GONE. THE CITY SLEEPS IN THE AFTERLIGHT.": "رحلت العاصفة. المدينة نائمة في الوهج الأخير.",
+"ON THE MOUNTAIN AN OLD SHRINE WAKES. HORNS RISE FROM THE SNOW.": "على الجبل يستيقظ معبد قديم. قرون ترتفع من الثلج.",
+"THE OLD HEROES ARE DUST. I AM STILL KING.": "الأبطال القدامى صاروا ترابًا. وما زلت الملك."
 });

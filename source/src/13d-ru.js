@@ -3948,5 +3948,17 @@ Object.assign(RU, {
 "THE ONI KING'S FISTS": "КУЛАКИ КОРОЛЯ ОНИ",
 "In 3D, OTAKEMARU now fights with great armored fists: iron plates, a burning cuff and glowing knuckles. A fist rises high over its red circle as the slam winds up, crashes into the roof and squashes, then floats back. The pets are drawn larger too.": "В 3D Отакэмару теперь бьётся огромными бронированными кулаками: железные пластины, пылающий наруч и светящиеся костяшки. Кулак высоко поднимается над своим красным кругом, пока замах заряжается, врезается в крышу и сплющивается, а затем уплывает назад. Питомцы тоже стали крупнее.",
 "EMBLEMS AND A SEASON TRACK": "ЭМБЛЕМЫ И ДОРОЖКА СЕЗОНА",
-"Every Arcade mode now carries its own neon emblem in its own color, and the chosen one glows. The season rewards are a track: every tier a node that lights up as you reach it, its reward drawn beside it, and the tier you are working on with its own progress bar.": "У каждого режима аркады теперь своя неоновая эмблема своего цвета, а выбранный режим светится. Награды сезона стали дорожкой: каждый уровень — точка, которая загорается, когда ты до неё доходишь, награда нарисована рядом, а у уровня, над которым ты работаешь, есть своя полоса прогресса."
+"Every Arcade mode now carries its own neon emblem in its own color, and the chosen one glows. The season rewards are a track: every tier a node that lights up as you reach it, its reward drawn beside it, and the tier you are working on with its own progress bar.": "У каждого режима аркады теперь своя неоновая эмблема своего цвета, а выбранный режим светится. Награды сезона стали дорожкой: каждый уровень — точка, которая загорается, когда ты до неё доходишь, награда нарисована рядом, а у уровня, над которым ты работаешь, есть своя полоса прогресса.",
+"CHAPTER 21 · ENCORE": "ГЛАВА 21 · НА БИС",
+"THE TITAN EXPRESS RUNS AGAIN. EVERY OLD ENEMY IS ON BOARD.": "«ТИТАН-ЭКСПРЕСС» СНОВА В ПУТИ. НА БОРТУ ВСЕ СТАРЫЕ ВРАГИ.",
+"Someone is replaying our whole war, Ren. Car by car.": "Кто-то переигрывает всю нашу войну, Рен. Вагон за вагоном.",
+"Then let us give them an encore.": "Тогда устроим им выход на бис.",
+"CHAPTER 22 · AFTERGLOW": "ГЛАВА 22 · ПОСЛЕСВЕЧЕНИЕ",
+"THE LAST BOW. THE CROWD GOES QUIET.": "ПОСЛЕДНИЙ ПОКЛОН. ЗАЛ ЗАТИХАЕТ.",
+"BUT ABOVE THE TOWER THE SKY FILLS WITH STATIC AGAIN.": "НО НАД БАШНЕЙ НЕБО СНОВА НАПОЛНЯЕТСЯ СТАТИКОЙ.",
+"THE STORM NEVER LEFT, LITTLE BLADE.": "БУРЯ НИКОГДА НЕ УХОДИЛА, МАЛЕНЬКИЙ КЛИНОК.",
+"CHAPTER 23 · THE ONI KING": "ГЛАВА 23 · КОРОЛЬ ОНИ",
+"THE STORM IS GONE. THE CITY SLEEPS IN THE AFTERLIGHT.": "БУРЯ УШЛА. ГОРОД СПИТ В ПОСЛЕСВЕЧЕНИИ.",
+"ON THE MOUNTAIN AN OLD SHRINE WAKES. HORNS RISE FROM THE SNOW.": "НА ГОРЕ ПРОБУЖДАЕТСЯ СТАРОЕ СВЯТИЛИЩЕ. ИЗ СНЕГА ПОДНИМАЮТСЯ РОГА.",
+"THE OLD HEROES ARE DUST. I AM STILL KING.": "СТАРЫЕ ГЕРОИ — ПРАХ. А Я ВСЁ ЕЩЁ КОРОЛЬ."
 });
