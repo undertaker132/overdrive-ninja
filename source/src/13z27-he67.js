@@ -21,4 +21,5 @@ Object.assign(HE, {
   "ALCHEMIST": "אלכימאי",
   "Set off an elemental reaction": "הפעילו תגובת יסודות",
   "Set off 100 elemental reactions": "הפעילו 100 תגובות יסודות",
+  "Set off {n} elemental reactions": "הפעילו {n} תגובות יסודות",
 });

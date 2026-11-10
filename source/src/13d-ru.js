@@ -907,12 +907,12 @@ Object.assign(RU, {
 "Tap to dash": "Рывок касанием",
 "Aim assist": "Помощь в прицеливании",
 "Swipe sensitivity": "Чувствительность свайпа",
-"NORMAL": "ОБЫЧНАЯ",
+"NORMAL": "ОБЫЧНЫЙ",
 "HIGH": "ВЫСОКАЯ",
 "LOW": "НИЗКАЯ",
 "Skill button size": "Размер кнопок навыков",
 "MEDIUM": "СРЕДНИЙ",
-"LARGE": "БОЛЬШОЙ",
+"LARGE": "КРУПНЫЙ",
 "SMALL": "МАЛЕНЬКИЙ",
 "Left-handed dock": "Панель для левши",
 "SCREEN": "ЭКРАН",
@@ -3881,5 +3881,10 @@ Object.assign(RU, {
 "CHEMISTRY": "ХИМИЯ",
 "ALCHEMIST": "АЛХИМИК",
 "Set off an elemental reaction": "Вызови стихийную реакцию",
-"Set off 100 elemental reactions": "Вызови 100 стихийных реакций"
+"Set off 100 elemental reactions": "Вызови 100 стихийных реакций",
+"Set off {n} elemental reactions": "Вызови {n} стихийных реакций",
+"TEXT SIZE AND KEYBOARD": "РАЗМЕР ТЕКСТА И КЛАВИАТУРА",
+"A new Text size setting (Settings > Presentation) makes every menu and the words in a fight larger. Buttons show a clear ring when you move with Tab, and with the colorblind palette the element orbs carry a symbol.": "Новая настройка размера текста (Настройки > Отображение) увеличивает все меню и надписи в бою. Кнопки показывают чёткую рамку при переходе клавишей Tab, а с палитрой для дальтоников стихийные сферы несут символ.",
+"READABILITY": "ЧИТАЕМОСТЬ",
+"LARGEST": "САМЫЙ КРУПНЫЙ"
 });

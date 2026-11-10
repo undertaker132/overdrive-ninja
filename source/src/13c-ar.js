@@ -3881,5 +3881,10 @@ Object.assign(AR, {
 "CHEMISTRY": "كيمياء",
 "ALCHEMIST": "خيميائي",
 "Set off an elemental reaction": "أطلق تفاعلًا عنصريًا",
-"Set off 100 elemental reactions": "أطلق 100 تفاعل عنصري"
+"Set off 100 elemental reactions": "أطلق 100 تفاعل عنصري",
+"Set off {n} elemental reactions": "أطلق {n} تفاعلات عنصرية",
+"TEXT SIZE AND KEYBOARD": "حجم النص ولوحة المفاتيح",
+"A new Text size setting (Settings > Presentation) makes every menu and the words in a fight larger. Buttons show a clear ring when you move with Tab, and with the colorblind palette the element orbs carry a symbol.": "إعداد جديد لحجم النص (الإعدادات > العرض) يكبّر كل قائمة والكلمات أثناء القتال. تُظهر الأزرار حلقة واضحة عند التنقل بزر Tab، ومع لوحة عمى الألوان تحمل كرات العناصر رمزًا.",
+"READABILITY": "سهولة القراءة",
+"LARGEST": "الأكبر"
 });

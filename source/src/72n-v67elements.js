@@ -54,6 +54,7 @@ const El = {
       else if (has('venom') && has('frost')) { nm = 'SHATTER'; c = '#b8fff0'; FX.ring(e.x, e.y, 56, '#9be8ff', 4); FX.spark(e.x, e.y, '#e8fbff', 16); e.vulU = G.time + 4; e.vulId = e.uid; damageEnemy(e, D(2.2), ang, 2); }
       else if (has('venom') && has('volt')) { nm = 'PARALYSIS'; c = '#e6ff4d'; FX.ring(e.x, e.y, 140, '#ffe14d', 4); this.stun(e, 1); this.around(e, 140, o => { this.stun(o, .8); FX.bolt(e.x, e.y, o.x, o.y, '#7dff5a', 1); }); damageEnemy(e, D(.8), ang, 2); }
       FX.text(e.x, e.y - (e.r || 14) - 26, lt(nm) + '!', c, 15, true); Aud.sfx('zan');
+      bounty('react', 1); try { Season.track('react', 1); } catch (er) { errLog(er); }
       if (!REPLAY.on) { const d = Store.data; d.reactN = (d.reactN | 0) + 1; ach('react1'); if (d.reactN >= 100) ach('react100'); }
       hint('react', lt('REACTION! Two different elements on one enemy set one off.'));
     } finally { this.busy = 0; }
@@ -101,6 +102,10 @@ const El = {
   // the 3D enemy glows in its element's color while it carries one
   const ae7 = R3.animEnemy.bind(R3);
   R3.animEnemy = function (g, e, t) { ae7(g, e, t); if (!e.exec && El.on(e) && g.bodyMat && g.bodyMat.emissive && !(e.fl > .3)) { g.bodyMat.emissive.set(El.COL[e.el]); g.bodyMat.emissiveIntensity = .35 + Math.sin(t * 9) * .15; } };
+  // a bounty, and from next week a weekly season mission (this week's three missions stay as they are)
+  BOUNTY_TYPES.push({ k: 'react', d: 'Set off {n} elemental reactions', n: 8, r: 160 });
+  { const W0 = 2967, plus = MISSIONS.concat([{ id: 'react', d: 'Set off {n} elemental reactions', n: 40 }]); // week 2967 starts Monday 16 Nov 2026
+    Season.missions = function () { const r = pzRng(weekKey() * 31 + 7), pool = (weekKey() >= W0 ? plus : MISSIONS).slice(), out = []; while (out.length < 3 && pool.length) out.push(pool.splice(Math.floor(r() * pool.length), 1)[0]); return out; }; }
   // achievements
   ACHS.push({ id: 'react1', name: 'CHEMISTRY', d: 'Set off an elemental reaction', r: 100 }, { id: 'react100', name: 'ALCHEMIST', d: 'Set off 100 elemental reactions', r: 500 });
   const css = document.createElement('style'); css.id = 'v67css';
