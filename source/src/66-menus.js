@@ -3,7 +3,8 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 66
+const NEWS = [ // version 67
+  ["ELEMENTS AND REACTIONS", "Hits can now carry fire, frost, volt or venom: the elemental blades carry their own, and four new upgrade cards add one each. Hit an enemy with two different elements to set off a reaction: MELT, OVERLOAD, SUPERCONDUCT, TOXIC FLARE, SHATTER or PARALYSIS."],
   ["YOUR HERO ON THE RESULTS", "After every run your own 3D hero stands at the top of the results: blade raised when you cleared the stage, staggering when you fell."],
   ["RECORDED SOUND", "The fight now sounds real: steel drawn and slicing on every cut, metal on hits and clashes, a heavy chop on Zandatsu, body blows when you are struck, crunching explosions, a force field on Overdrive, coins, lasers and short jingles when you win or lose."],
   ["ONI OF THE CYBER CITY", "Three more enemies are real animated monsters: the brute is a hulking green orc, the void wraith a horned purple demon, the phantom a red demon glowing ghostly cyan. They walk, run, strike and flinch when you hit them. The 3D models now load about twice as fast."],
