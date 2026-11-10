@@ -64,7 +64,7 @@ The game runs straight in the browser and can also be installed as a real app (h
 | **Desktop** (Chrome / Edge) | Open the link → the install icon at the right of the address bar |
 
 ### What's inside
-- **Story** — 8 acts, 70+ stages, voiced dialogue, bosses with their own entrances and falls, comics between chapters, New Game+.
+- **Story** — 23 chapters, 85 stages up to the giant oni king, voiced dialogue, bosses with their own entrances and falls, comics between chapters, New Game+.
 - **Arcade** — endless Maglev Run, boss rush, a rogue-lite tower, a highway chase, daily and weekly challenges, puzzles and a training dojo.
 - **Crates, the forge and evolution** — neon crates with an opening film for every rarity (odds shown, no real money), legendary and mythic blades from crates or the forge, and evolution for blades and heroes.
 - **After the credits** — a player rank from Bronze to Legend, a completion %, boss crowns for every difficulty, a star road, a boss of the week and heroes you can only earn.

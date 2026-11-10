@@ -3,12 +3,12 @@
 Ready-to-paste text for itch.io, Steam or any store page. Hebrew below the English.
 
 ## Short description (≤ 300 characters)
-A neon cyberpunk ninja action game. Dash, slash and parry across the rooftops of Neo-Edo with real animated 3D heroes: 8 story acts, 20+ bosses, elemental reactions, rogue-lite and arcade modes, 30+ weapons, dozens of heroes, up to 480 Hz, controller support.
+A neon cyberpunk ninja action game. Dash, slash and parry across the rooftops of Neo-Edo with real animated 3D heroes: 23 story chapters, 17 bosses including a giant oni king, elemental reactions, rogue-lite and arcade modes, 30+ weapons, dozens of heroes, up to 480 Hz, controller support.
 
 ## Long description
 **Every dash is a cut.** Aim, release, and your blade crosses the roof in a blink. Chain kills, bounce off the rails for guaranteed criticals, slash bullets back at the snipers and finish staggered bosses with Zandatsu strikes.
 
-- **8 story acts, 70+ stages** with voiced dialogue, comic pages between chapters and a secret EX chapter
+- **23 chapters, 85 stages** with voiced dialogue, comic pages between chapters and a secret EX chapter, up to the giant oni king OTAKEMARU
 - **20+ bosses**, each with its own entrance, phases and fall
 - **Arcade:** endless Maglev Run, boss rush, the Neon Tower rogue-lite, a highway chase, daily and weekly challenges, puzzles and a training dojo
 - **Real 3D fighters:** motion-captured heroes with recorded sword combos, animated oni, demons and robots, cinematic crates where the seals tell you the rarity
