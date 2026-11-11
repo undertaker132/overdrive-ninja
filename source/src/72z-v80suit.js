@@ -340,3 +340,34 @@ const Fall80 = {
   const ei1 = R3.enemyInst.bind(R3);
   R3.enemyInst = function (e) { const g = ei1(e); try { if (g && g.clan80) g.mon = Fall80.give(g.clan80); } catch (er) { errLog(er); } return g; };
 }
+/* ---------- the last bare shapes: the diver, the splitter, the treasure and the weaver get real builds (the elite marks stay) ---------- */
+{
+  const em0 = R3.enemyModel.bind(R3);
+  R3.enemyModel = function (e) {
+    const g = em0(e), t = e.type; if (CALM || !g) return g;
+    try {
+      const T = THREE, P0 = this.part.bind(this), col = e.col || '#ff3b5c', body = g.bodyMat, glow = this.glow(col, 2.6), M = this.M;
+      const drop = test => { for (const c of [...g.children]) if (c.isMesh && c.geometry && test(c.geometry.type, c.geometry.parameters || {}, c)) g.remove(c); };
+      if (t === ET.DIVER) { // a torpedo: a dark nose, a lit eye, four fins, an engine
+        drop((ty, q) => ty === 'SphereGeometry' && (Math.abs(q.radius - .85) < .01 || Math.abs(q.radius - .3) < .01));
+        P0(new T.CapsuleGeometry(.46, 1.1, 6, 16).rotateZ(Math.PI / 2), body, 0, 0, .9, g); P0(new T.ConeGeometry(.46, .75, 16).rotateZ(-Math.PI / 2), M.dark, 1.0, 0, .9, g);
+        P0(new T.SphereGeometry(.17, 10, 8), glow, .78, 0, 1.18, g); P0(new T.TorusGeometry(.47, .05, 6, 20).rotateY(Math.PI / 2), glow, .45, 0, .9, g);
+        for (let i = 0; i < 4; i++) { const f = new T.Group(); f.position.set(-.85, 0, .9); f.rotation.x = i * Math.PI / 2 + Math.PI / 4; g.add(f); P0(new T.BoxGeometry(.5, .06, .42), M.armor2 || M.dark, 0, 0, .42, f); }
+        P0(new T.CylinderGeometry(.24, .32, .22, 14).rotateZ(Math.PI / 2), glow, -1.12, 0, .9, g);
+      } else if (t === ET.SPLITTER) { // two armored halves pressed together around a lit seam, about to come apart
+        drop((ty, q) => (ty === 'SphereGeometry' && Math.abs(q.radius - .68) < .01) || (ty === 'BoxGeometry' && Math.abs(q.depth - 1.2) < .01));
+        for (const s of [-1, 1]) { const h = P0(new T.SphereGeometry(.7, 18, 14, 0, Math.PI), body, 0, s * .06, .82, g); h.rotation.x = s > 0 ? -Math.PI / 2 : Math.PI / 2; h.scale.set(1, 1, .82);
+          P0(new T.TorusGeometry(.52, .07, 6, 22).rotateX(Math.PI / 2), M.armor || M.dark, 0, s * .4, .82, g); P0(new T.SphereGeometry(.11, 8, 8), glow, .6, s * .26, 1.02, g); }
+        P0(new T.CylinderGeometry(.66, .66, .05, 24), glow, 0, 0, .82, g); // (a cylinder stands along y: the seam between the halves)
+      } else if (t === ET.TREASURE) { // the coin gets a raised rim and a lit emblem on both faces
+        const c = g.children.find(o => o.isMesh && o.geometry && o.geometry.type === 'CylinderGeometry' && Math.abs((o.geometry.parameters || {}).radiusTop - 1) < .01);
+        if (c) { const gold = this.gold80 || (this.gold80 = (() => { const m = R3.std({ color: new T.Color('#ffc936'), metalness: .55, roughness: .32 }); m.emissive = new T.Color('#ffb000'); m.emissiveIntensity = .22; return m; })()); c.material = gold; const rim = new T.Mesh(new T.TorusGeometry(1, .11, 8, 28), gold); c.add(rim); // (the coin's own axis is its local z; a bright gold that reads on the night roof)
+          for (const s of [-1, 1]) { const em = new T.Mesh(new T.OctahedronGeometry(.45, 0), glow); em.scale.set(1, 1, .3); em.position.z = s * .16; c.add(em); } }
+      } else if (t === ET.WEAVER) { // threads of light from the heart to its three nodes
+        const thread = this.glow(col, 1.6); for (const a of g.anim) if (a[0] === 'orbit' && a[1]) { const o = a[1]; P0(new T.CylinderGeometry(.03, .03, 1.3, 4).rotateZ(Math.PI / 2), thread, .7, 0, 0, o); }
+        P0(new T.TorusGeometry(1.15, .05, 6, 32), glow, 0, 0, 1.6, g);
+      }
+    } catch (er) { errLog(er); }
+    return g;
+  };
+}
