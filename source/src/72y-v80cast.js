@@ -16,21 +16,21 @@
 for (const n of ['knight', 'barbarian', 'mage', 'rogue', 'rogue_hooded', 'skeleton_warrior', 'skeleton_minion', 'skeleton_mage', 'skeleton_rogue', 'anims']) Models.src['kk_' + n] = 'models/kk_' + n + '.glb';
 const Cast = {
   H: 44, // the hero's height in game units
-  BODY: { // skin body -> [model, { hat: show its own helmet/hat/hood, add: parts worn from other characters, hide: its own parts they replace, horn, ears, skin, glass }]
-    ninja: ['rogue_hooded'], shinobi2: ['rogue_hooded', { add: ['mage:Mage_Cape'], hide: /Rogue_Cape/ }], netrunner: ['rogue_hooded', { hide: /Rogue_Cape/, add: ['knight:Knight_ArmLeft', 'knight:Knight_ArmRight'] }],
-    tengu: ['rogue_hooded', { add: ['barbarian:Barbarian_Cape'], hide: /Rogue_Cape/, horn: 'dragon' }], reaper: ['skeleton_rogue', { hat: 1, add: ['mage:Mage_Cape'] }], hunter: ['rogue_hooded', { add: ['barbarian:Barbarian_Cape', 'barbarian:Barbarian_LegLeft', 'barbarian:Barbarian_LegRight'], hide: /Rogue_Cape|Rogue_Leg/ }],
-    kitsune: ['rogue', { ears: 'fox', add: ['mage:Mage_Cape'], hide: /Rogue_Cape/ }], neko: ['rogue', { ears: 'cat' }], foxsage: ['mage', { ears: 'fox' }], idol: ['mage', { add: ['knight:Knight_Cape'], hide: /Mage_Cape/ }],
-    ronin: ['rogue', { add: ['barbarian:Barbarian_Body', 'knight:Knight_Cape'], hide: /Rogue_Body|Rogue_Cape/ }], pixel: ['rogue', { add: ['knight:Knight_Helmet'] }], blaze: ['barbarian', { horn: 'flame' }],
-    stormkid: ['rogue', { add: ['mage:Mage_Cape', 'mage:Mage_ArmLeft', 'mage:Mage_ArmRight'], hide: /Rogue_Cape|Rogue_Arm/ }], breather: ['knight', { add: ['rogue_hooded:Rogue_Head_Hooded'], hide: /Knight_Head|Knight_Helmet/ }],
-    captain: ['knight', { add: ['barbarian:Barbarian_Hat'], hide: /Knight_Helmet/ }], saiyan: ['barbarian', { add: ['knight:Knight_ArmLeft', 'knight:Knight_ArmRight'], hide: /Barbarian_Arm/ }],
-    oni: ['barbarian', { skin: '#c4402e', horn: 'oni' }], raijin: ['barbarian', { skin: '#5d7fd6', horn: 'oni', add: ['mage:Mage_Cape'] }], ashura: ['barbarian', { skin: '#b4365c', horn: 'oni', add: ['knight:Knight_Body'], hide: /Barbarian_Body/ }],
-    wolf: ['barbarian', { hat: 1, ears: 'wolf' }], viking: ['barbarian', { hat: 1, add: ['knight:Knight_Body'], hide: /Barbarian_Body/ }], yeti: ['barbarian', { hat: 1, skin: '#dfe8f2' }],
-    knight: ['knight', { hat: 1 }], mecha: ['knight', { hat: 1, hide: /Knight_Cape/ }], dragon: ['knight', { horn: 'dragon', add: ['skeleton_warrior:Skeleton_Warrior_Cloak'], hide: /Knight_Cape/ }],
-    shogun: ['knight', { hat: 1, add: ['barbarian:Barbarian_Cape'], hide: /Knight_Cape/ }], sovereign: ['knight', { hat: 1, add: ['mage:Mage_Cape'], hide: /Knight_Cape/ }], rider: ['knight', { add: ['skeleton_warrior:Skeleton_Warrior_Helmet'], hide: /Knight_Cape/ }],
-    chromesam: ['knight', { hat: 1, add: ['rogue:Rogue_Cape'], hide: /Knight_Cape/ }], exo: ['knight', { add: ['skeleton_warrior:Skeleton_Warrior_Helmet', 'mage:Mage_Cape'], hide: /Knight_Cape/ }],
-    seraph: ['mage', { add: ['knight:Knight_Body', 'knight:Knight_Cape'], hide: /Mage_Body|Mage_Cape/ }], veil: ['mage', { add: ['skeleton_rogue:Skeleton_Rogue_Hood'] }], witch: ['mage', { hat: 1 }], pumpkin: ['mage', { hat: 1, skin: '#ff8a2a' }],
-    skull: ['skeleton_warrior', { hat: 1 }], lich: ['skeleton_mage', { hat: 1, add: ['mage:Mage_Cape'] }], yurei: ['skeleton_rogue', { hat: 1 }], goo: ['skeleton_minion', { glass: 1 }]
+  BODY: { // every character a ninja of its own: [model, { hood: its own hood, hat: its helmet, add: parts worn from other characters, hide: its parts they replace, horn, ears, skin, glass, mask: 0 no mask }]
+    ninja: ['rogue_hooded', { hood: 1 }], shinobi2: ['rogue_hooded', { hood: 1, add: ['mage:Mage_Cape'], hide: /Rogue_Cape/ }], netrunner: ['rogue_hooded', { hood: 1, hide: /Rogue_Cape/, add: ['knight:Knight_ArmLeft', 'knight:Knight_ArmRight'] }],
+    tengu: ['rogue_hooded', { hood: 1, add: ['barbarian:Barbarian_Cape'], hide: /Rogue_Cape/, horn: 'dragon' }], reaper: ['rogue_hooded', { hood: 1, add: ['mage:Mage_Cape'], hide: /Rogue_Cape/ }], hunter: ['rogue_hooded', { hood: 1, add: ['barbarian:Barbarian_Cape'], hide: /Rogue_Cape/ }],
+    stormkid: ['rogue_hooded', { hood: 1, add: ['mage:Mage_ArmLeft', 'mage:Mage_ArmRight'], hide: /Rogue_Arm/ }], witch: ['rogue_hooded', { hood: 1, add: ['mage:Mage_Cape', 'mage:Mage_Body'], hide: /Rogue_Cape|Rogue_Body/ }], veil: ['rogue_hooded', { hood: 1, add: ['mage:Mage_Body'], hide: /Rogue_Body/ }],
+    dragon: ['rogue_hooded', { hood: 1, horn: 'dragon', add: ['knight:Knight_ArmLeft', 'knight:Knight_ArmRight'], hide: /Rogue_Arm/ }],
+    kitsune: ['rogue', { ears: 'fox', add: ['mage:Mage_Cape'], hide: /Rogue_Cape/ }], neko: ['rogue', { ears: 'cat' }], foxsage: ['rogue', { ears: 'fox', add: ['mage:Mage_Body'], hide: /Rogue_Body/ }], wolf: ['rogue', { ears: 'wolf', add: ['barbarian:Barbarian_Cape'], hide: /Rogue_Cape/ }],
+    idol: ['rogue', { add: ['knight:Knight_Cape'], hide: /Rogue_Cape/ }], ronin: ['rogue', { add: ['barbarian:Barbarian_Body', 'knight:Knight_Cape'], hide: /Rogue_Body|Rogue_Cape/ }], pixel: ['rogue', { add: ['knight:Knight_ArmLeft', 'knight:Knight_ArmRight'], hide: /Rogue_Arm/ }],
+    blaze: ['rogue', { horn: 'oni', add: ['barbarian:Barbarian_Cape'], hide: /Rogue_Cape/ }], breather: ['rogue', { add: ['knight:Knight_Body'], hide: /Rogue_Body/ }], captain: ['rogue', { add: ['knight:Knight_Body', 'knight:Knight_Cape'], hide: /Rogue_Body|Rogue_Cape/ }], pumpkin: ['rogue_hooded', { hood: 1, skin: '#ff8a2a' }], seraph: ['rogue', { add: ['knight:Knight_Body', 'mage:Mage_Cape'], hide: /Rogue_Body|Rogue_Cape/ }],
+    saiyan: ['barbarian', { add: ['rogue:Rogue_Head', 'knight:Knight_ArmLeft', 'knight:Knight_ArmRight'], hide: /Barbarian_Head|Barbarian_Arm|Barbarian_Hat/ }], viking: ['barbarian', { add: ['rogue:Rogue_Head'], hide: /Barbarian_Head|Barbarian_Hat/, horn: 'oni' }], yeti: ['barbarian', { skin: '#dfe8f2', add: ['rogue_hooded:Rogue_Head_Hooded'], hide: /Barbarian_Head|Barbarian_Hat/, hood: 1 }],
+    oni: ['barbarian', { skin: '#c4402e', horn: 'oni', mask: 0 }], raijin: ['barbarian', { skin: '#5d7fd6', horn: 'oni', add: ['mage:Mage_Cape'], mask: 0 }], ashura: ['barbarian', { skin: '#b4365c', horn: 'oni', add: ['knight:Knight_Body'], hide: /Barbarian_Body/, mask: 0 }],
+    knight: ['knight', { add: ['rogue_hooded:Rogue_Head_Hooded'], hide: /Knight_Head|Knight_Helmet/, hood: 1 }], mecha: ['knight', { add: ['rogue:Rogue_Head'], hide: /Knight_Head|Knight_Helmet|Knight_Cape/ }], shogun: ['knight', { add: ['rogue:Rogue_Head'], hide: /Knight_Head|Knight_Helmet|Knight_Cape/, horn: 'dragon' }], sovereign: ['knight', { add: ['rogue:Rogue_Head', 'mage:Mage_Cape'], hide: /Knight_Head|Knight_Helmet|Knight_Cape/ }],
+    rider: ['knight', { add: ['rogue_hooded:Rogue_Head_Hooded'], hide: /Knight_Head|Knight_Helmet|Knight_Cape/, hood: 1 }], chromesam: ['knight', { add: ['rogue:Rogue_Head', 'rogue:Rogue_Cape'], hide: /Knight_Head|Knight_Helmet|Knight_Cape/ }], exo: ['knight', { add: ['rogue_hooded:Rogue_Head_Hooded', 'mage:Mage_Cape'], hide: /Knight_Head|Knight_Helmet|Knight_Cape/, hood: 1 }],
+    skull: ['skeleton_rogue', { hat: 1, mask: 0 }], lich: ['skeleton_rogue', { hat: 1, add: ['mage:Mage_Cape'], mask: 0 }], yurei: ['skeleton_rogue', { hat: 1, mask: 0 }], goo: ['skeleton_minion', { glass: 1, mask: 0 }]
   },
+
 
   // weapon family -> [model it comes from, right hand mesh, left hand mesh]
   WPN: { blade: ['knight', '1H_Sword'], saber: ['knight', '1H_Sword'], long: ['knight', '2H_Sword'], dual: ['rogue_hooded', 'Knife', 'Knife_Offhand'], hammer: ['barbarian', '2H_Axe'], cleaver: ['barbarian', '2H_Axe'],
@@ -66,7 +66,7 @@ const Cast = {
     const d = g.getImageData(0, 0, W, H), px = d.data, e = document.createElement('canvas'); e.width = W; e.height = H; const ge = e.getContext('2d'), ed = ge.createImageData(W, H), ep = ed.data;
     // (the KayKit atlas, measured: skin h 18-28 s .8+ l .7-.86; bone and cream h 25-36 s .45-.62 l .65+; leather h 10-30 s .3-.55 l .35-.62;
     //  metal and cloth-gray s < .2; dyed cloth any other hue; the bright gem and glow swatches s .85+ in pure hues)
-    const A = new T.Color(a), B = new T.Color(b), SK = sk ? new T.Color(sk) : null, DK = new T.Color('#0b0e1a'), SUIT = new T.Color('#151a2e').lerp(A, .3), STRAP = new T.Color('#120d16').lerp(B, .55), hsl = {}, tmp = new T.Color();
+    const A = new T.Color(a), B = new T.Color(b), SK = sk ? new T.Color(sk) : null, DK = new T.Color('#0b0e1a'), SUIT = new T.Color('#121626').lerp(A, .14), STRAP = new T.Color('#120d16').lerp(B, .55), hsl = {}, tmp = new T.Color();
     for (let i = 0; i < px.length; i += 4) {
       tmp.setRGB(px[i] / 255, px[i + 1] / 255, px[i + 2] / 255); tmp.getHSL(hsl); const h = hsl.h * 360, s = hsl.s, l = hsl.l; let glow = 0;
       const skin = h >= 8 && h <= 36 && s >= .6 && l >= .62 && l <= .9, bone = h >= 22 && h <= 40 && s >= .4 && s < .66 && l >= .64, leather = h >= 8 && h <= 32 && s >= .28 && s < .6 && l < .64;
@@ -78,7 +78,7 @@ const Cast = {
       else if (leather) tmp.copy(DK).lerp(STRAP, Math.min(1, l / .55)); // belts, boots, straps: the secondary color, dark
       else if (s > .85 && l > .35) { tmp.copy(A); glow = 1; } // gems, eyes and glow swatches: neon
       else { // dyed cloth: a dark suit in the main color, its light folds lit, the brightest trims glowing
-        if (l < .3) tmp.copy(DK).lerp(SUIT, l / .3); else if (l < .6) tmp.copy(SUIT).lerp(A, (l - .3) / .3 * .45); else { tmp.copy(SUIT).lerp(A, .45 + Math.min(.55, (l - .6) / .25 * .55)); glow = .7; } }
+        if (l < .3) tmp.copy(DK).lerp(SUIT, l / .3); else if (l < .62) tmp.copy(SUIT).lerp(A, (l - .3) / .32 * .22); else { tmp.copy(SUIT).lerp(A, .4 + Math.min(.5, (l - .62) / .25 * .5)); glow = .75; } } // (a ninja's suit: dark, its brightest trims in the skin's neon)
       px[i] = tmp.r * 255; px[i + 1] = tmp.g * 255; px[i + 2] = tmp.b * 255;
       if (glow) { const gc = kind === 'weapon' ? new T.Color(1, 1, 1) : A; ep[i] = gc.r * 255 * glow; ep[i + 1] = gc.g * 255 * glow; ep[i + 2] = gc.b * 255 * glow; } else if (kind !== 'weapon') { ep[i] = tmp.r * 255 * AMB; ep[i + 1] = tmp.g * 255 * AMB; ep[i + 2] = tmp.b * 255 * AMB; } ep[i + 3] = 255; // (a faint light of its own: the cast stays readable on a night roof)
     }
@@ -133,7 +133,16 @@ const Cast = {
   },
   /* horns and ears, cut in the same faceted style as the characters, on the head bone */
   extras(head, opt, a, b) {
-    if (!head || !(opt.horn || opt.ears)) return; const T = THREE;
+    if (!head) return; const T = THREE;
+    if (opt.mask !== 0) { // the ninja's cloth mask over the nose and mouth, and the headband with its tails
+      const cl = new T.MeshStandardMaterial({ color: new T.Color('#10131e').lerp(new T.Color(b), .18), roughness: .85, metalness: 0, side: T.DoubleSide });
+      const mk2 = (geo, m) => { const q = new T.Mesh(geo, m); q.castShadow = true; head.add(q); return q; };
+      const mask = mk2(new T.CylinderGeometry(.55, .5, .2, 24, 1, true, -1.85, 3.7), cl); mask.position.set(0, .1, .04);
+      if (!opt.hood) { const bandM = new T.MeshStandardMaterial({ color: new T.Color(a).multiplyScalar(.6), emissive: new T.Color(a), emissiveIntensity: .55, roughness: .5 });
+        const band = mk2(new T.CylinderGeometry(.565, .565, .09, 28, 1, true), bandM); band.position.set(0, .56, 0);
+        for (const s2 of [-1, 1]) { const tl = mk2(new T.BoxGeometry(.09, .04, .55), bandM); tl.position.set(s2 * .1, .52, -.78); tl.rotation.set(.55, s2 * .25, 0); } }
+    }
+    if (!(opt.horn || opt.ears)) return;
     const mk = (geo, col, emi) => { const m = new T.Mesh(geo, new T.MeshStandardMaterial({ color: col, roughness: .55, metalness: .1, emissive: new T.Color(emi || '#000000'), emissiveIntensity: emi ? .5 : 0, flatShading: true })); m.castShadow = true; head.add(m); return m; };
     for (const s of [-1, 1]) {
       if (opt.horn) { const dr = opt.horn === 'dragon', h = mk(new T.ConeGeometry(dr ? .1 : .13, dr ? .55 : .45, 6), dr ? '#e8e0c8' : '#f0e2c0', null); h.position.set(s * (dr ? .3 : .36), dr ? 1.02 : .98, dr ? -.12 : .05); h.rotation.set(dr ? -.7 : -.15, 0, -s * (dr ? .35 : .55)); }
