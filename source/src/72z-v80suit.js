@@ -372,3 +372,9 @@ const Fall80 = {
     return g;
   };
 }
+/* ---------- every plain body on the armored frame: the smooth mannequin read as an insect (a round belly, ball joints, thin limbs) ---------- */
+{
+  const SMOOTH = { skull: 1, lich: 1, reaper: 1, pumpkin: 1, dragon: 1, goo: 1, yurei: 1, veil: 1 }; // (the bodies whose look is drawn on the smooth body)
+  const hb0 = Human.base.bind(Human);
+  Human.base = function (body) { const b = hb0(body); if (b !== 'xbot' || window.__noArmor80 || SMOOTH[body] || !Models.ok('soldier')) return b; if (typeof FACE !== 'undefined' && FACE[body]) return b; return 'soldier'; };
+}
