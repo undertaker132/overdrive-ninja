@@ -221,7 +221,7 @@ const Suit = {
     for (const e of sw) if (e[1] === 'tail' && !e[0].children.some(c => c.userData.seg80 !== undefined && !c.isMesh)) { const seg = e[0]; if (seg.children.some(c => !c.isMesh)) continue; const m = seg.children.find(c => c.isMesh); if (!m || seg.userData.tip80) continue; seg.userData.tip80 = 1;
       const r = m.geometry.parameters ? m.geometry.parameters.radius : 1, tip = new T.Mesh(new T.ConeGeometry(r * .9, 3.4, 10).rotateZ(Math.PI / 2), m.material); tip.position.x = -1.5 - 1.1 - 1.7; tip.userData.cloth80 = 1; seg.add(tip); }
   },
-  on() { return !CALM; }
+  on() { return !CALM && !window.__noSuit80; } // (__noSuit80: a test switch for before/after captures)
 };
 {
   const hb = Human.build.bind(Human);
@@ -315,3 +315,28 @@ const Clan80 = {
   Models.inst = function (id) { const gl = this.got[id]; if (gl && !gl.shared80) { gl.shared80 = 1; gl.scene.traverse(o => { if (o.geometry) o.geometry.userData.shared = 1; }); } return in0.apply(this, arguments); };
 }
 Pipe.on('post', 'shared80', () => { for (const id in Models.got) { const gl = Models.got[id]; if (gl && gl.scene && !gl.shared80) { gl.shared80 = 1; gl.scene.traverse(o => { if (o.geometry) o.geometry.userData.shared = 1; }); } } }, 99);
+/* ---------- the clan falls: a death clip made for the smooth and the armored bodies (they came without one) ---------- */
+const Fall80 = {
+  /* the idle pose of every bone, held, and on top of it: the hips tip back and drop, the spine curls, the head rolls back, the arms fly out, the knees give */
+  clip(gl, idle) {
+    if (gl.fall80) return gl.fall80; const T = THREE, D = .62, tracks = [], ease = [0, .18, .4, .62], k = [0, .35, .8, 1];
+    const rot = (q0, ax, ang) => ease.map((tt, i) => q0.clone().multiply(new T.Quaternion().setFromAxisAngle(ax, ang * k[i])));
+    const X = new T.Vector3(1, 0, 0), Z = new T.Vector3(0, 0, 1);
+    for (const tr of idle.tracks) {
+      const [node, prop] = tr.name.split('.'), n = node.replace(/^mixamorig:?/, ''), v = tr.values, sz = tr.getValueSize();
+      if (prop === 'quaternion') { const q0 = new T.Quaternion(v[0], v[1], v[2], v[3]); let qs = null;
+        if (n === 'Hips') qs = rot(q0, X, -1.35); else if (n === 'Spine' || n === 'Spine1') qs = rot(q0, X, .22); else if (n === 'Neck' || n === 'Head') qs = rot(q0, X, -.35);
+        else if (n === 'LeftArm') qs = rot(q0, Z, .7); else if (n === 'RightArm') qs = rot(q0, Z, -.7); else if (n === 'LeftUpLeg' || n === 'RightUpLeg') qs = rot(q0, X, .45); else if (n === 'LeftLeg' || n === 'RightLeg') qs = rot(q0, X, -.6);
+        const out = []; for (let i = 0; i < 4; i++) { const q = qs ? qs[i] : q0; out.push(q.x, q.y, q.z, q.w); } tracks.push(new T.QuaternionKeyframeTrack(tr.name, ease.map(x => x * D / .62), out)); }
+      else if (prop === 'position' && n === 'Hips') { const p0 = new T.Vector3(v[0], v[1], v[2]), out = []; for (let i = 0; i < 4; i++) { out.push(p0.x, p0.y * (1 - .72 * k[i]), p0.z - Math.abs(p0.y) * .35 * k[i]); } tracks.push(new T.VectorKeyframeTrack(tr.name, ease.map(x => x * D / .62), out)); }
+      else if (sz === 3 && prop !== 'scale') { tracks.push(new T.VectorKeyframeTrack(tr.name, [0], Array.from(v.slice(0, 3)))); }
+    }
+    return (gl.fall80 = new T.AnimationClip('Death', D, tracks));
+  },
+  give(h) { const r = h.human && h.human.r; if (!r || r.acts.Death) return r; const gl = Models.got[r.base]; if (!gl) return r; const idle = gl.animations.find(a => /^idle$/i.test(a.name)); if (!idle) return r;
+    r.acts.Death = r.mixer.clipAction(this.clip(gl, idle)); return r; }
+};
+{
+  const ei1 = R3.enemyInst.bind(R3);
+  R3.enemyInst = function (e) { const g = ei1(e); try { if (g && g.clan80) g.mon = Fall80.give(g.clan80); } catch (er) { errLog(er); } return g; };
+}
