@@ -29035,9 +29035,9 @@ Object.assign(R3, {
     for (const s of q) s.t += rd;
     const pos = this.trail.geometry.attributes.position.array, colA = this.trail.geometry.attributes.color.array, c = this.tc.copy(hg.bladeMat ? hg.bladeMat.emissive : new T.Color('#00f2fe'));
     let any = false;
-    for (let i = 0; i < this.TN; i++) { const s = q[Math.min(i, q.length - 1)], al = i < q.length ? Math.max(0, 1 - s.t / .16) * s.k * (1 - i / this.TN) : 0, o = i * 6; if (al > .02) any = true;
+    for (let i = 0; i < this.TN; i++) { const s = q[Math.min(i, q.length - 1)], al = i < q.length ? Math.max(0, 1 - s.t / .12) * s.k * (1 - i / this.TN) : 0, o = i * 6; if (al > .02) any = true;
       pos[o] = s.a.x; pos[o + 1] = s.a.y; pos[o + 2] = s.a.z; pos[o + 3] = s.b.x; pos[o + 4] = s.b.y; pos[o + 5] = s.b.z;
-      colA[o] = c.r * al * .35; colA[o + 1] = c.g * al * .35; colA[o + 2] = c.b * al * .35; colA[o + 3] = c.r * al * 1.6; colA[o + 4] = c.g * al * 1.6; colA[o + 5] = c.b * al * 1.6; }
+      colA[o] = c.r * al * .12; colA[o + 1] = c.g * al * .12; colA[o + 2] = c.b * al * .12; colA[o + 3] = c.r * al * 1.1; colA[o + 4] = c.g * al * 1.1; colA[o + 5] = c.b * al * 1.1; } /* (v80: a lighter, shorter trail: the hero stays readable inside the cut) */
     this.trail.visible = any && !CALM; this.trail.geometry.attributes.position.needsUpdate = true; this.trail.geometry.attributes.color.needsUpdate = true;
   },
   /* ---------- dash afterimages ---------- */
