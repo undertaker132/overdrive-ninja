@@ -20,7 +20,7 @@ const Cast = {
     ninja: ['rogue_hooded', { hood: 1 }], shinobi2: ['rogue_hooded', { hood: 1, add: ['mage:Mage_Cape'], hide: /Rogue_Cape/ }], netrunner: ['rogue_hooded', { hood: 1, hide: /Rogue_Cape/, add: ['knight:Knight_ArmLeft', 'knight:Knight_ArmRight'] }],
     tengu: ['rogue_hooded', { hood: 1, add: ['barbarian:Barbarian_Cape'], hide: /Rogue_Cape/, horn: 'dragon' }], reaper: ['rogue_hooded', { hood: 1, add: ['mage:Mage_Cape'], hide: /Rogue_Cape/ }], hunter: ['rogue_hooded', { hood: 1, add: ['barbarian:Barbarian_Cape'], hide: /Rogue_Cape/ }],
     stormkid: ['rogue_hooded', { hood: 1, add: ['mage:Mage_ArmLeft', 'mage:Mage_ArmRight'], hide: /Rogue_Arm/ }], witch: ['rogue_hooded', { hood: 1, add: ['mage:Mage_Cape', 'mage:Mage_Body'], hide: /Rogue_Cape|Rogue_Body/ }], veil: ['rogue_hooded', { hood: 1, add: ['mage:Mage_Body'], hide: /Rogue_Body/ }],
-    dragon: ['rogue_hooded', { hood: 1, horn: 'dragon', add: ['knight:Knight_ArmLeft', 'knight:Knight_ArmRight'], hide: /Rogue_Arm/ }],
+    dragon: ['rogue', { horn: 'dragon', add: ['knight:Knight_ArmLeft', 'knight:Knight_ArmRight'], hide: /Rogue_Arm/ }],
     kitsune: ['rogue', { ears: 'fox', add: ['mage:Mage_Cape'], hide: /Rogue_Cape/ }], neko: ['rogue', { ears: 'cat' }], foxsage: ['rogue', { ears: 'fox', add: ['mage:Mage_Body'], hide: /Rogue_Body/ }], wolf: ['rogue', { ears: 'wolf', add: ['barbarian:Barbarian_Cape'], hide: /Rogue_Cape/ }],
     idol: ['rogue', { add: ['knight:Knight_Cape'], hide: /Rogue_Cape/ }], ronin: ['rogue', { add: ['barbarian:Barbarian_Body', 'knight:Knight_Cape'], hide: /Rogue_Body|Rogue_Cape/ }], pixel: ['rogue', { add: ['knight:Knight_ArmLeft', 'knight:Knight_ArmRight'], hide: /Rogue_Arm/ }],
     blaze: ['rogue', { horn: 'oni', add: ['barbarian:Barbarian_Cape'], hide: /Rogue_Cape/ }], breather: ['rogue', { add: ['knight:Knight_Body'], hide: /Rogue_Body/ }], captain: ['rogue', { add: ['knight:Knight_Body', 'knight:Knight_Cape'], hide: /Rogue_Body|Rogue_Cape/ }], pumpkin: ['rogue_hooded', { hood: 1, skin: '#ff8a2a' }], seraph: ['rogue', { add: ['knight:Knight_Body', 'mage:Mage_Cape'], hide: /Rogue_Body|Rogue_Cape/ }],
@@ -261,14 +261,17 @@ const CastBoss = { // boss -> [body, weapon, second color, size]
   Pipe.on('post', 'castboss80', () => { const b = Boss.cur, D = b && CastBoss[b.id]; if (D && R3.ok && W3D.live) Cast.ready(D[0], D[1]); }, 99);
 }
 /* ---------- the enemies that walk on two legs join the cast: skeletons rise out of the roof when they appear and fall apart when they die ---------- */
-Object.assign(Cast.BODY, { e_minion: ['skeleton_minion'], e_mage: ['skeleton_mage', { hat: 1 }], e_rogue: ['skeleton_rogue', { hat: 1 }], e_warrior: ['skeleton_warrior', { hat: 1 }], e_shade: ['rogue_hooded'], e_thief: ['rogue'],
+Object.assign(Cast.BODY, { e_minion: ['skeleton_minion', { mask: 0 }], e_mage: ['skeleton_mage', { hat: 1, mask: 0 }], e_rogue: ['skeleton_rogue', { hat: 1, mask: 0 }], e_warrior: ['skeleton_warrior', { hat: 1, mask: 0 }], e_shade: ['rogue_hooded', { hood: 1 }], e_thief: ['rogue'],
+  e_brute: ['barbarian', { horn: 'oni', mask: 0, skin: '#8a2a22' }], e_guard: ['knight', { add: ['rogue_hooded:Rogue_Head_Hooded'], hide: /Knight_Head|Knight_Helmet/, hood: 1 }], e_archer: ['rogue_hooded', { hood: 1 }], e_ghost: ['rogue_hooded', { hood: 1, glass: 1 }], e_wraith: ['skeleton_mage', { hat: 1, glass: 1, mask: 0 }],
   boss_shogun: ['knight', { hat: 1, horn: 'dragon' }], boss_prime: ['barbarian', { horn: 'oni', skin: '#c89a2a' }], boss_genesis: ['skeleton_warrior', { hat: 1 }] });
 Object.assign(CastBoss, { shogun: ['boss_shogun', 'nodachi', '#ffd23f', 1.3], prime: ['boss_prime', 'cleaver', '#ff2a4a', 1.35], genesis: ['boss_genesis', 'scythe', '#ffd700', 1.45] });
 const CastFoe = {
   T: null, // enemy type -> [body, weapon, size, second color, skeleton]
   init() { if (this.T) return; this.T = { [ET.SPLITTER]: ['e_minion', 'katana', 1.15, '#1a1020', 1], [ET.MINI]: ['e_minion', 'kunai', 1.25, '#1a1020', 1], [ET.MEDIC]: ['e_mage', 'staff', 1.2, '#10201a', 1],
     [ET.MIMIC]: ['e_rogue', 'kunai', 1.15, '#1a0d20', 1], [ET.MINER]: ['e_warrior', 'hammer', 1.1, '#20160c', 1], [ET.MIRROR]: ['e_warrior', 'katana', 1.1, '#0c1626', 1],
-    [ET.CLONE]: ['e_shade', 'katana', 1.15, '#ff0844', 0], [ET.COURIER]: ['e_thief', 'kunai', 1.1, '#3a2a08', 0] }; },
+    [ET.CLONE]: ['e_shade', 'katana', 1.15, '#ff0844', 0], [ET.COURIER]: ['e_thief', 'kunai', 1.1, '#3a2a08', 0],
+    [ET.BRUTE]: ['e_brute', 'hammer', 1.4, '#1a0d0a', 0], [ET.ENFORCER]: ['e_guard', 'spear', 1.35, '#14141e', 0], [ET.WARDEN]: ['e_guard', 'hammer', 1.3, '#0c1626', 0], [ET.SNIPER]: ['e_archer', 'bow', 1.15, '#14141e', 0],
+    [ET.PHANTOM]: ['e_ghost', 'claws', 1.15, '#7df9ff', 0], [ET.WRAITH]: ['e_wraith', 'staff', 1.3, '#3a3aff', 1] }; },
   pick(e) { this.init(); const D = this.T[e.type]; return D && Cast.ready(D[0], D[1]) ? D : null; }
 };
 {
