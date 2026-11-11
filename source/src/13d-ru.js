@@ -3970,5 +3970,10 @@ Object.assign(RU, {
 "THE ONI KING'S SPOILS": "ТРОФЕИ КОРОЛЯ ОНИ",
 "Defeat OTAKEMARU to claim his armor as the ONI KING hero skin and his red-hot iron as the KING'S IRON blade. Chapters 21, 22 and 23 now open with comic pages, and the oni king has his own portrait.": "Победи Отакэмару, чтобы получить его броню — облик героя КОРОЛЬ ОНИ — и его раскалённое железо — клинок ЖЕЛЕЗО КОРОЛЯ. Главы 21, 22 и 23 теперь открываются страницами комикса, а у короля они появился свой портрет.",
 "The oni king of the old legends, rebuilt in iron as tall as a building. Leave the red circles when his fists fall, cut the fists while they are down, and break both to bring him to his knees.": "Король они из старых легенд, заново выкованный из железа, ростом с дом. Уходи из красных кругов, когда падают его кулаки, руби кулаки, пока они на земле, и разбей оба, чтобы поставить его на колени.",
-"Boss taiko war metal": "Боевой тайко-метал босса"
+"Boss taiko war metal": "Боевой тайко-метал босса",
+"CHARACTERS": "ПЕРСОНАЖИ",
+"Character style": "Стиль персонажей",
+"CLASSIC": "КЛАССИКА",
+"STYLIZED": "СТИЛИЗОВАННЫЙ",
+"STYLIZED: hand-made stylized characters with their own recorded animations, in your skins' colors. CLASSIC: the game's own designs.": "СТИЛИЗОВАННЫЙ: стилизованные персонажи ручной работы со своими записанными анимациями, в цветах твоих обликов. КЛАССИКА: собственные дизайны игры."
 });

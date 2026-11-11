@@ -3970,5 +3970,10 @@ Object.assign(AR, {
 "THE ONI KING'S SPOILS": "غنائم ملك الأوني",
 "Defeat OTAKEMARU to claim his armor as the ONI KING hero skin and his red-hot iron as the KING'S IRON blade. Chapters 21, 22 and 23 now open with comic pages, and the oni king has his own portrait.": "اهزم أوتاكيمارو لتحصل على درعه كمظهر البطل ملك الأوني وعلى حديده المتوهج كشفرة حديد الملك. والفصول 21 و22 و23 تُفتتح الآن بصفحات كوميك، ولملك الأوني صورته الخاصة.",
 "The oni king of the old legends, rebuilt in iron as tall as a building. Leave the red circles when his fists fall, cut the fists while they are down, and break both to bring him to his knees.": "ملك الأوني من الأساطير القديمة، أعيد بناؤه من الحديد بطول مبنى. اخرج من الدوائر الحمراء حين تسقط قبضتاه، واقطع القبضتين وهما على الأرض، وحطّمهما لتجبره على الركوع.",
-"Boss taiko war metal": "ميتال طبول تايكو حربي للزعيم"
+"Boss taiko war metal": "ميتال طبول تايكو حربي للزعيم",
+"CHARACTERS": "الشخصيات",
+"Character style": "أسلوب الشخصيات",
+"CLASSIC": "كلاسيكي",
+"STYLIZED": "منمّق",
+"STYLIZED: hand-made stylized characters with their own recorded animations, in your skins' colors. CLASSIC: the game's own designs.": "منمّق: شخصيات منمّقة مصنوعة يدويًا بحركاتها المسجلة الخاصة، بألوان مظاهرك. كلاسيكي: تصاميم اللعبة نفسها."
 });

@@ -10,7 +10,8 @@
    the way the rig was made to hold it. Every motion is the character's
    own recorded animation: combat stances, sword combos for one-handed,
    two-handed and twin blades, punches and kicks, blocks, hits, a cheer
-   and a fall. Display only.
+   and a fall. An option (Settings > Presentation > Character style):
+   the game's own character designs stay the default. Display only.
    ===================================================================== */
 for (const n of ['knight', 'barbarian', 'mage', 'rogue', 'rogue_hooded', 'skeleton_warrior', 'skeleton_minion', 'skeleton_mage', 'skeleton_rogue', 'anims']) Models.src['kk_' + n] = 'models/kk_' + n + '.glb';
 const Cast = {
@@ -36,11 +37,13 @@ const Cast = {
   },
   TWO: { long: 1, hammer: 1, cleaver: 1, pole: 1, staff: 1, glaive: 1, scythe: 1, drill: 1 },
   style(fam) { return fam === 'dual' ? 'dual' : fam === 'fists' ? 'fists' : fam === 'bow' ? 'bow' : fam === 'ring' ? 'ring' : this.TWO[fam] ? 'two' : 'one'; },
-  on() { return typeof THREE_EX !== 'undefined' && !CALM; },
+  on() { return typeof THREE_EX !== 'undefined' && !CALM && !!(Store.data && Store.data.settings && Store.data.settings.cast === 1); }, // (an option: the game's own designs stay the default)
   body(b) { return this.BODY[b] || ['rogue_hooded']; },
   need(body, wid) { const m = this.body(body)[0], f = R3.wfam(wid || 'katana'), w = this.WPN[f]; return ['kk_anims', 'kk_' + m].concat(w ? ['kk_' + w[0]] : []); },
   ready(body, wid) { if (!this.on()) return false; const n = this.need(body, wid); for (const id of n) if (!Models.ok(id)) { Models.load(id); return false; } return true; },
   failed(body, wid) { return this.need(body, wid).some(id => Models.failed[id]); },
+  broke() { for (const k in Models.failed) if (k.indexOf('kk_') === 0) return true; return false; }, // (a cast file did not load: the old mannequin takes over)
+  fall() { return Models.ok('xbot') || (this.on() && !this.broke()); }, // (some 3D hero can be drawn)
   /* ---------- the paint: the skin's colors on the character's own atlas ---------- */
   texC: new Map(),
   paint(img, a, b, kind, sk, boost) {
@@ -186,14 +189,14 @@ const Cast = {
   };
   // the portraits and the crate hero use the cast too (their caches know which body drew them)
   const pk0 = Portrait3D.key.bind(Portrait3D); Portrait3D.key = function (sk) { return pk0(sk) + (Cast.ready(sk.body || 'ninja', Store.data.weapon) ? '|kk' : ''); };
-  Portrait3D.ok = function () { try { return typeof THREE !== 'undefined' && Mini.ok() && !CALM; } catch (e) { return false; } };
-  CrateHero.ok = function () { try { return typeof THREE !== 'undefined' && Mini.ok() && !CALM && !(typeof Q !== 'undefined' && Q.lvl === 0); } catch (e) { return false; } };
-  const ch0 = CrateHero.begin.bind(CrateHero); CrateHero.begin = function () { const sk = skinLook(Store.data.skin); if (!Cast.ready(sk.body || 'ninja', Store.data.weapon)) { this.on = false; return; } this.sk = this.sk && this.sk.indexOf('|kk') > 0 ? this.sk : ''; return ch0.apply(this, arguments); };
+  Portrait3D.ok = function () { try { return typeof THREE !== 'undefined' && Mini.ok() && !CALM && Cast.fall(); } catch (e) { return false; } };
+  CrateHero.ok = function () { try { return typeof THREE !== 'undefined' && Mini.ok() && !CALM && !(typeof Q !== 'undefined' && Q.lvl === 0) && Cast.fall(); } catch (e) { return false; } };
+  const ch0 = CrateHero.begin.bind(CrateHero); CrateHero.begin = function () { if (!Cast.on()) return ch0.apply(this, arguments); const sk = skinLook(Store.data.skin); if (!Cast.ready(sk.body || 'ninja', Store.data.weapon)) { if (Cast.failed(sk.body || 'ninja', Store.data.weapon) && Models.ok('xbot')) return ch0.apply(this, arguments); this.on = false; return; } this.sk = this.sk && this.sk.indexOf('|kk') > 0 ? this.sk : ''; return ch0.apply(this, arguments); };
   // no more mannequin downloads: the cast replaces them (the old models stay only as a fallback where the cast cannot load)
   const ld0 = Models.load.bind(Models);
-  Models.load = function (id) { if ((id === 'xbot' || id === 'soldier' || id === 'melee') && Cast.on() && !Models.failed.kk_anims) return; return ld0(id); };
+  Models.load = function (id) { if ((id === 'xbot' || id === 'soldier' || id === 'melee') && Cast.on() && !Cast.broke()) return; return ld0(id); };
   const preload = () => { if (!Cast.on()) return; const sk = skinLook(Store.data.skin) || {}; Cast.ready(sk.body || 'ninja', Store.data.weapon || 'katana'); };
-  Pipe.on('post', 'cast80', () => { try { preload(); if (R3.ok && W3D.live) Cast.ready((P.skin && P.skin.body) || 'ninja', (P.w && P.w.id) || 'katana'); if (Mini.g && !Mini.g.kay && Mini.raf) { const L = Mini.look(); if (Cast.ready(L.body, L.w)) Mini.sig = ''; } /* (only once the cast is in: rebuilding every frame while it loads, or where it cannot load, would thrash) */ } catch (e) { errLog(e); } }, 99);
+  Pipe.on('post', 'cast80', () => { try { if (Cast.on() && Cast.broke() && Mini.raf && !Models.got.xbot && !Models.failed.xbot) Models.load('xbot'); preload(); if (R3.ok && W3D.live) Cast.ready((P.skin && P.skin.body) || 'ninja', (P.w && P.w.id) || 'katana'); if (Mini.g && !Mini.g.kay && Mini.raf) { const L = Mini.look(); if (Cast.ready(L.body, L.w)) Mini.sig = ''; } /* (only once the cast is in: rebuilding every frame while it loads, or where it cannot load, would thrash) */ } catch (e) { errLog(e); } }, 99);
   const mt0 = Mini.mount.bind(Mini); Mini.mount = function () { try { preload(); } catch (e) { errLog(e); } return mt0.apply(this, arguments); };
 }
 /* ---------- portraits of the new cast: head and shoulders, framed on the head bone, a warm key light so faces keep their color ---------- */
@@ -201,7 +204,8 @@ const Cast = {
   const rd0 = Portrait3D.render.bind(Portrait3D);
   Portrait3D.render = function (q) {
     const sk = q.sk, body = sk.body || 'ninja', wid = (Store.data && Store.data.weapon) || 'katana';
-    if (!Cast.ready(body, wid)) { if (!Cast.failed(body, wid)) { this.queue.push(q); return; } return rd0(q); }
+    if (!Cast.on()) return rd0(q);
+    if (!Cast.ready(body, wid)) { if (!Cast.failed(body, wid)) { this.queue.push(q); return; } if (Models.ok('xbot')) return rd0(q); if (!Models.failed.xbot) Models.load('xbot'); return; } // (the cast could not load: the old hero once it is in, the flat portrait meanwhile)
     const T = THREE, g = Cast.build({ body, a: sk.a, b: sk.b }, wid); if (g.pool) g.pool.visible = false; if (g.blade) g.blade.visible = false; if (g.blade2) g.blade2.visible = false;
     this.inner.add(g);
     try { const r = g.human.r; Cast.play(r, 'Idle', 0); r.mixer.update(.6); g.rotation.z = Math.PI / 2 + .3; this.scene.updateMatrixWorld(true); // (the whole scene: on the first portrait its parents had never been placed)
@@ -269,4 +273,11 @@ const CastFoe = {
     if (e.type === ET.CLONE || e.type === ET.PHANTOM) { const vis = Math.max(.15, Math.min(1, e.vis == null ? 1 : e.vis)); for (const mt of g.cast.kayMats) { mt.transparent = vis < .98; mt.opacity = vis; } }
   };
   Pipe.on('post', 'castfoe80', () => { if (!R3.ok || !W3D.live) return; CastFoe.init(); for (let i = 0; i < EN.n; i++) { const e = EN.a[i], D = e.alive && CastFoe.T[e.type]; if (D) Cast.ready(D[0], D[1]); } }, 99);
+}
+/* the option itself: Settings > Presentation > Character style (CLASSIC is the game's own designs, STYLIZED the new cast) */
+{
+  const ps8 = PC.settings.bind(PC);
+  PC.settings = function (head, cycle, box, s) { ps8(head, cycle, box, s); head('CHARACTERS');
+    cycle('Character style', 'cast', [0, 1], ['CLASSIC', 'STYLIZED'], () => { try { Mini.sig = ''; Portrait3D.cache.clear(); CrateHero.sk = ''; for (const [k, r] of [...R3.ents]) if (k === 'hero' || /^e\d/.test(k) || /^boss/.test(k)) { R3.root.remove(r.g); R3.ents.delete(k); } if (Cast.on()) { const sk = skinLook(Store.data.skin) || {}; Cast.ready(sk.body || 'ninja', Store.data.weapon || 'katana'); } } catch (e) { errLog(e); } });
+    box.appendChild(el('div', 'small mute', lt('STYLIZED: hand-made stylized characters with their own recorded animations, in your skins\' colors. CLASSIC: the game\'s own designs.'))); };
 }
