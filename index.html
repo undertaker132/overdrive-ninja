@@ -33289,6 +33289,7 @@ const Suit = {
   make(U, kind) {
     const T = THREE, m = new T.MeshStandardMaterial({ color: 0xffffff, roughness: .6, metalness: .2, side: T.DoubleSide, transparent: kind >= 3, opacity: kind === 3 ? .84 : 1 });
     m.emissive.set(0x000000); m.userData.rim57 = 1; m.userData.suit80 = 1; // (the rim light is in this shader already)
+    m.extensions = { derivatives: true }; // (fwidth on WebGL1 devices too)
     m.onBeforeCompile = sh => { Object.assign(sh.uniforms, U);
       sh.vertexShader = 'varying vec3 vSuit80; uniform float uSc80;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>' + this.VERT);
       sh.fragmentShader = this.FRAG_HEAD + '\n' + sh.fragmentShader.replace('#include <color_fragment>', '#include <color_fragment>' + this.FRAG_COLOR)
@@ -33421,7 +33422,7 @@ const Ghost80 = {
 {
   const gt0 = R3.ghostTick.bind(R3);
   R3.ghostTick = function (hg, o, rd) {
-    if (!hg || !hg.human || hg.kay || CALM || typeof THREE_EX === 'undefined') return gt0(hg, o, rd);
+    if (!hg || !hg.human || CALM || typeof THREE_EX === 'undefined') return gt0(hg, o, rd); // (the classic and the stylized heroes alike)
     try { if (this.gh) for (const q of this.gh) q.g.visible = false; Ghost80.tick(hg, o, rd); } catch (e) { errLog(e); return gt0(hg, o, rd); }
   };
 }
