@@ -33143,7 +33143,7 @@ const CastBoss = { // boss -> [body, weapon, second color, size]
 /* ---------- the enemies that walk on two legs join the cast: skeletons rise out of the roof when they appear and fall apart when they die ---------- */
 Object.assign(Cast.BODY, { e_minion: ['skeleton_minion', { mask: 0 }], e_mage: ['skeleton_rogue', { hat: 1, mask: 0, add: ['mage:Mage_Cape'] }], e_rogue: ['skeleton_rogue', { hat: 1, mask: 0 }], e_warrior: ['skeleton_warrior', { hat: 1, mask: 0 }], e_shade: ['rogue_hooded', { hood: 1 }], e_thief: ['rogue'],
   e_brute: ['barbarian', { horn: 'oni', mask: 0, skin: '#d4503c' }], e_guard: ['knight', { add: ['rogue_hooded:Rogue_Head_Hooded'], hide: /Knight_Head|Knight_Helmet/, hood: 1 }], e_archer: ['rogue_hooded', { hood: 1 }], e_ghost: ['rogue_hooded', { hood: 1, glass: 1 }], e_wraith: ['skeleton_mage', { hat: 1, glass: 1, mask: 0 }],
-  boss_shogun: ['knight', { hat: 1, horn: 'dragon' }], boss_prime: ['barbarian', { horn: 'oni', skin: '#c89a2a' }], boss_genesis: ['skeleton_warrior', { hat: 1 }] });
+  boss_shogun: ['knight', { hat: 1, horn: 'dragon' }], boss_prime: ['barbarian', { horn: 'oni', skin: '#c89a2a', mask: 0 }], boss_genesis: ['skeleton_warrior', { hat: 1, mask: 0 }] });
 Object.assign(CastBoss, { shogun: ['boss_shogun', 'nodachi', '#ffd23f', 1.3], prime: ['boss_prime', 'cleaver', '#ff2a4a', 1.35], genesis: ['boss_genesis', 'scythe', '#ffd700', 1.45] });
 const CastFoe = {
   T: null, // enemy type -> [body, weapon, size, second color, skeleton]
