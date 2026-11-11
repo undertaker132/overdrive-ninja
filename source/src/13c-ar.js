@@ -3975,5 +3975,12 @@ Object.assign(AR, {
 "Character style": "أسلوب الشخصيات",
 "CLASSIC": "كلاسيكي",
 "STYLIZED": "منمّق",
-"STYLIZED: hand-made stylized characters with their own recorded animations, in your skins' colors. CLASSIC: the game's own designs.": "منمّق: شخصيات منمّقة مصنوعة يدويًا بحركاتها المسجلة الخاصة، بألوان مظاهرك. كلاسيكي: تصاميم اللعبة نفسها."
+"STYLIZED: hand-made stylized characters with their own recorded animations, in your skins' colors. CLASSIC: the game's own designs.": "منمّق: شخصيات منمّقة مصنوعة يدويًا بحركاتها المسجلة الخاصة، بألوان مظاهرك. كلاسيكي: تصاميم اللعبة نفسها.",
+"SUITED UP": "بزّات قتالية",
+"Every hero in 3D now wears a tailored cyber suit: armor plates, neon seams in your skin's colors, a masked face with a lit eye slit and a headband. The armored heroes are repainted in your skin's colors with lit stripes and a glass visor, capes drape in folds, tails taper, and the skeleton, dragon, slime and ghost skins have looks of their own. Dash afterimages now show your own hero.": "يرتدي كل بطل في الأبعاد الثلاثية الآن بزّة سايبر مفصّلة: صفائح درع، ودروز نيون بألوان مظهرك، ووجه مقنّع بشقّ عينين مضيء وعصابة رأس. أُعيد طلاء الأبطال المدرّعين بألوان مظهرك مع خطوط مضيئة وواقي وجه زجاجي، وتنسدل العباءات بطيّات، وتستدق الذيول، ولمظاهر الهيكل العظمي والتنين والهلام والشبح مظهرها الخاص. وتُظهر صور الاندفاع الآن بطلك نفسه.",
+"THE RIVAL CLAN": "العشيرة المنافسة",
+"MIMIC, MIRROR, MEDIC, MINER and COURIER are now suited fighters in their own colors, with a mirror shield, a floating cross, a drill and a loot crate. They walk, wind up their cuts, flinch and fall. The DIVER, SPLITTER, TREASURE DRONE and WEAVER are rebuilt too.": "أصبح MIMIC وMIRROR وMEDIC وMINER وCOURIER مقاتلين ببزّات بألوانهم، مع درع مرآة وصليب طائر ومثقاب وصندوق غنائم. يمشون ويتهيؤون لضرباتهم ويرتدّون ويسقطون. وأُعيد بناء DIVER وSPLITTER وطائرة الكنز وWEAVER أيضًا.",
+"A crate's seals are now steel straps wrapped around it, a light running through each and a seal badge where they cross. They still break one by one.": "أصبحت أختام الصندوق أحزمة فولاذية تلتف حوله، يجري ضوء في كل منها، وشارة ختم حيث تتقاطع. وما زالت تنكسر واحدًا تلو الآخر.",
+"CHARACTER STYLE": "أسلوب الشخصيات",
+"New in Settings, Presentation: CHARACTER STYLE switches to STYLIZED hand-made characters with their own recorded animations, in your skins' colors. CLASSIC stays the default.": "جديد في الإعدادات، العرض: يبدّل أسلوب الشخصيات إلى شخصيات منمّقة مصنوعة يدويًا بحركاتها المسجلة الخاصة، بألوان مظاهرك. ويبقى الكلاسيكي هو الافتراضي."
 });

@@ -1752,7 +1752,7 @@ Object.assign(RU, {
 "HIT THE LIT BELL: THE NUMBERS SHOW THE ORDER": "БЕЙ ПО ГОРЯЩЕМУ КОЛОКОЛУ: ЦИФРЫ ПОКАЗЫВАЮТ ПОРЯДОК",
 "THE BELLS AWAKEN": "КОЛОКОЛА ПРОБУЖДАЮТСЯ",
 "HUNDRED-YEAR VOW": "СТОЛЕТНИЙ ОБЕТ",
-"SEALED": "ЗАПЕЧАТАН",
+"SEALED": "ЗАПЕЧАТАНО",
 "ARMS DOWN": "РУКИ ОТКЛЮЧЕНЫ",
 "ZERO HOUR": "ЧАС НОЛЬ",
 "LAST ORDER": "ПОСЛЕДНИЙ ПРИКАЗ",
@@ -3975,5 +3975,12 @@ Object.assign(RU, {
 "Character style": "Стиль персонажей",
 "CLASSIC": "КЛАССИКА",
 "STYLIZED": "СТИЛИЗОВАННЫЙ",
-"STYLIZED: hand-made stylized characters with their own recorded animations, in your skins' colors. CLASSIC: the game's own designs.": "СТИЛИЗОВАННЫЙ: стилизованные персонажи ручной работы со своими записанными анимациями, в цветах твоих обликов. КЛАССИКА: собственные дизайны игры."
+"STYLIZED: hand-made stylized characters with their own recorded animations, in your skins' colors. CLASSIC: the game's own designs.": "СТИЛИЗОВАННЫЙ: стилизованные персонажи ручной работы со своими записанными анимациями, в цветах твоих обликов. КЛАССИКА: собственные дизайны игры.",
+"SUITED UP": "В КОСТЮМАХ",
+"Every hero in 3D now wears a tailored cyber suit: armor plates, neon seams in your skin's colors, a masked face with a lit eye slit and a headband. The armored heroes are repainted in your skin's colors with lit stripes and a glass visor, capes drape in folds, tails taper, and the skeleton, dragon, slime and ghost skins have looks of their own. Dash afterimages now show your own hero.": "Каждый герой в 3D теперь носит подогнанный кибер-костюм: бронепластины, неоновые швы в цветах вашего облика, лицо под маской со светящейся прорезью для глаз и повязка на голове. Бронированные герои перекрашены в цвета облика, со светящимися полосами и стеклянным визором, плащи ложатся складками, хвосты сужаются, а у скелета, дракона, слизня и призрака свой облик. Остаточные образы рывка теперь показывают вашего героя.",
+"THE RIVAL CLAN": "СОПЕРНИЧИЙ КЛАН",
+"MIMIC, MIRROR, MEDIC, MINER and COURIER are now suited fighters in their own colors, with a mirror shield, a floating cross, a drill and a loot crate. They walk, wind up their cuts, flinch and fall. The DIVER, SPLITTER, TREASURE DRONE and WEAVER are rebuilt too.": "MIMIC, MIRROR, MEDIC, MINER и COURIER теперь бойцы в костюмах своих цветов: с зеркальным щитом, парящим крестом, буром и ящиком с добычей. Они ходят, замахиваются, вздрагивают от ударов и падают. DIVER, SPLITTER, дрон-сокровище и WEAVER тоже перестроены.",
+"A crate's seals are now steel straps wrapped around it, a light running through each and a seal badge where they cross. They still break one by one.": "Печати ящика теперь стальные ремни, обвивающие его, по каждому бежит свет, а на пересечении — знак печати. Они по-прежнему ломаются одна за другой.",
+"CHARACTER STYLE": "СТИЛЬ ПЕРСОНАЖЕЙ",
+"New in Settings, Presentation: CHARACTER STYLE switches to STYLIZED hand-made characters with their own recorded animations, in your skins' colors. CLASSIC stays the default.": "Новое в Настройках, Отображение: СТИЛЬ ПЕРСОНАЖЕЙ переключает на СТИЛИЗОВАННЫХ персонажей ручной работы с их собственными записанными анимациями, в цветах ваших обликов. КЛАССИКА остаётся по умолчанию."
 });
