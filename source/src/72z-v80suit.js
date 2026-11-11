@@ -252,7 +252,7 @@ const Ghost80 = {
     if (this.src !== hg || !this.list.length || this.list[0].g.parent !== R3.root) this.build(hg, col);
     if (this.col !== col) { this.col = col; for (const q of this.list) q.mat.color.set(col); }
     if (o.dashing && !CALM) { this.t -= rd; if (this.t <= 0) { this.t = .045; let q = this.list[0]; for (const x of this.list) if (x.t > q.t) q = x; q.t = 0; this.stamp(q, hg); } }
-    for (const q of this.list) { q.t += rd; const a = Math.max(0, 1 - q.t / .26); q.g.visible = a > .02; q.mat.opacity = .34 * a * a; }
+    for (const q of this.list) { q.t += rd; const a = Math.max(0, 1 - q.t / .26); q.g.visible = a > .02; q.mat.opacity = .2 * a * a; }
   }
 };
 {

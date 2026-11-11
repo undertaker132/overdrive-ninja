@@ -53,7 +53,7 @@ const Cast = {
     const bones = {}; o.traverse(x => { if (x.isBone) bones[x.name] = x; }); let m;
     if (s.isSkinnedMesh) { m = new THREE.SkinnedMesh(s.geometry, s.material); const bs = s.skeleton.bones.map(bn => bones[bn.name]); if (bs.some(x => !x)) return; let host = null; o.traverse(x => { if (!host && x.isSkinnedMesh) host = x; }); (host ? host.parent : o).add(m); m.bind(new THREE.Skeleton(bs, s.skeleton.boneInverses.map(q => q.clone())), s.bindMatrix.clone()); }
     else { const bn = s.parent && bones[s.parent.name]; if (!bn) return; m = s.clone(); m.position.copy(s.position); m.quaternion.copy(s.quaternion); m.scale.copy(s.scale); bn.add(m); }
-    let c = mats.get(m.material); if (!c) { c = this.mat(m.material, a, b, kind, opt.skin); mats.set(m.material, c); } m.material = c; m.castShadow = true; m.frustumCulled = false; m.userData.part80 = 1; },
+    let c = mats.get(m.material); if (!c) { c = this.mat(m.material, a, b, kind, opt.skin, opt.boost); mats.set(m.material, c); } m.material = c; m.castShadow = true; m.frustumCulled = false; m.userData.part80 = 1; },
   ready(body, wid) { if (!this.on()) return false; const n = this.need(body, wid); for (const id of n) if (!Models.ok(id)) { Models.load(id); return false; } return true; },
   failed(body, wid) { return this.need(body, wid).some(id => Models.failed[id]); },
   broke() { for (const k in Models.failed) if (k.indexOf('kk_') === 0) return true; return false; }, // (a cast file did not load: the old mannequin takes over)
@@ -66,7 +66,7 @@ const Cast = {
     const d = g.getImageData(0, 0, W, H), px = d.data, e = document.createElement('canvas'); e.width = W; e.height = H; const ge = e.getContext('2d'), ed = ge.createImageData(W, H), ep = ed.data;
     // (the KayKit atlas, measured: skin h 18-28 s .8+ l .7-.86; bone and cream h 25-36 s .45-.62 l .65+; leather h 10-30 s .3-.55 l .35-.62;
     //  metal and cloth-gray s < .2; dyed cloth any other hue; the bright gem and glow swatches s .85+ in pure hues)
-    const A = new T.Color(a), B = new T.Color(b), SK = sk ? new T.Color(sk) : null, DK = new T.Color('#0b0e1a'), SUIT = new T.Color('#121626').lerp(A, .14), STRAP = new T.Color('#120d16').lerp(B, .55), hsl = {}, tmp = new T.Color();
+    const A = new T.Color(a), B = new T.Color(b), SK = sk ? new T.Color(sk) : null, DK = new T.Color('#0b0e1a'), SUIT = new T.Color('#121626').lerp(A, boost ? .5 : .14), STRAP = new T.Color('#120d16').lerp(boost ? A : B, boost ? .45 : .55), hsl = {}, tmp = new T.Color();
     for (let i = 0; i < px.length; i += 4) {
       tmp.setRGB(px[i] / 255, px[i + 1] / 255, px[i + 2] / 255); tmp.getHSL(hsl); const h = hsl.h * 360, s = hsl.s, l = hsl.l; let glow = 0;
       const skin = h >= 8 && h <= 36 && s >= .6 && l >= .62 && l <= .9, bone = h >= 22 && h <= 40 && s >= .4 && s < .66 && l >= .64, leather = h >= 8 && h <= 32 && s >= .28 && s < .6 && l < .64;
@@ -74,11 +74,11 @@ const Cast = {
       else if (skin && SK && kind !== 'weapon') { tmp.copy(SK).multiplyScalar(.55 + l * .6); } // (an oni's red skin, a storm god's blue)
       else if (skin || bone) { if (skin && kind !== 'weapon') { ep[i] = px[i] * .22; ep[i + 1] = px[i + 1] * .2; ep[i + 2] = px[i + 2] * .18; ep[i + 3] = 255; continue; } } // (faces, hands and bones keep their tones; skin keeps a faint warmth of its own under the neon lights)
       else if (s < .2) { // metal and gray cloth: steel with a cool cast; on a weapon the light steel glows in the skin's color
-        tmp.setRGB(tmp.r * .88, tmp.g * .94, tmp.b * 1.08); if (kind === 'weapon' && l > .5) glow = .8 + (l - .5); else if (kind === 'body') tmp.lerp(new T.Color(A.r * l * 1.5, A.g * l * 1.5, A.b * l * 1.5), MT); } // (armor takes a tint of the skin's color: no two knights alike)
+        tmp.setRGB(tmp.r * .88, tmp.g * .94, tmp.b * 1.08); if (kind === 'weapon' && l > .5) glow = .8 + (l - .5); else if (kind === 'body') { tmp.lerp(new T.Color(A.r * l * 1.5, A.g * l * 1.5, A.b * l * 1.5), MT); if (boost && l < .35) tmp.copy(SUIT).multiplyScalar(.7 + l); } } /* (an enemy's dark hair and hood take its color too) */ // (armor takes a tint of the skin's color: no two knights alike)
       else if (leather) tmp.copy(DK).lerp(STRAP, Math.min(1, l / .55)); // belts, boots, straps: the secondary color, dark
       else if (s > .85 && l > .35) { tmp.copy(A); glow = 1; } // gems, eyes and glow swatches: neon
       else { // dyed cloth: a dark suit in the main color, its light folds lit, the brightest trims glowing
-        if (l < .3) tmp.copy(DK).lerp(SUIT, l / .3); else if (l < .62) tmp.copy(SUIT).lerp(A, (l - .3) / .32 * .22); else { tmp.copy(SUIT).lerp(A, .4 + Math.min(.5, (l - .62) / .25 * .5)); glow = .75; } } // (a ninja's suit: dark, its brightest trims in the skin's neon)
+        if (l < .3) { if (boost) tmp.copy(A).multiplyScalar(.32 + l * 1.1); else tmp.copy(DK).lerp(SUIT, l / .3); } /* (an enemy's darkest cloth keeps its color: it must stand out on the dark roof) */ else if (l < .62) tmp.copy(SUIT).lerp(A, (l - .3) / .32 * (boost ? .4 : .22)); else { tmp.copy(SUIT).lerp(A, .4 + Math.min(.5, (l - .62) / .25 * .5)); glow = .75; } } // (a ninja's suit: dark, its brightest trims in the skin's neon)
       px[i] = tmp.r * 255; px[i + 1] = tmp.g * 255; px[i + 2] = tmp.b * 255;
       if (glow) { const gc = kind === 'weapon' ? new T.Color(1, 1, 1) : A; ep[i] = gc.r * 255 * glow; ep[i + 1] = gc.g * 255 * glow; ep[i + 2] = gc.b * 255 * glow; } else if (kind !== 'weapon') { ep[i] = tmp.r * 255 * AMB; ep[i + 1] = tmp.g * 255 * AMB; ep[i + 2] = tmp.b * 255 * AMB; } ep[i + 3] = 255; // (a faint light of its own: the cast stays readable on a night roof)
     }
@@ -102,7 +102,7 @@ const Cast = {
       if (/Hat$|Helmet$|_Hood$/.test(m.name) && !opt.hat) { m.visible = false; return; }
       if (opt.hide && opt.hide.test(m.name)) { m.visible = false; return; } // (a part this character wears from another one instead)
       let c = mats.get(m.material); if (!c) { c = this.mat(m.material, a, b, kind, opt.skin, L.boss); mats.set(m.material, c); } m.material = c; m.castShadow = true; m.frustumCulled = false; });
-    for (const sp2 of opt.add || []) try { this.part(o, sp2, mats, a, b, kind, opt); } catch (e) { errLog(e); } // (this character's own mix of parts)
+    for (const sp2 of opt.add || []) try { this.part(o, sp2, mats, a, b, kind, Object.assign({}, opt, { boost: L.boss })); } catch (e) { errLog(e); } // (this character's own mix of parts)
     // the weapon, from the model that carries it, into the rig's hand slots
     const W = this.WPN[fam], B = { hips: this.bone(o, 'hips'), spine: this.bone(o, 'spine'), spine2: this.bone(o, 'chest'), head: this.bone(o, 'head'), rHand: this.bone(o, 'handslot.r'), lHand: this.bone(o, 'handslot.l'), rArm: this.bone(o, 'upperarm.r') };
     let blade = null, blade2 = null, bmat = null; const wmats = new Map();
@@ -261,8 +261,8 @@ const CastBoss = { // boss -> [body, weapon, second color, size]
   Pipe.on('post', 'castboss80', () => { const b = Boss.cur, D = b && CastBoss[b.id]; if (D && R3.ok && W3D.live) Cast.ready(D[0], D[1]); }, 99);
 }
 /* ---------- the enemies that walk on two legs join the cast: skeletons rise out of the roof when they appear and fall apart when they die ---------- */
-Object.assign(Cast.BODY, { e_minion: ['skeleton_minion', { mask: 0 }], e_mage: ['skeleton_mage', { hat: 1, mask: 0 }], e_rogue: ['skeleton_rogue', { hat: 1, mask: 0 }], e_warrior: ['skeleton_warrior', { hat: 1, mask: 0 }], e_shade: ['rogue_hooded', { hood: 1 }], e_thief: ['rogue'],
-  e_brute: ['barbarian', { horn: 'oni', mask: 0, skin: '#8a2a22' }], e_guard: ['knight', { add: ['rogue_hooded:Rogue_Head_Hooded'], hide: /Knight_Head|Knight_Helmet/, hood: 1 }], e_archer: ['rogue_hooded', { hood: 1 }], e_ghost: ['rogue_hooded', { hood: 1, glass: 1 }], e_wraith: ['skeleton_mage', { hat: 1, glass: 1, mask: 0 }],
+Object.assign(Cast.BODY, { e_minion: ['skeleton_minion', { mask: 0 }], e_mage: ['skeleton_rogue', { hat: 1, mask: 0, add: ['mage:Mage_Cape'] }], e_rogue: ['skeleton_rogue', { hat: 1, mask: 0 }], e_warrior: ['skeleton_warrior', { hat: 1, mask: 0 }], e_shade: ['rogue_hooded', { hood: 1 }], e_thief: ['rogue'],
+  e_brute: ['barbarian', { horn: 'oni', mask: 0, skin: '#d4503c' }], e_guard: ['knight', { add: ['rogue_hooded:Rogue_Head_Hooded'], hide: /Knight_Head|Knight_Helmet/, hood: 1 }], e_archer: ['rogue_hooded', { hood: 1 }], e_ghost: ['rogue_hooded', { hood: 1, glass: 1 }], e_wraith: ['skeleton_mage', { hat: 1, glass: 1, mask: 0 }],
   boss_shogun: ['knight', { hat: 1, horn: 'dragon' }], boss_prime: ['barbarian', { horn: 'oni', skin: '#c89a2a' }], boss_genesis: ['skeleton_warrior', { hat: 1 }] });
 Object.assign(CastBoss, { shogun: ['boss_shogun', 'nodachi', '#ffd23f', 1.3], prime: ['boss_prime', 'cleaver', '#ff2a4a', 1.35], genesis: ['boss_genesis', 'scythe', '#ffd700', 1.45] });
 const CastFoe = {
@@ -291,7 +291,7 @@ const CastFoe = {
     const r = g.mon, m = g.mv8 || (g.mv8 = { x: e.x, y: e.y, t, v: 0 }), dt = Math.min(.05, Math.max(0, t - (r.t || t))); r.t = t;
     if (t - m.t > .001) { const v = Math.hypot(e.x - m.x, e.y - m.y) / (t - m.t); m.v += ((v > 2000 ? 0 : v) - m.v) * Math.min(1, (t - m.t) * 10); m.x = e.x; m.y = e.y; m.t = t; }
     if (r.left > 0) r.left -= dt;
-    if (!g.born) { g.born = 1; if (g.skel) Cast.play(r, 'Spawn_Ground_Skeletons', 0, true, 1.6); }
+    if (!g.born) { g.born = 1; if (g.skel) Cast.play(r, 'Spawn_Ground_Skeletons', 0, true, 2.8); /* (a quick rise: the fight does not wait) */ }
     if (e.fl > .6 && !g.hurt8) { Cast.play(r, 'Hit_A', .05, true, 1.4); g.hurt8 = 1; } if (e.fl < .2) g.hurt8 = 0;
     const atk = e.st > 0 || (e.wcd > 0 && e.wcd < .25); if (atk && !g.atk8) Cast.play(r, e.type === ET.MEDIC ? 'Spellcast_Shoot' : g.skel ? '1H_Melee_Attack_Chop' : 'Dualwield_Melee_Attack_Slice', .06, true, 1.3); g.atk8 = atk;
     if (!(r.once && r.left > 0)) { const want = m.v > 140 ? 'Running_A' : m.v > 15 ? 'Walking_A' : (g.skel ? 'Idle_Combat' : 'Idle'); if (r.cur !== want) Cast.play(r, want, .2); }
