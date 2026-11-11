@@ -33359,7 +33359,7 @@ const Suit = {
       if (o.geometry.type === 'BoxGeometry' && Math.abs(q.width - .5) < .01 && q.depth > 2 && kind) { // (a flap: cape, cape2, loincloth, hair)
         o.geometry = this.sheet(q.height, q.depth, kind); o.userData.cloth80 = 1; if (o.material) o.material.side = T.DoubleSide; }
       else if (o.geometry.type === 'BoxGeometry' && Math.abs(q.width - 3.4) < .01 && Math.abs(q.depth - .9) < .01) { // (a scarf segment: a thin ribbon, overlapping the next)
-        const k = 'rib' + q.height; this.geos = this.geos || new Map(); let gq = this.geos.get(k); if (!gq) { gq = new T.BoxGeometry(3.9, q.height, .2); gq.userData.shared = 1; this.geos.set(k, gq); } o.geometry = gq; o.userData.cloth80 = 1; }
+        const k = 'rib' + q.height; this.geos = this.geos || new Map(); let gq = this.geos.get(k); if (!gq) { gq = new T.BoxGeometry(3.9, q.height, .2); gq.userData.shared = 1; this.geos.set(k, gq); } o.geometry = gq; o.userData.cloth80 = 1; o.userData.scarf80 = 1; }
       else if (o.geometry.type === 'SphereGeometry' && kind === 'tail') { // (a tail bead: a tapering capsule that meets the next one)
         const r = q.radius, k = 'tail' + r; this.geos = this.geos || new Map(); let gq = this.geos.get(k); if (!gq) { gq = new T.CapsuleGeometry(r * .92, 2.2, 4, 10).rotateZ(Math.PI / 2); gq.userData.shared = 1; this.geos.set(k, gq); }
         o.geometry = gq; o.scale.set(1, 1, 1); o.position.x = -1.5; o.userData.cloth80 = 1; } });
@@ -33415,6 +33415,54 @@ Pipe.on('post', 'ghost80', () => { if (!Ghost80.list.length) return; const h = t
   const ld0 = Look.dress.bind(Look);
   Look.dress = function (g) { const marked = []; if (g) g.traverse(o => { if (o.userData.cloth80 && !o.userData.ink) { o.userData.ink = 1; marked.push(o); } }); try { return ld0(g); } finally { for (const o of marked) o.userData.ink = 0; } };
 }
+/* ---------- the rival clan: the enemies that were bare shapes (a pyramid, a box, a capsule) are now suited fighters in their own colors ---------- */
+const Clan80 = {
+  T: null,
+  init() { if (this.T) return; this.T = { [ET.MIMIC]: ['shinobi2', 'claws', 1.2, 0], [ET.MIRROR]: ['knight', 'katana', 1.1, 'shield'], [ET.MEDIC]: ['ninja', 'staff', 1.3, 'cross'], [ET.MINER]: ['mecha', 'drill', 1.15, 0], [ET.COURIER]: ['ninja', 'kunai', 1.05, 'crate'] }; },
+  ok() { return !CALM && typeof THREE_EX !== 'undefined' && Models.ok('xbot') && !(typeof Q !== 'undefined' && Q.lvl === 0) && !(typeof Cast !== 'undefined' && Cast.on()); },
+  pick(e) { this.init(); const D = this.T[e.type]; return D && this.ok() ? D : null; },
+  /* a group on a bone, in the hero's own units and axes (x forward, y side, z up) */
+  onBone(h, bone) { const T = THREE, grp = new T.Group(), ws = new T.Vector3(); h.updateMatrixWorld(true); bone.getWorldScale(ws); grp.quaternion.setFromRotationMatrix(new T.Matrix4().makeBasis(new T.Vector3(0, 0, 1), new T.Vector3(1, 0, 0), new T.Vector3(0, 1, 0))); grp.scale.setScalar(1 / ws.x); bone.add(grp); return grp; },
+  extra(h, kind, col) {
+    const T = THREE, B = h.human.B, glow = R3.glow(col, 2.4);
+    if (kind === 'shield' && B.lHand) { const s = this.onBone(h, B.lHand); s.position.y = 2 / s.scale.x; const d = new T.Mesh(new T.CylinderGeometry(7, 7, .7, 6).rotateZ(Math.PI / 2), R3.M.mirror || R3.std({ color: 0xcfe6ff, metalness: 1, roughness: .05 })); d.position.set(1.5, -2, 0); s.add(d); const rim = new T.Mesh(new T.TorusGeometry(7, .45, 6, 6).rotateY(Math.PI / 2), glow); rim.position.copy(d.position); rim.rotation.x = Math.PI / 6; s.add(rim); }
+    if (kind === 'cross') { const c = new T.Group(); c.position.z = 54; h.add(c); const m = R3.glow('#00ff88', 3); c.add(new T.Mesh(new T.BoxGeometry(1.4, 1.4, 6), m)); c.add(new T.Mesh(new T.BoxGeometry(1.4, 6, 1.4), m)); h.cross80 = c; }
+    if (kind === 'crate' && B.spine2) { const s = this.onBone(h, B.spine2); const box = new T.Mesh(new T.BoxGeometry(7, 10, 9), R3.M.gold || R3.std({ color: 0xd8a830, metalness: .9, roughness: .3 })); box.position.set(-7, 0, 1); s.add(box); for (const z of [-2.5, 2.5]) { const st = new T.Mesh(new T.BoxGeometry(7.3, 10.3, .8), glow); st.position.set(-7, 0, 1 + z); s.add(st); } }
+  }
+};
+{
+  const ei0 = R3.enemyInst.bind(R3);
+  R3.enemyInst = function (e) {
+    let D = null; try { D = Clan80.pick(e); } catch (er) { errLog(er); } if (!D) return ei0(e);
+    try {
+      const T = THREE, g = new T.Group(), col = e.col || '#ff3b5c', h = Human.build({ body: D[0], a: col, b: '#14141e' }, D[1]);
+      if (h.pool) h.pool.visible = false; if (D[3]) Clan80.extra(h, D[3], col); h.traverse(o => { if (o.userData.scarf80) o.visible = false; }); // (no scarf: theirs would trail like the hero's)
+      const own = new Map(), mats = []; h.traverse(o => { if (!o.isMesh || !o.material || !o.material.emissive) return; let c = own.get(o.material); if (!c) { c = o.material.clone(); c.userData.e0 = c.emissive.clone(); c.userData.i0 = c.emissiveIntensity; own.set(o.material, c); mats.push(c); } o.material = c; }); // (its own copies: a hit lights this one only)
+      h.scale.setScalar(2.4 * D[2] / Human.H); g.add(h); g.clan80 = h; g.clanMats = mats; g.bodyMat = R3.std({ color: 0x000000 }); g.anim = [];
+      g.add(this.pool(col, 1.6 * D[2], .22)); this.root.add(g); try { this.ring(e.x, e.y, col, (e.r || 14) * 3, .5); } catch (er) { errLog(er); }
+      return g;
+    } catch (er) { errLog(er); return ei0(e); }
+  };
+  const ae0 = R3.animEnemy.bind(R3);
+  R3.animEnemy = function (g, e, t) {
+    if (!g.clan80) return ae0(g, e, t);
+    const h = g.clan80, dt = Math.min(.05, Math.max(0, t - (g.t80 == null ? t : g.t80))); g.t80 = t;
+    g.position.set(e.x, e.y, W3D.inLift(e)); g.rotation.z = e.ang != null ? e.ang : Math.atan2(P.y - e.y, P.x - e.x); g.scale.setScalar(Math.max(.01, (e.r || 14) * (e.scale == null ? 1 : e.scale)));
+    if (g.lp && dt > 0) { const v = Math.hypot(e.x - g.lp[0], e.y - g.lp[1]) / dt; g.sp = (g.sp || 0) + (v - (g.sp || 0)) * Math.min(1, dt * 8); } g.lp = [e.x, e.y]; // (most enemies move by position: the speed is measured)
+    const atk = e.st > 0 || (e.wcd > 0 && e.wcd < .25);
+    try { Human.anim(h, { x: 0, y: 0, face: 0, spd: (g.sp || 0) * 1.6, dashing: atk, hp: e.hp, alpha: e.vis == null ? 1 : Math.max(.6, e.vis) }, dt, t); } catch (er) { errLog(er); }
+    if (h.cross80) { h.cross80.rotation.z = t * 2; h.cross80.position.z = 54 + Math.sin(t * 3) * 1.5; }
+    const fl = e.fl > .3; for (const m of g.clanMats) { if (fl) { m.emissive.setRGB(1, 1, 1); m.emissiveIntensity = 1; } else if (e.exec) { m.emissive.set('#ff2a4a'); m.emissiveIntensity = .5 + Math.sin(t * 14) * .4; } else { m.emissive.copy(m.userData.e0); m.emissiveIntensity = m.userData.i0; } }
+  };
+  Pipe.on('post', 'clan80', () => { if (typeof R3 !== 'undefined' && R3.ok && W3D.live && !CALM && !Models.got.xbot && !Models.failed.xbot) Models.load('xbot'); }, 99);
+}
+{
+  // a loaded model's geometry belongs to every copy of it (the hero, the clan, the robots, the monsters): a dead enemy's cleanup no longer
+  // throws it away, which made the next frame upload the whole body again
+  const in0 = Models.inst.bind(Models);
+  Models.inst = function (id) { const gl = this.got[id]; if (gl && !gl.shared80) { gl.shared80 = 1; gl.scene.traverse(o => { if (o.geometry) o.geometry.userData.shared = 1; }); } return in0.apply(this, arguments); };
+}
+Pipe.on('post', 'shared80', () => { for (const id in Models.got) { const gl = Models.got[id]; if (gl && gl.scene && !gl.shared80) { gl.shared80 = 1; gl.scene.traverse(o => { if (o.geometry) o.geometry.userData.shared = 1; }); } } }, 99);
 
 </script>
 </body></html>
