@@ -411,7 +411,7 @@ const R3 = {
     this.flashes.push({ x: e.x, y: e.y, c, t: 0 }); if (this.flashes.length > 2) this.flashes.shift(); },
   render(rd) {
     if (!this.ok) return; const T0 = BG.T || {}; this.t += rd; const t = this.t; this.frame = (this.frame | 0) + 1;
-    const W = Math.max(2, cv.clientWidth || V.W), H = Math.max(2, cv.clientHeight || V.H), q = this.quality(), pr = Math.max(.5, Math.min(window.devicePixelRatio || 1, resK() || (q >= 2 ? 2 : q >= 1 ? 1.5 : 1)) * (this.dyn || 1)); // (version 41: dyn drops on a slow phone) // (version 40: Settings > SCREEN > RESOLUTION sets it)
+    const W = Math.max(2, cv.clientWidth || V.W), H = Math.max(2, cv.clientHeight || V.H), q = this.quality(), pr = Math.max(.5, Math.min(window.devicePixelRatio || 1, resK() || (q >= 3 ? 2 : q >= 1 ? 1.5 : 1)) * (this.dyn || 1)); // (version 41: dyn drops on a slow phone) // (version 40: Settings > SCREEN > RESOLUTION sets it)
     if (this.W0 !== W || this.H0 !== H || this.pr0 !== pr) { this.W0 = W; this.H0 = H; this.pr0 = pr; this.rn.setPixelRatio(pr); this.rn.setSize(W, H, false); this.comp.setPixelRatio(pr); this.comp.setSize(W, H); this.bloom.setSize(W * pr, H * pr); }
     this.themeSet(T0); this.syncCam(); this.layout(rd);
     // the hero (and its echo clones)

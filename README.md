@@ -128,8 +128,7 @@ The 3D view uses [three.js](https://threejs.org) r160 (MIT License, Copyright 20
 ## Credits for the 3D models
 - Robot: "RobotExpressive" by Tomás Laulhé (Quaternius), CC0 1.0.
 - Fox: model by PixelMannen (CC0), rigging and animation by tomkranis (CC BY 4.0), glTF conversion by @AsoboStudio and @scurest (CC BY 4.0).
-- Heroes, swordsman bosses and two-legged enemies: "KayKit Character Pack: Adventurers" and "KayKit Character Pack: Skeletons" by Kay Lousberg (kaylousberg.com), CC0, repainted per skin in the game.
-- Fallback hero bodies (used only where the KayKit models cannot load): "X Bot" and "Soldier" from Mixamo (Adobe), free to use in games.
+- Hero bodies: "X Bot" and "Soldier" from Mixamo (Adobe), free to use in games.
 - Sword animations: "KayKit Character Animations" by Kay Lousberg, CC0.
 - Monsters (orc, demons): Quaternius "Ultimate Monsters", CC0.
 - Sound effects: Kenney audio packs (Impact Sounds, RPG Audio, Sci-Fi Sounds, Digital Audio, Music Jingles), CC0.

@@ -63,18 +63,10 @@ const Seals = {
     CratePre.drawBox(bg, BS, T0.c, (T0.k === 'lim' ? 'lim' : T0.k === 'basic' ? 'basic' : 'neon'), crack, lv ? S.col : T0.c, lid);
     g.save(); g.translate(cx, cy); g.rotate(tilt); g.drawImage(box, -110, -110, 220, 220); g.restore();
     // the seals: four bands of light around the crate; a broken one splits and falls
-    // (version 80: steel straps that wrap the crate along its faces, a light running through each, a seal badge where they cross)
-    const STRAP = [[[-80, 15], [0, 55], [80, 15]], [[-40, 80], [-40, -10], [40, -50]], [[40, 80], [40, -10], [-40, -50]], [[0, 12], [0, 100]]];
-    const strap = (pts, w, style, dash, off) => { g.beginPath(); g.moveTo(pts[0][0], pts[0][1] + 10); for (let j = 1; j < pts.length; j++) g.lineTo(pts[j][0], pts[j][1] + 10); g.lineWidth = w; g.strokeStyle = style; if (dash) { g.setLineDash(dash); g.lineDashOffset = off; } g.stroke(); g.setLineDash([]); };
-    g.save(); g.translate(cx, cy); g.rotate(tilt); g.lineJoin = 'round'; g.lineCap = 'round';
-    for (let i = 0; i < 4; i++) { if (S.seals[i]) continue; const pts = STRAP[i], pulse = .62 + Math.sin(t * 4 + i * 1.7) * .22;
-      g.globalCompositeOperation = 'source-over'; g.shadowBlur = 0; strap(pts, 16, '#0a0d1a'); strap(pts, 12, '#3a4566'); strap(pts, 12, 'rgba(255,255,255,.08)', [2, 7], 0);
-      g.globalCompositeOperation = 'lighter'; g.shadowColor = '#bfe0ff'; g.shadowBlur = 14; strap(pts, 3.2, hexA('#dfe8ff', pulse)); strap(pts, 6, hexA('#ffffff', .9), [14, 150], -t * 120 - i * 40);
-      g.shadowBlur = 0; for (const q of pts) { g.fillStyle = hexA('#dfe8ff', .9); g.beginPath(); g.arc(q[0], q[1] + 10, 4.2, 0, TAU); g.fill(); } }
-    if (!S.seals[0] || !S.seals[3]) { const pulse = .7 + Math.sin(t * 3) * .2; g.globalCompositeOperation = 'source-over'; g.shadowColor = '#bfe0ff'; g.shadowBlur = 16 * pulse; g.fillStyle = '#0c1020'; g.strokeStyle = hexA('#dfe8ff', pulse); g.lineWidth = 3;
-      g.beginPath(); for (let j = 0; j < 6; j++) { const a = j / 6 * TAU + Math.PI / 6; g[j ? 'lineTo' : 'moveTo'](Math.cos(a) * 15, 65 + Math.sin(a) * 15); } g.closePath(); g.fill(); g.stroke();
-      g.shadowBlur = 8; g.fillStyle = hexA('#ffffff', pulse); g.font = '900 15px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('封', 0, 66); }
-    g.restore();
+    const SEAL = [[-1.05, .9], [1.05, .9], [0, 1.25], [Math.PI / 2, 1.2]];
+    for (let i = 0; i < 4; i++) { if (S.seals[i]) continue; const [a, L] = SEAL[i], c = Math.cos(a), s = Math.sin(a), len = 110 * L, pulse = .6 + Math.sin(t * 4 + i) * .25;
+      g.save(); g.translate(cx, cy + 6); g.globalCompositeOperation = 'lighter'; g.strokeStyle = hexA('#dfe8ff', pulse); g.shadowColor = '#dfe8ff'; g.shadowBlur = 12; g.lineWidth = 5; g.setLineDash([10, 6]); g.lineDashOffset = -t * 30;
+      g.beginPath(); g.moveTo(-c * len, -s * len); g.lineTo(c * len, s * len); g.stroke(); g.setLineDash([]); g.fillStyle = hexA('#ffffff', pulse); g.beginPath(); g.arc(0, 0, 0, 0, TAU); g.fill(); g.restore(); }
     for (let i = S.shards.length - 1; i >= 0; i--) { const q = S.shards[i]; q.l -= dt; if (q.l <= 0) { S.shards.splice(i, 1); continue; } q.x += q.vx * dt; q.y += q.vy * dt; q.vy += 500 * dt; q.a += q.va * dt;
       g.save(); g.translate(q.x, q.y); g.rotate(q.a); g.globalAlpha = Math.min(1, q.l * 2); g.strokeStyle = q.c; g.lineWidth = 5; g.shadowColor = q.c; g.shadowBlur = 10; g.beginPath(); g.moveTo(-q.len / 2, 0); g.lineTo(q.len / 2, 0); g.stroke(); g.restore(); }
     // the hero
