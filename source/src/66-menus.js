@@ -3,7 +3,12 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 77
+const NEWS = [ // version 80
+  ["EVERY HERO A NINJA", "Every hero is redrawn as a ninja with a design of its own: a dark suit with neon trims in your skin's colors, a cloth mask, a hood or a headband, and its own marks: cat and fox ears, oni and dragon horns, armor for the heavy heroes, skeleton ninjas in hoods. They move with recorded sword fighting, in the Hero Forge, on the home screen, in the portraits, the crate film and every run."],
+  ["THE RIVAL CLAN", "The enemies and the bosses are ninjas and oni of a rival clan, each in its own colors so it stands out on the dark roof. Skeletons rise from the roof, fighters wind up their cuts, flinch and fall."],
+  ["SHARPER IN 3D", "Runs in 3D are drawn at full sharpness from the medium quality up, and the blade trail is lighter and shorter so your hero stays clear inside every cut."],
+  ["SEALED", "A crate's seals are now steel straps wrapped around it, a light running through each and a seal badge where they cross. They still break one by one."],
+  ["THE CLASSIC LOOK", "Prefer the previous heroes? Settings > Presentation > Character style > CLASSIC brings them back, now in tailored cyber suits with neon seams, painted armor and draped capes."],
   ["THE ONI KING'S SPOILS", "Defeat OTAKEMARU to claim his armor as the ONI KING hero skin and his red-hot iron as the KING'S IRON blade. Chapters 21, 22 and 23 now open with comic pages, and the oni king has his own portrait."],
   ["EMBLEMS AND A SEASON TRACK", "Every Arcade mode now carries its own neon emblem in its own color, and the chosen one glows. The season rewards are a track: every tier a node that lights up as you reach it, its reward drawn beside it, and the tier you are working on with its own progress bar."],
   ["THE ONI KING'S FISTS", "In 3D, OTAKEMARU now fights with great armored fists: iron plates, a burning cuff and glowing knuckles. A fist rises high over its red circle as the slam winds up, crashes into the roof and squashes, then floats back. The pets are drawn larger too."],
