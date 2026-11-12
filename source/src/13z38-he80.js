@@ -1,0 +1,23 @@
+/* HEBREW — version 80 strings */
+Object.assign(HE, {
+  "CHARACTERS": "דמויות",
+  "Character style": "סגנון דמויות",
+  "CLASSIC": "קלאסי",
+  "STYLIZED": "מסוגנן",
+  "STYLIZED: hand-made stylized characters with their own recorded animations, in your skins' colors. CLASSIC: the game's own designs.": "מסוגנן: דמויות מסוגננות בעבודת יד עם אנימציות מוקלטות משלהן, בצבעי הסקינים שלכם. קלאסי: העיצובים של המשחק עצמו.",
+  "SUITED UP": "חליפות קרב",
+  "Every hero in 3D now wears a tailored cyber suit: armor plates, neon seams in your skin's colors, a masked face with a lit eye slit and a headband. The armored heroes are repainted in your skin's colors with lit stripes and a glass visor, capes drape in folds, tails taper, and the skeleton, dragon, slime and ghost skins have looks of their own. Dash afterimages now show your own hero.": "כל גיבור בתלת־ממד לובש עכשיו חליפת סייבר מותאמת: לוחות שריון, תפרי ניאון בצבעי הסקין שלכם, פנים במסכה עם חריץ עיניים זוהר ומטפחת ראש. הגיבורים המשוריינים נצבעו מחדש בצבעי הסקין עם פסים זוהרים ומגן פנים מזכוכית, גלימות נופלות בקפלים, זנבות מתחדדים, ולסקינים של השלד, הדרקון, הרפש והרוח יש מראה משלהם. דמויות הצל של הזינוק מראות עכשיו את הגיבור שלכם.",
+  "THE RIVAL CLAN": "השבט היריב",
+  "MIMIC, MIRROR, MEDIC, MINER and COURIER are now suited fighters in their own colors, with a mirror shield, a floating cross, a drill and a loot crate. They walk, wind up their cuts, flinch and fall. The DIVER, SPLITTER, TREASURE DRONE and WEAVER are rebuilt too.": "MIMIC, MIRROR, MEDIC, MINER ו־COURIER הם עכשיו לוחמים בחליפות בצבעים שלהם, עם מגן מראה, צלב מרחף, מקדחה וארגז שלל. הם הולכים, מתכוננים לחיתוך, נרתעים ונופלים. גם ה־DIVER, ה־SPLITTER, רחפן האוצר וה־WEAVER נבנו מחדש.",
+  "SEALED": "חתום",
+  "A crate's seals are now steel straps wrapped around it, a light running through each and a seal badge where they cross. They still break one by one.": "החותמות של תיבה הן עכשיו רצועות פלדה העוטפות אותה, אור רץ בכל אחת וסמל חותם במקום שבו הן נפגשות. הן עדיין נשברות אחת אחרי השנייה.",
+  "CHARACTER STYLE": "סגנון דמויות",
+  "New in Settings, Presentation: CHARACTER STYLE switches to STYLIZED hand-made characters with their own recorded animations, in your skins' colors. CLASSIC stays the default.": "חדש בהגדרות, תצוגה: סגנון דמויות מחליף לדמויות מסוגננות בעבודת יד עם אנימציות מוקלטות משלהן, בצבעי הסקינים שלכם. קלאסי נשאר ברירת המחדל.",
+  "EVERY HERO A NINJA": "כל גיבור נינג'ה",
+  "Every hero is redrawn as a ninja with a design of its own: a dark suit with neon trims in your skin's colors, a cloth mask, a hood or a headband, and its own marks: cat and fox ears, oni and dragon horns, armor for the heavy heroes, skeleton ninjas in hoods. They move with recorded sword fighting, in the Hero Forge, on the home screen, in the portraits, the crate film and every run.": "כל גיבור צויר מחדש כנינג'ה עם עיצוב משלו: חליפה כהה עם קישוטי ניאון בצבעי הסקין, מסכת בד, ברדס או סרט ראש, וסימנים משלו: אוזני חתול ושועל, קרני אוני ודרקון, שריון לגיבורים הכבדים ונינג'ות־שלד בברדס. הם זזים עם קרב חרבות מוקלט, בבניית הגיבור, במסך הבית, בדיוקנאות, בפתיחת התיבות ובכל ריצה.",
+  "The enemies and the bosses are ninjas and oni of a rival clan, each in its own colors so it stands out on the dark roof. Skeletons rise from the roof, fighters wind up their cuts, flinch and fall.": "האויבים והבוסים הם נינג'ות ואוני של שבט יריב, כל אחד בצבעים שלו כדי שיבלוט על הגג החשוך. שלדים קמים מהגג, לוחמים מתכוננים לחיתוך, נרתעים ונופלים.",
+  "SHARPER IN 3D": "חד יותר בתלת־ממד",
+  "Runs in 3D are drawn at full sharpness from the medium quality up, and the blade trail is lighter and shorter so your hero stays clear inside every cut.": "ריצות בתלת־ממד מצוירות בחדות מלאה כבר מאיכות בינונית, ושובל החרב קל וקצר יותר כדי שהגיבור יישאר ברור בכל חיתוך.",
+  "THE CLASSIC LOOK": "המראה הקלאסי",
+  "Prefer the previous heroes? Settings > Presentation > Character style > CLASSIC brings them back, now in tailored cyber suits with neon seams, painted armor and draped capes.": "מעדיפים את הגיבורים הקודמים? הגדרות ← תצוגה ← סגנון דמויות ← קלאסי מחזיר אותם, עכשיו בחליפות סייבר מותאמות עם תפרי ניאון, שריון צבוע וגלימות בקפלים.",
+});
