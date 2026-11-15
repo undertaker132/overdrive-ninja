@@ -33138,15 +33138,15 @@ const Duel82 = {
     try { const L = this.LOOK[Math.min(4, this.r)], key = L.join('|');
       if (Human.HEAVY[L[0]] && !Models.ok('soldier')) Models.load('soldier');
       if (this.key !== key) { if (this.g) this.inner.remove(this.g); const g = Human.build({ body: L[0], a: L[1], b: L[2] }, this.r >= 3 ? 'nodachi' : 'katana'); if (g.pool) g.pool.visible = false; try { Look.dress(g); } catch (e) { errLog(e); } this.inner.add(g); this.g = g; this.key = key;
-        this.mats = []; const C = new THREE.Color(L[1]); g.traverse(o => { if (o.isMesh && o.material) { const m = o.material = o.material.clone(); m.transparent = true; if (m.color && !m.isMeshBasicMaterial) m.color.lerp(C, .3); if (m.emissive) { m.emissive.copy(C); m.emissiveIntensity = Math.max(m.emissiveIntensity || 0, .1); } this.mats.push(m); } }); } // (the guardian wears its rarity: tinted and lit in its color)
-      this.g.mv = null; this.rim.color.set(L[1]); this.rim.intensity = 4.5; this.on = true;
+        this.mats = []; const C = new THREE.Color(L[1]); g.traverse(o => { if (o.isMesh && o.material) { const m = o.material = o.material.clone(); m.transparent = true; if (m.color && !m.isMeshBasicMaterial) m.color.lerp(C, .18); if (m.emissive) { m.emissive.copy(C); m.emissiveIntensity = Math.max(m.emissiveIntensity || 0, .06); } this.mats.push(m); } }); } // (the guardian wears its rarity: tinted and lit in its color)
+      this.g.mv = null; this.rim.color.set(L[1]); this.rim.intensity = 3.2; this.on = true;
     } catch (e) { errLog(e); this.on = false; }
   },
   /* one frame of the guardian, under the hero */
   draw(g, t) {
     const st = this.st; if (!this.on || !st || !this.g) return; const S = this.S, CF = CrateFilm, L = this.LOOK[Math.min(4, this.r)], c = L[1], r = this.r, u = this.u;
     const rd = this.last ? Math.min(.05, Math.max(0, t - this.last)) : .016; this.last = t;
-    let gx = 200 + this.off, gy = 500, alpha = 1, dash = false, sc = 2.3;
+    let gx = 200 + this.off, gy = 470, alpha = 1, dash = false, sc = 2.25;
     // the entrance: it drops in with a puff of smoke as the crate lands
     if (st.k === 'drop') { const k = Math.min(1, Math.max(0, (u - .55) / .25)); if (k <= 0) return; alpha = k; gy -= (1 - k) * 60; if (!this.in82) { this.in82 = 1; try { CF.burst(S, gx, gy - 40, '#cfd6e6', 22, 200, .7); CF.burst(S, gx, gy - 40, c, 10, 160, .6); Aud.sfx('warp'); } catch (e) { } } }
     // the exchanges: on each strike's hit the guardian blocks (or, on the last, is cut down)
