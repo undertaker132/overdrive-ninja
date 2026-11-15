@@ -309,8 +309,9 @@ const HUD = {
     // hint
     if (G.hintT > 0) {
       const a = Math.min(1, G.hintT * 2); cx.globalAlpha = a; cx.font = '700 11px ' + FONT_M; cx.textAlign = 'center';
-      const tw = Math.min(V.VW - 20, cx.measureText(G.hint).width + 20), y = V.VH - UI.dockH / V.s - (Boss.cur ? 70 : 30);
-      cx.fillStyle = 'rgba(0,0,0,.7)'; cx.fillRect(V.CX - tw / 2, y - 14, tw, 22); cx.fillStyle = '#e8fbff'; cx.fillText(G.hint, V.CX, y + 1); cx.globalAlpha = 1;
+      const maxW = V.VW - 40, lines = []; let ln = ''; for (const w of String(G.hint).split(' ')) { const t = ln ? ln + ' ' + w : w; if (ln && cx.measureText(t).width > maxW) { lines.push(ln); ln = w; } else ln = t; } if (ln) lines.push(ln); // (v81: a long tip wraps instead of running off a phone screen)
+      const tw = Math.min(V.VW - 20, Math.max(...lines.map(l => cx.measureText(l).width)) + 20), LH = 14, y = V.VH - UI.dockH / V.s - (Boss.cur ? 70 : 30) - (lines.length - 1) * LH;
+      cx.fillStyle = 'rgba(0,0,0,.7)'; cx.fillRect(V.CX - tw / 2, y - 14, tw, 22 + (lines.length - 1) * LH); cx.fillStyle = '#e8fbff'; lines.forEach((l, i) => cx.fillText(l, V.CX, y + 1 + i * LH)); cx.globalAlpha = 1;
     }
     this.tutorial();
     this.cine(rd);
