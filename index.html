@@ -28635,7 +28635,7 @@ const R3 = {
     this.flashes.push({ x: e.x, y: e.y, c, t: 0 }); if (this.flashes.length > 2) this.flashes.shift(); },
   render(rd) {
     if (!this.ok) return; const T0 = BG.T || {}; this.t += rd; const t = this.t; this.frame = (this.frame | 0) + 1;
-    const W = Math.max(2, cv.clientWidth || V.W), H = Math.max(2, cv.clientHeight || V.H), q = this.quality(), pr = Math.max(.5, Math.min(window.devicePixelRatio || 1, resK() || (q >= 3 ? 2 : q >= 1 ? 1.5 : 1)) * (this.dyn || 1)); // (version 41: dyn drops on a slow phone) // (version 40: Settings > SCREEN > RESOLUTION sets it)
+    const W = Math.max(2, cv.clientWidth || V.W), H = Math.max(2, cv.clientHeight || V.H), q = this.quality(), pr = Math.max(.5, Math.min(window.devicePixelRatio || 1, resK() || (q >= 2 ? 2 : q >= 1 ? 1.5 : 1)) * (this.dyn || 1)); // (version 41: dyn drops on a slow phone) // (version 40: Settings > SCREEN > RESOLUTION sets it)
     if (this.W0 !== W || this.H0 !== H || this.pr0 !== pr) { this.W0 = W; this.H0 = H; this.pr0 = pr; this.rn.setPixelRatio(pr); this.rn.setSize(W, H, false); this.comp.setPixelRatio(pr); this.comp.setSize(W, H); this.bloom.setSize(W * pr, H * pr); }
     this.themeSet(T0); this.syncCam(); this.layout(rd);
     // the hero (and its echo clones)
@@ -29018,9 +29018,9 @@ Object.assign(R3, {
     for (const s of q) s.t += rd;
     const pos = this.trail.geometry.attributes.position.array, colA = this.trail.geometry.attributes.color.array, c = this.tc.copy(hg.bladeMat ? hg.bladeMat.emissive : new T.Color('#00f2fe'));
     let any = false;
-    for (let i = 0; i < this.TN; i++) { const s = q[Math.min(i, q.length - 1)], al = i < q.length ? Math.max(0, 1 - s.t / .16) * s.k * (1 - i / this.TN) : 0, o = i * 6; if (al > .02) any = true;
+    for (let i = 0; i < this.TN; i++) { const s = q[Math.min(i, q.length - 1)], al = i < q.length ? Math.max(0, 1 - s.t / .12) * s.k * (1 - i / this.TN) : 0, o = i * 6; if (al > .02) any = true;
       pos[o] = s.a.x; pos[o + 1] = s.a.y; pos[o + 2] = s.a.z; pos[o + 3] = s.b.x; pos[o + 4] = s.b.y; pos[o + 5] = s.b.z;
-      colA[o] = c.r * al * .35; colA[o + 1] = c.g * al * .35; colA[o + 2] = c.b * al * .35; colA[o + 3] = c.r * al * 1.6; colA[o + 4] = c.g * al * 1.6; colA[o + 5] = c.b * al * 1.6; }
+      colA[o] = c.r * al * .12; colA[o + 1] = c.g * al * .12; colA[o + 2] = c.b * al * .12; colA[o + 3] = c.r * al * 1.1; colA[o + 4] = c.g * al * 1.1; colA[o + 5] = c.b * al * 1.1; } /* (v80: a lighter, shorter trail: the hero stays readable inside the cut) */
     this.trail.visible = any && !CALM; this.trail.geometry.attributes.position.needsUpdate = true; this.trail.geometry.attributes.color.needsUpdate = true;
   },
   /* ---------- dash afterimages ---------- */
@@ -31001,10 +31001,18 @@ const Seals = {
     CratePre.drawBox(bg, BS, T0.c, (T0.k === 'lim' ? 'lim' : T0.k === 'basic' ? 'basic' : 'neon'), crack, lv ? S.col : T0.c, lid);
     g.save(); g.translate(cx, cy); g.rotate(tilt); g.drawImage(box, -110, -110, 220, 220); g.restore();
     // the seals: four bands of light around the crate; a broken one splits and falls
-    const SEAL = [[-1.05, .9], [1.05, .9], [0, 1.25], [Math.PI / 2, 1.2]];
-    for (let i = 0; i < 4; i++) { if (S.seals[i]) continue; const [a, L] = SEAL[i], c = Math.cos(a), s = Math.sin(a), len = 110 * L, pulse = .6 + Math.sin(t * 4 + i) * .25;
-      g.save(); g.translate(cx, cy + 6); g.globalCompositeOperation = 'lighter'; g.strokeStyle = hexA('#dfe8ff', pulse); g.shadowColor = '#dfe8ff'; g.shadowBlur = 12; g.lineWidth = 5; g.setLineDash([10, 6]); g.lineDashOffset = -t * 30;
-      g.beginPath(); g.moveTo(-c * len, -s * len); g.lineTo(c * len, s * len); g.stroke(); g.setLineDash([]); g.fillStyle = hexA('#ffffff', pulse); g.beginPath(); g.arc(0, 0, 0, 0, TAU); g.fill(); g.restore(); }
+    // (version 80: steel straps that wrap the crate along its faces, a light running through each, a seal badge where they cross)
+    const STRAP = [[[-80, 15], [0, 55], [80, 15]], [[-40, 80], [-40, -10], [40, -50]], [[40, 80], [40, -10], [-40, -50]], [[0, 12], [0, 100]]];
+    const strap = (pts, w, style, dash, off) => { g.beginPath(); g.moveTo(pts[0][0], pts[0][1] + 10); for (let j = 1; j < pts.length; j++) g.lineTo(pts[j][0], pts[j][1] + 10); g.lineWidth = w; g.strokeStyle = style; if (dash) { g.setLineDash(dash); g.lineDashOffset = off; } g.stroke(); g.setLineDash([]); };
+    g.save(); g.translate(cx, cy); g.rotate(tilt); g.lineJoin = 'round'; g.lineCap = 'round';
+    for (let i = 0; i < 4; i++) { if (S.seals[i]) continue; const pts = STRAP[i], pulse = .62 + Math.sin(t * 4 + i * 1.7) * .22;
+      g.globalCompositeOperation = 'source-over'; g.shadowBlur = 0; strap(pts, 16, '#0a0d1a'); strap(pts, 12, '#3a4566'); strap(pts, 12, 'rgba(255,255,255,.08)', [2, 7], 0);
+      g.globalCompositeOperation = 'lighter'; g.shadowColor = '#bfe0ff'; g.shadowBlur = 14; strap(pts, 3.2, hexA('#dfe8ff', pulse)); strap(pts, 6, hexA('#ffffff', .9), [14, 150], -t * 120 - i * 40);
+      g.shadowBlur = 0; for (const q of pts) { g.fillStyle = hexA('#dfe8ff', .9); g.beginPath(); g.arc(q[0], q[1] + 10, 4.2, 0, TAU); g.fill(); } }
+    if (!S.seals[0] || !S.seals[3]) { const pulse = .7 + Math.sin(t * 3) * .2; g.globalCompositeOperation = 'source-over'; g.shadowColor = '#bfe0ff'; g.shadowBlur = 16 * pulse; g.fillStyle = '#0c1020'; g.strokeStyle = hexA('#dfe8ff', pulse); g.lineWidth = 3;
+      g.beginPath(); for (let j = 0; j < 6; j++) { const a = j / 6 * TAU + Math.PI / 6; g[j ? 'lineTo' : 'moveTo'](Math.cos(a) * 15, 65 + Math.sin(a) * 15); } g.closePath(); g.fill(); g.stroke();
+      g.shadowBlur = 8; g.fillStyle = hexA('#ffffff', pulse); g.font = '900 15px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('封', 0, 66); }
+    g.restore();
     for (let i = S.shards.length - 1; i >= 0; i--) { const q = S.shards[i]; q.l -= dt; if (q.l <= 0) { S.shards.splice(i, 1); continue; } q.x += q.vx * dt; q.y += q.vy * dt; q.vy += 500 * dt; q.a += q.va * dt;
       g.save(); g.translate(q.x, q.y); g.rotate(q.a); g.globalAlpha = Math.min(1, q.l * 2); g.strokeStyle = q.c; g.lineWidth = 5; g.shadowColor = q.c; g.shadowBlur = 10; g.beginPath(); g.moveTo(-q.len / 2, 0); g.lineTo(q.len / 2, 0); g.stroke(); g.restore(); }
     // the hero
@@ -32851,6 +32859,78 @@ const SeasonArt = {
 {
   const fr7 = Mini.frame.bind(Mini);
   Mini.frame = function (rd) { if (this.floor57) { this.floor57.material.roughness = this.host === 'result' ? .55 : .28; this.floor57.scale.setScalar(this.host === 'result' ? 2.6 : 1); } if (this.host === 'result' && this.cam && !CALM) { const a = Math.sin((this.t || 0) * .35) * .38, d = 4.4; this.cam.position.set(Math.sin(a) * d, 1.05 + Math.sin((this.t || 0) * .5) * .08, Math.cos(a) * d); this.cam.lookAt(0, .85, 0); if (this.back57) { this.back57.position.set(-Math.sin(a) * 1.6, 1.0, -Math.cos(a) * 1.6); this.back57.lookAt(this.cam.position); } } return fr7(rd); }; /* (the glow behind the hero turns with the camera, so it is never seen edge-on) */
+}
+
+/* v81 · a loaded model's geometry belongs to every copy of it (the hero, the robots, the monsters): a dead enemy's cleanup no longer
+   throws it away, which made the next frame upload the whole body again (a stutter on every kill). Display only. */
+Pipe.on('post', 'shared81', () => { if (typeof Models === 'undefined') return; for (const id in Models.got) { const gl = Models.got[id]; if (gl && gl.scene && !gl.shared81) { gl.shared81 = 1; gl.scene.traverse(o => { if (o.geometry) o.geometry.userData.shared = 1; }); } } }, 99);
+{ const in0 = Models.inst.bind(Models); Models.inst = function (id) { const gl = this.got[id]; if (gl && !gl.shared81) { gl.shared81 = 1; gl.scene.traverse(o => { if (o.geometry) o.geometry.userData.shared = 1; }); } return in0.apply(this, arguments); }; }
+
+/* ==========================================================================
+   v81 · A CUT IN 3D IS A CUT IN 3D. Cutting an enemy split its flat 2D
+   drawing in two over the 3D roof (the halves effect drew the 2D body even
+   in the 3D view). In 3D the enemy's own model now splits along the cut:
+   two clipped halves slide apart, spin, sink and fade, with the white cut
+   line on the roof. Enemies that have a recorded death (the robots and the
+   monsters) keep falling as before. Display only.
+   ========================================================================== */
+const Slice3D = {
+  L: [], MAX: 12,
+  on() { return typeof R3 !== 'undefined' && R3.on && W3D.live && W3D.models(); },
+  find(uid) { for (const S of Feel.sl) if (S.e && S.e.uid === uid && !S.h3) return S; return null; },
+  /* one half: a copy whose materials keep only the side of the cut plane (a plane fixed to the half, so it moves and spins with it) */
+  half(g, n, root) {
+    const T = THREE, h = g.clone(true), mats = [];
+    h.traverse(o => { if (!o.isMesh || !o.material) return; const m = o.material.clone(); m.transparent = true; m.clippingPlanes = []; m.clipShadows = true; o.material = m; mats.push(m); o.castShadow = false; });
+    root.add(h); h.updateMatrixWorld(true);
+    const inv = h.matrixWorld.clone().invert(), c = new T.Vector3(); g.getWorldPosition(c);
+    const local = new T.Plane().setFromNormalAndCoplanarPoint(n.clone().negate(), c).applyMatrix4(inv); // (keeps the side the normal points to)
+    return { h, mats, local, world: new T.Plane() };
+  },
+  start(g, S) {
+    const T = THREE, root = R3.root; R3.rn.localClippingEnabled = true; g.updateMatrixWorld(true);
+    const na = S.a + Math.PI / 2, perp = new T.Vector3(Math.cos(na), Math.sin(na), 0);
+    for (const c of g.children) if (c.isMesh && c.material && c.material.blending === T.AdditiveBlending) c.visible = false; // (no glow pool under the halves)
+    const H = [this.half(g, perp, root), this.half(g, perp.clone().negate(), root)];
+    root.remove(g); S.h3 = 1;
+    this.L.push({ H, S, x: g.position.x, y: g.position.y, z: g.position.z, rz: g.rotation.z, sc: g.scale.clone(), t: 0, last: performance.now() });
+  },
+  tick() {
+    const now = performance.now();
+    for (let i = this.L.length - 1; i >= 0; i--) {
+      const q = this.L[i], dt = Math.min(.05, Math.max(0, (now - q.last) / 1000)); q.last = now; q.t += dt;
+      const S = q.S, d = S.d || .55, p = Math.min(1, q.t / d), ease = 1 - Math.pow(1 - p, 2), na = S.a + Math.PI / 2, off = ease * (S.sp || 120) * .35;
+      q.H.forEach((hf, k) => { const sd = k ? -1 : 1, h = hf.h;
+        h.position.set(q.x + Math.cos(na) * off * sd + Math.cos(S.a) * ease * 20, q.y + Math.sin(na) * off * sd + Math.sin(S.a) * ease * 20, q.z - p * p * 18);
+        h.rotation.set(0, 0, q.rz + sd * (S.rot || 1) * ease * .4); h.scale.copy(q.sc); h.updateMatrixWorld(true);
+        hf.world.copy(hf.local).applyMatrix4(h.matrixWorld); const a = 1 - p * p;
+        for (const m of hf.mats) { m.clippingPlanes[0] = hf.world; m.opacity = a * (m.userData.op0 == null ? (m.userData.op0 = m.opacity) : m.userData.op0); } });
+      if (p >= 1) { for (const hf of q.H) { R3.root.remove(hf.h); for (const m of hf.mats) m.dispose(); } this.L.splice(i, 1); }
+    }
+  },
+  clear() { for (const q of this.L) for (const hf of q.H) { if (hf.h.parent) hf.h.parent.remove(hf.h); for (const m of hf.mats) m.dispose(); } this.L.length = 0; }
+};
+{
+  // the 3D layer: a cut enemy that left the roof splits instead of vanishing (the corpse hook keeps the ones with a death clip)
+  const sw = R3.sweep.bind(R3);
+  R3.sweep = function () {
+    try { if (Slice3D.on() && !CALM) for (const [k, r] of this.ents) { if (r.seen === this.frame || k[0] !== 'e' || !/^e\d+:/.test(k)) continue; const g = r.g; if (!g || g.mon || g.rob || Slice3D.L.length >= Slice3D.MAX) continue;
+        const uid = +(k.slice(1).split(':')[0]), S = Slice3D.find(uid); if (!S) continue; let alive = false; for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (e.uid === uid && e.alive) { alive = true; break; } } if (alive) continue;
+        Slice3D.start(g, S); this.ents.delete(k); } } catch (e) { errLog(e); }
+    try { Slice3D.tick(); } catch (e) { errLog(e); }
+    return sw();
+  };
+  // the 2D halves: in the 3D view only the cut line is drawn on the roof (the 3D layer draws the halves)
+  const ds0 = Feel.drawSlices.bind(Feel);
+  Feel.drawSlices = function (rd) {
+    if (!Slice3D.on() || !this.sl.length) return ds0(rd);
+    cx.save(); const k = V.s * V.dpr; W3D.flatT(k);
+    for (let i = this.sl.length - 1; i >= 0; i--) { const S = this.sl[i]; S.t += rd; if (S.t > S.d) { this.sl.splice(i, 1); continue; }
+      if (S.t < .14) { const q = 1 - S.t / .14, L = (S.e.r || 12) * 2.6; cx.save(); cx.globalAlpha = q; cx.strokeStyle = '#ffffff'; cx.lineWidth = 3 * q + .5; cx.shadowColor = P.ca || '#00f2fe'; cx.shadowBlur = 12;
+        cx.beginPath(); cx.moveTo(S.x - Math.cos(S.a) * L, S.y - Math.sin(S.a) * L); cx.lineTo(S.x + Math.cos(S.a) * L, S.y + Math.sin(S.a) * L); cx.stroke(); cx.restore(); } }
+    cx.restore();
+  };
+  Pipe.on('pre', 'slice3d', () => { if (Slice3D.L.length && !(typeof R3 !== 'undefined' && R3.on && W3D.live)) Slice3D.clear(); }, 12);
 }
 
 </script>
