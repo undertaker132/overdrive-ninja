@@ -3970,5 +3970,14 @@ Object.assign(RU, {
 "THE ONI KING'S SPOILS": "ТРОФЕИ КОРОЛЯ ОНИ",
 "Defeat OTAKEMARU to claim his armor as the ONI KING hero skin and his red-hot iron as the KING'S IRON blade. Chapters 21, 22 and 23 now open with comic pages, and the oni king has his own portrait.": "Победи Отакэмару, чтобы получить его броню — облик героя КОРОЛЬ ОНИ — и его раскалённое железо — клинок ЖЕЛЕЗО КОРОЛЯ. Главы 21, 22 и 23 теперь открываются страницами комикса, а у короля они появился свой портрет.",
 "The oni king of the old legends, rebuilt in iron as tall as a building. Leave the red circles when his fists fall, cut the fists while they are down, and break both to bring him to his knees.": "Король они из старых легенд, заново выкованный из железа, ростом с дом. Уходи из красных кругов, когда падают его кулаки, руби кулаки, пока они на земле, и разбей оба, чтобы поставить его на колени.",
-"Boss taiko war metal": "Боевой тайко-метал босса"
+"Boss taiko war metal": "Боевой тайко-метал босса",
+"SIGNATURE ART": "ФИРМЕННЫЙ ПРИЁМ",
+"SHADOW CLONE": "ТЕНЕВОЙ КЛОН",
+"IAI STANCE": "СТОЙКА ИАЙ",
+"DEATH MARKS": "МЕТКИ СМЕРТИ",
+"SPIRIT WARD": "ДУХОВНЫЙ ЗАСЛОН",
+"Three dashes in quick succession leave a shadow clone that keeps cutting.": "Три быстрых рывка подряд оставляют теневого клона, который продолжает рубить.",
+"Stand still for a breath: your next dash draws a huge iai cut.": "Замрите на миг: следующий рывок — огромный удар иай.",
+"Cuts landed while vanished mark enemies. With three marks, your next dash strikes them all.": "Удары в невидимости помечают врагов. С тремя метками следующий рывок поражает всех.",
+"Every 8th kill lays a ward circle that burns enemy shots inside it.": "Каждое 8-е убийство ставит защитный круг, сжигающий вражеские выстрелы внутри."
 });

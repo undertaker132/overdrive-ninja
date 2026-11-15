@@ -195,6 +195,7 @@ const Hero = {
     cp.appendChild(grid);
     const xpN = f.xp[f.cls] | 0, nx = HLV[Math.min(3, L)]; const ab = el('div', 'hf-ab');
     C.ab.forEach((a, i) => { const on = L >= i + 1, r = el('div', 'hf-a' + (on ? ' on' : '')); r.appendChild(el('b', '', (on ? '✓ ' : '🔒 ') + lt(a[0]))); r.appendChild(el('span', 'small', lt(a[1]) + (on ? '' : ' · ' + ltf('{0} XP', fmtNum(HLV[i]))))); ab.appendChild(r); });
+    try { const A = typeof ARTS !== 'undefined' && ARTS[f.cls]; if (A) { const r = el('div', 'hf-a on'); r.style.borderColor = A.c; const b = el('b', '', '★ ' + lt('SIGNATURE ART') + ' · ' + lt(A.n)); b.style.color = A.c; r.appendChild(b); r.appendChild(el('span', 'small', lt(A.d))); ab.insertBefore(r, ab.firstChild); } } catch (e) { errLog(e); } // (v82: each class's own art)
     cp.appendChild(ab); if (L < 4) cp.appendChild(el('div', 'small mute', ltf('{0} / {1} XP · earned in HERO TRIALS and the WORLD BOSS', fmtNum(xpN), fmtNum(nx)))); box.appendChild(cp);
     // look
     const lk = el('div', 'panel'); lk.appendChild(el('div', 'eyebrow', lt('LOOK'))); const bodies = Object.keys(BODY), bi = Math.max(0, bodies.indexOf(f.body));

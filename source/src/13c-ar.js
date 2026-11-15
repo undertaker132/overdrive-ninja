@@ -3970,5 +3970,14 @@ Object.assign(AR, {
 "THE ONI KING'S SPOILS": "غنائم ملك الأوني",
 "Defeat OTAKEMARU to claim his armor as the ONI KING hero skin and his red-hot iron as the KING'S IRON blade. Chapters 21, 22 and 23 now open with comic pages, and the oni king has his own portrait.": "اهزم أوتاكيمارو لتحصل على درعه كمظهر البطل ملك الأوني وعلى حديده المتوهج كشفرة حديد الملك. والفصول 21 و22 و23 تُفتتح الآن بصفحات كوميك، ولملك الأوني صورته الخاصة.",
 "The oni king of the old legends, rebuilt in iron as tall as a building. Leave the red circles when his fists fall, cut the fists while they are down, and break both to bring him to his knees.": "ملك الأوني من الأساطير القديمة، أعيد بناؤه من الحديد بطول مبنى. اخرج من الدوائر الحمراء حين تسقط قبضتاه، واقطع القبضتين وهما على الأرض، وحطّمهما لتجبره على الركوع.",
-"Boss taiko war metal": "ميتال طبول تايكو حربي للزعيم"
+"Boss taiko war metal": "ميتال طبول تايكو حربي للزعيم",
+"SIGNATURE ART": "فن مميّز",
+"SHADOW CLONE": "استنساخ الظل",
+"IAI STANCE": "وضعية الإياي",
+"DEATH MARKS": "علامات الموت",
+"SPIRIT WARD": "حاجز الأرواح",
+"Three dashes in quick succession leave a shadow clone that keeps cutting.": "ثلاث اندفاعات متتالية سريعة تترك استنساخ ظل يواصل القطع.",
+"Stand still for a breath: your next dash draws a huge iai cut.": "اثبت لحظة: اندفاعتك التالية تسحب ضربة إياي هائلة.",
+"Cuts landed while vanished mark enemies. With three marks, your next dash strikes them all.": "الضربات أثناء الاختفاء تضع علامة على الأعداء. مع ثلاث علامات، تضربهم اندفاعتك التالية جميعًا.",
+"Every 8th kill lays a ward circle that burns enemy shots inside it.": "كل قتل ثامن يضع دائرة حماية تحرق طلقات الأعداء داخلها."
 });
