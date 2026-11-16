@@ -136,8 +136,9 @@ const Duel3D = {
   fire(F, name, ts) { try { return Moves75.fire(F.g.human, name, ts || 1.8); } catch (e) { return false; } },
   guard(F, w, dt) { const h = F.g.human, a = h.melee && h.melee.Melee_2H_Idle; if (!a) return; if (!a.isRunning()) { a.setLoop(THREE.LoopRepeat, Infinity); a.reset(); a.setEffectiveWeight(0); a.play(); }
     F.gw = (F.gw || 0) + (w - (F.gw || 0)) * Math.min(1, dt * 8); a.setEffectiveWeight(h.cutA ? 0 : F.gw); const loco = h.r.acts[h.r.cur]; if (loco && !h.cutA) loco.setEffectiveWeight(Math.max(.05, 1 - F.gw)); },
-  drive(F, dt, t) { const g = F.g; Human.anim(g, { x: F.x, y: F.y, face: F.face, spd: F.spd, dashing: false, alpha: 1, hp: F.hp, win: F.win }, dt, t); this.guard(F, F.win || F.spd > 40 ? 0 : 1, dt);
-    g.position.set(F.x, F.y, F.z || 0); g.rotation.z = F.face; g.scale.setScalar(F.s0 * F.sc); g.visible = F.vis > .02;
+  drive(F, dt, t) { const g = F.g; if (F.px == null || F.snap) { F.px = F.x; F.py = F.y; F.snap = 0; F.mv = 0; } else { const k = Math.min(1, dt * 15), ox = F.px, oy = F.py; F.px += (F.x - F.px) * k; F.py += (F.y - F.py) * k; const v = dt > 0 ? Math.hypot(F.px - ox, F.py - oy) / dt : 0; F.mv = (F.mv || 0) + (Math.min(520, v * 2.2) - (F.mv || 0)) * Math.min(1, dt * 12); } // (no pops between the beats: they step and run to their marks)
+    const spd = Math.max(F.spd, F.mv > 45 ? F.mv : 0); Human.anim(g, { x: F.px, y: F.py, face: F.face, spd, dashing: false, alpha: 1, hp: F.hp, win: F.win }, dt, t); this.guard(F, F.win || spd > 40 ? 0 : 1, dt);
+    g.position.set(F.px, F.py, F.z || 0); g.rotation.z = F.face; g.scale.setScalar(F.s0 * F.sc); g.visible = F.vis > .02;
     if (g.own && F.vis !== F.pv) { F.pv = F.vis; for (const m of g.own) { m.transparent = F.vis < 1; m.opacity = F.vis; } } },
   tint(F, col) { const c = new THREE.Color(col); if (F.g.U82) F.g.U82.c.value.copy(c); for (const m of F.g.own || []) if (m.userData.lit && m.emissive) m.emissive.copy(c); },
   /* the cut: two copies of the body as it stands, each keeping one side of the blade's plane, sliding apart */
@@ -152,8 +153,8 @@ const Duel3D = {
       for (const o of q.out) { const dx = q.n.x * o.sd * e * .5 + o.sd * e * .12, dy = q.n.y * o.sd * e * .35 - k * k * .7; o.h.position.set(o.p0.x + dx * 30, o.p0.y, o.p0.z + dy * 30); // (the fighters' space: x right, z up)
         o.pl.setFromNormalAndCoplanarPoint(q.n.clone().multiplyScalar(o.sd), new THREE.Vector3(q.c.x + dx, q.c.y + dy, q.c.z)); for (const m of o.mats) m.opacity = 1 - k * k; }
       if (k >= 1) { for (const o of q.out) { this.inner.remove(o.h); for (const m of o.mats) m.dispose(); } this.cuts.splice(i, 1); } } },
-  plan(r) { const L = [{ k: 'intro', d: 1.2 }]; for (let i = 1; i <= r; i++) { L.push({ k: 'round', i, d: 1.1 }); L.push({ k: 'awaken', i, d: [0, .75, .85, 1.0, 1.45][i] }); L.push({ k: 'counter', i, d: .82 }); }
-    L.push({ k: 'round', i: r + 1, fin: 1, d: .4 }); L.push({ k: 'finish', d: r >= 3 ? 1.5 : 1.0 }); L.push({ k: 'fall', d: .7 }); L.push({ k: 'open', d: 1.85 }); let t = 0; for (const s of L) { s.t0 = t; t += s.d; } return { L, dur: t }; },
+  plan(r) { const L = [{ k: 'intro', d: .9 }]; for (let i = 1; i <= r; i++) { L.push({ k: 'round', i, d: i === 1 ? .95 : .56 }); L.push({ k: 'awaken', i, d: [0, .45, .5, .6, .9][i] }); if (i === r) L.push({ k: 'counter', i, d: .82 }); } // (one exchange a tier; the guardian's own move once, at its highest tier)
+    L.push({ k: 'round', i: r + 1, fin: 1, d: .25 }); L.push({ k: 'finish', d: r >= 3 ? 1.05 : .78 }); L.push({ k: 'fall', d: .5 }); L.push({ k: 'open', d: 1.55 }); let t = 0; for (const s of L) { s.t0 = t; t += s.d; } return { L, dur: t }; },
   /* ---------- the film ---------- */
   run(res, done) {
     const T = THREE, D = this, r = res.r | 0, R0 = RAR[r], T0 = CRATE_T[res.t || 'neon'] || CRATE_T.neon, sk = skinLook(Store.data.skin), wid = Store.data.weapon || 'katana';
@@ -164,8 +165,8 @@ const Duel3D = {
     const hk = (sk.id || '') + '|' + (sk.body || 'ninja') + '|' + sk.a + '|' + sk.b + '|' + wid; if (D.heroKey !== hk) { if (D.hero) D.inner.remove(D.hero.g); D.hero = D.fighter({ body: sk.body || 'ninja', a: sk.a, b: sk.b }, wid, false); D.heroKey = hk; }
     const need = r >= 4 ? 3 : 1; while (D.guards.length < need) D.guards.push(D.fighter({ body: 'shinobi2', a: '#dfe8ff', b: '#1a1f30' }, 'katana', true));
     const Hf = D.hero, G = D.guards, Gd = G[0], HX = -5, HY = 64, EX = -5, EY = 33, GX = 5, GY = -5;
-    Object.assign(Hf, { x: HX, y: 150, z: 0, face: -Math.PI / 2, spd: 300, win: false, hp: 9, vis: 1, sc: 1 }); Hf.g.mv = null;
-    G.forEach((F, i) => { Object.assign(F, { x: GX, y: GY, z: 170, face: Math.PI / 2, spd: 0, hp: 9, vis: 0, sc: 1, pv: -1, win: false, fade: 0 }); F.g.mv = null; D.tint(F, D.TIER[0]); F.on = i === 0; F.g.visible = false; });
+    Object.assign(Hf, { x: HX, y: 150, z: 0, face: -Math.PI / 2, spd: 300, win: false, hp: 9, vis: 1, sc: 1, px: null }); Hf.g.mv = null;
+    G.forEach((F, i) => { Object.assign(F, { x: GX, y: GY, z: 170, face: Math.PI / 2, spd: 0, hp: 9, vis: 0, sc: 1, pv: -1, win: false, fade: 0, px: null }); F.g.mv = null; D.tint(F, D.TIER[0]); F.on = i === 0; F.g.visible = false; });
     // the scene, reset
     D.cuts = D.cuts || []; for (const q of D.cuts) for (const o of q.out) D.inner.remove(o.h); D.cuts.length = 0; for (const q of D.P) q.l = 0; for (const b of D.spr) { b.l = 0; b.s.visible = false; } for (const b of D.rings) { b.l = 0; b.m.visible = false; }
     D.edgeM.color.set(T0.c || '#00f2fe'); D.box.position.set(0, 9, 0); D.box.rotation.set(0, .5, 0); D.lid.position.set(0, 1.35 * .39 + .1, 0); D.lid.rotation.set(0, 0, 0); D.lid.visible = true; D.beam.visible = false; D.beam.material.opacity = 0; D.badge.visible = true; D.bodyM.emissiveIntensity = .55;
@@ -204,24 +205,24 @@ const Duel3D = {
         if (st.fin) { Hf.x = HX; Hf.y = HY; Hf.face = face(Hf, Gd); Gd.face = face(Gd, Hf); aim([.55 * sd, 3.3, 5.0], [0, .75, .9], 44, 0, lt0 < .02); } // (the last round: they measure each other, seen from above the hero's shoulder)
         else { const a1 = .15, h1 = a1 + .27, a2 = .54, h2 = a2 + .27, inn = ease(seg(lt0, 0, a1 + .1)), outK = ease(seg(lt0, .9, 1.1)), push = (lt0 > h1 ? 5 : 0) + (lt0 > h2 ? 9 : 0);
           Hf.x = lerp(HX, EX, inn - outK); Hf.y = lerp(HY, EY - push * .5, inn - outK); Hf.spd = lt0 < a1 ? 420 : 0; Hf.face = face(Hf, Gd);
-          Gd.x = GX; Gd.y = lerp(Gd.y, GY - push, Math.min(1, dt * 14)); Gd.face = face(Gd, Hf);
+          Gd.x = GX; Gd.y = GY - push; Gd.face = face(Gd, Hf);
           if (lt0 >= a1) once('a1' + K, () => { D.fire(Hf, Melee.ONE[(i * 2) % 4], 1.9); sfx('slash'); }); if (lt0 >= h1 - .1) once('b1' + K, () => D.fire(Gd, 'Melee_Block_Hit', 1.9)); if (lt0 >= h1) once('h1' + K, () => clash(mid(Hf, Gd), tc));
           if (lt0 >= a2) once('a2' + K, () => { D.fire(Hf, Melee.ONE[(i * 2 + 1) % 4], 1.9); sfx('slash'); }); if (lt0 >= h2 - .1) once('b2' + K, () => D.fire(Gd, 'Melee_Block_Hit', 1.7)); if (lt0 >= h2) once('h2' + K, () => { clash(mid(Hf, Gd), tc, true); Gd.hp--; }); }
       } else if (st.k === 'awaken') {
-        const c = D.TIER[i]; Hf.x = HX; Hf.y = HY; Hf.face = face(Hf, Gd); Gd.face = face(Gd, Hf); Gd.y = lerp(Gd.y, GY, Math.min(1, dt * 5));
+        const c = D.TIER[i]; Hf.x = HX; Hf.y = HY; Hf.face = face(Hf, Gd); Gd.face = face(Gd, Hf); Gd.y = GY;
         aim([lerp(1.7, 1.35, u) * side(i + 1), lerp(.95, 1.05, u), lerp(3.5, 3.1, u)], [GX / 30, 1.0 + (i >= 3 ? .1 : 0), -.5], 42, .05 * side(i), lt0 < .02);
         if (u >= .22) once('aw' + K, () => { breakSeal(i, c); S.lvl = i; S.col = c; colTo.set(c); S.flash = .28 + i * .1; S.fc = c; D.tint(Gd, c); D.ring(D.W(Gd.x, Gd.y), c, 2 + i * .5, .6); D.burst(chest(Gd), c, 20 + i * 12, 3 + i, .9); S.cap = lt(['', 'IT HOLDS…', 'SOMETHING STIRS', 'THE SEALS ARE BREAKING', '…'][i]); S.capT = 1.4; S.sm = .22;
           if (i === 1) { sfx('lock'); S.shake = .5; } if (i === 2) { sfx('boom'); S.shake = .8; } if (i === 3) { sfx('od'); S.shake = 1; } if (i === 4) { sfx('tick'); } });
         if (i === 3 && u > .22) { Gd.sc = lerp(Gd.sc, 1.16, Math.min(1, dt * 4)); if (Math.random() < dt * 5) D.ring(D.W(Gd.x, Gd.y), c, 1.5, .5); }
         if (i === 4) { const dk = seg(u, .22, .5); D.hemi.intensity = lerp(1.05, .35, dk); D.key.intensity = lerp(2.3, .9, dk); D.moon.material.opacity = seg(u, .4, .7) * .95; if (u > .45) once('tk2', () => sfx('tick'));
-          if (u >= .62) once('split', () => { sfx('roar'); S.shake = 1.2; S.flash = .7; S.fc = c; for (const F of [G[1], G[2]]) { F.on = true; F.vis = .01; F.x = Gd.x; F.y = Gd.y; F.z = 0; D.tint(F, c); } D.burst(chest(Gd), c, 60, 6, 1.1); });
+          if (u >= .62) once('split', () => { sfx('roar'); S.shake = 1.2; S.flash = .7; S.fc = c; for (const F of [G[1], G[2]]) { F.on = true; F.vis = .01; F.x = Gd.x; F.y = Gd.y; F.z = 0; F.snap = 1; D.tint(F, c); } D.burst(chest(Gd), c, 60, 6, 1.1); });
           if (u >= .62) { const q = ease(seg(u, .62, .95)); [G[1], G[2]].forEach((F, j) => { F.x = Gd.x + (j ? 1 : -1) * 36 * q; F.y = Gd.y + 10 * q; F.vis = Math.min(1, q * 2.5); F.face = face(F, Hf); }); } }
       } else if (st.k === 'counter') {
         const c = D.TIER[i], sd = side(i + 1); aim([2.95 * sd, 1.42, 5.0], [0, 1.0, 1.5], 43, 0, lt0 < .02); Hf.x = HX; Hf.face = face(Hf, Gd);
         if (i === 1) { const q = Math.sin(seg(lt0, .02, .62) * Math.PI); Gd.y = lerp(GY, HY - 37, q); Gd.spd = lt0 < .25 ? 420 : 0; Gd.face = face(Gd, Hf);
           if (lt0 >= .08) once('ca' + K, () => { D.fire(Gd, 'Melee_1H_Attack_Chop', 1.9); sfx('slash'); }); if (lt0 >= .24) once('cb' + K, () => D.fire(Hf, 'Melee_Block_Hit', 1.9)); if (lt0 >= .34) once('ch' + K, () => clash(mid(Hf, Gd), c, true)); Hf.y = lerp(Hf.y, HY + (lt0 > .34 && lt0 < .6 ? 7 : 0), Math.min(1, dt * 12)); }
         if (i === 2) { const o1 = seg(lt0, 0, .1), in1 = seg(lt0, .16, .24), o2 = seg(lt0, .56, .64), in2 = seg(lt0, .68, .78); Gd.vis = lt0 < .16 ? 1 - o1 : lt0 < .56 ? in1 : lt0 < .68 ? 1 - o2 : in2;
-          if (lt0 >= .02) once('bk' + K, () => { D.burst(chest(Gd), c, 24, 3, .5); sfx('warp'); }); if (lt0 >= .13 && lt0 < .66) { Gd.x = HX - 25 * sd; Gd.y = HY - 8; } /* (on the hero's far flank, in the camera's view) */ else if (lt0 >= .66) { Gd.x = GX; Gd.y = GY; } Gd.face = face(Gd, Hf);
+          if (lt0 >= .02) once('bk' + K, () => { D.burst(chest(Gd), c, 24, 3, .5); sfx('warp'); }); if (lt0 >= .13 && lt0 < .66) { Gd.x = HX - 25 * sd; Gd.y = HY - 8; Gd.snap = lt0 < .2; } /* (on the hero's far flank, in the camera's view) */ else if (lt0 >= .66) { Gd.x = GX; Gd.y = GY; Gd.snap = lt0 < .72; } Gd.face = face(Gd, Hf);
           if (lt0 >= .16) once('bk2' + K, () => { D.burst(chest(Gd), c, 24, 3, .5); D.fire(Gd, 'Melee_1H_Attack_Slice_Horizontal', 2.1); sfx('slash'); }); if (lt0 >= .3) once('cb' + K, () => D.fire(Hf, 'Melee_Block_Hit', 2)); if (lt0 >= .43) once('ch' + K, () => clash(mid(Hf, Gd), c, true)); if (lt0 >= .57) once('bk3' + K, () => { D.burst(chest(Gd), c, 20, 3, .5); sfx('warp'); }); }
         if (i === 3) { const q = seg(lt0, .04, .46), back = ease(seg(lt0, .56, .8)); Gd.y = lerp(lerp(GY, HY - 36, ease(q)), GY, back); Gd.z = Math.sin(q * Math.PI) * 58 + Math.sin(back * Math.PI) * 20; Gd.face = face(Gd, Hf);
           if (lt0 >= .1) once('ca' + K, () => { D.fire(Gd, 'Melee_2H_Attack_Chop', 2.3); sfx('slash'); }); if (lt0 >= .34) once('cb' + K, () => D.fire(Hf, 'Melee_Block_Hit', 1.6));
