@@ -247,7 +247,7 @@ const Duel3D = {
       } else if (st.k === 'open') {
         aim([lerp(.6, .25, u), lerp(.85, .66, u), lerp(3.7, 3.2, u)], [0, lerp(1.6, 2.5, ease(seg(u, 0, .6))), -2.4], 50, 0); Hf.x = GX - 24; Hf.y = GY - 36; Hf.face = -Math.PI / 2 + .35; Hf.win = u > .25; for (const F of G) F.vis = F.fade ? Math.max(0, F.vis - rdt * 3) : F.vis;
         once('open', () => { sfx('boom'); sfx('star'); S.flash = 1; S.fc = R0.c; S.col = R0.c; colTo.set(R0.c); S.lvl = Math.max(S.lvl, r); D.badge.visible = false; D.beam.visible = true; D.beam.material.color.set(R0.c); const p = new T.Vector3(0, 1.9, -2.4); D.burst(p, R0.c, 110 + r * 30, 7 + r, 1.4, 4); D.burst(p, '#ffffff', 50, 5, .9, 3); D.ring(new T.Vector3(0, 0, -2.4), R0.c, 5 + r, .9); D.ring(new T.Vector3(0, 0, -2.4), '#ffffff', 3, .6); S.shake = 1; D.edgeM.color.set(R0.c); try { vibe('crit'); } catch (e) { } });
-        D.box.position.x = 0; D.lid.position.y = 1.35 * .39 + .1 + ease(seg(u, 0, .5)) * 3.4; D.lid.position.x = seg(u, 0, .6) * 1.3; D.lid.rotation.z = -u * 2.4; D.lid.rotation.x = u * 1.1; D.beam.material.opacity = Math.min(.8, u * 4) * (.85 + Math.sin(S.rt * 9) * .15);
+        D.moon.material.opacity = Math.min(D.moon.material.opacity, Math.max(.22, .95 - u * 3)); D.box.position.x = 0; D.lid.position.y = 1.35 * .39 + .1 + ease(seg(u, 0, .5)) * 3.4; D.lid.position.x = seg(u, 0, .6) * 1.3; D.lid.rotation.z = -u * 2.4; D.lid.rotation.x = u * 1.1; D.beam.material.opacity = Math.min(.8, u * 4) * (.85 + Math.sin(S.rt * 9) * .15);
         if (r >= 3 && Math.random() < rdt * 14) D.burst(new T.Vector3((Math.random() - .5) * 5, 3 + Math.random() * 2, -2.4 - Math.random() * 2), R0.c, 3, 1.5, 1, 0, 2);
       }
       // ----- everyone moves -----
