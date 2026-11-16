@@ -164,7 +164,7 @@ const Duel3D = {
     // the fighters
     const hk = (sk.id || '') + '|' + (sk.body || 'ninja') + '|' + sk.a + '|' + sk.b + '|' + wid; if (D.heroKey !== hk) { if (D.hero) D.inner.remove(D.hero.g); D.hero = D.fighter({ body: sk.body || 'ninja', a: sk.a, b: sk.b }, wid, false); D.heroKey = hk; }
     const need = r >= 4 ? 3 : 1; while (D.guards.length < need) D.guards.push(D.fighter({ body: 'shinobi2', a: '#dfe8ff', b: '#1a1f30' }, 'katana', true));
-    const Hf = D.hero, G = D.guards, Gd = G[0], HX = -5, HY = 64, EX = -5, EY = 33, GX = 5, GY = -5;
+    const Hf = D.hero, G = D.guards, Gd = G[0], HX = -5, HY = 64, EX = -3, EY = 25, GX = 5, GY = -5; /* (the engage mark: a blade's reach from the guardian) */
     Object.assign(Hf, { x: HX, y: 150, z: 0, face: -Math.PI / 2, spd: 300, win: false, hp: 9, vis: 1, sc: 1, px: null }); Hf.g.mv = null;
     G.forEach((F, i) => { Object.assign(F, { x: GX, y: GY, z: 170, face: Math.PI / 2, spd: 0, hp: 9, vis: 0, sc: 1, pv: -1, win: false, fade: 0, px: null }); F.g.mv = null; D.tint(F, D.TIER[0]); F.on = i === 0; F.g.visible = false; });
     // the scene, reset
@@ -203,7 +203,7 @@ const Duel3D = {
       } else if (st.k === 'round') {
         const sd = side(i); aim([2.95 * sd, 1.42, 4.0], [0, 1.0, .45], 43, 0, lt0 < .02 && !st.fin);
         if (st.fin) { Hf.x = HX; Hf.y = HY; Hf.face = face(Hf, Gd); Gd.face = face(Gd, Hf); aim([.55 * sd, 3.3, 5.0], [0, .75, .9], 44, 0, lt0 < .02); } // (the last round: they measure each other, seen from above the hero's shoulder)
-        else { const a1 = .15, h1 = a1 + .27, a2 = .54, h2 = a2 + .27, inn = ease(seg(lt0, 0, a1 + .1)), outK = ease(seg(lt0, .9, 1.1)), push = (lt0 > h1 ? 5 : 0) + (lt0 > h2 ? 9 : 0);
+        else { const IMP = [.32, .19, .14, .23], a1 = .15, h1 = a1 + IMP[(i * 2) % 4], a2 = .54, h2 = a2 + IMP[(i * 2 + 1) % 4], /* (each cut lands when its own blade arrives: measured) */ inn = ease(seg(lt0, 0, a1 + .1)), outK = ease(seg(lt0, .9, 1.1)), push = (lt0 > h1 ? 5 : 0) + (lt0 > h2 ? 9 : 0);
           Hf.x = lerp(HX, EX, inn - outK); Hf.y = lerp(HY, EY - push * .5, inn - outK); Hf.spd = lt0 < a1 ? 420 : 0; Hf.face = face(Hf, Gd);
           Gd.x = GX; Gd.y = GY - push; Gd.face = face(Gd, Hf);
           if (lt0 >= a1) once('a1' + K, () => { D.fire(Hf, Melee.ONE[(i * 2) % 4], 1.9); sfx('slash'); }); if (lt0 >= h1 - .1) once('b1' + K, () => D.fire(Gd, 'Melee_Block_Hit', 1.9)); if (lt0 >= h1) once('h1' + K, () => clash(mid(Hf, Gd), tc));
@@ -219,18 +219,18 @@ const Duel3D = {
           if (u >= .62) { const q = ease(seg(u, .62, .95)); [G[1], G[2]].forEach((F, j) => { F.x = Gd.x + (j ? 1 : -1) * 36 * q; F.y = Gd.y + 10 * q; F.vis = Math.min(1, q * 2.5); F.face = face(F, Hf); }); } }
       } else if (st.k === 'counter') {
         const c = D.TIER[i], sd = side(i + 1); aim([2.95 * sd, 1.42, 5.0], [0, 1.0, 1.5], 43, 0, lt0 < .02); Hf.x = HX; Hf.face = face(Hf, Gd);
-        if (i === 1) { const q = Math.sin(seg(lt0, .02, .62) * Math.PI); Gd.y = lerp(GY, HY - 37, q); Gd.spd = lt0 < .25 ? 420 : 0; Gd.face = face(Gd, Hf);
-          if (lt0 >= .08) once('ca' + K, () => { D.fire(Gd, 'Melee_1H_Attack_Chop', 1.9); sfx('slash'); }); if (lt0 >= .24) once('cb' + K, () => D.fire(Hf, 'Melee_Block_Hit', 1.9)); if (lt0 >= .34) once('ch' + K, () => clash(mid(Hf, Gd), c, true)); Hf.y = lerp(Hf.y, HY + (lt0 > .34 && lt0 < .6 ? 7 : 0), Math.min(1, dt * 12)); }
+        if (i === 1) { const q = Math.sin(seg(lt0, .02, .62) * Math.PI); Gd.y = lerp(GY, HY - 30, q); Gd.spd = lt0 < .25 ? 420 : 0; Gd.face = face(Gd, Hf);
+          if (lt0 >= .08) once('ca' + K, () => { D.fire(Gd, 'Melee_1H_Attack_Chop', 1.9); sfx('slash'); }); if (lt0 >= .3) once('cb' + K, () => D.fire(Hf, 'Melee_Block_Hit', 1.9)); if (lt0 >= .4) once('ch' + K, () => clash(mid(Hf, Gd), c, true)); Hf.y = lerp(Hf.y, HY + (lt0 > .4 && lt0 < .66 ? 7 : 0), Math.min(1, dt * 12)); }
         if (i === 2) { const o1 = seg(lt0, 0, .1), in1 = seg(lt0, .16, .24), o2 = seg(lt0, .56, .64), in2 = seg(lt0, .68, .78); Gd.vis = lt0 < .16 ? 1 - o1 : lt0 < .56 ? in1 : lt0 < .68 ? 1 - o2 : in2;
-          if (lt0 >= .02) once('bk' + K, () => { D.burst(chest(Gd), c, 24, 3, .5); sfx('warp'); }); if (lt0 >= .13 && lt0 < .66) { Gd.x = HX - 25 * sd; Gd.y = HY - 8; Gd.snap = lt0 < .2; } /* (on the hero's far flank, in the camera's view) */ else if (lt0 >= .66) { Gd.x = GX; Gd.y = GY; Gd.snap = lt0 < .72; } Gd.face = face(Gd, Hf);
-          if (lt0 >= .16) once('bk2' + K, () => { D.burst(chest(Gd), c, 24, 3, .5); D.fire(Gd, 'Melee_1H_Attack_Slice_Horizontal', 2.1); sfx('slash'); }); if (lt0 >= .3) once('cb' + K, () => D.fire(Hf, 'Melee_Block_Hit', 2)); if (lt0 >= .43) once('ch' + K, () => clash(mid(Hf, Gd), c, true)); if (lt0 >= .57) once('bk3' + K, () => { D.burst(chest(Gd), c, 20, 3, .5); sfx('warp'); }); }
-        if (i === 3) { const q = seg(lt0, .04, .46), back = ease(seg(lt0, .56, .8)); Gd.y = lerp(lerp(GY, HY - 36, ease(q)), GY, back); Gd.z = Math.sin(q * Math.PI) * 58 + Math.sin(back * Math.PI) * 20; Gd.face = face(Gd, Hf);
-          if (lt0 >= .1) once('ca' + K, () => { D.fire(Gd, 'Melee_2H_Attack_Chop', 2.3); sfx('slash'); }); if (lt0 >= .34) once('cb' + K, () => D.fire(Hf, 'Melee_Block_Hit', 1.6));
+          if (lt0 >= .02) once('bk' + K, () => { D.burst(chest(Gd), c, 24, 3, .5); sfx('warp'); }); if (lt0 >= .13 && lt0 < .66) { Gd.x = HX - 22 * sd; Gd.y = HY - 8; Gd.snap = lt0 < .2; } /* (on the hero's far flank, in the camera's view) */ else if (lt0 >= .66) { Gd.x = GX; Gd.y = GY; Gd.snap = lt0 < .72; } Gd.face = face(Gd, Hf);
+          if (lt0 >= .16) once('bk2' + K, () => { D.burst(chest(Gd), c, 24, 3, .5); D.fire(Gd, 'Melee_1H_Attack_Slice_Horizontal', 2.1); sfx('slash'); }); if (lt0 >= .2) once('cb' + K, () => D.fire(Hf, 'Melee_Block_Hit', 2)); if (lt0 >= .3) once('ch' + K, () => clash(mid(Hf, Gd), c, true)); if (lt0 >= .57) once('bk3' + K, () => { D.burst(chest(Gd), c, 20, 3, .5); sfx('warp'); }); }
+        if (i === 3) { const q = seg(lt0, .04, .46), back = ease(seg(lt0, .56, .8)); Gd.y = lerp(lerp(GY, HY - 30, ease(q)), GY, back); Gd.z = Math.sin(q * Math.PI) * 58 + Math.sin(back * Math.PI) * 20; Gd.face = face(Gd, Hf);
+          if (lt0 >= .02) once('ca' + K, () => { D.fire(Gd, 'Melee_2H_Attack_Chop', 3.3); sfx('slash'); }); if (lt0 >= .36) once('cb' + K, () => D.fire(Hf, 'Melee_Block_Hit', 1.6));
           if (lt0 >= .46) once('ch' + K, () => { clash(mid(Hf, Gd), c, true); D.ring(D.W(Hf.x, Hf.y), c, 4.2, .7); D.ring(D.W(Hf.x, Hf.y), '#ffffff', 2.4, .45); S.shake = 1; S.flash = .35; S.fc = c; sfx('boom'); }); Hf.y = lerp(Hf.y, HY + (lt0 > .46 && lt0 < .8 ? 13 : 0), Math.min(1, dt * 10)); }
-        if (i === 4) { const q = Math.sin(seg(lt0, .02, .7) * Math.PI), at = [[GX, HY - 38], [HX - 36, HY + 2], [HX + 40, HY + 2]], home = [[GX, GY], [GX - 36, GY + 10], [GX + 36, GY + 10]];
+        if (i === 4) { const q = Math.sin(seg(lt0, .02, .7) * Math.PI), at = [[GX, HY - 31], [HX - 30, HY + 2], [HX + 33, HY + 2]], home = [[GX, GY], [GX - 36, GY + 10], [GX + 36, GY + 10]];
           G.forEach((F, j) => { F.x = lerp(home[j][0], at[j][0], q); F.y = lerp(home[j][1], at[j][1], q); F.face = face(F, Hf); F.spd = lt0 < .25 ? 420 : 0; });
-          if (lt0 >= .1) once('ca' + K, () => { G.forEach(F => D.fire(F, 'Melee_1H_Attack_Chop', 1.9)); sfx('slash'); }); if (lt0 >= .14) once('cb' + K, () => { D.fire(Hf, 'Melee_2H_Attack_Spinning', 1.5); sfx('slash'); });
-          if (lt0 >= .36) once('ch' + K, () => { G.forEach(F => clash(mid(Hf, F), c, true)); D.ring(D.W(Hf.x, Hf.y), '#ffffff', 3.4, .5); D.ring(D.W(Hf.x, Hf.y), c, 4.6, .7); S.flash = .4; S.fc = '#ffffff'; }); }
+          if (lt0 >= .1) once('ca' + K, () => { G.forEach(F => D.fire(F, 'Melee_1H_Attack_Chop', 1.9)); sfx('slash'); }); if (lt0 >= .12) once('cb' + K, () => { D.fire(Hf, 'Melee_2H_Attack_Spinning', 2); sfx('slash'); });
+          if (lt0 >= .42) once('ch' + K, () => { G.forEach(F => clash(mid(Hf, F), c, true)); D.ring(D.W(Hf.x, Hf.y), '#ffffff', 3.4, .5); D.ring(D.W(Hf.x, Hf.y), c, 4.6, .7); S.flash = .4; S.fc = '#ffffff'; }); }
       } else if (st.k === 'finish') {
         const big = r >= 3, wind = big ? .62 : .5, hc = sk.a || '#00f2fe'; aim([.6, lerp(3.5, 3.1, u), lerp(5.0, 4.5, u)], [0, .75, .9], 44, 0, lt0 < .02); Gd.face = face(Gd, Hf); for (const F of G) if (F.on && F !== Gd) F.face = face(F, Hf);
         if (u < wind) { Hf.x = HX; Hf.y = HY; Hf.face = face(Hf, Gd); if (Math.random() < rdt * (big ? 9 : 5)) D.ring(D.W(Hf.x, Hf.y), hc, big ? 2.2 : 1.4, .45); if (big) { S.shake = Math.max(S.shake, .25); once('pw', () => { sfx('od'); S.lines = .6; }); if (Math.random() < rdt * 20) D.burst(D.W(Hf.x + (Math.random() - .5) * 40, Hf.y + (Math.random() - .5) * 40, 2), hc, 2, 1.2, .6, 3, -2); } }
