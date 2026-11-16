@@ -237,7 +237,7 @@ const Duel3D = {
         else { const q = seg(u, wind, wind + .09); Hf.x = lerp(HX, GX - 24, q); Hf.y = lerp(HY, GY - 36, q); Hf.face = -Math.PI / 2;
           once('dash', () => { D.fire(Hf, 'Melee_1H_Attack_Slice_Horizontal', 2.6); sfx('slash'); });
           if (q >= .55) once('cut', () => { const a = D.W(HX, HY, 34), b = D.W(GX - 24, GY - 36, 34), m = a.clone().lerp(b, .5); const dir = b.clone().sub(a).normalize(), toCam = D.cam.position.clone().sub(m).normalize(), up = new T.Vector3().crossVectors(toCam, dir).normalize(), zz = new T.Vector3().crossVectors(dir, up); D.streak.position.copy(m); D.streak.quaternion.setFromRotationMatrix(new T.Matrix4().makeBasis(dir, up, zz)); D.streak.scale.set(a.distanceTo(b) * 1.7, big ? .9 : .55, 1); D.streak.material.color.set(big ? R0.c : '#ffffff'); D.streak.material.opacity = 1; D.streak.visible = true;
-            for (const F of G) if (F.on) { D.flare(chest(F), '#ffffff', big ? 2.6 : 1.7, .4, 0); D.flare(chest(F), hc, 2.2, .45, 1, -.6); } S.stop = big ? .42 : .26; S.flash = big ? .85 : .55; S.fc = '#ffffff'; S.shake = big ? 1.1 : .6; S.lines = .5; sfx('zan'); try { vibe('crit'); } catch (e) { } });
+            for (const F of G) if (F.on) { D.flare(chest(F), '#ffffff', big ? 1.5 : 1.1, .35, 0); D.flare(chest(F), hc, 1.7, .45, 1, -.6); } S.stop = big ? .42 : .26; S.flash = big ? .42 : .3; S.fc = '#ffffff'; S.shake = big ? 1.1 : .6; S.lines = .5; sfx('zan'); try { vibe('crit'); } catch (e) { } });
         }
       } else if (st.k === 'fall') {
         aim([1.0, 1.15, 3.1], [.05, 1.0, -.5], 44, .04, lt0 < .02); Hf.x = GX - 24; Hf.y = GY - 36; Hf.face = -Math.PI / 2;
