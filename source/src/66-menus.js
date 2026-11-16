@@ -3,7 +3,11 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 77
+const NEWS = [ // version 82
+  ["THE CRATE IS GUARDED", "Opening a crate is now a sword duel in 3D: a shadow guardian drops in before the sealed crate and your own hero fights it with recorded sword moves under a moving camera. Every time the guardian holds, a seal breaks and it awakens stronger, in blue, purple lightning, gold, and at last under a red moon as three. The final cut freezes the moment, the lid flies off and your reward rises in the light."],
+  ["SIGNATURE ARTS", "Every Hero Forge class now has an art of its own in Trials, the World Boss and Raids: the NINJA's shadow clone, the SAMURAI's iai stance, the SHINOBI's death marks and the ONMYOJI's spirit ward."],
+  ["SMARTER ENEMIES", "Drones close in from your sides and may sidestep a dash aimed straight at them, the sniper aims where you are going, and the brute turns slowly: get behind its shield."],
+  ["A CUT IS A CUT", "In 3D a cut enemy now splits in 3D along your blade (it used to show its flat 2D body). The classic heroes have a broader chest, a narrower waist and matte joints, nine shape enemies gained real parts, 3D runs are sharper, the blade trail is lighter and long tips wrap on a phone."],
   ["THE ONI KING'S SPOILS", "Defeat OTAKEMARU to claim his armor as the ONI KING hero skin and his red-hot iron as the KING'S IRON blade. Chapters 21, 22 and 23 now open with comic pages, and the oni king has his own portrait."],
   ["EMBLEMS AND A SEASON TRACK", "Every Arcade mode now carries its own neon emblem in its own color, and the chosen one glows. The season rewards are a track: every tier a node that lights up as you reach it, its reward drawn beside it, and the tier you are working on with its own progress bar."],
   ["THE ONI KING'S FISTS", "In 3D, OTAKEMARU now fights with great armored fists: iron plates, a burning cuff and glowing knuckles. A fist rises high over its red circle as the slam winds up, crashes into the roof and squashes, then floats back. The pets are drawn larger too."],

@@ -9,4 +9,12 @@ Object.assign(HE, {
   "Stand still for a breath: your next dash draws a huge iai cut.": "עמדו במקום לרגע: הזינוק הבא שולף חיתוך איאי ענק.",
   "Cuts landed while vanished mark enemies. With three marks, your next dash strikes them all.": "חיתוכים בזמן היעלמות מסמנים אויבים. עם שלושה סימנים, הזינוק הבא מכה בכולם.",
   "Every 8th kill lays a ward circle that burns enemy shots inside it.": "כל הריגה שמינית מניחה מעגל מגן ששורף את יריות האויבים שבתוכו.",
+  "THE CRATE IS GUARDED": "התיבה שמורה",
+  "Opening a crate is now a sword duel in 3D: a shadow guardian drops in before the sealed crate and your own hero fights it with recorded sword moves under a moving camera. Every time the guardian holds, a seal breaks and it awakens stronger, in blue, purple lightning, gold, and at last under a red moon as three. The final cut freezes the moment, the lid flies off and your reward rises in the light.": "פתיחת תיבה היא עכשיו דו־קרב חרבות בתלת־ממד: שומר צל צונח לפני התיבה החתומה, והגיבור שלכם נלחם בו בתנועות חרב מוקלטות מול מצלמה נעה. בכל פעם שהשומר מחזיק מעמד, חותם נשבר והוא מתעורר חזק יותר: בכחול, בברק סגול, בזהב, ולבסוף תחת ירח אדום כשלושה. החיתוך האחרון מקפיא את הרגע, המכסה עף והפרס עולה באור.",
+  "SIGNATURE ARTS": "אומנויות ייחודיות",
+  "Every Hero Forge class now has an art of its own in Trials, the World Boss and Raids: the NINJA's shadow clone, the SAMURAI's iai stance, the SHINOBI's death marks and the ONMYOJI's spirit ward.": "לכל מקצוע בבית היציקה לגיבור יש עכשיו אומנות משלו במבחנים, בבוס העולם ובפשיטות: שיבוט הצל של הנינג'ה, עמידת האיאי של הסמוראי, סימני המוות של השינובי ומגן הרוחות של האונמיוג'י.",
+  "SMARTER ENEMIES": "אויבים חכמים יותר",
+  "Drones close in from your sides and may sidestep a dash aimed straight at them, the sniper aims where you are going, and the brute turns slowly: get behind its shield.": "רחפנים מתקרבים מהצדדים ועלולים להתחמק מזינוק שמכוון ישר אליהם, הצלף מכוון לאן שאתם הולכים, והברוט מסתובב לאט: עקפו את המגן שלו.",
+  "A CUT IS A CUT": "חיתוך הוא חיתוך",
+  "In 3D a cut enemy now splits in 3D along your blade (it used to show its flat 2D body). The classic heroes have a broader chest, a narrower waist and matte joints, nine shape enemies gained real parts, 3D runs are sharper, the blade trail is lighter and long tips wrap on a phone.": "בתלת־ממד אויב שנחתך מתפצל עכשיו בתלת־ממד לאורך הלהב (פעם הופיע הגוף השטוח שלו). לגיבורים הקלאסיים חזה רחב יותר, מותן צרה יותר ומפרקים מט, תשעה אויבי־צורה קיבלו חלקים אמיתיים, הריצות בתלת־ממד חדות יותר, שובל הלהב קל יותר וטיפים ארוכים נשברים לשורות בטלפון.",
 });
