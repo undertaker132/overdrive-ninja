@@ -3970,5 +3970,22 @@ Object.assign(RU, {
 "THE ONI KING'S SPOILS": "ТРОФЕИ КОРОЛЯ ОНИ",
 "Defeat OTAKEMARU to claim his armor as the ONI KING hero skin and his red-hot iron as the KING'S IRON blade. Chapters 21, 22 and 23 now open with comic pages, and the oni king has his own portrait.": "Победи Отакэмару, чтобы получить его броню — облик героя КОРОЛЬ ОНИ — и его раскалённое железо — клинок ЖЕЛЕЗО КОРОЛЯ. Главы 21, 22 и 23 теперь открываются страницами комикса, а у короля они появился свой портрет.",
 "The oni king of the old legends, rebuilt in iron as tall as a building. Leave the red circles when his fists fall, cut the fists while they are down, and break both to bring him to his knees.": "Король они из старых легенд, заново выкованный из железа, ростом с дом. Уходи из красных кругов, когда падают его кулаки, руби кулаки, пока они на земле, и разбей оба, чтобы поставить его на колени.",
-"Boss taiko war metal": "Боевой тайко-метал босса"
+"Boss taiko war metal": "Боевой тайко-метал босса",
+"SIGNATURE ART": "ФИРМЕННЫЙ ПРИЁМ",
+"SHADOW CLONE": "ТЕНЕВОЙ КЛОН",
+"IAI STANCE": "СТОЙКА ИАЙ",
+"DEATH MARKS": "МЕТКИ СМЕРТИ",
+"SPIRIT WARD": "ДУХОВНЫЙ ЗАСЛОН",
+"Three dashes in quick succession leave a shadow clone that keeps cutting.": "Три быстрых рывка подряд оставляют теневого клона, который продолжает рубить.",
+"Stand still for a breath: your next dash draws a huge iai cut.": "Замрите на миг: следующий рывок — огромный удар иай.",
+"Cuts landed while vanished mark enemies. With three marks, your next dash strikes them all.": "Удары в невидимости помечают врагов. С тремя метками следующий рывок поражает всех.",
+"Every 8th kill lays a ward circle that burns enemy shots inside it.": "Каждое 8-е убийство ставит защитный круг, сжигающий вражеские выстрелы внутри.",
+"THE CRATE IS GUARDED": "ЯЩИК ПОД ОХРАНОЙ",
+"Opening a crate is now a sword duel in 3D: a shadow guardian drops in before the sealed crate and your own hero fights it with recorded sword moves under a moving camera. Every time the guardian holds, a seal breaks and it awakens stronger, in blue, purple lightning, gold, and at last under a red moon as three. The final cut freezes the moment, the lid flies off and your reward rises in the light.": "Открытие ящика теперь дуэль на мечах в 3D: теневой страж спрыгивает перед запечатанным ящиком, и ваш герой сражается с ним записанными приёмами под движущейся камерой. Каждый раз, когда страж выстоял, ломается печать и он пробуждается сильнее: синим, фиолетовой молнией, золотом и наконец под красной луной втроём. Последний удар замирает, крышка слетает, и награда поднимается в свете.",
+"SIGNATURE ARTS": "ФИРМЕННЫЕ ПРИЁМЫ",
+"Every Hero Forge class now has an art of its own in Trials, the World Boss and Raids: the NINJA's shadow clone, the SAMURAI's iai stance, the SHINOBI's death marks and the ONMYOJI's spirit ward.": "У каждого класса Кузницы героя теперь свой приём в Испытаниях, на Мировом боссе и в Рейдах: теневой клон НИНДЗЯ, стойка иай САМУРАЯ, метки смерти ШИНОБИ и духовный заслон ОММЁДЗИ.",
+"SMARTER ENEMIES": "ВРАГИ УМНЕЕ",
+"Drones close in from your sides and may sidestep a dash aimed straight at them, the sniper aims where you are going, and the brute turns slowly: get behind its shield.": "Дроны заходят с флангов и могут уклониться от рывка прямо на них, снайпер целится на упреждение, а громила разворачивается медленно: зайдите за его щит.",
+"A CUT IS A CUT": "РАЗРЕЗ ЕСТЬ РАЗРЕЗ",
+"In 3D a cut enemy now splits in 3D along your blade (it used to show its flat 2D body). The classic heroes have a broader chest, a narrower waist and matte joints, nine shape enemies gained real parts, 3D runs are sharper, the blade trail is lighter and long tips wrap on a phone.": "В 3D разрубленный враг теперь распадается в 3D по линии клинка (раньше показывалось плоское 2D-тело). У классических героев шире грудь, уже талия и матовые суставы, девять врагов-фигур получили детали, забеги в 3D чётче, след клинка легче, а длинные подсказки переносятся на телефоне."
 });

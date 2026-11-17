@@ -3970,5 +3970,22 @@ Object.assign(AR, {
 "THE ONI KING'S SPOILS": "غنائم ملك الأوني",
 "Defeat OTAKEMARU to claim his armor as the ONI KING hero skin and his red-hot iron as the KING'S IRON blade. Chapters 21, 22 and 23 now open with comic pages, and the oni king has his own portrait.": "اهزم أوتاكيمارو لتحصل على درعه كمظهر البطل ملك الأوني وعلى حديده المتوهج كشفرة حديد الملك. والفصول 21 و22 و23 تُفتتح الآن بصفحات كوميك، ولملك الأوني صورته الخاصة.",
 "The oni king of the old legends, rebuilt in iron as tall as a building. Leave the red circles when his fists fall, cut the fists while they are down, and break both to bring him to his knees.": "ملك الأوني من الأساطير القديمة، أعيد بناؤه من الحديد بطول مبنى. اخرج من الدوائر الحمراء حين تسقط قبضتاه، واقطع القبضتين وهما على الأرض، وحطّمهما لتجبره على الركوع.",
-"Boss taiko war metal": "ميتال طبول تايكو حربي للزعيم"
+"Boss taiko war metal": "ميتال طبول تايكو حربي للزعيم",
+"SIGNATURE ART": "فن مميّز",
+"SHADOW CLONE": "استنساخ الظل",
+"IAI STANCE": "وضعية الإياي",
+"DEATH MARKS": "علامات الموت",
+"SPIRIT WARD": "حاجز الأرواح",
+"Three dashes in quick succession leave a shadow clone that keeps cutting.": "ثلاث اندفاعات متتالية سريعة تترك استنساخ ظل يواصل القطع.",
+"Stand still for a breath: your next dash draws a huge iai cut.": "اثبت لحظة: اندفاعتك التالية تسحب ضربة إياي هائلة.",
+"Cuts landed while vanished mark enemies. With three marks, your next dash strikes them all.": "الضربات أثناء الاختفاء تضع علامة على الأعداء. مع ثلاث علامات، تضربهم اندفاعتك التالية جميعًا.",
+"Every 8th kill lays a ward circle that burns enemy shots inside it.": "كل قتل ثامن يضع دائرة حماية تحرق طلقات الأعداء داخلها.",
+"THE CRATE IS GUARDED": "الصندوق محروس",
+"Opening a crate is now a sword duel in 3D: a shadow guardian drops in before the sealed crate and your own hero fights it with recorded sword moves under a moving camera. Every time the guardian holds, a seal breaks and it awakens stronger, in blue, purple lightning, gold, and at last under a red moon as three. The final cut freezes the moment, the lid flies off and your reward rises in the light.": "فتح الصندوق الآن مبارزة سيوف ثلاثية الأبعاد: حارس ظلّ يهبط أمام الصندوق المختوم ويقاتله بطلك بحركات سيف مسجّلة أمام كاميرا متحركة. كلما صمد الحارس انكسر ختم واستيقظ أقوى: بالأزرق، ثم ببرق بنفسجي، ثم بالذهب، وأخيرًا تحت قمر أحمر كثلاثة. الضربة الأخيرة تجمّد اللحظة، يطير الغطاء وترتفع جائزتك في الضوء.",
+"SIGNATURE ARTS": "فنون مميّزة",
+"Every Hero Forge class now has an art of its own in Trials, the World Boss and Raids: the NINJA's shadow clone, the SAMURAI's iai stance, the SHINOBI's death marks and the ONMYOJI's spirit ward.": "لكل فئة في مصنع الأبطال الآن فنّ خاص في التحديات وزعيم العالم والغارات: استنساخ الظل للنينجا، ووضعية الإياي للساموراي، وعلامات الموت للشينوبي، وحاجز الأرواح للأونميوجي.",
+"SMARTER ENEMIES": "أعداء أذكى",
+"Drones close in from your sides and may sidestep a dash aimed straight at them, the sniper aims where you are going, and the brute turns slowly: get behind its shield.": "تقترب الطائرات من جانبيك وقد تتفادى اندفاعة موجهة إليها مباشرة، والقناص يصوّب إلى حيث تتجه، والوحش يستدير ببطء: التفّ خلف درعه.",
+"A CUT IS A CUT": "القطع قطع",
+"In 3D a cut enemy now splits in 3D along your blade (it used to show its flat 2D body). The classic heroes have a broader chest, a narrower waist and matte joints, nine shape enemies gained real parts, 3D runs are sharper, the blade trail is lighter and long tips wrap on a phone.": "في الأبعاد الثلاثية ينشطر العدو المقطوع الآن على طول نصلك (كان يظهر جسمه المسطح). للأبطال الكلاسيكيين صدر أعرض وخصر أنحف ومفاصل غير لامعة، وحصل تسعة أعداء على أجزاء حقيقية، والجولات ثلاثية الأبعاد أوضح، وأثر النصل أخف، والنصائح الطويلة تلتف على الهاتف."
 });

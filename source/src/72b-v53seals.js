@@ -20,6 +20,7 @@ const Seals = {
   plan(r) { const L = [{ k: 'drop', d: 1.1 }]; for (let i = 1; i <= r; i++) { L.push({ k: 'strike', i, d: .62 }); L.push({ k: 'break', i, d: [0, 1.05, 1.35, 1.6, 2.1][i] }); L.push({ k: 'beat', i, d: i === 4 ? .35 : .55 }); }
     L.push({ k: 'strike', i: r + 1, fin: true, d: r >= 3 ? 1.25 : .62 }); L.push({ k: 'open', d: 1.7 }); let t = 0; for (const s of L) { s.t0 = t; t += s.d; } return { L, dur: t }; },
   run(res, done) {
+    this.res82 = res; this.ic82 = null; // (v82: the item rises out of the open crate)
     const ov = el('div', 'cr-film'), cv = document.createElement('canvas'); ov.appendChild(cv); const skip = el('button', 'chip cr-skip', lt('SKIP')); ov.appendChild(skip); document.body.appendChild(ov);
     const dpr = Math.min(2, window.devicePixelRatio || 1), W = innerWidth, H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; const g = cv.getContext('2d');
     const k = Math.min(W / 400, H / 700), ox = (W - 400 * k) / 2, oy = (H - 700 * k) / 2, r = res.r | 0, R0 = RAR[r], T0 = CRATE_T[res.t || 'neon'] || CRATE_T.neon, calm = !!CALM;
@@ -63,10 +64,18 @@ const Seals = {
     CratePre.drawBox(bg, BS, T0.c, (T0.k === 'lim' ? 'lim' : T0.k === 'basic' ? 'basic' : 'neon'), crack, lv ? S.col : T0.c, lid);
     g.save(); g.translate(cx, cy); g.rotate(tilt); g.drawImage(box, -110, -110, 220, 220); g.restore();
     // the seals: four bands of light around the crate; a broken one splits and falls
-    const SEAL = [[-1.05, .9], [1.05, .9], [0, 1.25], [Math.PI / 2, 1.2]];
-    for (let i = 0; i < 4; i++) { if (S.seals[i]) continue; const [a, L] = SEAL[i], c = Math.cos(a), s = Math.sin(a), len = 110 * L, pulse = .6 + Math.sin(t * 4 + i) * .25;
-      g.save(); g.translate(cx, cy + 6); g.globalCompositeOperation = 'lighter'; g.strokeStyle = hexA('#dfe8ff', pulse); g.shadowColor = '#dfe8ff'; g.shadowBlur = 12; g.lineWidth = 5; g.setLineDash([10, 6]); g.lineDashOffset = -t * 30;
-      g.beginPath(); g.moveTo(-c * len, -s * len); g.lineTo(c * len, s * len); g.stroke(); g.setLineDash([]); g.fillStyle = hexA('#ffffff', pulse); g.beginPath(); g.arc(0, 0, 0, 0, TAU); g.fill(); g.restore(); }
+    // (version 80: steel straps that wrap the crate along its faces, a light running through each, a seal badge where they cross)
+    const STRAP = [[[-80, 15], [0, 55], [80, 15]], [[-40, 80], [-40, -10], [40, -50]], [[40, 80], [40, -10], [-40, -50]], [[0, 12], [0, 100]]];
+    const strap = (pts, w, style, dash, off) => { g.beginPath(); g.moveTo(pts[0][0], pts[0][1] + 10); for (let j = 1; j < pts.length; j++) g.lineTo(pts[j][0], pts[j][1] + 10); g.lineWidth = w; g.strokeStyle = style; if (dash) { g.setLineDash(dash); g.lineDashOffset = off; } g.stroke(); g.setLineDash([]); };
+    g.save(); g.translate(cx, cy); g.rotate(tilt); g.lineJoin = 'round'; g.lineCap = 'round';
+    for (let i = 0; i < 4; i++) { if (S.seals[i]) continue; const pts = STRAP[i], pulse = .62 + Math.sin(t * 4 + i * 1.7) * .22;
+      g.globalCompositeOperation = 'source-over'; g.shadowBlur = 0; strap(pts, 16, '#0a0d1a'); strap(pts, 12, '#3a4566'); strap(pts, 12, 'rgba(255,255,255,.08)', [2, 7], 0);
+      g.globalCompositeOperation = 'lighter'; g.shadowColor = '#bfe0ff'; g.shadowBlur = 14; strap(pts, 3.2, hexA('#dfe8ff', pulse)); strap(pts, 6, hexA('#ffffff', .9), [14, 150], -t * 120 - i * 40);
+      g.shadowBlur = 0; for (const q of pts) { g.fillStyle = hexA('#dfe8ff', .9); g.beginPath(); g.arc(q[0], q[1] + 10, 4.2, 0, TAU); g.fill(); } }
+    if (!S.seals[0] || !S.seals[3]) { const pulse = .7 + Math.sin(t * 3) * .2; g.globalCompositeOperation = 'source-over'; g.shadowColor = '#bfe0ff'; g.shadowBlur = 16 * pulse; g.fillStyle = '#0c1020'; g.strokeStyle = hexA('#dfe8ff', pulse); g.lineWidth = 3;
+      g.beginPath(); for (let j = 0; j < 6; j++) { const a = j / 6 * TAU + Math.PI / 6; g[j ? 'lineTo' : 'moveTo'](Math.cos(a) * 15, 65 + Math.sin(a) * 15); } g.closePath(); g.fill(); g.stroke();
+      g.shadowBlur = 8; g.fillStyle = hexA('#ffffff', pulse); g.font = '900 15px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('封', 0, 66); }
+    g.restore();
     for (let i = S.shards.length - 1; i >= 0; i--) { const q = S.shards[i]; q.l -= dt; if (q.l <= 0) { S.shards.splice(i, 1); continue; } q.x += q.vx * dt; q.y += q.vy * dt; q.vy += 500 * dt; q.a += q.va * dt;
       g.save(); g.translate(q.x, q.y); g.rotate(q.a); g.globalAlpha = Math.min(1, q.l * 2); g.strokeStyle = q.c; g.lineWidth = 5; g.shadowColor = q.c; g.shadowBlur = 10; g.beginPath(); g.moveTo(-q.len / 2, 0); g.lineTo(q.len / 2, 0); g.stroke(); g.restore(); }
     // the hero
@@ -101,6 +110,12 @@ const Seals = {
     }
     if (st.k === 'open') { once('open', () => { sfx('boom'); sfx('star'); S.flash = 1; S.fc = R0.c; S.col = R0.c; S.lvl = Math.max(S.lvl, r); CF.burst(S, cx, cy, R0.c, 70 + r * 20, 520, 1.2); CF.burst(S, cx, cy, '#ffffff', 30, 300, .8); });
       g.save(); g.globalCompositeOperation = 'lighter'; const bw = 80 + u * 140, gr = g.createLinearGradient(0, -100, 0, cy); gr.addColorStop(0, hexA(R0.c, 0)); gr.addColorStop(1, hexA(R0.c, .75)); g.fillStyle = gr; g.fillRect(cx - bw / 2, -100, bw, cy + 100); g.restore();
+      try { const res = this.res82; if (res && u > .3) { // (v82: the reward itself rises out of the crate in the light, turning, before its card)
+          if (!this.ic82) { const c = document.createElement('canvas'); c.width = c.height = 200; const ig = c.getContext('2d'); if (res.item) drawIcon(ig, { tab: res.item.tab, id: res.item.id, tier: r + 1 }, 200); else if (typeof Crates !== 'undefined' && Crates.drawLoot) Crates.drawLoot(ig, 200, res, R0.c);
+            const D = ig.getImageData(0, 0, 200, 200), q = D.data; for (let i = 0; i < q.length; i += 4) { const m = Math.max(q[i], q[i + 1], q[i + 2]); if (m < 70) q[i + 3] = Math.max(0, (m - 30) * 6); } ig.putImageData(D, 0, 0); this.ic82 = c; } // (the icon's dark backdrop goes: only the item rises)
+          const v = Math.min(1, (u - .3) / .5), e = 1 - Math.pow(1 - v, 3), sz = 40 + e * 100, iy = cy - 40 - e * 95, turn = Math.cos((u - .3) * 9 * (1 - e * .85));
+          g.save(); g.globalCompositeOperation = 'lighter'; const hg = g.createRadialGradient(cx, iy, 4, cx, iy, sz); hg.addColorStop(0, hexA(R0.c, .7 * e)); hg.addColorStop(1, hexA(R0.c, 0)); g.fillStyle = hg; g.fillRect(cx - sz, iy - sz, sz * 2, sz * 2); g.restore();
+          g.save(); g.translate(cx, iy); g.scale(Math.max(.08, Math.abs(turn)), 1); g.globalAlpha = Math.min(1, v * 2.5); g.shadowColor = R0.c; g.shadowBlur = 24; g.drawImage(this.ic82, -sz / 2, -sz / 2, sz, sz); g.restore(); } } catch (er) { errLog(er); }
       CF.title(g, lt(R0.n), R0.c, u * 1.7 - .05, 140); if (r >= 3) for (let q = 0; q < 2; q++) if (Math.random() < .3) CF.burst(S, 60 + Math.random() * 280, 120, R0.c, 3, 120, .8, 300); }
   },
   cracks(x, y) { const out = []; for (let i = 0; i < 9; i++) { let a = Math.PI * .1 + i / 8 * Math.PI * .8 + (Math.random() - .5) * .2, px = x, py = y; const c = [[px, py]]; for (let j = 0; j < 6; j++) { a += (Math.random() - .5) * .6; px += Math.cos(a) * 34; py += Math.sin(a) * 22 + 4; c.push([px, py]); } out.push(c); } return out; },
