@@ -20,8 +20,12 @@ const ARTS = {
   onmyoji: { n: 'SPIRIT WARD', d: 'Every 8th kill lays a ward circle that burns enemy shots inside it.', c: '#ffd23f' }
 };
 const Arts = {
-  on() { return !!G.hero && !REPLAY.on && G.state === 'PLAY' && typeof Hero !== 'undefined'; },
-  cls() { return Hero.f().cls; },
+  /* v83: every hero has its art, in every run (a simulation rule since 83: replays of older versions play back as before); the forged hero keeps its class's */
+  BODY: { knight: 'samurai', shogun: 'samurai', chromesam: 'samurai', sovereign: 'samurai', mecha: 'samurai', exo: 'samurai', viking: 'samurai', rider: 'samurai', oni: 'samurai', raijin: 'samurai', ashura: 'samurai', ronin: 'samurai', wolf: 'samurai', yeti: 'samurai',
+    shinobi2: 'shinobi', yurei: 'shinobi', reaper: 'shinobi', tengu: 'shinobi', netrunner: 'shinobi', veil: 'shinobi', kitsune: 'shinobi', hunter: 'shinobi',
+    witch: 'onmyoji', lich: 'onmyoji', seraph: 'onmyoji', idol: 'onmyoji', foxsage: 'onmyoji', pumpkin: 'onmyoji', goo: 'onmyoji', skull: 'onmyoji' },
+  on() { if (G.state !== 'PLAY') return false; if (G.hero) return !REPLAY.on && typeof Hero !== 'undefined'; return simV(83) && G.mode !== 'puzzle' && G.mode !== 'dojo' && !!P.skin; },
+  cls() { if (G.hero && typeof Hero !== 'undefined') return Hero.f().cls; return this.BODY[(P.skin && P.skin.body) || 'ninja'] || 'ninja'; },
   reset() { this.dash = []; this.cd = 0; this.still = 0; this.ready = false; this.pulse = 0; this.marks = 0; this.mcd = 0; this.kills = 0; this.wards = []; },
   /* each sim step */
   step(dt) {
@@ -64,6 +68,8 @@ const Arts = {
 Arts.reset();
 {
   const ha = Hero.apply.bind(Hero); Hero.apply = function () { const r = ha(); try { Arts.reset(); } catch (e) { errLog(e); } return r; };
+  const al = applyLoadout; applyLoadout = function () { const r = al.apply(this, arguments); try { Arts.reset(); Arts.told = 0; } catch (e) { errLog(e); } return r; }; // (every run starts clean)
+  Pipe.on('post', 'arts83', () => { try { if (Arts.told || typeof G === 'undefined' || G.state !== 'PLAY' || G.freeze > 0 || G.time < 1.2 || !Arts.on()) return; Arts.told = 1; const A = ARTS[Arts.cls()]; if (A) hint('art83' + Arts.cls(), lt('SIGNATURE ART') + ' · ' + lt(A.n) + ': ' + lt(A.d)); } catch (e) { errLog(e); } }, 50); // (what this hero can do, the first few runs)
   const ss = safeStep; safeStep = function () { const r = ss.apply(this, arguments); try { if (Arts.on() && G.freeze <= 0) Arts.step(CFG.step); } catch (e) { errLog(e); } return r; };
   const sl = slash; slash = function (a) { const s0 = P.seq, r = sl.apply(this, arguments); try { if (Arts.on() && P.seq !== s0) Arts.slash(P.ang); } catch (e) { errLog(e); } return r; };
   const de = damageEnemy; damageEnemy = function (e, d, a, src) { const r = de.apply(this, arguments); try { if (Arts.on()) Arts.hit(e, src); } catch (er) { errLog(er); } return r; };
