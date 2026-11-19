@@ -40,3 +40,34 @@ const Anim84 = {
     return r;
   };
 }
+/* the impact holds: in a hit-stop the world stands still, but the 3D bodies, blades and sparks
+   kept moving at full speed through it, which softened every big hit. Now the 3D picture
+   follows the game's own clock: frozen in a hit-stop, slowed (never below 40%) while aiming */
+Anim84.k = function () { if (typeof G === 'undefined' || G.state !== 'PLAY' || G.freeze > 0) return 1; if (G.hs > 0) return .05; return Math.max(.4, Math.min(1, G.ts == null ? 1 : G.ts)); };
+{
+  const rr = R3.render.bind(R3);
+  R3.render = function (rd) { const k = CALM ? 1 : Anim84.k(), r0 = RDT; if (k < 1) RDT = (r0 || 1 / 60) * k; try { return rr((rd || 0) * k); } finally { RDT = r0; } };
+}
+/* the signature arts in the body, not only in the light: the samurai sinks into a low two-handed
+   guard while its iai is ready and draws it as one wide horizontal cut; the shinobi's death
+   marks land as a lunging stab; the onmyoji turns on its heel when it lays a spirit ward; the
+   ninja's shadow clone steps out of a burst of smoke */
+{
+  const ai = Arts.iai.bind(Arts), as = Arts.strike.bind(Arts), ak = Arts.kill.bind(Arts), sl = Arts.slash.bind(Arts);
+  Arts.iai = function () { Anim84.art = 'Melee_1H_Attack_Slice_Horizontal'; Anim84.ats = 1.45; return ai.apply(this, arguments); };
+  Arts.strike = function () { const r = as.apply(this, arguments); if (this.mcd > 0) { Anim84.art = 'Melee_1H_Attack_Stab'; Anim84.ats = 1.7; } return r; };
+  Arts.kill = function (e) { const w = this.wards.length, r = ak(e); if (this.wards.length > w) { Anim84.art = 'Melee_2H_Attack_Spin'; Anim84.ats = 1.6; } return r; };
+  Arts.slash = function (a) { const cd = this.cd, r = sl(a); try { if (this.cd > cd && !CALM) { for (let i = 0; i < 14; i++) { const q = i / 14 * TAU; FX.spark(P.x + Math.cos(q) * 22, P.y + Math.sin(q) * 22, i % 2 ? '#00f2fe' : '#9aa3b5', 2); } FX.ring(P.x, P.y, 46, '#9aa3b5', 6); } } catch (e) { errLog(e); } return r; };
+  const ap = Moves.apply.bind(Moves);
+  Moves.apply = function (g, o, rd) {
+    const r = ap(g, o, rd);
+    try { const h = g && g.human; if (!h || !h.melee || !Moves75.isRunHero(g)) return r;
+      if (Anim84.art && (g.mvDash || (Anim84.artT = (Anim84.artT || 0) + (rd || 0)) > .3)) { if (g.mvDash) Moves75.fire(h, Anim84.art, Anim84.ats); Anim84.art = null; Anim84.artT = 0; } // (once the dash's own cut has started, so the art's move takes this dash over)
+      const ready = Arts.on() && Arts.cls() === 'samurai' && Arts.ready && !h.cutA, st = h.melee.Melee_2H_Idle;
+      g.iai84 = (g.iai84 || 0) + ((ready ? 1 : 0) - (g.iai84 || 0)) * Math.min(1, (rd || .016) * 7); const k = g.iai84;
+      if (k > .01) { if (st) { if (!st.isRunning()) { st.setLoop(THREE.LoopRepeat, Infinity); st.reset(); st.play(); } st.setEffectiveWeight(Math.max(st.getEffectiveWeight(), k)); }
+        const B = h.B; if (B.spine) B.spine.rotateX(.32 * k); if (B.spine2) B.spine2.rotateY(-.3 * k); }
+    } catch (e) { errLog(e); }
+    return r;
+  };
+}

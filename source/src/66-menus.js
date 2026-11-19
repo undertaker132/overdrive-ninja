@@ -3,7 +3,8 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 83
+const NEWS = [ // version 84
+  ["SMOOTHER BLADES", "The 3D hero no longer snaps into a stiff arms-out pose after a dash cut, holds the blade forward like a swordsman, and the scarf streams out behind instead of standing over the head. Big hits now freeze the whole 3D picture for a beat. Every signature art moves the body too: the samurai sinks into a low guard and draws one wide horizontal iai cut, death marks land as a lunging stab, a spirit ward is laid with a spin, and the shadow clone steps out of a burst of smoke."],
   ["AN ART FOR EVERY HERO", "Every hero now fights with a signature art in every run, chosen by its body: light ninjas leave SHADOW CLONES, the armored and the heavy draw an IAI cut after a still breath, the shadow-born lay DEATH MARKS, and the mystics raise a SPIRIT WARD. Your first runs with each hero show what it can do."],
   ["THE CRATE IS GUARDED", "Opening a crate is now a sword duel in 3D: a shadow guardian drops in before the sealed crate and your own hero fights it with recorded sword moves under a moving camera. Every time the guardian holds, a seal breaks and it awakens stronger, in blue, purple lightning, gold, and at last under a red moon as three. The final cut freezes the moment, the lid flies off and your reward rises in the light."],
   ["SIGNATURE ARTS", "Every Hero Forge class now has an art of its own in Trials, the World Boss and Raids: the NINJA's shadow clone, the SAMURAI's iai stance, the SHINOBI's death marks and the ONMYOJI's spirit ward."],
