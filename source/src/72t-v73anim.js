@@ -41,7 +41,7 @@ const Grip = {
     const T = THREE, h = g.human, W = o => o.getWorldPosition(new T.Vector3()); let toe = null, foot = null;
     h.r.o.traverse(o => { if (!o.isBone) return; const n = o.name.replace(/[:]/g, ''); if (/LeftToeBase$/.test(n)) toe = o; else if (/LeftFoot$/.test(n)) foot = o; });
     if (!toe || !foot) return false; g.updateMatrixWorld(true);
-    const fwd = W(toe).sub(W(foot)); fwd.y = 0; if (fwd.lengthSq() < 1e-8) return false; fwd.normalize(); const up = new T.Vector3(0, 1, 0);
+    const fwd = W(toe).sub(W(foot)), up = new T.Vector3(0, 0, 1).transformDirection((g.parent || g).matrixWorld); fwd.addScaledVector(up, -fwd.dot(up)); if (fwd.lengthSq() < 1e-8) return false; fwd.normalize(); // (v84: up is the hero's own up, the scene's z in a run, y in the Forge: it was taken as y everywhere, so in a run the scarf stood over the head)
     const aim = k => fwd.clone().multiplyScalar(Math.cos(k)).addScaledVector(up, -Math.sin(k)), back = k => fwd.clone().multiplyScalar(-Math.cos(k)).addScaledVector(up, -Math.sin(k));
     // (a search, not a rotation sum: the scene's mirrored root makes world rotations unreliable to invert)
     const tgt = aim(this.DOWN), cand = []; for (let i = 0; i < 400; i++) { const y = 1 - (i + .5) / 200, r = Math.sqrt(Math.max(0, 1 - y * y)), a = i * 2.39996; cand.push(new T.Vector3(Math.cos(a) * r, y, Math.sin(a) * r)); }
