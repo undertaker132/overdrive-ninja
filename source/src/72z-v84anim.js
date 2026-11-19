@@ -71,3 +71,15 @@ Anim84.k = function () { if (typeof G === 'undefined' || G.state !== 'PLAY' || G
     return r;
   };
 }
+/* one bad pixel blacked out the whole picture: when a lit surface gives a value that is not a
+   number (or an infinite one, past what the bloom's buffers hold), the bloom's blur spread it
+   over every pixel and the frame came out black: the hero on the home screen and in the Hero
+   Forge, and now and then a whole frame of a run. The bloom now drops such values first */
+{
+  const BP = THREE.UnrealBloomPass && THREE.UnrealBloomPass.prototype, rd = BP && BP.render;
+  if (rd) BP.render = function () {
+    if (!this.safe84) { this.safe84 = 1; try { const m = this.materialHighPassFilter, k = 'vec4 texel = texture2D( tDiffuse, vUv );';
+      if (m && m.fragmentShader.indexOf(k) >= 0) { m.fragmentShader = m.fragmentShader.replace(k, k + ' texel.r = (texel.r >= 0.0 && texel.r < 1e4) ? texel.r : 0.0; texel.g = (texel.g >= 0.0 && texel.g < 1e4) ? texel.g : 0.0; texel.b = (texel.b >= 0.0 && texel.b < 1e4) ? texel.b : 0.0;'); m.needsUpdate = true; } } catch (e) { errLog(e); } }
+    return rd.apply(this, arguments);
+  };
+}
