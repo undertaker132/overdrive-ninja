@@ -153,3 +153,45 @@ The 3D view uses [three.js](https://threejs.org) r160 (MIT License, Copyright 20
 - Monsters (orc, demons): Quaternius "Ultimate Monsters", CC0.
 - Sound effects: Kenney audio packs (Impact Sounds, RPG Audio, Sci-Fi Sounds, Digital Audio, Music Jingles), CC0.
 - three.js r160 and its GLTFLoader / SkeletonUtils (MIT License).
+
+---
+## v89.0 — SAKUGA & CINEMA MASTERWORK
+- **Full 16-Bone Anime Skeletal Combat Choreography (`SakugaRig89`)**: 6-hit combo (`Iaido Draw`, `Kesagiri`, `Rising Fang`, `Cyclone 360°`, `X-Scissor`, `Kabuto Vault Slam`), Iaido crouch focus stance, Parry Guard pose, idle Chiburi flourish, dual-blade & heavy variants, and smooth velocity corner banking.
+- **3D Volumetric Slash Arcs, Sandevistan Clones & Zandatsu Bisection (`SakugaVFX89`)**: 3D curved crescent slash ribbons, chromatic Sandevistan afterimages, split-in-half 3D/2D enemy deaths, and 3D enemy hit-recoil & attack anticipation.
+- **Cinema 3D Lighting, Reflections & Post-FX (`Cinema3D89`)**: Procedural Cyber-Neon IBL EnvMap (`PMREMGenerator`), Embossed Wet Normal-Mapped Train Roof, 4-light pooled Dynamic 3D Impact Flash Lights, Style-Reactive Rim Lighting, Chromatic Aberration RGB Split, and Low-HP Heartbeat Vignette.
+- **Kinetic Action Camera & Speedlines (`KineticCam89`)**: Spring-damped dash zoom-punch, Iaido focus tighten, directional impact kick, and anime radial speedlines.
+- **Next-Gen Gacha Crate Shatter (`CrateSakuga89`)**: Expanding energy cracks, 3-frame anime shatter flash, and tumbling prismatic shards.
+- **DMC Style Rank Badge (`StyleRank89`) + Adaptive Spatial Audio (`AudioCinema89`)**: Animated `D → SSS` badge, Spatial Stereo Panning (`StereoPannerNode`), adaptive music filter, Iaido/robot-vs-demon/rank-up Foley, 2 new flagship tracks (`SANDEVISTAN PULSE`, `BLADE OF ETERNITY`), and rain white-noise permanently silenced.
+
+---
+## v90.0 — PC EDITION (DESKTOP MASTERWORK)
+- **Full PC Twin-Action Controls (`PCMaster90`)**: Free **WASD** movement with smooth inertia and arena clamping, **Instant Left-Click Slash** straight toward the cursor, **Hold Right-Click Iaido Focus** (slow-motion aim) / **Quick Right-Click Dodge**, **Shift** directional dodge, **1–4** instant skill hotkeys, **Tab / Mouse Wheel** weapon swap, **Space** Overdrive, and **F11 / Alt+Enter** Fullscreen.
+- **True Widescreen & Ultrawide PC Arena + Mouse Lookahead (`PCWide90`)**: Dynamically expands the playable train roof up to **820px** across Story, Arcade, Endless, Boss Rush, Dojo & Custom modes on desktop screens, paired with a smooth mouse-lead lookahead camera.
+- **Reactive Target-Lock Cyber Reticle, Hotkey Bar & Live Telemetry (`PCHud90`)**: Cursor reticle snaps a rotating neon lock-on diamond + enemy HP arc over hovered targets, accompanied by a sleek desktop hotkey strip and live **FPS / frame-time (ms)** monitor for high-refresh-rate PC displays.
+- **Desktop UI & Ultra Graphics Polish (`PCUltra90`)**: Wider desktop menu grids (`980px`), crisp button hover micro-physics, custom neon scrollbars, auto-Ultra graphics preset on PC, and a dedicated **PC EDITION (v90)** settings section in 4 languages.
+
+---
+## v91.0 — LEGENDARY ANIME OVERHAUL (FINAL MASTERWORK)
+- **2D-to-3D Anime Visual Overhaul (`AnimeToon91`)**: Unified 3-step `MeshToonMaterial` Cel-Shading across Heroes, Enemies, and Bosses, crisp Anime Ink Outlines (black standard, glowing gold for Elites, thick crimson/black for Bosses), vibrant 2D-matched skin palette & iconic blade silhouettes, plus a live toggle in Settings (`ANIME 2D-STYLE` vs `CYBER METALLIC`).
+- **Overdrive Anime Cut-In & Judgment Ultimate Finisher (`CutIn91`)**: Dramatic horizontal anime Cut-In banner with hero eyes & typography on Overdrive activation + Judgment Cut screen-wide slash storm.
+- **Interactive Boss Blade Clash (`BladeClash91`)**: Close-range sword clash duel against bosses with flying sparks, slow-motion tension, and a mashable clash meter that shatters the boss's guard for massive bonus damage.
+- **Dynamic Train Roof Set-Pieces (`SetPieces91`)**: Living world events including **Neon Tunnel Blackout**, **Laser Gateway** (with `PHASE THROUGH! +OD` dash bonus), and **Parallel Express** train pass-bys.
+- **Awakened Weapon Evolutions (`Awakened91`)**: Reaching 20+ combo awakens your blade with a radiant golden aura and chain-lightning shockwaves every 3rd dash.
+- **Shadow Rival Invasion (`ShadowRival91`) & Dojo Combo Lab (`DojoLab91`)**: Surprise dark mirror ninja invasions with huge rewards, plus a full Dojo training HUD with live DPS, Peak DPS, Infinite Overdrive toggle, and Parry Dummy spawner.
+
+---
+## v92.0 — ASCENSION & PRODUCTION MASTERWORK
+- **Asset Splitting & Fast-Boot Optimization**: Extracted the ~607 KB inline Arabic & Russian dictionaries into lazy-loaded `lang/ar.js` and `lang/ru.js` modules (works over both HTTPS and local `file://`).
+- **Roguelike Build Synergies (`Synergies92`)**: 4 Hades-style set evolutions (`STORM CONDUIT`, `CRIMSON VAMPIRE`, `CHRONO PHANTOM`, `OVERCLOCK PROTOCOL`) with live HUD badges.
+- **Tactical Enemy Squad AI (`SquadAI92`)**: Coordinated **Aegis Links** (Brutes shielding nearby Snipers for 50% DR) and **Drone Overclock Links** (speed-boosting nearby melee units).
+- **Ascension / Heat Pact System (`HeatPact92`)**: 5 stackable pre-run Heat Contracts (`HYPER BOSSES`, `ELITE SQUADS`, `BULLET STORM`, `FRAGILE FRAME`, `CRIMSON VELOCITY`) with +15% score multiplier per Heat level.
+- **Playtest Clarity & Balance (`Clarity92`)**: High-contrast incoming bullet halos & balanced Blade Clash pacing.
+- **Publish-Ready Online Cloud Leaderboard & Save Sync (`CloudReady92` + `DEPLOY.md`)**: Plug-and-play Firebase Realtime DB global leaderboard, local Top-10 fallback, Save Export/Import codes, and full GitHub Pages / itch.io deployment guide.
+
+---
+## v94.0 — AAA CINEMATIC CRATE OVERHAUL (`CrateCinema94`)
+- **Interactive 3D Crate Stage**: Dedicated Three.js studio scene with reflective cyber pedestal, orbiting energy rings, 3D splitable cyber-armored crate, and a volumetric **Sky Beam** erupting upward.
+- **Slash-to-Open Gesture**: Swipe across the 3D crate with your mouse or finger (or press `Space` / click) to draw a glowing katana trail, trigger a 3-frame anime Hitstop, and physically **bisect the 3D crate into two flying halves**.
+- **Rarity Fake-Out Surprises**: High-rarity crates (Epic / Legendary / Mythic) can start in a lower rarity color, freeze with a glitch & heartbeat riser, and violently shatter into their true glowing rarity.
+- **Audio Ducking & Signature Rarity Fanfares**: Music ducks before impact so the slice, sub-bass drop, and rarity synth chord hit at full power.
+- **Multi-Slash (`OPEN ×5`)**: Open up to 5 crates in one swipe with a headline 3D showcase and a clean Multi-Crate Haul summary grid.

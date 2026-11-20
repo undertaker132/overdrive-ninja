@@ -1,0 +1,12 @@
+OVERDRIVE: CYBER SLASH (v95.0) — Studio Soundtrack Folder
+=========================================================
+Drop your downloaded studio tracks here with these exact filenames:
+
+  boss.mp3       -> Track #1 (Boss Battle — Anime Cyber-Rock with Vocals)
+  overdrive.mp3  -> Track #2 (Overdrive Surge — Cyber-Industrial Metal with Vocals)
+  combat1.mp3    -> Track #3 (Neo-Edo Combat Run — Cyber-Tech House with Vocals)
+  menu.mp3       -> Track #4 (Optional Title/Menu theme)
+  shogun.mp3     -> Track #5 (Optional Final Boss theme)
+
+TIP: You can also click the "🎵 SOUNDTRACK" button inside the game's title screen
+to pick your downloaded audio files directly — they will be saved permanently in your browser!
