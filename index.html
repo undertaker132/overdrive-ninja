@@ -15,6 +15,124 @@
 <meta property="og:title" content="Overdrive: Cyber Slash">
 <meta property="og:description" content="A neon cyberpunk ninja action game. Play free in the browser or install it as an app.">
 <meta property="og:image" content="icons/icon-512.png">
+<style id="ui86">
+/* =====================================================================
+   v86.0 APEX UI POLISH — cyber-glass micro-physics, crisp neon depth,
+   refined RTL layout & tactile button response
+   ===================================================================== */
+.btn, button.btn, .mode-card, .card, .nav-btn, .dock-btn {
+  transition: transform .14s cubic-bezier(.22,1,.36,1), box-shadow .18s ease, border-color .18s ease, background .18s ease;
+  will-change: transform;
+}
+.btn:hover:not(:disabled), .mode-card:hover, .card.clickable:hover {
+  box-shadow: 0 0 18px rgba(0, 242, 254, .24), inset 0 1px 0 rgba(255,255,255,.16);
+}
+.btn:active:not(:disabled), .mode-card:active {
+  transform: scale(.965);
+}
+.btn.pri, .btn.primary {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 22px rgba(0, 242, 254, .28), 0 6px 20px rgba(0, 0, 0, .45);
+}
+.btn.pri::after, .btn.primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 25%, rgba(255,255,255,.22) 50%, transparent 75%);
+  transform: translateX(-130%);
+  transition: transform .55s cubic-bezier(.22,1,.36,1);
+  pointer-events: none;
+}
+.btn.pri:hover::after, .btn.primary:hover::after {
+  transform: translateX(130%);
+}
+.panel, .modal-card, .box {
+  backdrop-filter: blur(12px) saturate(1.25);
+  -webkit-backdrop-filter: blur(12px) saturate(1.25);
+  border-color: rgba(0, 242, 254, .18);
+}
+#tFoot {
+  letter-spacing: .06em;
+  text-shadow: 0 0 10px rgba(0, 242, 254, .25);
+}
+[dir="rtl"] .btn, [dir="rtl"] .row, [dir="rtl"] .chip {
+  letter-spacing: 0 !important;
+}
+</style>
+<style id="ui87">
+/* =====================================================================
+   v87.0 SYMPHONY & VISUAL OVERHAUL — richer cyber-obsidian palette,
+   rarity shimmer borders, fluid spring UI animations & crisp contrast
+   ===================================================================== */
+@keyframes popIn87 {
+  0% { opacity: 0; transform: translateY(10px) scale(.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes holoShimmer87 {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.screen.on .panel, .screen.on .card, .screen.on .mode-card, .modal.on .modal-card {
+  animation: popIn87 .26s cubic-bezier(.22, 1, .36, 1) both;
+}
+.screen.on .card:nth-child(2), .screen.on .mode-card:nth-child(2) { animation-delay: .03s; }
+.screen.on .card:nth-child(3), .screen.on .mode-card:nth-child(3) { animation-delay: .06s; }
+.screen.on .card:nth-child(4), .screen.on .mode-card:nth-child(4) { animation-delay: .09s; }
+.screen.on .card:nth-child(5), .screen.on .mode-card:nth-child(5) { animation-delay: .12s; }
+
+/* Richer cyber-glass cards & glowing rarity accents */
+.card, .mode-card, .shop-item {
+  background: linear-gradient(155deg, rgba(16, 22, 44, .88), rgba(7, 10, 22, .94));
+  border: 1px solid rgba(110, 195, 255, .18);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .38), inset 0 1px 0 rgba(255, 255, 255, .07);
+}
+.card:hover, .mode-card:hover, .shop-item:hover {
+  border-color: rgba(0, 242, 254, .48);
+  transform: translateY(-2px);
+}
+.chip.gold, .badge.leg, [data-rarity="legendary"], .r-leg {
+  border-color: rgba(255, 200, 45, .65) !important;
+  box-shadow: 0 0 16px rgba(255, 190, 30, .28);
+}
+.chip.myth, .badge.myth, [data-rarity="mythic"], .r-myth {
+  border-color: rgba(255, 43, 120, .75) !important;
+  box-shadow: 0 0 22px rgba(255, 43, 120, .38), inset 0 0 12px rgba(181, 55, 242, .22);
+}
+.logo .o.h1 {
+  filter: drop-shadow(0 0 14px rgba(0, 242, 254, .55));
+}
+.bar > i, .prog > i, .fill {
+  background-size: 200% 200%;
+  animation: holoShimmer87 3.2s ease infinite;
+}
+</style>
+<style id="ui88">
+/* =====================================================================
+   v88.0 ZENITH EDITION — Live audio visualizer bar, holographic title
+   chrome sheen & crisp boss warning styling
+   ===================================================================== */
+#viz88 {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 44px;
+  pointer-events: none;
+  z-index: 9;
+  opacity: .72;
+  transition: opacity .3s ease;
+}
+body.in-run #viz88 { opacity: .28; }
+@keyframes zenithPulse88 {
+  0%, 100% { filter: drop-shadow(0 0 12px rgba(0, 242, 254, .55)); }
+  50% { filter: drop-shadow(0 0 24px rgba(255, 43, 214, .75)); }
+}
+.logo.v2 .emb {
+  animation: zenithPulse88 3.6s ease-in-out infinite;
+}
+</style>
 </head><body>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -5013,8 +5131,8 @@ Math.sin = DMATH.sin; Math.cos = DMATH.cos; Math.atan = DMATH.atan; Math.atan2 =
    All tuning lives here. Logical units: the view is ~420 wide, the
    train roof (arena) is 340 wide. Speeds are units per second.
    ===================================================================== */
-const VERSION = '85.0';
-const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0', '36.0', '37.0', '38.0', '39.0', '40.0', '40.1', '41.0', '42.0', '43.0', '44.0', '45.0', '46.0', '47.0', '48.0', '49.0', '50.0', '51.0', '52.0', '53.0', '54.0', '55.0', '56.0', '57.0', '58.0', '59.0', '60.0', '61.0', '62.0', '63.0', '64.0', '65.0', '66.0', '67.0', '68.0', '69.0', '70.0', '71.0', '72.0', '73.0', '74.0', '75.0', '76.0', '77.0', '80.0', '82.0', '83.0', '84.0', '85.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
+const VERSION = '88.0';
+const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0', '36.0', '37.0', '38.0', '39.0', '40.0', '40.1', '41.0', '42.0', '43.0', '44.0', '45.0', '46.0', '47.0', '48.0', '49.0', '50.0', '51.0', '52.0', '53.0', '54.0', '55.0', '56.0', '57.0', '58.0', '59.0', '60.0', '61.0', '62.0', '63.0', '64.0', '65.0', '66.0', '67.0', '68.0', '69.0', '70.0', '71.0', '72.0', '73.0', '74.0', '75.0', '76.0', '77.0', '80.0', '82.0', '83.0', '84.0', '85.0', '86.0', '87.0', '88.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
 const CFG = { step: 1 / 60, maxSteps: 5, maxEnemies: 22, arenaW: 340, viewW: 420, viewH: 760 };
 let RDT = 1 / 60; // version 34: the real time of the frame being drawn. Drawing code uses it instead of a fixed 1/60, so 120-480 Hz screens animate at the right speed
 
@@ -20281,7 +20399,17 @@ const Preview = {
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 85
+const NEWS = [ // version 88 (ZENITH EDITION)
+  ["3D NEO-EDO TRAFFIC, SEARCHLIGHTS & LIGHTNING", "In 3D, streams of flying cyber-traffic zip through the skyscrapers below, sweeping searchlights cut across the night sky, storm stages flash with lightning and thunder, and the train rails pulse with the music's bass."],
+  ["MULTISLASH OVERCLOCK & ZANSHIN COUNTER", "Cutting 3+ enemies in one dash triggers MULTISLASH OVERCLOCK (constellation lines, +1 dash charge & Overdrive). After a Perfect Parry, your next dash ignites ZANSHIN COUNTER for +50% damage and a golden 3D ribbon."],
+  ["3 NEW EXOTIC WEAPONS & LIVE SPECTRUM", "PLASMA ODACHI, CYBER KUSARIGAMA and CHRONO GLAIVE join the Arsenal with unique mechanics, alongside 3 new tracks (ZENITH OVERDRIVE, CYBER REQUIEM, NEO-EDO DRIFT 2099), a live audio spectrum bar, boss phase banners and a tactical kill feed."],
+  ["6 NEW SOUNDTRACKS & FOLEY SFX", "Six new original tracks (CYBER SAKURA, HYPER KATANA, NEON RONIN, ECLIPSE PROTOCOL, MIDNIGHT DOJO and PRISM OVERDRIVE) join the Music Room and runs, plus custom rarity fanfares, aim unsheathe chimes and richer blade foley."],
+  ["CRATE & COMBAT ANIMATION OVERHAUL", "Crate openings now feature squash-and-stretch drop physics, escalating orbital energy rings, tension risers, climax starbursts and musical fanfares, while combat adds hero dash squash-stretch, turn banking and springy enemy hit-recoil."],
+  ["6 NEW SKINS, 4 BLADES & VISUAL POLISH", "Six flagship hero skins (PRISM RONIN, SOLAR SERAPH, CYBER KITSUNE, OBSIDIAN SHOGUN, EMERALD PHANTOM, ASTRAL ONI) and four holographic blades join the Arsenal, with upgraded 3D studio lighting, richer materials and cyber-glass UI."],
+  ["ANIME IMPACT FRAMES", "Executions, perfect parries, elemental reactions and boss breaks now trigger razor-sharp manga impact frames with radial speed-lines and chromatic punch (toggleable in Settings)."],
+  ["3D SLASH RIBBONS & ROOF SCARS", "In 3D, every dash carves a glowing crescent energy ribbon through the air and burns a cooling neon scar into the wet train roof, alongside 3D shockwave rings, rain ripples and blazing Overdrive lighting."],
+  ["TACTICAL AIM & HERO RING", "Holding aim now previews lethal hits, executions and parryable bullets right along your trajectory (including wall bounces), adds off-screen threat chevrons, and wraps a sleek charge/heat ring around your hero."],
+  ["PHANTOM STEP & DYNAMIC AUDIO", "Last-millisecond bullet grazes trigger PHANTOM STEP (+1 dash charge & Overdrive), SS/SSS style ranks boost dash recharge, slow-motion sweeps a cinematic low-pass filter over the soundtrack, and combos ring with rising steel harmonics."],
   ["EVERY HERO IN SHAPE", "Every hero was checked in 3D, one by one: the wolf's and the dragon's tails now hang behind and stream out when they run (they curled up over the head), the wolf's and the viking's fur collars sit around the neck instead of standing up like a halo, and the yeti wears its shaggy fur again."],
   ["SMOOTHER BLADES", "The 3D hero no longer snaps into a stiff arms-out pose after a dash cut, holds the blade forward like a swordsman, and the scarf streams out behind instead of standing over the head. Big hits now freeze the whole 3D picture for a beat. Every signature art moves the body too: the samurai sinks into a low guard and draws one wide horizontal iai cut, death marks land as a lunging stab, a spirit ward is laid with a spin, and the shadow clone steps out of a burst of smoke. A lighting fault that could turn the whole 3D picture black, now and then in a run and always on the home screen hero, is fixed."],
   ["AN ART FOR EVERY HERO", "Every hero now fights with a signature art in every run, chosen by its body: light ninjas leave SHADOW CLONES, the armored and the heavy draw an IAI cut after a still breath, the shadow-born lay DEATH MARKS, and the mystics raise a SPIRIT WARD. Your first runs with each hero show what it can do."],
@@ -33624,6 +33752,1837 @@ Anim84.fur = function (g, ca) {
   tuft('LeftForeArm', .035, 1, 1.2, 1); tuft('RightForeArm', .035, 1, 1.2, 1); tuft('LeftLeg', .04, 1, 1.3, 1); tuft('RightLeg', .04, 1, 1.3, 1);
 };
 { const hb = Human.build.bind(Human); Human.build = function (L) { const g = hb.apply(this, arguments); try { if (L && L.body === 'yeti' && g && g.human) Anim84.fur(g, L.a); } catch (e) { errLog(e); } return g; }; }
+
+
+/* ==========================================================================
+   VERSION 86.0 — THE APEX UPDATE
+   1. Impact86   — Anime/manga impact frames, radial focus speed-lines &
+                   chromatic punch on executions, perfect parries, elemental
+                   reactions and boss phase/finisher breaks (render only)
+   2. Slash3D86  — 3D glowing crescent slash ribbons, molten roof slash scars
+                   that cool over time, and 3D shockwave rings in Three.js
+   3. World86    — 3D wet-roof rain splash ripples, passing neon pulses &
+                   blazing Overdrive dynamic 3D lighting + bloom surge
+   4. Tact86     — Tactical aim kill/execution prediction brackets, parryable
+                   bullet highlight rings along the dash line & off-screen
+                   threat radar chevrons (render only)
+   5. HeroRing86 — Diegetic circular combat ring around the hero (dash ticks,
+                   blade heat arc & S/SS/SSS style aura; toggleable)
+   6. Apex86     — Phantom Step (close-graze dash refill + afterimage) &
+                   Style Overcharge (SS/SSS faster recharge), gated on simV(86)
+   7. Audio86    — Slow-mo & hit-stop low-pass sweep on Aud.mf, rising combo
+                   pentatonic steel harmonics & sub-bass impact drops
+   ========================================================================== */
+
+/* ---- 4-language translations for v86 ---- */
+try {
+  if (typeof HE !== 'undefined') Object.assign(HE, {
+    "APEX EDITION": "מהדורת APEX",
+    "IMPACT FRAMES": "פריימי אימפקט",
+    "Impact frames": "פריימי אימפקט (אנימה)",
+    "Hero combat ring": "טבעת קרב סביב הגיבור",
+    "PHANTOM STEP": "צעד רפאים",
+    "STYLE OVERCHARGE": "טעינת סטייל",
+    "KILL": "חיסול",
+    "EXEC": "הוצאה להורג",
+    "PARRY": "פארי",
+    "ANIME IMPACT FRAMES": "פריימי אימפקט בסגנון אנימה",
+    "Executions, perfect parries, elemental reactions and boss breaks now trigger razor-sharp manga impact frames with radial speed-lines and chromatic punch (toggleable in Settings).": "הוצאות להורג, פארי מושלם, תגובות יסוד ושבירת שלבי בוס מפעילים כעת פריימי אימפקט חדים בסגנון אנימה עם קווי מהירות רדיאליים והבזק כרומטי (ניתן לכיבוי בהגדרות).",
+    "3D SLASH RIBBONS & ROOF SCARS": "שובלי חיתוך בתלת־ממד וצלקות גג",
+    "In 3D, every dash carves a glowing crescent energy ribbon through the air and burns a cooling neon scar into the wet train roof, alongside 3D shockwave rings, rain ripples and blazing Overdrive lighting.": "בתלת־ממד, כל זינוק חורט באוויר שובל אנרגיה זוהר ומשאיר צלקת להב לוהטת על גג הרכבת הרטוב, לצד גלי הלם תלת־ממדיים, אדוות גשם ותאורת אוברדרייב עוצמתית.",
+    "TACTICAL AIM & HERO RING": "כיוון טקטי וטבעת קרב",
+    "Holding aim now previews lethal hits, executions and parryable bullets right along your trajectory (including wall bounces), adds off-screen threat chevrons, and wraps a sleek charge/heat ring around your hero.": "החזקת כיוון מציגה כעת מראש פגיעות קטלניות, הוצאות להורג וכדורים שניתן להדוף לאורך המסלול (כולל קפיצה מקיר), מוסיפה חצי איום מחוץ למסך, ועוטפת את הגיבור בטבעת מטענים וחום.",
+    "PHANTOM STEP & DYNAMIC AUDIO": "צעד רפאים ואודיו דינמי",
+    "Last-millisecond bullet grazes trigger PHANTOM STEP (+1 dash charge & Overdrive), SS/SSS style ranks boost dash recharge, slow-motion sweeps a cinematic low-pass filter over the soundtrack, and combos ring with rising steel harmonics.": "כמעט־פגיעות ברגע האחרון מפעילות צעד רפאים (טעינת זינוק + אוברדרייב), דרגות SS/SSS מאיצות טעינת זינוק, ההילוך האיטי מעמעם קולנועית את הפסקול, ורצפי קומבו מצלצלים בהרמוניות פלדה עולות."
+  });
+  if (typeof AR !== 'undefined') Object.assign(AR, {
+    "APEX EDITION": "إصدار APEX",
+    "Impact frames": "إطارات الصدمة (أنمي)",
+    "Hero combat ring": "حلقة القتال حول البطل",
+    "PHANTOM STEP": "خطوة الشبح",
+    "STYLE OVERCHARGE": "شحن الأسلوب",
+    "KILL": "قضاء",
+    "EXEC": "إعدام",
+    "ANIME IMPACT FRAMES": "إطارات صدمة بأسلوب الأنمي",
+    "3D SLASH RIBBONS & ROOF SCARS": "أشرطة قطع ثلاثية الأبعاد وندوب السطح",
+    "TACTICAL AIM & HERO RING": "تصويب تكتيكي وحلقة البطل",
+    "PHANTOM STEP & DYNAMIC AUDIO": "خطوة الشبح وصوت ديناميكي"
+  });
+  if (typeof RU !== 'undefined') Object.assign(RU, {
+    "APEX EDITION": "APEX EDITION",
+    "Impact frames": "Кадры удара (аниме)",
+    "Hero combat ring": "Боевое кольцо героя",
+    "PHANTOM STEP": "ПРИЗРАЧНЫЙ ШАГ",
+    "STYLE OVERCHARGE": "ПЕРЕГРУЗКА СТИЛЯ",
+    "KILL": "ДОБИТЬ",
+    "EXEC": "КАЗНЬ",
+    "ANIME IMPACT FRAMES": "АНИМЕ-КАДРЫ УДАРА",
+    "3D SLASH RIBBONS & ROOF SCARS": "3D-ШЛЕЙФЫ И СЛЕДЫ НА КРЫШЕ",
+    "TACTICAL AIM & HERO RING": "ТАКТИЧЕСКИЙ ПРИЦЕЛ И КОЛЬЦО",
+    "PHANTOM STEP & DYNAMIC AUDIO": "ПРИЗРАЧНЫЙ ШАГ И ДИНАМИЧНЫЙ ЗВУК"
+  });
+} catch (e) { errLog(e); }
+
+/* ==========================================================================
+   1. Impact86 — ANIME IMPACT FRAMES, MANGA SPEED-LINES & CHROMATIC PUNCH
+   ========================================================================== */
+const Impact86 = {
+  t: 0, dur: 0, x: 210, y: 380, col: '#00f2fe', heavy: 0, rings: [],
+  enabled() {
+    const s = Store.data && Store.data.settings;
+    if (CALM) return false;
+    if (typeof Juice !== 'undefined' && Juice.flashMode && Juice.flashMode() === 'off') return false;
+    return !(s && s.imp86 === 0);
+  },
+  fire(x, y, col, heavy) {
+    if (!this.enabled() || (REPLAY.on && REPLAY.fast)) return;
+    this.x = x != null ? x : P.x;
+    this.y = y != null ? y : P.y;
+    this.col = col || P.ca || '#00f2fe';
+    this.heavy = heavy ? 1 : 0;
+    this.dur = heavy ? 0.14 : 0.085;
+    this.t = this.dur;
+    this.rings.push({ x: this.x, y: this.y, t: 0, dur: heavy ? 0.42 : 0.28, r: heavy ? 220 : 135, col: this.col, heavy: this.heavy });
+    if (this.rings.length > 8) this.rings.shift();
+  },
+  draw(rd) {
+    if (!inRun()) { this.t = 0; this.rings.length = 0; return; }
+    const d = rd || 1 / 60;
+    if (this.t > 0) {
+      this.t = Math.max(0, this.t - d);
+      const u = 1 - this.t / Math.max(0.01, this.dur);
+      const sx = this.x, sy = this.y;
+      cx.save();
+      // High-contrast brief manga flash on the first 35% of the impact
+      if (u < 0.35 && this.heavy) {
+        const a = (1 - u / 0.35) * 0.34;
+        cx.fillStyle = u < 0.14 ? '#05060f' : '#ffffff';
+        cx.globalAlpha = a;
+        cx.fillRect(-40, -40, V.VW + 80, V.VH + 80);
+      }
+      // Radial anime speed-lines focused on the impact point
+      const rays = this.heavy ? 28 : 16;
+      const alpha = (1 - u) * (this.heavy ? 0.72 : 0.46);
+      cx.globalAlpha = alpha;
+      cx.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < rays; i++) {
+        const ang = (i / rays) * TAU + (this.heavy ? 0.19 : 0.07) * (i % 3);
+        const inner = (this.heavy ? 54 : 42) + u * 65 + (i % 4) * 14;
+        const outer = Math.max(V.VW, V.VH) * 0.95;
+        const w = (i % 3 === 0 ? 3.2 : 1.4) * (1 - u * 0.6);
+        cx.strokeStyle = i % 4 === 0 ? '#ffffff' : this.col;
+        cx.lineWidth = w;
+        cx.beginPath();
+        cx.moveTo(sx + Math.cos(ang) * inner, sy + Math.sin(ang) * inner);
+        cx.lineTo(sx + Math.cos(ang) * outer, sy + Math.sin(ang) * outer);
+        cx.stroke();
+      }
+      // Cross-star flash right at impact center
+      if (u < 0.55) {
+        const k = 1 - u / 0.55;
+        cx.fillStyle = '#ffffff';
+        cx.globalAlpha = k * 0.9;
+        for (let b = 0; b < 2; b++) {
+          cx.save();
+          cx.translate(sx, sy);
+          cx.rotate(b * Math.PI * 0.5 + (this.heavy ? 0.35 : 0));
+          const len = (this.heavy ? 115 : 70) * k;
+          const wid = (this.heavy ? 9 : 5) * k;
+          cx.beginPath();
+          cx.moveTo(-len, 0); cx.lineTo(0, -wid); cx.lineTo(len, 0); cx.lineTo(0, wid); cx.closePath();
+          cx.fill();
+          cx.restore();
+        }
+      }
+      cx.restore();
+    }
+    // Crisp expanding neon shockwaves
+    for (let i = this.rings.length - 1; i >= 0; i--) {
+      const r = this.rings[i];
+      r.t += d;
+      if (r.t >= r.dur) { this.rings.splice(i, 1); continue; }
+      const u = r.t / r.dur, e = 1 - Math.pow(1 - u, 3);
+      cx.save();
+      cx.globalCompositeOperation = 'lighter';
+      cx.globalAlpha = (1 - u) * 0.78;
+      cx.strokeStyle = r.col;
+      cx.lineWidth = (r.heavy ? 5.5 : 3.2) * (1 - u * 0.75);
+      cx.beginPath();
+      cx.arc(r.x, r.y, 14 + r.r * e, 0, TAU);
+      cx.stroke();
+      if (r.heavy && u < 0.65) {
+        cx.strokeStyle = '#ffffff';
+        cx.lineWidth = 2 * (1 - u / 0.65);
+        cx.beginPath();
+        cx.arc(r.x, r.y, 8 + r.r * 0.65 * e, 0, TAU);
+        cx.stroke();
+      }
+      cx.restore();
+    }
+  }
+};
+
+/* ==========================================================================
+   2. Slash3D86 & 3. World86 — 3D SLASH RIBBONS, ROOF SCARS, RAIN RIPPLES &
+      DYNAMIC OVERDRIVE LIGHTING IN THREE.JS (R3)
+   ========================================================================== */
+const Slash3D86 = {
+  grp: null, scars: [], ribbons: [], waves: [], ripples: [],
+  odBoost: 0, neonPulse: 0, lastDashT: 0, lastPx: 0, lastPy: 0,
+  ensure() {
+    if (this.grp || !R3.ok || !R3.root || typeof THREE === 'undefined') return;
+    this.grp = new THREE.Group();
+    R3.root.add(this.grp);
+  },
+  addSlash(x0, y0, x1, y1, col) {
+    if (!R3.on || !R3.ok || CALM) return;
+    this.ensure(); if (!this.grp) return;
+    const T = THREE, dx = x1 - x0, dy = y1 - y0, len = Math.hypot(dx, dy);
+    if (len < 18) return;
+    const ang = Math.atan2(dy, dx), mx = (x0 + x1) * 0.5, my = (y0 + y1) * 0.5;
+    const c = new T.Color(col || P.ca || '#00f2fe');
+    // Glowing molten scar on the wet train roof
+    const scarMat = new T.MeshBasicMaterial({ color: c, transparent: true, opacity: 0.92, blending: T.AdditiveBlending, depthWrite: false });
+    const scar = new T.Mesh(new T.PlaneGeometry(len, 6.5), scarMat);
+    scar.position.set(mx, my, 1.35);
+    scar.rotation.z = ang;
+    this.grp.add(scar);
+    this.scars.push({ m: scar, mat: scarMat, t: 0, dur: 1.65, base: c.clone() });
+    if (this.scars.length > 18) { const old = this.scars.shift(); this.grp.remove(old.m); old.m.geometry.dispose(); old.mat.dispose(); }
+    // Elevated 3D crescent energy ribbon in the air
+    const ribMat = new T.MeshBasicMaterial({ color: c.clone().lerp(new T.Color('#ffffff'), 0.45), transparent: true, opacity: 0.85, side: T.DoubleSide, blending: T.AdditiveBlending, depthWrite: false });
+    const rib = new T.Mesh(new T.PlaneGeometry(len * 0.96, 22), ribMat);
+    rib.position.set(mx, my, 19);
+    rib.rotation.z = ang;
+    rib.rotation.x = 0.55;
+    this.grp.add(rib);
+    this.ribbons.push({ m: rib, mat: ribMat, t: 0, dur: 0.32 });
+    if (this.ribbons.length > 12) { const old = this.ribbons.shift(); this.grp.remove(old.m); old.m.geometry.dispose(); old.mat.dispose(); }
+  },
+  addWave(x, y, col, maxR) {
+    if (!R3.on || !R3.ok || CALM) return;
+    this.ensure(); if (!this.grp) return;
+    const T = THREE;
+    const mat = new T.MeshBasicMaterial({ color: new T.Color(col || '#00f2fe'), transparent: true, opacity: 0.9, side: T.DoubleSide, blending: T.AdditiveBlending, depthWrite: false });
+    const m = new T.Mesh(new T.RingGeometry(0.76, 1.0, 28), mat);
+    m.position.set(x, y, 2.2);
+    m.scale.set(12, 12, 1);
+    this.grp.add(m);
+    this.waves.push({ m, mat, t: 0, dur: 0.42, maxR: maxR || 150 });
+    if (this.waves.length > 10) { const old = this.waves.shift(); this.grp.remove(old.m); old.m.geometry.dispose(); old.mat.dispose(); }
+  },
+  tick(rd) {
+    if (!R3.on || !R3.ok) return;
+    this.ensure(); if (!this.grp) return;
+    const d = Math.min(0.05, rd || 1 / 60);
+    // Track dash endpoints automatically to spawn 3D slash ribbons & molten scars
+    if (inRun() && G.state === 'PLAY') {
+      if (P.dashT > 0 && this.lastDashT <= 0) {
+        this.lastPx = P.x; this.lastPy = P.y;
+      } else if (P.dashT > 0 && Math.hypot(P.x - this.lastPx, P.y - this.lastPy) > 62) {
+        this.addSlash(this.lastPx, this.lastPy, P.x, P.y, typeof fxArcColor === 'function' ? fxArcColor() : P.ca);
+        this.lastPx = P.x; this.lastPy = P.y;
+      } else if (P.dashT <= 0 && this.lastDashT > 0) {
+        this.addSlash(this.lastPx, this.lastPy, P.x, P.y, typeof fxArcColor === 'function' ? fxArcColor() : P.ca);
+      }
+      this.lastDashT = P.dashT;
+    } else {
+      this.lastDashT = 0;
+    }
+    // Cool roof scars (white-hot -> neon -> fade)
+    for (let i = this.scars.length - 1; i >= 0; i--) {
+      const s = this.scars[i]; s.t += d;
+      if (s.t >= s.dur) { this.grp.remove(s.m); s.m.geometry.dispose(); s.mat.dispose(); this.scars.splice(i, 1); continue; }
+      const u = s.t / s.dur;
+      s.mat.opacity = (1 - u) * (1 - u) * 0.85;
+      s.m.scale.y = Math.max(0.18, 1 - u * 0.72);
+      if (u < 0.18) s.mat.color.copy(s.base).lerp(new THREE.Color('#ffffff'), 1 - u / 0.18);
+      else s.mat.color.copy(s.base);
+    }
+    // Fade & lift 3D energy ribbons
+    for (let i = this.ribbons.length - 1; i >= 0; i--) {
+      const r = this.ribbons[i]; r.t += d;
+      if (r.t >= r.dur) { this.grp.remove(r.m); r.m.geometry.dispose(); r.mat.dispose(); this.ribbons.splice(i, 1); continue; }
+      const u = r.t / r.dur;
+      r.mat.opacity = (1 - u) * 0.82;
+      r.m.scale.y = 1 + u * 1.4;
+      r.m.position.z = 19 + u * 12;
+    }
+    // Expand 3D shockwave rings
+    for (let i = this.waves.length - 1; i >= 0; i--) {
+      const w = this.waves[i]; w.t += d;
+      if (w.t >= w.dur) { this.grp.remove(w.m); w.m.geometry.dispose(); w.mat.dispose(); this.waves.splice(i, 1); continue; }
+      const u = w.t / w.dur, e = 1 - Math.pow(1 - u, 3);
+      const rad = 12 + w.maxR * e;
+      w.m.scale.set(rad, rad, 1);
+      w.mat.opacity = (1 - u) * 0.85;
+    }
+    // World86: Wet-roof rain ripples when raining in 3D
+    const raining = !!(BG.T && BG.T.rain && Q.rain > 0 && !CALM && R3.q >= 1);
+    if (raining && this.ripples.length < 14 && Math.random() < d * 24) {
+      const rx = V.L + 16 + Math.random() * Math.max(40, V.R - V.L - 32);
+      const ry = (P.y || V.VH * 0.5) + (Math.random() - 0.5) * 520;
+      const mat = new THREE.MeshBasicMaterial({ color: 0xaad8ff, transparent: true, opacity: 0.45, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false });
+      const m = new THREE.Mesh(new THREE.RingGeometry(0.75, 1.0, 14), mat);
+      m.position.set(rx, ry, 1.1);
+      this.grp.add(m);
+      this.ripples.push({ m, mat, t: 0, dur: 0.36 + Math.random() * 0.18, maxR: 9 + Math.random() * 10 });
+    }
+    for (let i = this.ripples.length - 1; i >= 0; i--) {
+      const rp = this.ripples[i]; rp.t += d;
+      if (rp.t >= rp.dur) { this.grp.remove(rp.m); rp.m.geometry.dispose(); rp.mat.dispose(); this.ripples.splice(i, 1); continue; }
+      const u = rp.t / rp.dur, rad = 2 + rp.maxR * u;
+      rp.m.scale.set(rad, rad, 1);
+      rp.mat.opacity = (1 - u) * 0.38;
+    }
+    // World86: Dynamic Overdrive & Style Rank 3D Lighting
+    const targetOD = (inRun() && G.odT > 0) ? 1 : (inRun() && G.styleRk >= 5 ? 0.35 : 0);
+    this.odBoost += (targetOD - this.odBoost) * Math.min(1, d * 7);
+    if (R3.bloom && R3.q >= 1) {
+      const baseBloom = R3.q >= 3 ? 0.52 : 0.45;
+      R3.bloom.strength = baseBloom + this.odBoost * 0.28 + (Impact86.t > 0 ? 0.22 : 0);
+    }
+    if (R3.heroL && inRun()) {
+      if (G.odT > 0) {
+        R3.heroL.color.setHex(0xffd700);
+        R3.heroL.intensity = 520 + Math.sin(CAM.t * 18) * 80;
+        R3.heroL.distance = 320;
+      } else {
+        R3.heroL.intensity = 300 + (G.styleRk >= 4 ? 90 : 0);
+        R3.heroL.distance = 220;
+      }
+    }
+  }
+};
+
+/* ==========================================================================
+   4. Tact86 — TACTICAL AIM KILL/EXECUTION PREVIEW & OFF-SCREEN THREAT RADAR
+   ========================================================================== */
+const Tact86 = {
+  drawAimExtras() {
+    if (!In.on || G.state !== 'PLAY' || REPLAY.on || G.mode === 'puzzle') return;
+    if ((P.ch <= 0 && G.odT <= 0) || P.lock > 0) return;
+    const dx = In.cx - In.sx, dy = In.cy - In.sy;
+    if (dx * dx + dy * dy < 130) return;
+    const a = Math.atan2(dy, dx), vx = Math.cos(a), vy = Math.sin(a), len = 300;
+    const tw = vx > 0.001 ? (V.R - P.r - P.x) / vx : vx < -0.001 ? (V.L + P.r - P.x) / vx : 1e9;
+    const segs = [];
+    if (tw < len) {
+      const bx = P.x + vx * tw, by = P.y + vy * tw;
+      segs.push([P.x, P.y, bx, by, false]);
+      segs.push([bx, by, bx - vx * (len - tw), by + vy * (len - tw), true]);
+    } else {
+      segs.push([P.x, P.y, P.x + vx * len, P.y + vy * len, false]);
+    }
+    const hitR = P.r + 22 * P.reach + P.w.reach;
+    const baseDmg = (P.w ? P.w.dmg : 1) * (P.dmgMul || 1) * (G.dmgMod || 1) * (G.odT > 0 ? 2 : 1);
+    const pulse = 0.65 + Math.sin(CAM.t * 16) * 0.35;
+    cx.save();
+    // Highlight enemies intersected by trajectory with KILL / EXEC tactical brackets
+    for (let i = 0; i < EN.n; i++) {
+      const e = EN.a[i];
+      if (!e || !e.alive || e.al > 0 || e.spawnT > 0 || e.vis <= 0.3 || e.alt > 0.35) continue;
+      let hit = false, isRic = false;
+      for (const s of segs) {
+        if (distToSeg(e.x, e.y, s[0], s[1], s[2], s[3]) < hitR + e.r) { hit = true; isRic = s[4]; break; }
+      }
+      if (!hit) continue;
+      const execNow = !!(e.exec || (e.elite && e.mhp > 0 && e.hp / e.mhp <= (P.perks && P.perks.reaper ? 0.5 : 0.3)));
+      const estDmg = baseDmg * (isRic ? 1.85 : 1);
+      const lethal = execNow || e.hp <= estDmg + 0.05;
+      const col = execNow ? '#ff0844' : lethal ? '#ffd700' : '#00f2fe';
+      const br = e.r + 8 + pulse * 3;
+      cx.strokeStyle = col;
+      cx.lineWidth = execNow || lethal ? 2.4 : 1.6;
+      cx.globalAlpha = 0.92;
+      // 4 crisp corner brackets around target
+      const cl = 7;
+      for (const sx of [-1, 1]) for (const sy of [-1, 1]) {
+        cx.beginPath();
+        cx.moveTo(e.x + sx * br, e.y + sy * (br - cl));
+        cx.lineTo(e.x + sx * br, e.y + sy * br);
+        cx.lineTo(e.x + sx * (br - cl), e.y + sy * br);
+        cx.stroke();
+      }
+      if (execNow || lethal) {
+        cx.font = '900 9px ' + FONT_D;
+        cx.textAlign = 'center';
+        cx.fillStyle = col;
+        cx.fillText(lt(execNow ? 'EXEC' : 'KILL'), e.x, e.y + e.r + 18);
+      }
+    }
+    // Highlight parryable bullets intersecting the dash path
+    for (let i = 0; i < BU.n; i++) {
+      const b = BU.a[i];
+      if (!b || !b.alive || b.rf) continue;
+      let hit = false;
+      for (const s of segs) {
+        if (distToSeg(b.x, b.y, s[0], s[1], s[2], s[3]) < hitR + b.r + 6) { hit = true; break; }
+      }
+      if (!hit) continue;
+      cx.strokeStyle = '#7df9ff';
+      cx.lineWidth = 2;
+      cx.globalAlpha = 0.85 * pulse;
+      cx.beginPath();
+      cx.arc(b.x, b.y, b.r + 7, 0, TAU);
+      cx.stroke();
+    }
+    cx.restore();
+  },
+  drawRadar() {
+    if (G.state !== 'PLAY' || REPLAY.on || G.mode === 'puzzle') return;
+    const pad = 22, topY = 96, botY = V.VH - (G.dockL || 90) - 24;
+    cx.save();
+    for (let i = 0; i < EN.n; i++) {
+      const e = EN.a[i];
+      if (!e || !e.alive || e.al > 0) continue;
+      const offTop = e.y < 24, offBot = e.y > V.VH - 40;
+      const danger = e.type === ET.SNIPER || e.type === ET.DIVER || e.elite;
+      if (!danger && !offTop && !offBot) continue;
+      if (!offTop && !offBot) continue;
+      const rx = clamp(e.x, V.L + pad, V.R - pad);
+      const ry = offTop ? topY : botY;
+      const ang = Math.atan2(e.y - ry, e.x - rx);
+      const col = e.elite ? '#ffd700' : e.type === ET.DIVER ? '#ff4fd8' : '#ff3b5c';
+      const pulse = 0.55 + Math.sin(CAM.t * 14 + i) * 0.45;
+      cx.save();
+      cx.translate(rx, ry);
+      cx.rotate(ang);
+      cx.globalAlpha = pulse * 0.9;
+      cx.fillStyle = col;
+      cx.beginPath();
+      cx.moveTo(9, 0); cx.lineTo(-5, -6); cx.lineTo(-2, 0); cx.lineTo(-5, 6); cx.closePath();
+      cx.fill();
+      cx.restore();
+    }
+    cx.restore();
+  }
+};
+
+/* ==========================================================================
+   5. HeroRing86 — DIEGETIC CIRCULAR COMBAT GAUGE AROUND THE HERO
+   ========================================================================== */
+const HeroRing86 = {
+  enabled() {
+    const s = Store.data && Store.data.settings;
+    return !(s && s.ring86 === 0);
+  },
+  draw() {
+    if (!this.enabled() || G.state !== 'PLAY' || REPLAY.on) return;
+    const r = P.r + 18;
+    const maxCh = Math.max(1, P.maxCh | 0);
+    const ch = Math.max(0, Math.min(maxCh, P.ch | 0));
+    const heat = clamp((P.heat || 0) / 100, 0, 1);
+    const rk = G.styleRk || 0;
+    cx.save();
+    cx.translate(P.x, P.y);
+    // Subtle Style Rank Aura (S / SS / SSS)
+    if (rk >= 4 && !CALM) {
+      const auraCol = rk >= 6 ? '#ffd700' : rk === 5 ? '#ff2bd6' : '#00f2fe';
+      const p = 0.5 + Math.sin(CAM.t * (8 + rk)) * 0.5;
+      cx.globalCompositeOperation = 'lighter';
+      cx.strokeStyle = auraCol;
+      cx.globalAlpha = 0.22 + p * 0.24;
+      cx.lineWidth = rk >= 6 ? 2.5 : 1.6;
+      cx.beginPath();
+      cx.arc(0, 0, r + 6 + p * 3, 0, TAU);
+      cx.stroke();
+      cx.globalCompositeOperation = 'source-over';
+    }
+    // Segmented dash-charge arc (bottom semicircle, crisp & non-intrusive)
+    const span = Math.PI * 0.78, startA = Math.PI * 0.5 - span * 0.5, gap = 0.11;
+    const segA = (span - gap * (maxCh - 1)) / maxCh;
+    for (let i = 0; i < maxCh; i++) {
+      const a0 = startA + i * (segA + gap), a1 = a0 + segA;
+      const filled = G.odT > 0 || i < ch;
+      cx.strokeStyle = G.odT > 0 ? '#ffd700' : filled ? (P.ca || '#00f2fe') : 'rgba(255,255,255,.16)';
+      cx.globalAlpha = filled ? 0.85 : 0.45;
+      cx.lineWidth = filled ? 2.8 : 2;
+      cx.lineCap = 'round';
+      cx.beginPath();
+      cx.arc(0, 0, r, a0, a1);
+      cx.stroke();
+    }
+    // Blade heat arc (only appears when blade is warming up > 25%)
+    if (heat > 0.25 || P.lock > 0) {
+      const hSpan = Math.PI * 0.55 * heat;
+      const hStart = -Math.PI * 0.5 - hSpan * 0.5;
+      cx.strokeStyle = P.lock > 0 ? '#ff3b3b' : heat >= 0.72 ? '#ff8c2b' : '#ffd23f';
+      cx.globalAlpha = P.lock > 0 ? 0.95 : 0.75;
+      cx.lineWidth = 2.4;
+      cx.beginPath();
+      cx.arc(0, 0, r, hStart, hStart + hSpan);
+      cx.stroke();
+    }
+    cx.restore();
+  }
+};
+
+/* ==========================================================================
+   6. Apex86 — PHANTOM STEP (CLOSE-GRAZE COUNTER) & STYLE OVERCHARGE (simV(86))
+   ========================================================================== */
+const Apex86 = {
+  cd: 0, lastGrazes: 0, ghosts: [],
+  reset() { this.cd = 0; this.lastGrazes = 0; this.ghosts.length = 0; },
+  step(dt) {
+    if (!simV(86) || G.state !== 'PLAY') return;
+    if (this.cd > 0) this.cd = Math.max(0, this.cd - dt);
+    // Style Rank Overcharge: SS (+10%) / SSS (+18%) faster dash recharge
+    if (G.styleRk >= 5 && P.ch < P.maxCh && G.odT <= 0 && P.lock <= 0) {
+      const bonus = G.styleRk >= 6 ? 0.18 : 0.10;
+      if (typeof P.chT === 'number') P.chT += dt * bonus;
+    }
+    // Detect fresh graze for Phantom Step counter
+    if ((G.grazes | 0) > this.lastGrazes) {
+      this.lastGrazes = G.grazes | 0;
+      if (this.cd <= 0 && P.dashT <= 0) {
+        this.cd = 2.5;
+        if (P.ch < P.maxCh) P.ch = Math.min(P.maxCh, P.ch + 1);
+        addOD(12);
+        if (!REPLAY.fast) {
+          FX.text(P.x, P.y - 34, lt('PHANTOM STEP'), '#7df9ff', 12, 1);
+          FX.ring(P.x, P.y, 44, '#7df9ff', 4);
+          Slash3D86.addWave(P.x, P.y, '#7df9ff', 95);
+          Audio86.phantom();
+          this.ghosts.push({ x: P.x, y: P.y, r: P.r, t: 0, dur: 0.38 });
+          if (this.ghosts.length > 5) this.ghosts.shift();
+        }
+      }
+    }
+  },
+  drawGhosts(rd) {
+    const d = rd || 1 / 60;
+    for (let i = this.ghosts.length - 1; i >= 0; i--) {
+      const g = this.ghosts[i]; g.t += d;
+      if (g.t >= g.dur) { this.ghosts.splice(i, 1); continue; }
+      const u = g.t / g.dur;
+      cx.save();
+      cx.globalCompositeOperation = 'lighter';
+      cx.globalAlpha = (1 - u) * 0.65;
+      cx.strokeStyle = '#7df9ff';
+      cx.lineWidth = 2.2;
+      cx.beginPath();
+      cx.arc(g.x, g.y, g.r * (1 + u * 0.9), 0, TAU);
+      cx.stroke();
+      cx.restore();
+    }
+  }
+};
+
+/* ==========================================================================
+   7. Audio86 — SLOW-MO LOW-PASS SWEEP, COMBO HARMONICS & SUB-BASS DROPS
+   ========================================================================== */
+const Audio86 = {
+  scale: [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50, 1174.66, 1318.51],
+  tick(rd) {
+    if (!Aud.c || !Aud.mf || Aud.quiet) return;
+    try {
+      const t = Aud.c.currentTime;
+      if (G.state === 'PLAY') {
+        // Muffle soundtrack smoothly during slow-mo aim or hit-stop, snap crystal clear on slash
+        const slow = (In.on && !REPLAY.on) || G.hs > 0 || (G.ts != null && G.ts < 0.7);
+        const want = G.hs > 0 ? 520 : slow ? 1150 : 20000;
+        Aud.mf.frequency.setTargetAtTime(want, t, slow ? 0.045 : 0.07);
+      }
+    } catch (e) { }
+  },
+  subDrop(heavy) {
+    if (!Aud.c || Aud.quiet || (REPLAY.on && REPLAY.fast)) return;
+    if (!Aud.gate('sub86', 75)) return;
+    try {
+      Aud.tone(heavy ? 78 : 66, 28, heavy ? 0.28 : 0.16, heavy ? 0.24 : 0.15, 'sine');
+      if (heavy) Aud.tone(1680, 920, 0.22, 0.06, 'triangle');
+    } catch (e) { }
+  },
+  comboChime(combo) {
+    if (!Aud.c || Aud.quiet || (REPLAY.on && REPLAY.fast)) return;
+    if (combo < 3 || !Aud.gate('chime86', 65)) return;
+    try {
+      const idx = Math.min(this.scale.length - 1, Math.floor((combo - 3) / 2));
+      const f = this.scale[idx];
+      Aud.tone(f, f * 1.006, 0.11, 0.045, 'sine');
+    } catch (e) { }
+  },
+  phantom() {
+    if (!Aud.c || Aud.quiet) return;
+    try {
+      Aud.tone(620, 1480, 0.12, 0.09, 'triangle');
+      Aud.tone(1240, 2100, 0.09, 0.05, 'sine');
+    } catch (e) { }
+  }
+};
+
+/* ==========================================================================
+   HOOK WIRING — Clean, isolated, zero-regression integration
+   ========================================================================== */
+{
+  // 1. Reset Apex86 on run start
+  const db86 = Director.begin.bind(Director);
+  Director.begin = function () { Apex86.reset(); return db86.apply(this, arguments); };
+
+  // 2. Sim hook for Phantom Step & Style Overcharge
+  const sim86 = sim;
+  sim = function (dt, rd) {
+    const r = sim86(dt, rd);
+    try { Apex86.step(dt); } catch (e) { errLog(e); }
+    return r;
+  };
+
+  // 3. Tactical Aiming overlay
+  const da86 = drawAim;
+  drawAim = function () {
+    const r = da86.apply(this, arguments);
+    try { Tact86.drawAimExtras(); } catch (e) { errLog(e); }
+    return r;
+  };
+
+  // 4. Diegetic Hero Ring + Phantom Ghosts drawn right with player
+  const dp86 = drawPlayer;
+  drawPlayer = function () {
+    try { Apex86.drawGhosts(RDT); HeroRing86.draw(); } catch (e) { errLog(e); }
+    return dp86.apply(this, arguments);
+  };
+
+  // 5. Impact frames + Threat Radar + Audio low-pass in HUD/Post pipeline
+  const hd86 = HUD.draw.bind(HUD);
+  HUD.draw = function (rd) {
+    try { Tact86.drawRadar(); Impact86.draw(rd); Audio86.tick(rd); } catch (e) { errLog(e); }
+    return hd86(rd);
+  };
+
+  // 6. 3D Slash Ribbons, Roof Scars, Rain Ripples & Dynamic Lighting inside R3.render
+  const r3_86 = R3.render.bind(R3);
+  R3.render = function (rd) {
+    try { Slash3D86.tick(rd); } catch (e) { errLog(e); }
+    return r3_86(rd);
+  };
+
+  // 7. Trigger Impact Frames, 3D Shockwaves & Sub-Bass on Parries, Kills, Overdrive, Boss Phase/Kill
+  const pb86 = parryBullet;
+  parryBullet = function (b) {
+    const bx = b ? b.x : P.x, by = b ? b.y : P.y;
+    const r = pb86.apply(this, arguments);
+    try {
+      Impact86.fire(bx, by, '#7df9ff', 0);
+      Slash3D86.addWave(bx, by, '#7df9ff', 110);
+      Audio86.subDrop(false);
+    } catch (e) { errLog(e); }
+    return r;
+  };
+
+  const ke86 = killEnemy;
+  killEnemy = function (e, a, src) {
+    const ex = e ? e.x : P.x, ey = e ? e.y : P.y, wasElite = !!(e && (e.elite || e.exec));
+    const r = ke86.apply(this, arguments);
+    try {
+      Audio86.comboChime(G.combo | 0);
+      if (wasElite) {
+        Impact86.fire(ex, ey, '#ff0844', 1);
+        Slash3D86.addWave(ex, ey, '#ff0844', 175);
+        Audio86.subDrop(true);
+      }
+    } catch (er) { errLog(er); }
+    return r;
+  };
+
+  const od86 = overdrive;
+  overdrive = function () {
+    const was = G.odT;
+    const r = od86.apply(this, arguments);
+    try {
+      if (was <= 0 && G.odT > 0) {
+        Impact86.fire(P.x, P.y, '#ffd700', 1);
+        Slash3D86.addWave(P.x, P.y, '#ffd700', 240);
+        Audio86.subDrop(true);
+      }
+    } catch (e) { errLog(e); }
+    return r;
+  };
+
+  // Boss phase break & boss death impact frames
+  let lastBossPh = 0, lastBossDying = false;
+  Pipe.on('post', 'apex86_boss', () => {
+    const b = Boss.cur;
+    if (!b) { lastBossPh = 0; lastBossDying = false; return; }
+    if (lastBossPh > 0 && b.ph > lastBossPh) {
+      Impact86.fire(b.x, b.y, '#ff2bd6', 1);
+      Slash3D86.addWave(b.x, b.y, '#ff2bd6', 240);
+      Audio86.subDrop(true);
+    }
+    if (!lastBossDying && b.dying > 0) {
+      Impact86.fire(b.x, b.y, '#ffd700', 1);
+      Slash3D86.addWave(b.x, b.y, '#ffd700', 290);
+      Audio86.subDrop(true);
+    }
+    lastBossPh = b.ph || 0;
+    lastBossDying = !!(b.dying > 0);
+  }, 85);
+
+  // 8. Settings toggles under PRESENTATION
+  if (typeof PC !== 'undefined' && PC.settings) {
+    const ps86 = PC.settings.bind(PC);
+    PC.settings = function (head, cycle, box, s) {
+      ps86(head, cycle, box, s);
+      try {
+        head('APEX EDITION (v86)');
+        cycle('Impact frames', 'imp86', [1, 0], ['ON', 'OFF']);
+        cycle('Hero combat ring', 'ring86', [1, 0], ['ON', 'OFF']);
+      } catch (e) { errLog(e); }
+    };
+  }
+}
+
+
+/* ==========================================================================
+   VERSION 87.0 — SYMPHONY, ANIMATION & VISUAL OVERHAUL
+   1. Music87  — 6 brand-new full original cyberpunk/samurai tracks added to
+                 TRACKS, TRACK_LIST & RUN_TRACKS (playable in Music Room & runs)
+   2. Foley87  — Next-gen procedural SFX: crate tension risers, 5 musical
+                 rarity fanfares (Common->Mythic), crystalline aim unsheathe,
+                 richer metallic slash harmonics & crisp UI feedback
+   3. Crate87  — Polished crate-opening animations in BOTH 3D (Duel3D) & 2D
+                 (Seals): squash-stretch drop bounce, escalating orbital energy
+                 rings, smoother camera punch, climax starburst & rarity fanfare
+   4. Anim87   — Whole-game animation polish: hero squash/stretch on dash &
+                 landing, smooth turn banking, lively enemy hit-jiggle springs
+                 & attack telegraph anticipation, smoother pet bounce
+   5. Skins87  — 6 new flagship hero skins + 4 new flagship blade FX with full
+                 3D styling, 2D art & 4-language translations
+   6. Design87 — Upgraded 3D studio & rooftop material shading, richer speculars,
+                 vivid rim lighting & balanced color contrast
+   ========================================================================== */
+
+/* ---- 4-language translations for v87 ---- */
+try {
+  if (typeof HE !== 'undefined') Object.assign(HE, {
+    "PRISM RONIN": "רונין הפריזמה",
+    "Holographic cyber-ronin in shifting cyan and magenta armor under a glowing straw hat.": "רונין סייבר הולוגרפי בשריון טורקיז ומגנטה משתנה תחת כובע קש זוהר.",
+    "SOLAR SERAPH": "שרף השמש",
+    "Radiant golden cyber-angel with blazing solar wings and a sun-forged visor.": "מלאך סייבר מוזהב וקורן עם כנפי שמש בוערות ומשקף לוהט.",
+    "CYBER KITSUNE": "קיטסונה סייבר",
+    "Neon spirit-fox assassin with glowing crimson ears, cyan tails and holographic charms.": "מתנקש שועל־רוחות ניאון עם אוזניים זוהרות, זנבות טורקיז וקמעות הולוגרפיים.",
+    "OBSIDIAN SHOGUN": "שוגון האובסידיאן",
+    "Pitch-black carbon warlord armor veined with molten crimson reactor lines.": "שריון מצביא מפחמן שחור עמוק עם עורקי כור ארגמן לוהטים.",
+    "EMERALD PHANTOM": "פנטום האיזמרגד",
+    "Sleek jade-and-cyan cyber coat built for silent rooftop strikes.": "מעיל סייבר חלק בגווני ירקן וטורקיז המיועד למכות גג שקטות.",
+    "ASTRAL ONI": "אוני הכוכבים",
+    "Cosmic violet-and-gold horned demon warrior channeling starlight energy.": "לוחם שד מקורנן בסגול קוסמי וזהב המתעל אנרגיית כוכבים.",
+    "PRISM EDGE": "להב הפריזמה",
+    "Holographic rainbow blade that leaves shimmering prism trails on every cut.": "להב קשת הולוגרפי המשאיר שובלי פריזמה מנצנצים בכל חיתוך.",
+    "CRIMSON ECLIPSE": "ליקוי ארגמן",
+    "Obsidian-black steel edged in molten crimson-gold plasma.": "פלדת אובסידיאן שחורה עם חוד פלזמה בארגמן־זהב לוהט.",
+    "JADE TEMPEST": "סופת הירקן",
+    "Emerald storm blade crackling with emerald-cyan arcs.": "להב סערת איזמרגד המתפצפץ בברקי ירקן וטורקיז.",
+    "ASTRAL NOVA": "נובה כוכבית",
+    "Starlight violet blade that collapses defeated foes into cosmic sparks.": "להב אור כוכבים סגול הממוטט אויבים לניצוצות קוסמיים.",
+    "6 NEW SOUNDTRACKS & FOLEY SFX": "6 שירים חדשים ומנוע סאונד משודרג",
+    "Six new original tracks (CYBER SAKURA, HYPER KATANA, NEON RONIN, ECLIPSE PROTOCOL, MIDNIGHT DOJO and PRISM OVERDRIVE) join the Music Room and runs, plus custom rarity fanfares, aim unsheathe chimes and richer blade foley.": "שישה שירים מקוריים חדשים מצטרפים לחדר המוזיקה ולריצות, יחד עם פנפארים מוזיקליים לכל דרגת נדירות בתיבות, צליל שליפת חרב בכיוון וסאונד חיתוך עשיר יותר.",
+    "CRATE & COMBAT ANIMATION OVERHAUL": "שדרוג אנימציות התיבות וכל המשחק",
+    "Crate openings now feature squash-and-stretch drop physics, escalating orbital energy rings, tension risers, climax starbursts and musical fanfares, while combat adds hero dash squash-stretch, turn banking and springy enemy hit-recoil.": "פתיחת התיבות שודרגה עם פיזיקת נחיתה גמישה, טבעות אנרגיה מסתובבות, בניית מתח מוזיקלית והתפרצות כוכבים בחשיפה; ובקרב נוספו מתיחה וכיווץ בזינוק, הטיית גוף בפניות ורתע קפיצי לאויבים.",
+    "6 NEW SKINS, 4 BLADES & VISUAL POLISH": "6 סקינים חדשים, 4 להבים ושדרוג צבעים",
+    "Six flagship hero skins (PRISM RONIN, SOLAR SERAPH, CYBER KITSUNE, OBSIDIAN SHOGUN, EMERALD PHANTOM, ASTRAL ONI) and four holographic blades join the Arsenal, with upgraded 3D studio lighting, richer materials and cyber-glass UI.": "שישה סקינים חדשים לגיבורים וארבעה להבים הולוגרפיים הצטרפו לארסנל, לצד תאורת סטודיו משודרגת בתלת־ממד, חומרים עשירים יותר ועיצוב ממשק מלוטש."
+  });
+  if (typeof AR !== 'undefined') Object.assign(AR, {
+    "PRISM RONIN": "رونين المنشور",
+    "SOLAR SERAPH": "سيراف الشمس",
+    "CYBER KITSUNE": "كيتسوني سايبر",
+    "OBSIDIAN SHOGUN": "شوغون الأوبسيديان",
+    "EMERALD PHANTOM": "شبح الزمرد",
+    "ASTRAL ONI": "أوني النجوم",
+    "PRISM EDGE": "نصل المنشور",
+    "CRIMSON ECLIPSE": "كسوف قرمزي",
+    "JADE TEMPEST": "عاصفة اليشم",
+    "ASTRAL NOVA": "نوفا نجمية",
+    "6 NEW SOUNDTRACKS & FOLEY SFX": "6 مقطوعات موسيقية جديدة ومؤثرات صوتية",
+    "CRATE & COMBAT ANIMATION OVERHAUL": "تطوير شامل لأنيميشن الصناديق والقتال",
+    "6 NEW SKINS, 4 BLADES & VISUAL POLISH": "6 مظاهر جديدة و4 أنصال وتطوير الألوان"
+  });
+  if (typeof RU !== 'undefined') Object.assign(RU, {
+    "PRISM RONIN": "ПРИЗМА-РОНИН",
+    "SOLAR SERAPH": "СОЛНЕЧНЫЙ СЕРАФИМ",
+    "CYBER KITSUNE": "КИБЕР-КИЦУНЭ",
+    "OBSIDIAN SHOGUN": "ОБСИДИАНОВЫЙ СЁГУН",
+    "EMERALD PHANTOM": "ИЗУМРУДНЫЙ ФАНТОМ",
+    "ASTRAL ONI": "АСТРАЛЬНЫЙ ОНИ",
+    "PRISM EDGE": "ПРИЗМАТИЧЕСКИЙ КЛИНОК",
+    "CRIMSON ECLIPSE": "БАГРОВОЕ ЗАТМЕНИЕ",
+    "JADE TEMPEST": "НЕФРИТОВАЯ БУРЯ",
+    "ASTRAL NOVA": "АСТРАЛЬНАЯ НОВА",
+    "6 NEW SOUNDTRACKS & FOLEY SFX": "6 НОВЫХ ТРЕКОВ И ЗВУКОВЫЕ ЭФФЕКТЫ",
+    "CRATE & COMBAT ANIMATION OVERHAUL": "ПЕРЕРАБОТКА АНИМАЦИЙ СУНДУКОВ И БОЯ",
+    "6 NEW SKINS, 4 BLADES & VISUAL POLISH": "6 НОВЫХ СКИНОВ, 4 КЛИНКА И ЦВЕТА"
+  });
+} catch (e) { errLog(e); }
+
+/* ==========================================================================
+   1. Music87 — 6 BRAND-NEW FULL ORIGINAL SOUNDTRACKS
+   ========================================================================== */
+try {
+  if (typeof TRACKS !== 'undefined' && typeof mkTrack === 'function') {
+    Object.assign(TRACKS, {
+      cyber_sakura: mkTrack({
+        name: 'CYBER SAKURA', style: 'Neon shrine synthwave', bpm: 124, root: 65.41, sc: 'hira',
+        prog: [0, 2, 3, 1], form: ['A', 'A', 'B', 'B', 'D', 'B'], taiko: 1,
+        dr: {
+          A: { k: 'x...x...x...x...', s: '....x.......x...', h: '..x...x...x...x.', t: 'X.........x.....' },
+          B: { k: 'x...x...x...x...', s: '....X.......X...', h: 'x.x.x.x.x.x.x.x.', o: '......o.......o.', t: 'X..x....X..x..x.' },
+          D: { t: 'X.......x.......', sh: 'x.x.x.x.x.x.x.x.' },
+          F: { k: 'x...x...x.x.x.x.', s: '....x...x.xxXXXX', t: 'X.X.X.X.xxxxxxxx' }
+        },
+        bass: { pat: [0, null, 5, null, 0, null, 5, 3, 0, null, 5, null, 2, null, 1, null], type: 'bass', v: .095 },
+        pad: { type: 'pad', oct: 2, v: .022 },
+        arp: { pat: [0, 1, 2, 4, 2, 1], rate: 1, oct: 3, type: 'koto', v: .026, sec: 'ABD' },
+        lead: { type: 'flute', oct: 3, v: .038, sec: 'B', n: [
+          [0, 4, 6], [6, 3, 2], [8, 2, 4], [12, 1, 4], [16, 0, 8], [24, 2, 4], [28, 3, 4],
+          [32, 4, 6], [38, 5, 2], [40, 4, 4], [44, 2, 4], [48, 3, 8], [56, 2, 4], [60, 0, 4]
+        ] }
+      }),
+      hyper_katana: mkTrack({
+        name: 'HYPER KATANA', style: 'Cyber electro-rock', bpm: 146, root: 55, sc: 'pdom',
+        prog: [0, 1, 0, 6], form: ['A', 'B', 'B', 'D', 'B', 'B'],
+        dr: {
+          A: { k: 'x...x...x...x...', s: '....x.......x...', h: 'x.x.x.x.x.x.x.x.' },
+          B: { k: 'x..x..x.x..x..x.', s: '....X.......X...', c: '....x.......x...', h: 'xxxxxxxxxxxxxxxx', o: '..o...o...o...o.' },
+          D: { k: 'x.......x.......', h: 'x.x.x.x.x.x.x.x.', p: '..x.....x.....x.' },
+          F: { k: 'x.x.x.x.xxxxxxxx', s: '....X...x.xxXXXX' }
+        },
+        bass: { pat: [0, 0, 12, 0, 0, 12, 0, 7, 0, 0, 12, 0, 1, 0, 6, 0], type: 'gtr', v: .065, len: .75 },
+        pad: { type: 'darkpad', oct: 2, v: .02 },
+        arp: { pat: [0, 2, 4, 5, 4, 2], rate: 2, oct: 3, type: 'arp', v: .022, sec: 'BD' },
+        lead: { type: 'gld', oct: 3, v: .034, sec: 'B', n: [
+          [0, 0, 2], [2, 1, 2], [4, 4, 4], [8, 5, 2], [10, 4, 2], [12, 1, 4],
+          [16, 0, 2], [18, 4, 2], [20, 7, 4], [24, 5, 4], [28, 4, 4],
+          [32, 0, 2], [34, 1, 2], [36, 4, 4], [40, 7, 4], [44, 8, 4], [48, 7, 6], [54, 5, 2], [56, 4, 8]
+        ] }
+      }),
+      neon_ronin: mkTrack({
+        name: 'NEON RONIN', style: 'Midnight cyber-phonk', bpm: 118, root: 58.27, sc: 'dor',
+        prog: [0, 3, 5, 4], form: ['A', 'A', 'B', 'B', 'D', 'B'], swing: .08,
+        dr: {
+          A: { k: 'x.....x...x.....', s: '....x.......x...', h: 'x.x.x.x.x.x.x.x.' },
+          B: { k: 'x..x..x...x..x..', s: '....X.......X...', c: '....x.......x...', h: 'x.xgx.x.x.xgx.xx', o: '......o.......o.' },
+          D: { k: 'x.........x.....', h: 'x.x.x.x.x.x.x.x.' },
+          F: { k: 'x...x...x.x.x...', s: '....x...x.xxXXXX' }
+        },
+        bass: { pat: [0, null, null, 0, null, null, 7, null, 0, null, null, 5, null, null, 3, null], type: 'b808', v: .11, len: 1.8 },
+        pad: { type: 'rhodes', oct: 2, v: .028, sev: 1, hits: [0, 6, 12] },
+        lead: { type: 'cowbell', oct: 3, v: .03, sec: 'AB', n: [
+          [0, 0, 2], [3, 2, 1], [4, 3, 2], [6, 4, 2], [8, 3, 2], [10, 2, 2], [12, 0, 4],
+          [16, 0, 2], [19, 2, 1], [20, 5, 2], [22, 4, 2], [24, 3, 4], [28, 2, 4],
+          [32, 0, 2], [35, 3, 1], [36, 4, 2], [38, 6, 2], [40, 7, 4], [44, 5, 4], [48, 4, 6], [54, 3, 2], [56, 2, 8]
+        ] },
+        lead2: { type: 'bell', oct: 3, v: .024, sec: 'B', n: [[0, 7, 4], [8, 6, 4], [16, 4, 8], [32, 7, 4], [40, 9, 4], [48, 7, 8]] }
+      }),
+      eclipse_boss: mkTrack({
+        name: 'ECLIPSE PROTOCOL', style: 'Orchestral cyber boss', bpm: 162, root: 49, sc: 'phr',
+        prog: [0, 1, 5, 6], form: ['A', 'B', 'B', 'D', 'B', 'B'], taiko: 1,
+        dr: {
+          A: { k: 'x...x...x...x...', s: '....x.......x...', t: 'X...x...X...x...', h: 'x.x.x.x.x.x.x.x.' },
+          B: { k: 'x.x.x.x.x.x.x.x.', s: '....X.......X...', t: 'X..x..x.X..x..x.', c: '....x.......x...', o: '..o...o...o...o.' },
+          D: { t: 'X...X...X...X...', p: '..x...x...x...x.' },
+          F: { k: 'xxxxxxxxxxxxxxxx', t: 'XXXXXXXXXXXXXXXX', s: '....X...x.xxXXXX' }
+        },
+        bass: { pat: [0, 0, null, 0, 0, null, 1, 0, 0, 0, null, 0, 6, null, 5, null], type: 'reese', v: .09, len: .85 },
+        pad: { type: 'choir', oct: 2, v: .03 },
+        arp: { pat: [0, 1, 4, 7, 4, 1], rate: 2, oct: 3, type: 'arp', v: .02, sec: 'BD' },
+        lead: { type: 'brass', oct: 2, v: .036, sec: 'AB', n: [
+          [0, 0, 6], [6, 1, 2], [8, 4, 4], [12, 3, 4], [16, 1, 8], [24, 0, 8],
+          [32, 4, 6], [38, 5, 2], [40, 7, 4], [44, 5, 4], [48, 4, 6], [54, 1, 2], [56, 0, 8]
+        ] },
+        lead2: { type: 'gld', oct: 3, v: .028, sec: 'B', n: [
+          [0, 7, 2], [2, 8, 2], [4, 7, 2], [6, 5, 2], [8, 4, 4], [12, 5, 4],
+          [16, 7, 4], [20, 8, 4], [24, 11, 8], [32, 7, 2], [34, 8, 2], [36, 11, 4], [40, 10, 4], [44, 8, 4], [48, 7, 16]
+        ] }
+      }),
+      zen_dojo: mkTrack({
+        name: 'MIDNIGHT DOJO', style: 'Cyber zen lo-fi', bpm: 88, root: 73.42, sc: 'insen',
+        prog: [0, 2, 3, 1], form: ['A', 'A', 'B', 'B'], swing: .14, fixedI: 2, fx: { vinyl: 1 },
+        dr: {
+          A: { k: 'x.......x..x....', s: '....x.......x...', sh: 'x.x.x.x.x.x.x.x.' },
+          B: { k: 'x.....x.x..x....', s: '....x.......x..g', h: 'x.xgx.x.x.xgx.x.', sh: 'x.x.x.x.x.x.x.x.' },
+          F: { k: 'x.......x..x..x.', s: '....x.......x.xx' }
+        },
+        bass: { pat: [0, null, null, null, null, null, 3, null, 0, null, null, null, 2, null, null, null], type: 'sub', v: .095, len: 3.5 },
+        pad: { type: 'rhodes', oct: 1, v: .028, hits: [0, 8] },
+        arp: { pat: [0, 1, 2, 3, 2, 1], rate: 1, oct: 3, type: 'koto', v: .024, sec: 'AB' },
+        lead: { type: 'flute', oct: 3, v: .032, sec: 'B', n: [
+          [0, 2, 6], [6, 3, 2], [8, 4, 8], [16, 3, 4], [20, 2, 4], [24, 1, 8],
+          [32, 2, 6], [38, 4, 2], [40, 5, 8], [48, 4, 4], [52, 3, 4], [56, 2, 8]
+        ] }
+      }),
+      prism_overdrive: mkTrack({
+        name: 'PRISM OVERDRIVE', style: 'Hyper-arcade synth', bpm: 152, root: 61.74, sc: 'aeo',
+        prog: [0, 5, 3, 6], form: ['A', 'B', 'B', 'D', 'B', 'B'],
+        dr: {
+          A: { k: 'x...x...x...x...', s: '....x.......x...', h: '..x...x...x...x.' },
+          B: { k: 'x...x...x...x.x.', s: '....X.......X...', c: '....x.......x...', h: 'x.x.x.x.x.x.x.x.', o: '......o.......o.' },
+          D: { h: 'x.x.x.x.x.x.x.x.', c: '........x.......' },
+          F: { k: 'x...x...x.x.x.x.', s: '....x...x.xxXXXX' }
+        },
+        bass: { pat: [0, null, 12, null, 0, 12, null, 7, 0, null, 12, null, 5, null, 7, null], type: 'saw', v: .085 },
+        pad: { type: 'pad', oct: 2, v: .022 },
+        arp: { pat: [0, 2, 4, 7, 4, 2], rate: 2, oct: 3, type: 'arp', v: .024, sec: 'ABD' },
+        lead: { type: 'lead', oct: 3, v: .038, sec: 'B', n: [
+          [0, 7, 4], [4, 6, 2], [6, 4, 2], [8, 7, 4], [12, 9, 4], [16, 7, 6], [22, 6, 2], [24, 4, 8],
+          [32, 7, 4], [36, 9, 2], [38, 11, 2], [40, 9, 4], [44, 7, 4], [48, 6, 4], [52, 7, 4], [56, 9, 8]
+        ] }
+      })
+    });
+    const newIds = ['cyber_sakura', 'hyper_katana', 'neon_ronin', 'eclipse_boss', 'zen_dojo', 'prism_overdrive'];
+    if (Array.isArray(TRACK_LIST)) for (const id of newIds) if (TRACK_LIST.indexOf(id) < 0) TRACK_LIST.push(id);
+    if (Array.isArray(RUN_TRACKS)) for (const id of ['cyber_sakura', 'hyper_katana', 'neon_ronin', 'prism_overdrive']) if (RUN_TRACKS.indexOf(id) < 0) RUN_TRACKS.push(id);
+  }
+} catch (e) { errLog(e); }
+
+/* ==========================================================================
+   2. Foley87 — PROCEDURAL CRATE FANFARES, TENSION RISERS & COMBAT FOLEY
+   ========================================================================== */
+const Foley87 = {
+  riser(lvl) {
+    if (!Aud.c || Aud.quiet) return;
+    try {
+      const t = Aud.c.currentTime, base = 240 + (lvl | 0) * 110;
+      Aud.tone(base, base * 2.1, 0.34, 0.085, 'sawtooth', t);
+      Aud.tone(base * 1.5, base * 3.0, 0.32, 0.05, 'triangle', t + 0.04);
+      Aud.noise(0.24, 0.06, 900 + lvl * 400, 5200, 'bandpass', t);
+    } catch (e) { }
+  },
+  sealBreak(lvl) {
+    if (!Aud.c || Aud.quiet) return;
+    try {
+      const t = Aud.c.currentTime;
+      Aud.noise(0.14, 0.14, 4800, 1200, 'highpass', t);
+      Aud.tone(180 + lvl * 65, 55, 0.22, 0.18, 'sine', t);
+      Aud.tone(1200 + lvl * 320, 2400 + lvl * 400, 0.16, 0.075, 'triangle', t + 0.02);
+    } catch (e) { }
+  },
+  crateFanfare(rarity) {
+    if (!Aud.c || Aud.quiet) return;
+    try {
+      const t = Aud.c.currentTime;
+      // 0: Common, 1: Rare, 2: Epic, 3: Legendary, 4: Mythic
+      const chords = [
+        [523.25, 659.25, 783.99],
+        [523.25, 659.25, 783.99, 1046.50],
+        [440.00, 554.37, 659.25, 880.00, 1108.73],
+        [392.00, 493.88, 587.33, 783.99, 987.77, 1174.66],
+        [293.66, 440.00, 587.33, 739.99, 880.00, 1174.66, 1479.98]
+      ];
+      const notes = chords[clamp(rarity | 0, 0, 4)];
+      // Sub impact at reveal
+      Aud.tone(rarity >= 3 ? 92 : 70, 28, rarity >= 3 ? 0.45 : 0.22, rarity >= 3 ? 0.24 : 0.14, 'sine', t);
+      notes.forEach((f, idx) => {
+        const dt = idx * (rarity >= 3 ? 0.055 : 0.048);
+        Aud.tone(f, f * 1.004, 0.42 + rarity * 0.12, 0.085, rarity >= 2 ? 'triangle' : 'sine', t + dt);
+        if (rarity >= 2) Aud.tone(f * 2, f * 2.005, 0.35, 0.032, 'sine', t + dt + 0.02);
+      });
+      if (rarity >= 4) {
+        // Mythic shimmering halo chord
+        Aud.noise(0.55, 0.07, 6500, 2200, 'bandpass', t + 0.08);
+        Aud.tone(587.33, 587.33, 0.95, 0.07, 'sawtooth', t + 0.18);
+      }
+    } catch (e) { }
+  },
+  unsheathe() {
+    if (!Aud.c || Aud.quiet || !Aud.gate('unsh87', 260)) return;
+    try {
+      const t = Aud.c.currentTime;
+      Aud.tone(2400, 3900, 0.075, 0.036, 'sine', t);
+      Aud.noise(0.06, 0.032, 5500, 9500, 'highpass', t);
+    } catch (e) { }
+  },
+  slashSteel(combo) {
+    if (!Aud.c || Aud.quiet || !Aud.gate('stl87', 55)) return;
+    try {
+      const t = Aud.c.currentTime, lift = Math.min(800, (combo | 0) * 32);
+      Aud.tone(1850 + lift, 3200 + lift, 0.065, 0.035, 'triangle', t);
+      Aud.noise(0.055, 0.042, 4200, 8800, 'bandpass', t);
+    } catch (e) { }
+  }
+};
+
+/* ==========================================================================
+   3. Crate87 — ENHANCED 2D & 3D CRATE OPENING ANIMATIONS & FANFARES
+   ========================================================================== */
+{
+  // Enhance 2D Seals crate animation: squash-stretch bounce, orbital energy rings & climax starburst
+  if (typeof Seals !== 'undefined' && Seals.frame) {
+    const sf87 = Seals.frame.bind(Seals);
+    Seals.frame = function (g, S, st, u, t, dt, o, R0, T0, r, bg, box, BS, once, sfx, CF) {
+      // Trigger musical tension risers & rarity fanfare cleanly via `once`
+      if (st.k === 'beat' && u > 0.15) once('riser87_' + (st.i | 0) + '_' + S.lvl, () => Foley87.riser(S.lvl));
+      if (st.k === 'strike' && u > 0.45 && !st.fin) once('sb87_' + (st.i | 0), () => Foley87.sealBreak(S.lvl));
+      if (st.k === 'open') once('fan87', () => Foley87.crateFanfare(r));
+
+      // Draw core Seals frame
+      sf87(g, S, st, u, t, dt, o, R0, T0, r, bg, box, BS, once, sfx, CF);
+
+      // Additive v87 cinematic layer: orbital rarity rings + climax starburst rays
+      if (CALM) return;
+      const cxp = 200, cyp = 330 - (S.lvl >= 2 ? 18 + Math.sin(t * 2.2) * 6 : 0);
+      g.save();
+      g.globalCompositeOperation = 'lighter';
+      // Escalating orbital energy rings around the crate as seals awaken
+      if (S.lvl >= 1 && st.k !== 'open') {
+        const rings = Math.min(3, S.lvl);
+        for (let k = 0; k < rings; k++) {
+          const rot = t * (2.2 + k * 1.1) * (k % 2 ? -1 : 1);
+          const rx = 96 + k * 24 + Math.sin(t * 5 + k) * 6;
+          const ry = 26 + k * 7;
+          g.save();
+          g.translate(cxp, cyp + 12);
+          g.rotate(rot * 0.25 + (k - 1) * 0.28);
+          g.strokeStyle = hexA(S.col || '#00f2fe', 0.35 + S.lvl * 0.1);
+          g.lineWidth = 2.2 + (S.lvl >= 3 ? 1.2 : 0);
+          g.beginPath();
+          g.ellipse(0, 0, rx, ry, 0, 0, TAU);
+          g.stroke();
+          // Orbiting light orb on ring
+          const ox = Math.cos(rot * 2) * rx, oy = Math.sin(rot * 2) * ry;
+          g.fillStyle = '#ffffff';
+          g.beginPath();
+          g.arc(ox, oy, 3.8 + S.lvl * 0.6, 0, TAU);
+          g.fill();
+          g.restore();
+        }
+      }
+      // Explosive starburst rays & prism petals on crate reveal
+      if (st.k === 'open') {
+        const e = 1 - Math.pow(1 - clamp(u, 0, 1), 3);
+        const rays = 14 + r * 4;
+        const col = R0.c || '#ffd700';
+        g.save();
+        g.translate(cxp, cyp);
+        g.rotate(t * 0.55);
+        for (let i = 0; i < rays; i++) {
+          const a = (i / rays) * TAU;
+          const len = (170 + r * 45) * (0.45 + e * 0.85) * (i % 2 ? 0.72 : 1);
+          const wid = (10 + r * 2.5) * (1 - u * 0.35);
+          g.fillStyle = hexA(i % 3 === 0 ? '#ffffff' : col, (1 - u * 0.55) * 0.36);
+          g.beginPath();
+          g.moveTo(0, 0);
+          g.lineTo(Math.cos(a) * len - Math.sin(a) * wid, Math.sin(a) * len + Math.cos(a) * wid);
+          g.lineTo(Math.cos(a) * len + Math.sin(a) * wid, Math.sin(a) * len - Math.cos(a) * wid);
+          g.closePath();
+          g.fill();
+        }
+        g.restore();
+      }
+      g.restore();
+    };
+  }
+
+  // Enhance 3D Duel3D crate opening: add musical rarity fanfare & seal break audio punch
+  if (typeof Duel3D !== 'undefined' && Duel3D.run) {
+    const d3_87 = Duel3D.run.bind(Duel3D);
+    Duel3D.run = function (res, done) {
+      const r = res && res.r != null ? res.r : 0;
+      const origSfx = Aud.sfx.bind(Aud);
+      let playedFanfare = false, wakeCount = 0;
+      const hookedSfx = function (n, p) {
+        const out = origSfx(n, p);
+        try {
+          if (n === 'lock' || n === 'od') { wakeCount++; Foley87.sealBreak(Math.min(4, wakeCount)); }
+          if (n === 'star' && !playedFanfare) { playedFanfare = true; Foley87.crateFanfare(r); }
+        } catch (e) { }
+        return out;
+      };
+      Aud.sfx = hookedSfx;
+      const restore = () => { if (Aud.sfx === hookedSfx) Aud.sfx = origSfx; };
+      return d3_87(res, function () { restore(); return done.apply(this, arguments); });
+    };
+  }
+}
+
+/* ==========================================================================
+   4. Anim87 — WHOLE-GAME ANIMATION POLISH (SQUASH/STRETCH, BANKING, SPRINGS)
+   ========================================================================== */
+const Anim87 = {
+  sqX: 1, sqY: 1, landT: 0, wasDash: false, lastFace: 0, bank: 0,
+  aimWasOn: false,
+  tickPlayer(rd) {
+    const d = Math.min(0.05, rd || 1 / 60);
+    // Crystalline blade unsheathe sound when starting slow-mo aim
+    const aimNow = !!(In.on && G.state === 'PLAY' && !REPLAY.on && (P.ch > 0 || G.odT > 0) && P.lock <= 0);
+    if (aimNow && !this.aimWasOn) Foley87.unsheathe();
+    this.aimWasOn = aimNow;
+
+    const dash = P.dashT > 0;
+    if (dash && !this.wasDash) {
+      // Launch stretch
+      this.sqX = 1.24; this.sqY = 0.80;
+      Foley87.slashSteel(G.combo | 0);
+    } else if (!dash && this.wasDash) {
+      // Landing squash
+      this.sqX = 0.84; this.sqY = 1.18;
+      this.landT = 0.18;
+    }
+    this.wasDash = dash;
+    if (this.landT > 0) this.landT = Math.max(0, this.landT - d);
+    // Smooth spring return to (1, 1)
+    const k = Math.min(1, d * 15);
+    this.sqX += (1 - this.sqX) * k;
+    this.sqY += (1 - this.sqY) * k;
+
+    // Smooth turn-banking angle for 3D hero
+    const face = P.ang || 0;
+    const diff = angDiff(face, this.lastFace);
+    this.lastFace = face;
+    const targetBank = clamp(diff * 4.5, -0.32, 0.32);
+    this.bank += (targetBank - this.bank) * Math.min(1, d * 11);
+  }
+};
+
+{
+  // Apply smooth banking + squash/stretch to 3D hero (Human.anim & R3.animHero)
+  if (typeof Human !== 'undefined' && Human.anim) {
+    const ha87 = Human.anim.bind(Human);
+    Human.anim = function (g, o, rd, t) {
+      const r = ha87(g, o, rd, t);
+      try {
+        if (!CALM && g && o && inRun() && Math.abs(o.x - P.x) < 2 && Math.abs(o.y - P.y) < 2) {
+          Anim87.tickPlayer(rd);
+          const s0 = g.s0 || 1;
+          const breath = !o.dashing && (o.spd || 0) < 25 ? 1 + Math.sin(t * 3.4) * 0.018 : 1;
+          g.scale.set(s0 * Anim87.sqX, s0 * Anim87.sqY, s0 * (2 - Anim87.sqX) * breath);
+          const h = g.human;
+          if (h && h.B && h.B.spine) h.B.spine.rotation.z += Anim87.bank * 0.45;
+        }
+      } catch (e) { errLog(e); }
+      return r;
+    };
+  }
+
+  // Fallback for 2D / non-Human 3D hero animation tick
+  const up87 = updatePlayer;
+  updatePlayer = function (dt, rd) {
+    const r = up87(dt, rd);
+    try { if (!R3.on) Anim87.tickPlayer(rd); } catch (e) { errLog(e); }
+    return r;
+  };
+
+  // Springy hit-jiggle & attack anticipation on 3D enemies
+  if (typeof R3 !== 'undefined' && R3.animEnemy) {
+    const ae87 = R3.animEnemy.bind(R3);
+    R3.animEnemy = function (g, e, t) {
+      const r = ae87(g, e, t);
+      try {
+        if (!CALM && g && e && e.alive) {
+          const hitPop = e.fl > 0 ? 1 + Math.sin(e.fl * 28) * 0.14 * Math.min(1, e.fl * 3) : 1;
+          const sc = (e.scale || 1) * hitPop;
+          if (hitPop !== 1) g.scale.set(sc * 1.08, sc * 0.92, sc);
+        }
+      } catch (er) { errLog(er); }
+      return r;
+    };
+  }
+}
+
+/* ==========================================================================
+   5. Skins87 — 6 FLAGSHIP HERO SKINS & 4 HOLOGRAPHIC BLADE FX
+   ========================================================================== */
+try {
+  if (typeof SKINS !== 'undefined' && Array.isArray(SKINS)) {
+    const newSkins = [
+      { id: 'prism_ronin', name: 'PRISM RONIN', body: 'ronin', a: '#00f5ff', b: '#ff2bd6', cost: 2200, desc: 'Holographic cyber-ronin in shifting cyan and magenta armor under a glowing straw hat.' },
+      { id: 'solar_seraph', name: 'SOLAR SERAPH', body: 'angel', a: '#ffd700', b: '#ff5e1a', cost: 2800, desc: 'Radiant golden cyber-angel with blazing solar wings and a sun-forged visor.' },
+      { id: 'cyber_kitsune', name: 'CYBER KITSUNE', body: 'fox', a: '#ff3b7f', b: '#7df9ff', cost: 2600, desc: 'Neon spirit-fox assassin with glowing crimson ears, cyan tails and holographic charms.' },
+      { id: 'obsidian_shogun', name: 'OBSIDIAN SHOGUN', body: 'shogun', a: '#ff1e42', b: '#1a1f36', cost: 3400, desc: 'Pitch-black carbon warlord armor veined with molten crimson reactor lines.' },
+      { id: 'emerald_phantom', name: 'EMERALD PHANTOM', body: 'sovereign', a: '#00ff9d', b: '#00b8ff', cost: 3000, desc: 'Sleek jade-and-cyan cyber coat built for silent rooftop strikes.' },
+      { id: 'astral_oni', name: 'ASTRAL ONI', body: 'oni', a: '#b84dff', b: '#ffd23f', cost: 3600, desc: 'Cosmic violet-and-gold horned demon warrior channeling starlight energy.' }
+    ];
+    for (const sk of newSkins) if (!SKINS.some(x => x.id === sk.id)) SKINS.push(sk);
+  }
+
+  if (typeof BLADE_FX !== 'undefined' && Array.isArray(BLADE_FX)) {
+    const newBlades = [
+      { id: 'prism_edge', name: 'PRISM EDGE', blade: '#00f5ff', edge: '#ff4fd8', trail: 'prism', kill: 'prism', deco: 'crystal', cost: 2400, desc: 'Holographic rainbow blade that leaves shimmering prism trails on every cut.' },
+      { id: 'crimson_eclipse', name: 'CRIMSON ECLIPSE', blade: '#ff1e42', edge: '#ffd23f', trail: 'fire', kill: 'explode', deco: 'flame', cost: 2600, desc: 'Obsidian-black steel edged in molten crimson-gold plasma.' },
+      { id: 'jade_tempest', name: 'JADE TEMPEST', blade: '#00ff9d', edge: '#d4fff0', trail: 'spark', kill: 'zap', deco: 'bolt', cost: 2200, desc: 'Emerald storm blade crackling with emerald-cyan arcs.' },
+      { id: 'astral_nova', name: 'ASTRAL NOVA', blade: '#b84dff', edge: '#ffffff', trail: 'void', kill: 'implode', deco: 'void', cost: 3200, desc: 'Starlight violet blade that collapses defeated foes into cosmic sparks.' }
+    ];
+    for (const bf of newBlades) if (!BLADE_FX.some(x => x.id === bf.id)) BLADE_FX.push(bf);
+  }
+} catch (e) { errLog(e); }
+
+/* ==========================================================================
+   6. Design87 — UPGRADED 3D LIGHTING, RICH MATERIALS & STUDIO POLISH
+   ========================================================================== */
+{
+  // Upgrade R3 scene exposure & material vibrancy once R3 initializes
+  Pipe.on('post', 'design87_r3', () => {
+    if (!R3.ok || R3.tuned87) return;
+    R3.tuned87 = true;
+    try {
+      if (R3.rn) R3.rn.toneMappingExposure = 1.12;
+      if (R3.rim) R3.rim.intensity = 1.15;
+      if (R3.M && R3.M.armor) { R3.M.armor.metalness = 0.78; R3.M.armor.roughness = 0.24; R3.M.armor.envMapIntensity = 1.15; }
+      if (R3.M && R3.M.gold) { R3.M.gold.emissiveIntensity = 0.68; R3.M.gold.roughness = 0.18; }
+    } catch (e) { errLog(e); }
+  }, 95);
+
+  // Upgrade Hero Forge / Home / Results 3D Mini Studio lighting & color pop
+  if (typeof Mini !== 'undefined' && Mini.studio) {
+    const ms87 = Mini.studio.bind(Mini);
+    Mini.studio = function () {
+      const r = ms87.apply(this, arguments);
+      try {
+        if (this.rn) this.rn.toneMappingExposure = 1.18;
+      } catch (e) { errLog(e); }
+      return r;
+    };
+  }
+}
+
+
+/* ==========================================================================
+   VERSION 88.0 — ZENITH EDITION (ULTIMATE OVERDRIVE)
+   1. ZenithWorld88 — 3D flying cyber-traffic streams, sweeping volumetric
+                      police searchlights, storm sheet-lightning + thunder &
+                      BPM/bass-reactive neon maglev rails
+   2. Resonance88   — MULTISLASH OVERCLOCK (3+ kills in one dash: geometric
+                      constellation lines, +1 charge, +20 Overdrive, bonus) &
+                      ZANSHIN Counter-Dash (+50% crit after Perfect Parry),
+                      strictly gated on simV(88)
+   3. Weapons88     — 3 new exotic weapons with unique combat mechanics:
+                      PLASMA ODACHI, CYBER KUSARIGAMA, CHRONO GLAIVE
+   4. BossZenith88  — Cinematic anime WARNING // PHASE II / FINAL PHASE
+                      tactical banner & boss stagger pulse indicator
+   5. AudioZenith88 — Real-time Web Audio AnalyserNode neon spectrum bar +
+                      3 more flagship tracks (ZENITH OVERDRIVE, CYBER REQUIEM,
+                      NEO-EDO DRIFT 2099)
+   6. HudZenith88   — Crisp non-intrusive right-edge tactical kill-feed
+                      ticker (toggleable in Settings -> ZENITH EDITION)
+   ========================================================================== */
+
+/* ---- 4-language translations for v88 ---- */
+try {
+  if (typeof HE !== 'undefined') Object.assign(HE, {
+    "ZENITH EDITION (v88)": "מהדורת ZENITH (v88)",
+    "Tactical kill feed": "פיד קרב טקטי",
+    "Audio spectrum bar": "אקולייזר מוזיקה חי",
+    "TRIPLE SLASH!": "חיתוך משולש!",
+    "QUADRA SLASH!": "חיתוך מרובע!",
+    "GODLIKE SLASH!": "חיתוך אלוהי!",
+    "ZANSHIN COUNTER!": "מתקפת זאנשין!",
+    "STASIS FIELD": "שדה הקפאת זמן",
+    "PHASE II": "שלב 2",
+    "FINAL PHASE": "שלב סופי",
+    "WARNING": "אזהרה",
+    "PLASMA ODACHI": "אודאצ׳י פלזמה",
+    "Colossal neon greatsword. Every dash launches a twin plasma wave that slices foes and melts bullets.": "חרב ניאון אדירה. כל זינוק משגר גל פלזמה כפול החותך אויבים וממיס כדורים.",
+    "CYBER KUSARIGAMA": "קוסאריגאמה סייבר",
+    "Weighted neon chain-sickle. Kills pull nearby enemies inward and arc lightning to the nearest target.": "מגל־שרשרת ניאון. חיסולים מושכים אויבים סמוכים פנימה ומשגרים ברק ליעד הקרוב.",
+    "CHRONO GLAIVE": "גלייב הזמן",
+    "Temporal twin-blade polearm. Wall ricochets drop a stasis field that slows enemies and bullets.": "חנית להב־כפול זמנית. קפיצות מקיר משאירות שדה הקפאת זמן המאט אויבים וכדורים.",
+    "3D NEO-EDO TRAFFIC, SEARCHLIGHTS & LIGHTNING": "תנועה מעופפת, זרקורים וברקים בתלת־ממד",
+    "In 3D, streams of flying cyber-traffic zip through the skyscrapers below, sweeping searchlights cut across the night sky, storm stages flash with lightning and thunder, and the train rails pulse with the music's bass.": "בתלת־ממד, זרמי רכבים מעופפים חולפים בין גורדי השחקים למטה, זרקורים סורקים את שמי הלילה, שלבי סערה מבזיקים בברקים ורעמים ומסילות הרכבת פועמות לפי הבס של הפסקול.",
+    "MULTISLASH OVERCLOCK & ZANSHIN COUNTER": "מולטי־סלאש אוברקלוק ומתקפת זאנשין",
+    "Cutting 3+ enemies in one dash triggers MULTISLASH OVERCLOCK (constellation lines, +1 dash charge & Overdrive). After a Perfect Parry, your next dash ignites ZANSHIN COUNTER for +50% damage and a golden 3D ribbon.": "חיסול 3+ אויבים בזינוק אחד מפעיל מולטי־סלאש אוברקלוק (קווי קונסטלציה, +1 זינוק ואוברדרייב). אחרי פארי מושלם, הזינוק הבא מצית מתקפת זאנשין עם +50% נזק ושובל זהב.",
+    "3 NEW EXOTIC WEAPONS & LIVE SPECTRUM": "3 נשקים אקזוטיים חדשים ואקולייזר חי",
+    "PLASMA ODACHI, CYBER KUSARIGAMA and CHRONO GLAIVE join the Arsenal with unique mechanics, alongside 3 new tracks (ZENITH OVERDRIVE, CYBER REQUIEM, NEO-EDO DRIFT 2099), a live audio spectrum bar, boss phase banners and a tactical kill feed.": "אודאצ׳י פלזמה, קוסאריגאמה סייבר וגלייב הזמן הצטרפו לארסנל עם מכניקות ייחודיות, לצד 3 שירים חדשים, אקולייזר מוזיקה חי, באנר אזהרת שלבי בוסים ופיד קרב טקטי."
+  });
+  if (typeof AR !== 'undefined') Object.assign(AR, {
+    "ZENITH EDITION (v88)": "إصدار ZENITH (v88)",
+    "Tactical kill feed": "شريط القتال التكتيكي",
+    "Audio spectrum bar": "مُعادل الصوت المباشر",
+    "TRIPLE SLASH!": "قطع ثلاثي!",
+    "QUADRA SLASH!": "قطع رباعي!",
+    "GODLIKE SLASH!": "قطع أسطوري!",
+    "ZANSHIN COUNTER!": "هجوم زانشين!",
+    "PLASMA ODACHI": "أوداتشي البلازما",
+    "CYBER KUSARIGAMA": "كوساريغاما سايبر",
+    "CHRONO GLAIVE": "رمح الزمن"
+  });
+  if (typeof RU !== 'undefined') Object.assign(RU, {
+    "ZENITH EDITION (v88)": "ZENITH EDITION (v88)",
+    "Tactical kill feed": "Тактическая лента боя",
+    "Audio spectrum bar": "Живой аудио-спектр",
+    "TRIPLE SLASH!": "ТРОЙНОЙ РАЗРЕЗ!",
+    "QUADRA SLASH!": "ЧЕТВЕРНОЙ РАЗРЕЗ!",
+    "GODLIKE SLASH!": "БОЖЕСТВЕННЫЙ РАЗРЕЗ!",
+    "ZANSHIN COUNTER!": "КОНТРУДАР ДЗАНСИН!",
+    "PLASMA ODACHI": "ПЛАЗМЕННЫЙ ОДАТИ",
+    "CYBER KUSARIGAMA": "КИБЕР-КУСАРИГАМА",
+    "CHRONO GLAIVE": "ХРОНО-ГЛЕФА"
+  });
+} catch (e) { errLog(e); }
+
+/* ==========================================================================
+   1. AudioZenith88 — 3 MORE MASTERPIECE TRACKS & LIVE SPECTRUM ANALYSER
+   ========================================================================== */
+try {
+  if (typeof TRACKS !== 'undefined' && typeof mkTrack === 'function') {
+    Object.assign(TRACKS, {
+      zenith_anthem: mkTrack({
+        name: 'ZENITH OVERDRIVE', style: 'Ultimate anime cyber-anthem', bpm: 158, root: 65.41, sc: 'yo',
+        prog: [0, 3, 4, 2], form: ['A', 'B', 'B', 'D', 'B', 'B'], taiko: 1,
+        dr: {
+          A: { k: 'x...x...x...x...', s: '....x.......x...', t: 'X...x...X...x...', h: 'x.x.x.x.x.x.x.x.' },
+          B: { k: 'x..x..x.x..x..x.', s: '....X.......X...', t: 'X..x..x.X..x..x.', c: '....x.......x...', o: '..o...o...o...o.', h: 'xxxxxxxxxxxxxxxx' },
+          D: { t: 'X.......X.......', sh: 'x.x.x.x.x.x.x.x.' },
+          F: { k: 'x.x.x.x.xxxxxxxx', t: 'XXXXXXXXXXXXXXXX', s: '....X...x.xxXXXX' }
+        },
+        bass: { pat: [0, 0, 12, 0, 0, 12, 7, 0, 0, 0, 12, 0, 5, 0, 7, 0], type: 'gtr', v: .07, len: .75 },
+        pad: { type: 'brass', oct: 2, v: .024 },
+        arp: { pat: [0, 1, 2, 4, 2, 1], rate: 2, oct: 3, type: 'koto', v: .024, sec: 'ABD' },
+        lead: { type: 'gld', oct: 3, v: .036, sec: 'B', n: [
+          [0, 4, 4], [4, 5, 2], [6, 4, 2], [8, 2, 4], [12, 4, 4], [16, 7, 6], [22, 5, 2], [24, 4, 8],
+          [32, 4, 4], [36, 7, 2], [38, 9, 2], [40, 7, 4], [44, 5, 4], [48, 4, 4], [52, 5, 4], [56, 7, 8]
+        ] },
+        lead2: { type: 'brass', oct: 2, v: .028, sec: 'B', n: [[0, 0, 4], [8, 2, 4], [16, 4, 8], [32, 0, 4], [40, 3, 4], [48, 4, 8]] }
+      }),
+      cyber_requiem: mkTrack({
+        name: 'CYBER REQUIEM', style: 'Gothic industrial synth', bpm: 132, root: 51.91, sc: 'phr',
+        prog: [0, 5, 1, 0], form: ['A', 'A', 'B', 'B', 'D', 'B'],
+        dr: {
+          A: { k: 'x...x...x...x...', s: '....x.......x...', p: '..x.....x.....x.' },
+          B: { k: 'x...x...x.x.x...', s: '....X.......X...', c: '....x.......x...', h: 'x.x.x.x.x.x.x.x.', p: '..x...x...x...x.' },
+          D: { k: 'x.......x.......', p: '....x.......x...' },
+          F: { k: 'x...x...x.x.xxxx', s: '....X...x.xxXXXX' }
+        },
+        bass: { pat: [0, null, 0, 12, null, 0, 1, null, 0, null, 0, 12, null, 6, 5, null], type: 'reese', v: .09, len: 1.1 },
+        pad: { type: 'choir', oct: 2, v: .03 },
+        arp: { pat: [0, 1, 4, 5, 4, 1], rate: 1, oct: 3, type: 'organ', v: .02, sec: 'ABD' },
+        lead: { type: 'organ', oct: 3, v: .032, sec: 'B', n: [
+          [0, 0, 6], [6, 1, 2], [8, 4, 4], [12, 3, 4], [16, 1, 8], [24, 0, 8],
+          [32, 7, 6], [38, 5, 2], [40, 4, 4], [44, 1, 4], [48, 0, 16]
+        ] }
+      }),
+      tokyo_drift_2099: mkTrack({
+        name: 'NEO-EDO DRIFT 2099', style: 'Hyper-phonk night drive', bpm: 138, root: 55, sc: 'dor',
+        prog: [0, 6, 3, 5], form: ['A', 'B', 'B', 'D', 'B'],
+        dr: {
+          A: { k: 'x..x..x...x.....', s: '....x.......x...', h: 'x.x.x.x.x.x.x.x.' },
+          B: { k: 'x..x..x.x.x..x..', s: '....X.......X...', c: '....x.......x...', h: 'xxxxxxxxxxxxxxxx', o: '......o.......o.' },
+          D: { k: 'x.........x.....', h: 'x.x.x.x.x.x.x.x.' },
+          F: { k: 'x..x..x.x.xxxxxx', s: '....X...x.xxXXXX' }
+        },
+        bass: { pat: [0, null, 0, null, 12, null, 7, null, 0, null, 5, null, 3, null, 7, null], type: 'b808', v: .11, len: 1.4 },
+        pad: { type: 'acid', oct: 2, v: .022, sec: 'BD' },
+        arp: { pat: [0, 2, 3, 6, 3, 2], rate: 2, oct: 3, type: 'pluck', v: .022, sec: 'B' },
+        lead: { type: 'cowbell', oct: 3, v: .034, sec: 'AB', n: [
+          [0, 0, 2], [2, 3, 2], [4, 4, 2], [6, 6, 2], [8, 4, 2], [10, 3, 2], [12, 2, 4],
+          [16, 0, 2], [18, 3, 2], [20, 7, 4], [24, 6, 4], [28, 4, 4],
+          [32, 0, 2], [34, 4, 2], [36, 7, 2], [38, 9, 2], [40, 7, 4], [44, 6, 4], [48, 4, 8], [56, 3, 4], [60, 2, 4]
+        ] }
+      })
+    });
+    const ids88 = ['zenith_anthem', 'cyber_requiem', 'tokyo_drift_2099'];
+    if (Array.isArray(TRACK_LIST)) for (const id of ids88) if (TRACK_LIST.indexOf(id) < 0) TRACK_LIST.push(id);
+    if (Array.isArray(RUN_TRACKS)) for (const id of ids88) if (RUN_TRACKS.indexOf(id) < 0) RUN_TRACKS.push(id);
+  }
+} catch (e) { errLog(e); }
+
+const AudioZenith88 = {
+  an: null, bins: null, cv: null, ctx: null, bass: 0,
+  enabled() {
+    const s = Store.data && Store.data.settings;
+    return !CALM && !(s && s.viz88 === 0);
+  },
+  ensure() {
+    if (!this.an && Aud.c && Aud.out) {
+      try {
+        this.an = Aud.c.createAnalyser();
+        this.an.fftSize = 64;
+        this.an.smoothingTimeConstant = 0.78;
+        Aud.out.connect(this.an);
+        this.bins = new Uint8Array(this.an.frequencyBinCount);
+      } catch (e) { this.an = null; }
+    }
+    if (!this.cv && typeof document !== 'undefined' && document.body) {
+      const c = document.createElement('canvas');
+      c.id = 'viz88';
+      c.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(c);
+      this.cv = c;
+      this.ctx = c.getContext('2d');
+    }
+  },
+  tick() {
+    if (!this.enabled()) { if (this.cv) this.cv.style.display = 'none'; this.bass = 0; return; }
+    this.ensure();
+    if (!this.cv || !this.ctx) return;
+    const active = !inRun() || (typeof UI !== 'undefined' && UI.cur === 'music');
+    document.body.classList.toggle('in-run', inRun());
+    this.cv.style.display = active ? 'block' : 'none';
+    if (this.an && this.bins) {
+      this.an.getByteFrequencyData(this.bins);
+      this.bass = (this.bins[0] + this.bins[1] + this.bins[2]) / (3 * 255);
+    } else {
+      this.bass = 0;
+    }
+    if (!active) return;
+    const w = Math.max(200, window.innerWidth | 0), h = 44;
+    if (this.cv.width !== w) this.cv.width = w;
+    if (this.cv.height !== h) this.cv.height = h;
+    const g = this.ctx;
+    g.clearRect(0, 0, w, h);
+    const n = 28, bw = w / n;
+    for (let i = 0; i < n; i++) {
+      const raw = this.bins ? (this.bins[i % this.bins.length] / 255) : (0.1 + 0.08 * Math.sin(CAM.t * 3 + i * 0.4));
+      const bh = Math.max(2, raw * (h - 6));
+      const hue = 185 + (i / n) * 135;
+      g.fillStyle = `hsla(${hue}, 100%, 62%, ${0.28 + raw * 0.65})`;
+      g.fillRect(i * bw + 2, h - bh, Math.max(2, bw - 4), bh);
+    }
+  }
+};
+
+/* ==========================================================================
+   2. ZenithWorld88 — 3D FLYING CYBER-TRAFFIC, SEARCHLIGHTS & STORM LIGHTNING
+   ========================================================================== */
+const ZenithWorld88 = {
+  grp: null, cars: [], lights: [], flashT: 0, nextBolt: 6,
+  ensure() {
+    if (this.grp || !R3.ok || !R3.root || typeof THREE === 'undefined') return;
+    const T = THREE;
+    this.grp = new T.Group();
+    R3.root.add(this.grp);
+    // 24 flying cyber-traffic streams zipping between the skyscrapers below
+    const geo = new T.BoxGeometry(6, 26, 3.5);
+    for (let i = 0; i < 24; i++) {
+      const dir = i % 2 ? 1 : -1;
+      const side = (i % 4 < 2) ? -1 : 1;
+      const col = dir > 0 ? 0x00f2fe : 0xff1e56;
+      const mat = new T.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.88, blending: T.AdditiveBlending });
+      const m = new T.Mesh(geo, mat);
+      const laneX = side * (250 + (i % 5) * 95);
+      const z = -90 - (i % 4) * 65;
+      const y = (i / 24) * 3200 - 1400;
+      m.position.set(V.CX + laneX, y, z);
+      this.grp.add(m);
+      this.cars.push({ m, side, laneX, y, z, spd: (360 + (i % 5) * 125) * dir });
+    }
+    // 4 sweeping atmospheric cyber searchlight cones
+    const coneGeo = new T.ConeGeometry(68, 920, 12, 1, true);
+    const coneCols = [0x00f2fe, 0xff2bd6, 0x7df9ff, 0xffd23f];
+    for (let i = 0; i < 4; i++) {
+      const mat = new T.MeshBasicMaterial({ color: coneCols[i], transparent: true, opacity: 0.085, side: T.DoubleSide, blending: T.AdditiveBlending, depthWrite: false });
+      const m = new T.Mesh(coneGeo, mat);
+      m.position.set(V.CX + (i % 2 ? 360 : -360), -300 + i * 420, -180);
+      this.grp.add(m);
+      this.lights.push({ m, mat, ph: i * 1.57, side: i % 2 ? 1 : -1 });
+    }
+  },
+  tick(rd) {
+    if (!R3.on || !R3.ok || CALM) return;
+    this.ensure(); if (!this.grp) return;
+    const d = Math.min(0.05, rd || 1 / 60), t = CAM.t || 0;
+    const cx0 = (V.L + V.R) * 0.5;
+    // Animate flying traffic
+    for (const c of this.cars) {
+      c.y += c.spd * d;
+      if (c.y > 1900) c.y = -1500;
+      if (c.y < -1500) c.y = 1900;
+      c.m.position.set(cx0 + c.laneX, c.y, c.z);
+    }
+    // Sweep searchlights across the skyline
+    for (const l of this.lights) {
+      l.m.position.x = cx0 + l.side * 380;
+      l.m.rotation.z = Math.sin(t * 0.55 + l.ph) * 0.42;
+      l.m.rotation.x = Math.PI * 0.5 + Math.cos(t * 0.38 + l.ph) * 0.25;
+      l.mat.opacity = 0.065 + AudioZenith88.bass * 0.06;
+    }
+    // Bass-reactive train rail glow pulse
+    if (R3.cars && AudioZenith88.bass > 0.02) {
+      const em = 1.15 + AudioZenith88.bass * 1.35 + (G.odT > 0 ? 0.8 : 0);
+      for (const car of R3.cars) for (const [r] of car.rails) if (r.material && r.material.emissiveIntensity != null) r.material.emissiveIntensity = em;
+    }
+    // Dynamic storm sheet-lightning & subtle distant thunder on rainy stages
+    const stormy = !!(BG.T && BG.T.rain && inRun() && R3.q >= 1);
+    if (stormy) {
+      this.nextBolt -= d;
+      if (this.nextBolt <= 0) {
+        this.nextBolt = 7 + Math.random() * 11;
+        this.flashT = 0.24;
+        if (Aud.c && !Aud.quiet && Aud.gate('thund88', 4000)) {
+          try { Aud.noise(0.85, 0.06, 220, 48, 'lowpass', Aud.c.currentTime + 0.35); } catch (e) { }
+        }
+      }
+    }
+    if (this.flashT > 0) {
+      this.flashT = Math.max(0, this.flashT - d);
+      if (R3.moon) R3.moon.intensity = 1.1 + (this.flashT / 0.24) * 2.4;
+    } else if (R3.moon && R3.moon.intensity > 1.15) {
+      R3.moon.intensity = 1.1;
+    }
+  }
+};
+
+/* ==========================================================================
+   3. Weapons88 — 3 NEW EXOTIC WEAPONS WITH UNIQUE COMBAT MECHANICS
+   ========================================================================== */
+const Weapons88 = {
+  waves: [], fields: [],
+  reset() { this.waves.length = 0; this.fields.length = 0; },
+  onSlash(a) {
+    if (!simV(88) || !P.w) return;
+    if (P.w.id === 'plasma_odachi') {
+      // Launch twin crescent plasma wave forward
+      this.waves.push({ x: P.x + Math.cos(a) * 24, y: P.y + Math.sin(a) * 24, vx: Math.cos(a) * 640, vy: Math.sin(a) * 640, a, r: 44, t: 0, dur: 0.42, dmg: P.w.dmg * 0.72 * (P.dmgMul || 1) * (G.dmgMod || 1), hit: new Set() });
+      if (Aud.c && !Aud.quiet) Aud.tone(420, 1280, 0.14, 0.08, 'sawtooth');
+    }
+  },
+  onKill(e) {
+    if (!simV(88) || !P.w || P.w.id !== 'cyber_kusari' || !e) return;
+    // Magnetic pull + chain lightning arc to nearest surviving enemy
+    let best = null, bestD = 220;
+    for (let i = 0; i < EN.n; i++) {
+      const o = EN.a[i];
+      if (!o || !o.alive || o === e || o.al > 0) continue;
+      const d = dist(e.x, e.y, o.x, o.y);
+      if (d < 190) {
+        const pullA = Math.atan2(e.y - o.y, e.x - o.x);
+        o.x += Math.cos(pullA) * 34; o.y += Math.sin(pullA) * 34;
+      }
+      if (d < bestD) { bestD = d; best = o; }
+    }
+    if (best) {
+      const ang = Math.atan2(best.y - e.y, best.x - e.x);
+      damageEnemy(best, P.w.dmg * 0.85 * (P.dmgMul || 1), ang, 3);
+      FX.streak(e.x, e.y, ang, '#00ff9d', 8);
+      FX.ring(best.x, best.y, 34, '#00ff9d', 3);
+      if (Aud.c && !Aud.quiet) Aud.tone(1500, 2900, 0.08, 0.05, 'square');
+    }
+  },
+  spawnStasis(x, y) {
+    if (!simV(88) || !P.w || P.w.id !== 'chrono_glaive') return;
+    this.fields.push({ x, y, r: 108, t: 0, dur: 2.2 });
+    if (this.fields.length > 3) this.fields.shift();
+    FX.ring(x, y, 108, '#7df9ff', 4);
+    FX.text(x, y - 24, lt('STASIS FIELD'), '#7df9ff', 10, 1);
+  },
+  step(dt) {
+    // Update Plasma Odachi waves
+    for (let i = this.waves.length - 1; i >= 0; i--) {
+      const w = this.waves[i]; w.t += dt;
+      w.x += w.vx * dt; w.y += w.vy * dt;
+      if (w.t >= w.dur) { this.waves.splice(i, 1); continue; }
+      for (let j = 0; j < EN.n; j++) {
+        const e = EN.a[j]; if (!e || !e.alive || e.al > 0 || w.hit.has(e)) continue;
+        if (dist(w.x, w.y, e.x, e.y) < w.r + e.r) {
+          w.hit.add(e);
+          damageEnemy(e, w.dmg, w.a, 3);
+          FX.spark(e.x, e.y, '#ff2bd6', 7);
+        }
+      }
+      for (let j = 0; j < BU.n; j++) {
+        const b = BU.a[j]; if (!b || !b.alive || b.rf) continue;
+        if (dist(w.x, w.y, b.x, b.y) < w.r + b.r) { b.alive = false; FX.spark(b.x, b.y, '#00f2fe', 4); }
+      }
+    }
+    // Update Chrono Glaive stasis fields
+    for (let i = this.fields.length - 1; i >= 0; i--) {
+      const f = this.fields[i]; f.t += dt;
+      if (f.t >= f.dur) { this.fields.splice(i, 1); continue; }
+      for (let j = 0; j < EN.n; j++) {
+        const e = EN.a[j]; if (!e || !e.alive || e.al > 0) continue;
+        if (dist(f.x, f.y, e.x, e.y) < f.r + e.r) { e.x -= (e.vx || 0) * dt * 0.62; e.y -= (e.vy || 0) * dt * 0.62; }
+      }
+      for (let j = 0; j < BU.n; j++) {
+        const b = BU.a[j]; if (!b || !b.alive || b.rf) continue;
+        if (dist(f.x, f.y, b.x, b.y) < f.r + b.r) { b.x -= b.vx * dt * 0.68; b.y -= b.vy * dt * 0.68; }
+      }
+    }
+  },
+  draw() {
+    if (!inRun()) return;
+    cx.save();
+    cx.globalCompositeOperation = 'lighter';
+    for (const w of this.waves) {
+      const u = w.t / w.dur;
+      cx.save(); cx.translate(w.x, w.y); cx.rotate(w.a);
+      cx.globalAlpha = (1 - u) * 0.9;
+      cx.strokeStyle = '#ff2bd6'; cx.lineWidth = 7 * (1 - u * 0.5);
+      cx.beginPath(); cx.arc(-18, 0, w.r, -0.85, 0.85); cx.stroke();
+      cx.strokeStyle = '#ffffff'; cx.lineWidth = 3 * (1 - u * 0.5);
+      cx.beginPath(); cx.arc(-15, 0, w.r - 4, -0.75, 0.75); cx.stroke();
+      cx.restore();
+    }
+    for (const f of this.fields) {
+      const u = f.t / f.dur, pulse = 0.7 + Math.sin(CAM.t * 10) * 0.3;
+      cx.globalAlpha = (1 - u * 0.7) * 0.22;
+      cx.fillStyle = '#00f2fe';
+      cx.beginPath(); cx.arc(f.x, f.y, f.r, 0, TAU); cx.fill();
+      cx.globalAlpha = (1 - u * 0.6) * 0.8 * pulse;
+      cx.strokeStyle = '#7df9ff'; cx.lineWidth = 2.5;
+      cx.beginPath(); cx.arc(f.x, f.y, f.r, 0, TAU); cx.stroke();
+    }
+    cx.restore();
+  }
+};
+
+try {
+  if (typeof WEAPONS !== 'undefined' && Array.isArray(WEAPONS)) {
+    const addW = [
+      { id: 'plasma_odachi', name: 'PLASMA ODACHI', desc: 'Colossal neon greatsword. Every dash launches a twin plasma wave that slices foes and melts bullets.', dmg: 1.45, speed: 1360, ch: 2, crit: .20, cm: 2.2, heat: 24, reach: 12, cost: 2900 },
+      { id: 'cyber_kusari', name: 'CYBER KUSARIGAMA', desc: 'Weighted neon chain-sickle. Kills pull nearby enemies inward and arc lightning to the nearest target.', dmg: 1.15, speed: 1460, ch: 3, crit: .24, cm: 2.0, heat: 20, reach: 10, cost: 3200 },
+      { id: 'chrono_glaive', name: 'CHRONO GLAIVE', desc: 'Temporal twin-blade polearm. Wall ricochets drop a stasis field that slows enemies and bullets.', dmg: 1.25, speed: 1500, ch: 3, crit: .22, cm: 2.1, heat: 21, reach: 9, cost: 3400 }
+    ];
+    for (const w of addW) if (!WEAPONS.some(x => x.id === w.id)) WEAPONS.push(w);
+  }
+  if (typeof R3 !== 'undefined' && R3.wfam) {
+    const wf88 = R3.wfam.bind(R3);
+    R3.wfam = function (id) {
+      return { plasma_odachi: 'long', cyber_kusari: 'chain', chrono_glaive: 'pole' }[id] || wf88(id);
+    };
+  }
+} catch (e) { errLog(e); }
+
+/* ==========================================================================
+   4. Resonance88 — MULTISLASH OVERCLOCK & ZANSHIN COUNTER (simV(88) gated)
+   ========================================================================== */
+const Resonance88 = {
+  dashKills: [], zanshinT: 0, lines: [], wasRic: false,
+  reset() { this.dashKills.length = 0; this.zanshinT = 0; this.lines.length = 0; this.wasRic = false; },
+  onParry() {
+    if (!simV(88)) return;
+    this.zanshinT = 1.35;
+    HudZenith88.push(lt('PARRY') + ' · ZANSHIN', '#7df9ff');
+  },
+  onKill(e) {
+    if (!simV(88) || !e) return;
+    if (P.dashT > 0) this.dashKills.push([e.x, e.y]);
+  },
+  step(dt) {
+    if (!simV(88) || G.state !== 'PLAY') return;
+    if (this.zanshinT > 0) this.zanshinT = Math.max(0, this.zanshinT - dt);
+    // Chrono Glaive wall bounce trigger
+    if (P.dashT > 0 && (P.x <= V.L + P.r + 3 || P.x >= V.R - P.r - 3)) {
+      if (!this.wasRic) { this.wasRic = true; Weapons88.spawnStasis(P.x, P.y); }
+    } else if (P.dashT <= 0) {
+      this.wasRic = false;
+    }
+    // Check dash end for MULTISLASH OVERCLOCK (3+ kills in one dash!)
+    if (P.dashT <= 0 && this.dashKills.length > 0) {
+      if (this.dashKills.length >= 3) {
+        const n = this.dashKills.length;
+        const pts = this.dashKills.slice();
+        if (P.ch < P.maxCh) P.ch = Math.min(P.maxCh, P.ch + 1);
+        addOD(20);
+        G.score += Math.round(n * 350 * (G.diff ? G.diff.score : 1) * (G.scoreMul || 1));
+        if (!REPLAY.fast) {
+          const label = n >= 5 ? lt('GODLIKE SLASH!') : n === 4 ? lt('QUADRA SLASH!') : lt('TRIPLE SLASH!');
+          FX.call(label, '#ffd700', 2.4, 28);
+          Impact86.fire(P.x, P.y, '#ffd700', 1);
+          Slash3D86.addWave(P.x, P.y, '#ffd700', 210);
+          Audio86.subDrop(true);
+          HudZenith88.push(label + ' x' + n, '#ffd700');
+          this.lines.push({ pts, t: 0, dur: 0.55 });
+        }
+      }
+      this.dashKills.length = 0;
+    }
+  },
+  draw(rd) {
+    const d = rd || 1 / 60;
+    // Zanshin gold counter-aura around player
+    if (this.zanshinT > 0 && G.state === 'PLAY') {
+      cx.save();
+      cx.globalCompositeOperation = 'lighter';
+      cx.strokeStyle = '#ffd700';
+      cx.globalAlpha = 0.55 + Math.sin(CAM.t * 22) * 0.35;
+      cx.lineWidth = 3;
+      cx.beginPath();
+      cx.arc(P.x, P.y, P.r + 24 + Math.sin(CAM.t * 16) * 3, 0, TAU);
+      cx.stroke();
+      cx.restore();
+    }
+    // Geometric Multislash constellation lines
+    for (let i = this.lines.length - 1; i >= 0; i--) {
+      const L = this.lines[i]; L.t += d;
+      if (L.t >= L.dur) { this.lines.splice(i, 1); continue; }
+      const u = L.t / L.dur;
+      cx.save();
+      cx.globalCompositeOperation = 'lighter';
+      cx.globalAlpha = (1 - u) * 0.92;
+      cx.strokeStyle = '#ffd700';
+      cx.lineWidth = 4 * (1 - u * 0.7);
+      cx.beginPath();
+      L.pts.forEach((p, idx) => idx ? cx.lineTo(p[0], p[1]) : cx.moveTo(p[0], p[1]));
+      cx.stroke();
+      for (const p of L.pts) {
+        cx.fillStyle = '#ffffff';
+        cx.beginPath(); cx.arc(p[0], p[1], 7 * (1 - u), 0, TAU); cx.fill();
+      }
+      cx.restore();
+    }
+  }
+};
+
+/* ==========================================================================
+   5. BossZenith88 — ANIME BOSS PHASE WARNING BANNER
+   ========================================================================== */
+const BossZenith88 = {
+  t: 0, dur: 1.5, title: '', sub: '', col: '#ff0844', lastPh: 0,
+  trigger(title, sub, col) {
+    if (CALM || (REPLAY.on && REPLAY.fast)) return;
+    this.title = title; this.sub = sub; this.col = col || '#ff0844';
+    this.t = this.dur;
+  },
+  draw(rd) {
+    if (!inRun()) { this.t = 0; this.lastPh = 0; return; }
+    const b = Boss.cur;
+    if (b && b.ph > this.lastPh && this.lastPh > 0) {
+      const lbl = b.ph >= 3 ? lt('FINAL PHASE') : lt('PHASE II');
+      this.trigger(lt('WARNING') + ' // ' + lbl, lt(b.name || 'BOSS'), b.ph >= 3 ? '#ffd700' : '#ff2bd6');
+    }
+    this.lastPh = b ? (b.ph || 0) : 0;
+    if (this.t <= 0) return;
+    this.t = Math.max(0, this.t - (rd || 1 / 60));
+    const u = 1 - this.t / this.dur;
+    const a = u < 0.15 ? u / 0.15 : u > 0.78 ? (1 - u) / 0.22 : 1;
+    const y = 128;
+    cx.save();
+    cx.globalAlpha = a * 0.92;
+    cx.fillStyle = 'rgba(6, 7, 16, .82)';
+    cx.fillRect(0, y - 22, V.VW, 44);
+    cx.fillStyle = this.col;
+    cx.fillRect(0, y - 22, V.VW, 2.5);
+    cx.fillRect(0, y + 19.5, V.VW, 2.5);
+    cx.textAlign = 'center';
+    cx.font = '900 13px ' + FONT_D;
+    cx.fillStyle = this.col;
+    cx.fillText(this.title, V.VW * 0.5, y - 2);
+    cx.font = '700 10px ' + FONT_M;
+    cx.fillStyle = '#e8fbff';
+    cx.fillText(this.sub, V.VW * 0.5, y + 13);
+    cx.restore();
+  }
+};
+
+/* ==========================================================================
+   6. HudZenith88 — NON-INTRUSIVE TACTICAL KILL-FEED TICKER
+   ========================================================================== */
+const HudZenith88 = {
+  items: [],
+  enabled() {
+    const s = Store.data && Store.data.settings;
+    return !(s && s.feed88 === 0);
+  },
+  push(text, col) {
+    if (!this.enabled() || (REPLAY.on && REPLAY.fast)) return;
+    this.items.unshift({ text, col: col || '#00f2fe', t: 0, dur: 1.65 });
+    if (this.items.length > 4) this.items.pop();
+  },
+  draw(rd) {
+    if (!inRun() || !this.enabled()) { this.items.length = 0; return; }
+    const d = rd || 1 / 60;
+    const xr = V.VW - 12;
+    cx.save();
+    cx.textAlign = 'right';
+    cx.font = '800 9px ' + FONT_M;
+    for (let i = this.items.length - 1; i >= 0; i--) {
+      const it = this.items[i]; it.t += d;
+      if (it.t >= it.dur) { this.items.splice(i, 1); continue; }
+      const u = it.t / it.dur;
+      const slide = u < 0.14 ? (1 - u / 0.14) * 28 : 0;
+      const alpha = u > 0.72 ? (1 - u) / 0.28 : 0.88;
+      const y = 148 + i * 17;
+      const w = cx.measureText(it.text).width + 12;
+      cx.globalAlpha = alpha * 0.65;
+      cx.fillStyle = '#060812';
+      cx.fillRect(xr - w + slide, y - 10, w, 13);
+      cx.fillStyle = it.col;
+      cx.fillRect(xr - 2 + slide, y - 10, 2, 13);
+      cx.globalAlpha = alpha;
+      cx.fillText(it.text, xr - 6 + slide, y);
+    }
+    cx.restore();
+  }
+};
+
+/* ==========================================================================
+   HOOK WIRING — Clean, isolated, zero-regression v88 integration
+   ========================================================================== */
+{
+  const db88 = Director.begin.bind(Director);
+  Director.begin = function () {
+    Resonance88.reset(); Weapons88.reset(); HudZenith88.items.length = 0;
+    return db88.apply(this, arguments);
+  };
+
+  const sl88 = slash;
+  slash = function (a) {
+    const wasZan = simV(88) && Resonance88.zanshinT > 0;
+    const oldDmgMul = P.dmgMul;
+    if (wasZan) {
+      Resonance88.zanshinT = 0;
+      P.dmgMul = (P.dmgMul || 1) * 1.5;
+      if (!REPLAY.fast) {
+        FX.text(P.x, P.y - 38, lt('ZANSHIN COUNTER!'), '#ffd700', 12, 1);
+        Slash3D86.addWave(P.x, P.y, '#ffd700', 135);
+        HudZenith88.push(lt('ZANSHIN COUNTER!'), '#ffd700');
+      }
+    }
+    const r = sl88.apply(this, arguments);
+    if (wasZan) P.dmgMul = oldDmgMul;
+    try { Weapons88.onSlash(P.ang); } catch (e) { errLog(e); }
+    return r;
+  };
+
+  const sim88 = sim;
+  sim = function (dt, rd) {
+    const r = sim88(dt, rd);
+    try { Weapons88.step(dt); Resonance88.step(dt); } catch (e) { errLog(e); }
+    return r;
+  };
+
+  const pb88 = parryBullet;
+  parryBullet = function (b) {
+    const r = pb88.apply(this, arguments);
+    try { Resonance88.onParry(); } catch (e) { errLog(e); }
+    return r;
+  };
+
+  const ke88 = killEnemy;
+  killEnemy = function (e, a, src) {
+    const wasExec = !!(e && e.exec);
+    const r = ke88.apply(this, arguments);
+    try {
+      Resonance88.onKill(e);
+      Weapons88.onKill(e);
+      if (wasExec) HudZenith88.push(lt('EXECUTION'), '#ff0844');
+    } catch (er) { errLog(er); }
+    return r;
+  };
+
+  const dp88 = drawPlayer;
+  drawPlayer = function () {
+    try { Weapons88.draw(); Resonance88.draw(RDT); } catch (e) { errLog(e); }
+    return dp88.apply(this, arguments);
+  };
+
+  const hd88 = HUD.draw.bind(HUD);
+  HUD.draw = function (rd) {
+    try { BossZenith88.draw(rd); HudZenith88.draw(rd); } catch (e) { errLog(e); }
+    return hd88(rd);
+  };
+
+  const r3_88 = R3.render.bind(R3);
+  R3.render = function (rd) {
+    try { ZenithWorld88.tick(rd); } catch (e) { errLog(e); }
+    return r3_88(rd);
+  };
+
+  // Drive live spectrum bar every frame (menu + Music Room + bass feed for 3D)
+  Pipe.on('post', 'zenith88_viz', () => {
+    try { AudioZenith88.tick(); } catch (e) { errLog(e); }
+  }, 98);
+
+  if (typeof PC !== 'undefined' && PC.settings) {
+    const ps88 = PC.settings.bind(PC);
+    PC.settings = function (head, cycle, box, s) {
+      ps88(head, cycle, box, s);
+      try {
+        head('ZENITH EDITION (v88)');
+        cycle('Tactical kill feed', 'feed88', [1, 0], ['ON', 'OFF']);
+        cycle('Audio spectrum bar', 'viz88', [1, 0], ['ON', 'OFF']);
+      } catch (e) { errLog(e); }
+    };
+  }
+}
 
 </script>
 </body></html>
