@@ -5695,8 +5695,8 @@ Math.sin = DMATH.sin; Math.cos = DMATH.cos; Math.atan = DMATH.atan; Math.atan2 =
    All tuning lives here. Logical units: the view is ~420 wide, the
    train roof (arena) is 340 wide. Speeds are units per second.
    ===================================================================== */
-const VERSION = '97.0';
-const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0', '36.0', '37.0', '38.0', '39.0', '40.0', '40.1', '41.0', '42.0', '43.0', '44.0', '45.0', '46.0', '47.0', '48.0', '49.0', '50.0', '51.0', '52.0', '53.0', '54.0', '55.0', '56.0', '57.0', '58.0', '59.0', '60.0', '61.0', '62.0', '63.0', '64.0', '65.0', '66.0', '67.0', '68.0', '69.0', '70.0', '71.0', '72.0', '73.0', '74.0', '75.0', '76.0', '77.0', '80.0', '82.0', '83.0', '84.0', '85.0', '86.0', '87.0', '88.0', '89.0', '90.0', '91.0', '92.0', '93.0', '94.0', '95.0', '96.0', '97.0']; // replays recorded by these versions play back identically (arcade sim unchanged)
+const VERSION = '98.0';
+const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0', '36.0', '37.0', '38.0', '39.0', '40.0', '40.1', '41.0', '42.0', '43.0', '44.0', '45.0', '46.0', '47.0', '48.0', '49.0', '50.0', '51.0', '52.0', '53.0', '54.0', '55.0', '56.0', '57.0', '58.0', '59.0', '60.0', '61.0', '62.0', '63.0', '64.0', '65.0', '66.0', '67.0', '68.0', '69.0', '70.0', '71.0', '72.0', '73.0', '74.0', '75.0', '76.0', '77.0', '80.0', '82.0', '83.0', '84.0', '85.0', '86.0', '87.0', '88.0', '98.0']; // (v98: replays of 89-97 are dropped: rules added then were not deterministic) // replays recorded by these versions play back identically (arcade sim unchanged)
 const CFG = { step: 1 / 60, maxSteps: 5, maxEnemies: 22, arenaW: 340, viewW: 420, viewH: 760 };
 let RDT = 1 / 60; // version 34: the real time of the frame being drawn. Drawing code uses it instead of a fixed 1/60, so 120-480 Hz screens animate at the right speed
 
@@ -11834,7 +11834,24 @@ const VOX = {
   gld: { o: [['sawtooth', 0, .6, 1], ['square', 5, .3, 1]], f0: 3200, f1: 2400, q: 1.4, a: .006, s: .85, r: .12, dist: 1 } // distorted lead guitar
 };
 /* drum keys: k kick, s snare, c clap, h hat, o open hat, t taiko, m tom, r shime, p metal, sh shaker */
+/* v98: songs written as 16-step semitone loops (v89's SANDEVISTAN PULSE, BLADE OF ETERNITY: drums/bass/lead/arp
+   arrays) become the engine's own format: notes to scale degrees, the lead repeated over the 64-step phrase, the
+   arpeggio as a second lead. Before this they threw in mkTrack and none of them was ever added. */
+function conv98(T) {
+  const scn = { min: 'aeo', minor: 'aeo', hir: 'hira', major: 'maj' }[T.sc] || (SCALES[T.sc] ? T.sc : 'aeo'), sc = SCALES[scn];
+  const deg = v => { const o = Math.floor(v / 12), r = v - 12 * o; let bi = 0, bd = 99; sc.forEach((x, i) => { const d = Math.abs(x - r); if (d < bd) { bd = d; bi = i; } }); return bi + o * sc.length; };
+  const tb = T.timbre || {}, vox = (w, d) => w === 'square' ? 'pulse' : w === 'triangle' ? 'tri' : w === 'sine' ? 'sub' : d;
+  const line = (arr, every) => { const n = []; for (let rep = 0; rep < 64; rep += arr.length * every) arr.forEach((v, i) => { if (v != null && v >= 0) n.push([rep + i * every, deg(v), every]); }); return n; };
+  const dr = T.drums || {};
+  return { name: T.name, style: T.style, bpm: T.bpm, root: T.root, sc: scn, prog: [0], form: ['A', 'A', 'B', 'B'],
+    dr: { A: Object.assign({}, dr), B: Object.assign({}, dr), F: Object.assign({}, dr) },
+    bass: { pat: (T.bass || []).map(v => v == null || v < 0 ? null : v), type: vox(tb.b, 'bass'), v: .09, len: 1.2 },
+    pad: { type: 'pad', oct: 1, v: .02 },
+    lead: { type: vox(tb.l, 'lead'), oct: 2, v: .035, sec: 'AB', n: line(T.lead || [], 1) },
+    lead2: T.arp ? { type: 'arp', oct: 3, v: .016, sec: 'B', n: line(T.arp, 2) } : undefined, col: T.col };
+}
 function mkTrack(T) {
+  if (T && (T.drums || Array.isArray(T.lead))) T = conv98(T);
   for (const sec in T.dr) { const D = T.dr[sec]; for (const k in D) D[k] = dpat(D[k]); }
   for (const key of ['lead', 'lead2']) { const L = T[key]; if (!L) continue; L.at = []; for (let i = 0; i < 64; i++) L.at.push(null); for (const n of L.n) { const i = n[0] & 63; (L.at[i] || (L.at[i] = [])).push(n); } }
   return T;
@@ -20978,7 +20995,8 @@ const Preview = {
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 97.0 (AAA MASTER EDITION)
+const NEWS = [ // version 98.0
+  ["v98.0 — FAIR, FIXED & REPLAYABLE", "A full code review and fix pass: replays play back exactly again (the systems added in 89-97 now run in the fixed simulation step with the run's own dice, and [F], WASD and blade-clash mashing are recorded); the roof props, rail events, boss armor break and finisher camera actually run now; the launcher [F] costs a dash charge and its damage fits the game's scale (no more enemies left alive at negative health); the 1.6x damage on broken boss armor is real; the parry reward comes from a real parry; Glass and no-parry contracts hold; replays no longer pay out rewards; the final choice appears once, after DEUS EX KUROGANE; the title screen keeps its soundtrack, chips, heat pact and login buttons; the vampire synergy and the fragile pact work; no more missing-track requests."],
   ["v97.0 — 7-TOPIC AAA MASTER POLISH", "Full 7-domain overhaul: Archetype Passives for all 70+ Heroes (Titan, Phantom, Astral, Sword Saint), Pet Level Mastery across all 17 Pets, real 1.6x Boss Armor Break DMG + Stagger, roof-aligned Destructible Props & Tunnel/Storm lighting, Daily Supply Streaks, Dialogue Quick-Skip, 10-track OST Auto-Pause & Voice Ducking, responsive Title Dock and Quick Controls [H]."],
   ["v96.0 — AIR JUGGLE, DESTRUCTIBLE TRAIN & CHIPS", "Launch enemies into 3D Air Juggle combos and slam them with Helm Breaker [F], slash exploding Plasma Barrels, Tesla Pylons & Neon Signs on the train roof, survive Dynamic Track Events (Dark Tunnel, Lightning Storm, Ambush), socket Boss-Drop Weapon Chips, track Live DPS & Parry ms in the Dojo, race 3D Ghosts, and lock 60 FPS with Instant Restart [R]."],
   ["v95.0 — STUDIO VOCAL OST, BOSS ENRAGE & DUAL ENDING", "Real Studio Soundtrack Engine (StudioAudio95) with vocal tracks, crossfading & in-game MP3 picker, bespoke 3D Hero Gear & Living Auras for 70+ skins, 26 bespoke 3D weapons, 17 bespoke 3D pets, Boss Phase 2/3 3D Enrage Auras, mid-fight Boss Banter, and a choice-based Dual Ending (Liberator vs. Cyber Sovereign)."],
@@ -37428,10 +37446,10 @@ const PCMaster90 = {
 
       // WASD Free Movement (intercepts KeyW before legacy hijack binding)
       if (S90.isDesk() && S90.on('wasd90', true)) {
-        if (c === 'KeyW') { this.wasd.w = true; e.preventDefault(); e.stopImmediatePropagation(); return; }
-        if (c === 'KeyA') { this.wasd.a = true; e.preventDefault(); e.stopImmediatePropagation(); return; }
-        if (c === 'KeyS') { this.wasd.s = true; e.preventDefault(); e.stopImmediatePropagation(); return; }
-        if (c === 'KeyD') { this.wasd.d = true; e.preventDefault(); e.stopImmediatePropagation(); return; }
+        if (c === 'KeyW') { this.wasd.w = true; this.sync98(); e.preventDefault(); e.stopImmediatePropagation(); return; }
+        if (c === 'KeyA') { this.wasd.a = true; this.sync98(); e.preventDefault(); e.stopImmediatePropagation(); return; }
+        if (c === 'KeyS') { this.wasd.s = true; this.sync98(); e.preventDefault(); e.stopImmediatePropagation(); return; }
+        if (c === 'KeyD') { this.wasd.d = true; this.sync98(); e.preventDefault(); e.stopImmediatePropagation(); return; }
       }
 
       if (e.repeat) return;
@@ -37459,10 +37477,11 @@ const PCMaster90 = {
       if (c === 'KeyA') this.wasd.a = false;
       if (c === 'KeyS') this.wasd.s = false;
       if (c === 'KeyD') this.wasd.d = false;
+      this.sync98();
     });
 
     window.addEventListener('blur', () => {
-      this.wasd.w = this.wasd.a = this.wasd.s = this.wasd.d = false;
+      this.wasd.w = this.wasd.a = this.wasd.s = this.wasd.d = false; this.sync98();
       this.rmbDown = false; this.lmbDown = false;
     });
 
@@ -37500,11 +37519,18 @@ const PCMaster90 = {
   },
 
   /* Smooth WASD movement integrated cleanly into sim(dt, rd) */
+  /* v98: the held keys reach the simulation only as a recorded move mask (w1 a2 s4 d8), so a replay moves the same way */
+  mask98: 0,
+  sync98() {
+    const m = (this.wasd.w ? 1 : 0) | (this.wasd.a ? 2 : 0) | (this.wasd.s ? 4 : 0) | (this.wasd.d ? 8 : 0);
+    if (REPLAY.on || m === this.mask98 || G.state !== 'PLAY') return;
+    this.mask98 = m; REC.act(RA.MOVE0 + m);
+  },
   stepWASD(dt) {
-    if (!S90.isDesk() || !S90.on('wasd90', true) || G.state !== 'PLAY' || REPLAY.on || G.freeze > 0) return;
+    if (!simV(98) || G.state !== 'PLAY' || G.freeze > 0) return;
     if (!P || P.dashing || P.dashT > 0.04) return;
-    const mx = (this.wasd.d ? 1 : 0) - (this.wasd.a ? 1 : 0);
-    const my = (this.wasd.s ? 1 : 0) - (this.wasd.w ? 1 : 0);
+    const k = this.mask98, mx = (k & 8 ? 1 : 0) - (k & 2 ? 1 : 0);
+    const my = (k & 4 ? 1 : 0) - (k & 1 ? 1 : 0);
     if (!mx && !my) return;
     const len = Math.hypot(mx, my) || 1;
     const nx = mx / len, ny = my / len;
@@ -37514,12 +37540,7 @@ const PCMaster90 = {
     P.x = clamp(P.x + P.vx * dt * 0.55, V.L + 16, V.R - 16);
     P.y = clamp(P.y + P.vy * dt * 0.55, 42, V.VH - 48);
     P.spd = Math.max(P.spd || 0, Math.hypot(P.vx, P.vy));
-    // Face cursor if mouse active, else face movement direction
-    if (typeof PC !== 'undefined' && PC.mouseOn()) {
-      P.face = Math.atan2(PC.wy() - P.y, PC.wx() - P.x);
-    } else {
-      P.face = Math.atan2(ny, nx);
-    }
+    P.face = Math.atan2(ny, nx); // (v98: the movement direction; the mouse is not recorded)
   },
 
   /* Subtle Hotline-Miami / Hades mouse lookahead offset */
@@ -38111,6 +38132,10 @@ const CutIn91 = {
   },
 
   trigger() {
+    // v98: the shockwave (a rule) runs whatever the display settings are
+    if (Sim98.on('cutin91') && typeof EN !== 'undefined' && (G.combo | 0) >= 12) {
+      for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (e.alive && e.al <= 0) damageEnemy(e, 2.5 * (G.dmgMod || 1), Math.atan2(e.y - P.y, e.x - P.x), 1); }
+    }
     if (!S91.on('cutin91', true) || CALM || REPLAY.fast) return;
     this.ensureDOM();
     const ca = (P && P.ca) || '#00f2fe';
@@ -38143,15 +38168,6 @@ const CutIn91 = {
       });
     }
 
-    // Finisher shockwave damages enemies across screen when triggered at S-rank (combo >= 12)
-    if (typeof EN !== 'undefined' && (G.combo | 0) >= 12) {
-      for (let i = 0; i < EN.n; i++) {
-        const e = EN.a[i];
-        if (e.alive && e.al <= 0) {
-          damageEnemy(e, 2.5 * (G.dmgMod || 1), Math.atan2(e.y - P.y, e.x - P.x), 1);
-        }
-      }
-    }
     if (typeof Cinema3D89 !== 'undefined') Cinema3D89.triggerRGB(1.0);
   },
 
@@ -38209,13 +38225,8 @@ const BladeClash91 = {
     this.hintEl = d.querySelector('#clash91-hint');
 
     const push = () => {
-      if (!this.active) return;
-      this.prog = Math.min(1, this.prog + 0.14);
-      if (typeof FX !== 'undefined' && Boss.cur) {
-        FX.spark((P.x + Boss.cur.x) * .5, (P.y + Boss.cur.y) * .5, '#ffd700', 8);
-      }
-      if (typeof AudioCinema89 !== 'undefined') AudioCinema89.sliceSfx(P.x, true, 4);
-      if (this.prog >= 1) this.win();
+      if (!this.active || REPLAY.on) return;
+      REC.act(RA.CLASH); this.push98();
     };
     window.addEventListener('pointerdown', push, true);
     window.addEventListener('keydown', e => {
@@ -38225,8 +38236,19 @@ const BladeClash91 = {
     }, true);
   },
 
+  /* one mash (live, or a recorded one in a replay) */
+  push98() {
+      if (!this.active) return;
+      this.prog = Math.min(1, this.prog + 0.14);
+      if (typeof FX !== 'undefined' && Boss.cur) {
+        FX.spark((P.x + Boss.cur.x) * .5, (P.y + Boss.cur.y) * .5, '#ffd700', 8);
+      }
+      if (typeof AudioCinema89 !== 'undefined') AudioCinema89.sliceSfx(P.x, true, 4);
+      if (this.prog >= 1) this.win();
+  },
+
   tryStart() {
-    if (!S91.on('clash91', true) || this.active || this.cd > 0 || REPLAY.on || G.state !== 'PLAY') return;
+    if (!Sim98.on('clash91') || this.active || this.cd > 0 || G.state !== 'PLAY') return;
     const b = typeof Boss !== 'undefined' && Boss.cur;
     if (!b || b.dying > 0 || b.stag > 0) return;
     if (Math.hypot(P.x - b.x, P.y - b.y) > (b.r || 36) + 74) return;
@@ -38236,6 +38258,7 @@ const BladeClash91 = {
     this.t = 0;
     this.cd = 18;
     const L = s => (typeof lt === 'function' ? lt(s) : s);
+    if (REPLAY.fast) return;
     this.lblEl.textContent = L('BLADE CLASH!');
     this.hintEl.textContent = L('MASH CLICK / SPACE!');
     this.el.style.display = 'flex';
@@ -38262,8 +38285,12 @@ const BladeClash91 = {
     }
   },
 
+  /* v98: the drawing side only (the duel itself runs in simStep) */
   tick(rd) {
-    const dt = Math.min(0.05, rd || 0.016);
+    if (this.el && !this.active && this.el.style.display !== 'none') this.el.style.display = 'none';
+    if (this.active && this.fillEl) this.fillEl.style.width = (this.prog * 100).toFixed(1) + '%';
+  },
+  simStep(dt) {
     if (this.cd > 0) this.cd = Math.max(0, this.cd - dt);
     if (!this.active) return;
     const b = Boss.cur;
@@ -38276,10 +38303,7 @@ const BladeClash91 = {
     // Boss pushes back steadily
     this.prog = Math.max(0, this.prog - dt * 0.30);
     G.slowT = 0.12; G.slowK = 0.18;
-    if (this.fillEl) this.fillEl.style.width = (this.prog * 100).toFixed(1) + '%';
-    if (Math.random() < 0.45 && typeof FX !== 'undefined') {
-      FX.spark((P.x + b.x) * .5, (P.y + b.y) * .5, '#ffd700', 2);
-    }
+    if (!REPLAY.fast && typeof FX !== 'undefined' && (TICK.n & 1)) FX.spark((P.x + b.x) * .5, (P.y + b.y) * .5, '#ffd700', 2);
     if (this.t >= this.dur || this.prog <= 0) {
       // Draw / Knockback if player didn't finish in time
       this.active = false;
@@ -38307,37 +38331,42 @@ const SetPieces91 = {
   },
 
   reset() {
-    this.nextT = 20 + Math.random() * 10;
-    this.cur = null;
+    this.nextT = null; // (rolled on the first step of the run, once the run's dice are seeded)
+    this.cur = null; this.shown = null;
     if (this.bannerEl) this.bannerEl.style.display = 'none';
   },
 
+  /* v98: the picture: banner and 3D light follow the current event */
   tick(rd) {
-    if (!S91.on('events91', true) || CALM || G.state !== 'PLAY' || REPLAY.on || G.mode === 'puzzle' || G.mode === 'dojo') {
-      if (this.bannerEl) this.bannerEl.style.display = 'none';
-      return;
-    }
-    const dt = Math.min(0.05, rd || 0.016);
+    const ev = this.cur;
+    if (!ev || G.state !== 'PLAY' || CALM) { if (this.bannerEl && this.bannerEl.style.display !== 'none') this.bannerEl.style.display = 'none'; this.shown = ev; return; }
     this.ensureDOM();
-
+    if (this.shown !== ev) {
+      this.shown = ev; const L = s => (typeof lt === 'function' ? lt(s) : s), type = ev.type;
+      this.bannerEl.textContent = '⚡ ' + (type === 'tunnel' ? L('NEON TUNNEL BLACKOUT') : type === 'laser' ? L('LASER GATEWAY AHEAD') : L('PARALLEL EXPRESS!'));
+      this.bannerEl.style.borderColor = type === 'laser' ? '#ff0844' : type === 'tunnel' ? '#7b61ff' : '#00f2fe';
+      this.bannerEl.style.display = 'block';
+    }
+    if (ev.t > 2.2 && this.bannerEl.style.display !== 'none') this.bannerEl.style.display = 'none';
+    if (ev.type === 'tunnel' && typeof R3 !== 'undefined' && R3.hemi) R3.hemi.intensity = 0.45 * (1 - Math.sin(Math.min(1, ev.t / ev.d) * Math.PI) * 0.78);
+  },
+  /* v98: the rule, in the simulation step */
+  simStep(dt) {
+    if (!Sim98.on('events91') || G.state !== 'PLAY' || G.mode === 'puzzle' || G.mode === 'dojo') return;
+    if (this.nextT == null) this.nextT = 20 + R.f() * 10;
     if (!this.cur) {
       this.nextT -= dt;
-      if (this.nextT <= 0 && (!Boss.cur)) {
+      const busy = typeof window.__V96 !== 'undefined' && window.__V96.TrackEvents96 && window.__V96.TrackEvents96.cur; // (one rail event at a time)
+      if (this.nextT <= 0 && !Boss.cur && !busy) {
         const types = ['tunnel', 'laser', 'express'];
-        const type = types[(Math.random() * types.length) | 0];
+        const type = types[(R.f() * types.length) | 0];
         this.cur = { type, t: 0, d: type === 'tunnel' ? 7.5 : type === 'laser' ? 4.2 : 5.0, y: -40, phased: false };
-        const L = s => (typeof lt === 'function' ? lt(s) : s);
-        const msg = type === 'tunnel' ? L('NEON TUNNEL BLACKOUT') : type === 'laser' ? L('LASER GATEWAY AHEAD') : L('PARALLEL EXPRESS!');
-        this.bannerEl.textContent = '⚡ ' + msg;
-        this.bannerEl.style.borderColor = type === 'laser' ? '#ff0844' : type === 'tunnel' ? '#7b61ff' : '#00f2fe';
-        this.bannerEl.style.display = 'block';
       }
       return;
     }
 
     const ev = this.cur;
     ev.t += dt;
-    if (ev.t > 2.2) this.bannerEl.style.display = 'none';
 
     // Laser Gate sweep physics + stylish Phase-Through bonus
     if (ev.type === 'laser') {
@@ -38354,17 +38383,10 @@ const SetPieces91 = {
       }
     }
 
-    // Tunnel ambient dimming in 3D
-    if (ev.type === 'tunnel' && typeof R3 !== 'undefined' && R3.hemi) {
-      const k = Math.sin(Math.min(1, ev.t / ev.d) * Math.PI);
-      R3.hemi.intensity = 0.45 * (1 - k * 0.78);
-    }
-
     if (ev.t >= ev.d) {
       if (typeof R3 !== 'undefined' && R3.hemi) R3.hemi.intensity = 0.45;
       this.cur = null;
-      this.nextT = 24 + Math.random() * 14;
-      this.bannerEl.style.display = 'none';
+      this.nextT = 24 + R.f() * 14;
     }
   },
 
@@ -38421,22 +38443,23 @@ const Awakened91 = {
   active: false,
   dashCount: 0,
   reset() { this.active = false; this.dashCount = 0; },
-  check() {
-    if (!S91.on('awaken91', true) || this.active || G.state !== 'PLAY') return;
+  check() { }, // (v98: moved to simStep, the simulation step)
+  simStep() {
+    if (!Sim98.on('awaken91') || this.active || G.state !== 'PLAY') return;
     if ((G.combo | 0) >= 20) {
       this.active = true;
-      if (typeof FX !== 'undefined') {
+      if (typeof FX !== 'undefined' && !REPLAY.fast) {
         FX.call(typeof lt === 'function' ? lt('AWAKENED BLADE!') : 'AWAKENED BLADE!', '#ffd700', 3, 28);
         FX.ring(P.x, P.y, 180, '#ffd700', 6);
       }
-      if (typeof Cinema3D89 !== 'undefined') {
+      if (typeof Cinema3D89 !== 'undefined' && !REPLAY.fast) {
         Cinema3D89.flash(P.x, P.y, '#ffd700', 850, 0.35);
         Cinema3D89.triggerRGB(0.7);
       }
     }
   },
   onSlash() {
-    if (!this.active || REPLAY.fast) return;
+    if (!this.active || !Sim98.on('awaken91')) return;
     this.dashCount++;
     if (this.dashCount % 3 === 0 && typeof EN !== 'undefined') {
       // Awakened chain-lightning burst to nearest enemy!
@@ -38478,10 +38501,11 @@ const ShadowRival91 = {
   rival: null,
   spawnedThisRun: false,
   timer: 35,
-  reset() { this.rival = null; this.spawnedThisRun = false; this.timer = 32 + Math.random() * 14; },
-  tick(rd) {
-    if (!S91.on('rival91', true) || G.state !== 'PLAY' || REPLAY.on || G.mode === 'puzzle' || G.mode === 'dojo') return;
-    const dt = Math.min(0.05, rd || 0.016);
+  reset() { this.rival = null; this.spawnedThisRun = false; this.timer = null; },
+  tick() { }, // (v98: moved to simStep, the simulation step)
+  simStep(dt) {
+    if (!Sim98.on('rival91') || G.state !== 'PLAY' || G.mode === 'puzzle' || G.mode === 'dojo') return;
+    if (this.timer == null) this.timer = 32 + R.f() * 14;
     if (this.rival) {
       if (!this.rival.alive) {
         this.rival = null;
@@ -38556,6 +38580,7 @@ const DojoLab91 = {
     };
   },
 
+  simStep() { if (this.infOD && !REPLAY.on && G.mode === 'dojo' && G.state === 'PLAY') { G.od = 100; P.ch = P.maxCh; } },
   recordDmg(amt) {
     if (G.mode !== 'dojo' || !(amt > 0)) return;
     const now = performance.now();
@@ -38568,7 +38593,6 @@ const DojoLab91 = {
     if (!show) { if (this.el) this.el.style.display = 'none'; return; }
     this.ensureDOM();
     this.el.style.display = 'flex';
-    if (this.infOD && typeof G !== 'undefined') { G.od = 100; P.ch = P.maxCh; }
     const now = performance.now();
     while (this.dmgLog.length && now - this.dmgLog[0][0] > 3000) this.dmgLog.shift();
     let sum = 0;
@@ -38839,7 +38863,7 @@ const Synergies92 = {
   },
 
   step(dt) {
-    if (!S92.on('syn92', true) || G.state !== 'PLAY' || REPLAY.on) {
+    if (!Sim98.on('syn92') || G.state !== 'PLAY') {
       if (this.hudEl) this.hudEl.style.display = 'none';
       return;
     }
@@ -38920,10 +38944,10 @@ const Synergies92 = {
   },
 
   onKill() {
-    if (!this.active.vamp) return;
+    if (!this.active.vamp || !simV(98)) return;
     this.vampKills++;
-    if (this.vampKills % 6 === 0 && P.hp < P.mhp) {
-      P.hp = Math.min(P.mhp, P.hp + 1);
+    if (this.vampKills % 6 === 0 && P.hp < P.maxHp) { // (v98: maxHp; P.mhp does not exist, so it never healed)
+      P.hp = Math.min(P.maxHp, P.hp + 1);
       if (typeof FX !== 'undefined') {
         FX.text(P.x, P.y - 38, typeof lt === 'function' ? lt('VAMPIRE +1 SHIELD') : 'VAMPIRE +1 SHIELD', '#ff0844', 14, 1);
         FX.ring(P.x, P.y, 110, '#ff0844', 5);
@@ -38932,7 +38956,7 @@ const Synergies92 = {
   },
 
   onParry() {
-    if (!this.active.chrono) return;
+    if (!this.active.chrono || !simV(98)) return;
     this.freezeT = 2.4;
     if (typeof FX !== 'undefined') {
       FX.text(P.x, P.y - 42, typeof lt === 'function' ? lt('CHRONO NOVA!') : 'CHRONO NOVA!', '#c45bff', 15, 1);
@@ -38941,7 +38965,7 @@ const Synergies92 = {
   },
 
   onSlash() {
-    if (!this.active.overclock || this.mines.length >= 4) return;
+    if (!this.active.overclock || this.mines.length >= 4 || !simV(98)) return;
     this.mines.push({ x: P.x, y: P.y, t: 0, d: 2.2 });
   },
 
@@ -38995,7 +39019,7 @@ const SquadAI92 = {
 
   step(dt) {
     this.links.length = 0;
-    if (!S92.on('squad92', true) || G.state !== 'PLAY' || REPLAY.on || typeof EN === 'undefined') return;
+    if (!Sim98.on('squad92') || G.state !== 'PLAY' || typeof EN === 'undefined') return;
     // Clear previous frame flags
     for (let i = 0; i < EN.n; i++) {
       const e = EN.a[i];
@@ -39074,6 +39098,7 @@ const HeatPact92 = {
   btnEl: null, pillEl: null, modalEl: null,
 
   getMap() {
+    if (REPLAY.on) return (REPLAY.hdr && REPLAY.hdr.x98 && REPLAY.hdr.x98.heat) || {}; // (v98: a replay uses the recorded pacts)
     const s = Store && Store.data && Store.data.settings;
     if (!s) return {};
     if (!s.heat92 || typeof s.heat92 !== 'object') s.heat92 = {};
@@ -39147,20 +39172,21 @@ const HeatPact92 = {
   },
 
   onRunStart() {
+    if (!simV(98)) return;
     const m = this.getMap();
     const h = this.totalHeat();
     if (h > 0 && typeof G !== 'undefined') {
       G.scoreMul = (G.scoreMul || 1) * this.scoreMul();
-      if (m.fragile && P && P.mhp > 1) {
-        P.mhp = Math.max(1, P.mhp - 1);
-        P.hp = Math.min(P.hp, P.mhp);
+      if (m.fragile && P && P.maxHp > 1) { // (v98: maxHp; P.mhp does not exist)
+        P.maxHp = Math.max(1, P.maxHp - 1);
+        P.hp = Math.min(P.hp, P.maxHp);
       }
     }
   },
 
   step(dt) {
     const m = this.getMap();
-    if (G.state !== 'PLAY' || REPLAY.on) return;
+    if (G.state !== 'PLAY' || !simV(98)) return;
     if (m.bulletStorm && typeof BU !== 'undefined') {
       for (let i = 0; i < BU.n; i++) {
         const b = BU.a[i];
@@ -39374,7 +39400,7 @@ const CloudReady92 = {
     spawnEnemy = function (t, x, y, elite) {
       try {
         const m = HeatPact92.getMap();
-        if (m.doubleElite && !elite && G.state === 'PLAY' && Math.random() < 0.35) elite = true;
+        if (m.doubleElite && !elite && G.state === 'PLAY' && simV(98) && R.f() < 0.35) elite = true;
       } catch (e) {}
       return se92(t, x, y, elite);
     };
@@ -41129,7 +41155,7 @@ const StoryOverhaul95 = {
   },
   maybeTriggerEnding(b) {
     if (!b || !S95.on('story95', true) || G.mode !== 'story' || REPLAY.on || this.choiceOpen) return;
-    if (!['shogun', 'genesis', 'izanami', 'prime', 'renull', 'otakemaru'].includes(b.id)) return;
+    if (b.id !== 'genesis' || (Store.data.settings && Store.data.settings.endingTitle95)) return; // (v98: the ending is DEUS EX KUROGANE's, chosen once)
     this.choiceOpen = true;
     setTimeout(() => this.openChoiceModal(b), 1650);
   },
@@ -41229,9 +41255,9 @@ const StudioAudio95 = {
     const a = new Audio();
     a.src = src;
     a.loop = true;
-    a.preload = 'auto';
+    a.preload = fromUser ? 'auto' : 'metadata'; // (v98: a track in the folder downloads when it first plays, not all ten at boot)
     a.volume = 0;
-    a.addEventListener('canplaythrough', () => { this.loaded[id] = fromUser ? 'saved' : 'file'; }, { once: true });
+    a.addEventListener(fromUser ? 'canplaythrough' : 'loadedmetadata', () => { this.loaded[id] = fromUser ? 'saved' : 'file'; }, { once: true });
     a.addEventListener('error', () => { if (!fromUser) delete this.loaded[id]; });
     this.players[id] = a;
     if (fromUser) this.loaded[id] = 'saved';
@@ -41239,8 +41265,14 @@ const StudioAudio95 = {
 
   boot() {
     this.initDB();
-    // Try loading local ./audio/*.mp3 files automatically (silently falls back to synth if not present yet)
-    for (const sl of this.SLOTS) this.attachTrack(sl.id, sl.file, false);
+    // v98: the folder's tracks are the ones listed in audio/tracks.json (no blind requests for missing files);
+    // without that list (a file:// copy) every slot is tried as before. Missing ones fall back to the synth music.
+    const tryAll = () => { for (const sl of this.SLOTS) if (!this.players[sl.id]) this.attachTrack(sl.id, sl.file, false); };
+    if (location.protocol === 'file:') tryAll();
+    else fetch('audio/tracks.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).then(list => {
+      if (!Array.isArray(list)) { tryAll(); return; }
+      for (const f of list) { const sl = this.SLOTS.find(q => q.file === 'audio/' + f || q.id + '.mp3' === f); if (sl && !this.players[sl.id]) this.attachTrack(sl.id, sl.file, false); }
+    }).catch(tryAll);
     const unlock = () => { this.unlocked = true; };
     window.addEventListener('pointerdown', unlock, { once: true });
     window.addEventListener('keydown', unlock, { once: true });
@@ -41426,9 +41458,9 @@ const StudioAudio95 = {
       const ap95 = R3.animPet.bind(R3);
       R3.animPet = function (pg, t, mv) { const r = ap95(pg, t, mv); try { PetForge95.tick(pg, t, mv); } catch (e) {} return r; };
     }
-    if (R3.sync) {
-      const sy95 = R3.sync.bind(R3);
-      R3.sync = function (rd) { const r = sy95(rd); try { BossEnrage95.tick(rd, performance.now() * 0.001); } catch (e) {} return r; };
+    if (R3.render) { // (v98: R3 has no sync(); its frame is render())
+      const sy95 = R3.render.bind(R3);
+      R3.render = function (rd) { const r = sy95(rd); try { BossEnrage95.tick(rd, performance.now() * 0.001); } catch (e) {} return r; };
     }
   }
 
@@ -41461,9 +41493,9 @@ const StudioAudio95 = {
     };
   }
 
-  if (typeof useOD === 'function') {
-    const od95 = useOD;
-    useOD = function () {
+  if (typeof overdrive === 'function') { // (v98: overdrive(); there is no useOD)
+    const od95 = overdrive;
+    overdrive = function () {
       const prev = typeof G !== 'undefined' ? G.odT : 0;
       const r = od95.apply(this, arguments);
       try { if (typeof G !== 'undefined' && G.odT > prev) StoryOverhaul95.onOverdriveUse(); } catch (e) {}
@@ -41497,6 +41529,71 @@ const StudioAudio95 = {
   }
 }
 
+
+/* ==========================================================================
+   v98 · RULES THAT REPLAY. The systems added in 89-97 (blade clash, rail
+   events, the shadow rival, the awakened blade, synergies, squads, heat pacts,
+   the launcher, roof props, armor break...) are simulation rules now:
+   · they run in the fixed simulation step, never once per drawn frame
+   · their dice roll through R (the run's seeded random), never Math.random
+   · their settings are taken once when a run begins and recorded in the replay
+     header (x98), so a replay uses the recorded ones, not the viewer's
+   · the keys they read are recorded actions: the launcher [F] (LAUNCH), a
+     blade-clash mash (CLASH) and the WASD move mask (MOVE0-MOVE0+15)
+   · they apply to runs recorded in 98 or later (simV(98)): older replays
+     play back with the rules they were recorded under
+   The title screen's own buttons and music get a menu loop of their own:
+   HUD.draw runs only in a run.
+   ========================================================================== */
+Object.assign(HE, {"v98.0 — FAIR, FIXED & REPLAYABLE": "v98.0 — הוגן, מתוקן וניתן לשחזור", "A full code review and fix pass: replays play back exactly again (the systems added in 89-97 now run in the fixed simulation step with the run's own dice, and [F], WASD and blade-clash mashing are recorded); the roof props, rail events, boss armor break and finisher camera actually run now; the launcher [F] costs a dash charge and its damage fits the game's scale (no more enemies left alive at negative health); the 1.6x damage on broken boss armor is real; the parry reward comes from a real parry; Glass and no-parry contracts hold; replays no longer pay out rewards; the final choice appears once, after DEUS EX KUROGANE; the title screen keeps its soundtrack, chips, heat pact and login buttons; the vampire synergy and the fragile pact work; no more missing-track requests.": "סבב בדיקת קוד ותיקונים מלא: ההקלטות החוזרות מתנגנות שוב בדיוק (המערכות שנוספו בגרסאות 89–97 רצות עכשיו בצעד הסימולציה הקבוע עם הקוביות של הריצה, ו־[F], WASD וההקשות ב־Blade Clash נרשמים); האובייקטים על הגג, אירועי המסילה, שבירת שריון הבוסים ומצלמת ה־Finisher באמת פועלים עכשיו; השיגור [F] עולה מטען דאש והנזק שלו מותאם לסקאלה של המשחק (אין יותר אויבים חיים עם חיים שליליים); נזק ×1.6 על שריון שבור אמיתי; תגמול הפארי מגיע מפארי אמיתי; מצב Glass וחוזה בלי פארי נשמרים; צפייה בהקלטה לא נותנת יותר פרסים; הבחירה האחרונה מופיעה פעם אחת, אחרי DEUS EX KUROGANE; במסך הבית נשארים כפתורי הפסקול, הצ'יפים, חוזי החום וההתחברות; סינרגיית הערפד וחוזה השבירות עובדים; אין יותר בקשות לשירים שלא קיימים."});
+const Sim98 = {
+  KEYS: ['clash91', 'events91', 'rival91', 'awaken91', 'cutin91', 'syn92', 'squad92', 'air96', 'props96', 'events96', 'armor96'],
+  cur: null, steps: [], menu: [],
+  live(k) { try { const s = Store.data.settings; return s[k] == null ? true : !!s[k]; } catch (e) { return true; } },
+  liveChips() { try { const W = window.__V96 && window.__V96.WeaponChips96; return W ? W.data().eq.slice(0, 2) : []; } catch (e) { return []; } },
+  snap() { const f = {}; for (const k of this.KEYS) f[k] = this.live(k) ? 1 : 0; let heat = {}; try { heat = Object.assign({}, HeatPact92.getMap()); } catch (e) { } return { f, chips: this.liveChips(), heat }; },
+  x() { return REPLAY.on ? (REPLAY.hdr && REPLAY.hdr.x98) || null : this.cur; },
+  on(k) { if (!simV(98)) return false; const x = this.x(); return x ? !!x.f[k] : this.live(k); },
+  chip(id) { if (!simV(98)) return false; const x = this.x(); return (x ? x.chips : this.liveChips()).indexOf(id) >= 0; }
+};
+RA.LAUNCH = 40; RA.CLASH = 41; RA.MOVE0 = 42; // (42-57: the WASD move mask 0-15; none of these carry a payload. 17 is RA.BEAT)
+{
+  const db98 = Director.begin.bind(Director);
+  Director.begin = function () { if (!REPLAY.on) Sim98.cur = Sim98.snap(); PCMaster90.mask98 = 0; return db98.apply(this, arguments); };
+  const h98 = REC.header.bind(REC);
+  REC.header = function (mode) { const h = h98(mode); try { h.x98 = Sim98.cur || Sim98.snap(); } catch (e) { errLog(e); } return h; };
+  const ap98 = REPLAY.apply.bind(REPLAY);
+  REPLAY.apply = function (e) {
+    const c = e[1] & 63;
+    if (c === RA.LAUNCH) { const A = window.__V96 && window.__V96.AirCombat96; if (A) A.act(); return; }
+    if (c === RA.CLASH) { BladeClash91.push98(); return; }
+    if (c >= RA.MOVE0 && c < RA.MOVE0 + 16) { PCMaster90.mask98 = c - RA.MOVE0; return; }
+    return ap98(e);
+  };
+  const s98 = sim;
+  sim = function (dt, S) {
+    const r = s98(dt, S);
+    try {
+      if (simV(98) && G.state === 'PLAY') {
+        BladeClash91.simStep(S || dt); // (the clash runs on the unscaled step: it slows the world itself)
+        SetPieces91.simStep(dt); Awakened91.simStep(); ShadowRival91.simStep(dt);
+        for (const f of Sim98.steps) f(dt, S);
+      }
+      DojoLab91.simStep();
+    } catch (e) { errLog(e); }
+    return r;
+  };
+  // the final choice holds the game: no pause menu or resume behind it
+  const tp98 = Flow.togglePause.bind(Flow);
+  Flow.togglePause = function () { if (typeof StoryOverhaul95 !== 'undefined' && StoryOverhaul95.choiceOpen) return; return tp98.apply(this, arguments); };
+  // the menu loop: title-screen buttons, the soundtrack engine and badges (HUD.draw does it during a run)
+  let mT = performance.now();
+  setInterval(() => {
+    if (G.state === 'PLAY' || G.state === 'PAUSE' || G.state === 'PERK') { mT = performance.now(); return; }
+    const now = performance.now(), rd = Math.min(.25, (now - mT) / 1000); mT = now;
+    for (const f of [() => HeatPact92.tickUI(), () => CloudReady92.tickUI(), () => Auth93.tickUI(), () => StudioAudio95.step(rd), () => StudioAudio95.tickUI()].concat(Sim98.menu)) { try { f(rd); } catch (e) { } }
+  }, 100);
+}
 </script>
 <script src="js/v96-overdrive.js"></script>
 <script src="js/v97-polish.js"></script>
