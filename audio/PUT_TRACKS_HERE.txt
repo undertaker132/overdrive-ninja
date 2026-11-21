@@ -1,12 +1,25 @@
-OVERDRIVE: CYBER SLASH (v95.0) — Studio Soundtrack Folder
-=========================================================
-Drop your downloaded studio tracks here with these exact filenames:
+OVERDRIVE: CYBER SLASH — Studio Soundtrack Folder
+=================================================
+1. Drop your tracks here with these exact filenames:
 
-  boss.mp3       -> Track #1 (Boss Battle — Anime Cyber-Rock with Vocals)
-  overdrive.mp3  -> Track #2 (Overdrive Surge — Cyber-Industrial Metal with Vocals)
-  combat1.mp3    -> Track #3 (Neo-Edo Combat Run — Cyber-Tech House with Vocals)
-  menu.mp3       -> Track #4 (Optional Title/Menu theme)
-  shogun.mp3     -> Track #5 (Optional Final Boss theme)
+  boss.mp3       -> Track #1  (Boss Battle)
+  overdrive.mp3  -> Track #2  (Overdrive Surge)
+  combat1.mp3    -> Track #3  (Neo-Edo Combat Run)
+  menu.mp3       -> Track #4  (Title / Menu theme)
+  shogun.mp3     -> Track #5  (Final Boss theme)
+  combat2.mp3    -> Track #6  (Undercity Run)
+  rival.mp3      -> Track #7  (Rival & Blade Clash)
+  storm.mp3      -> Track #8  (Storm Front)
+  crates.mp3     -> Track #9  (Crate Vault & Shop)
+  ending.mp3     -> Track #10 (Story Ending & Credits)
 
-TIP: You can also click the "🎵 SOUNDTRACK" button inside the game's title screen
-to pick your downloaded audio files directly — they will be saved permanently in your browser!
+2. List the ones you added in tracks.json (in this folder), for example:
+
+  ["boss.mp3", "menu.mp3", "combat1.mp3"]
+
+   The game loads only the listed files, so it never asks the server for
+   tracks that are not there. A track starts downloading when it first plays.
+   (Opened straight from disk, file://, every slot is tried without the list.)
+
+TIP: You can also click "🎵 SOUNDTRACK" on the title screen and pick audio
+files from your device: they are saved in your browser.
