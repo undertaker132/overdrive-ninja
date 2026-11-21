@@ -1,8 +1,19 @@
-/* Overdrive: Cyber Slash — offline cache.
-   The game is one HTML file. It is served from the network when there is one (so players get
-   updates right away) and from the cache when there is not. Fonts are cached the first time they load. */
-const CACHE = 'overdrive-v98';
-const CORE = ['./', './index.html', './js/v96-overdrive.js', './js/v97-polish.js', './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon.png'];
+/* Overdrive: Cyber Slash — offline cache (v100.0 PRO Split Architecture). */
+const CACHE = 'overdrive-v103';
+const CORE = [
+  './',
+  './index.html',
+  './css/overdrive.css',
+  './js/three-r160.min.js',
+  './js/game-core.js',
+  './js/overdrive-aaa.js',
+  './manifest.webmanifest',
+  './icons/icon.svg',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-maskable-512.png',
+  './icons/apple-touch-icon.png'
+];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
@@ -19,7 +30,7 @@ self.addEventListener('fetch', e => {
   const font = url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com';
   if (url.origin !== self.location.origin && !font) return;
 
-  if (req.mode === 'navigate' || url.pathname.endsWith('/index.html')) { // network first: always the newest version when online
+  if (req.mode === 'navigate' || url.pathname.endsWith('/index.html')) {
     e.respondWith(fetch(req).then(r => { const copy = r.clone(); caches.open(CACHE).then(c => c.put('./index.html', copy)); return r; })
       .catch(() => caches.match('./index.html')));
     return;
