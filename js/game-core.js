@@ -36031,6 +36031,10 @@ RA.LAUNCH = 40; RA.CLASH = 41; RA.MOVE0 = 42; // (42-57: the WASD move mask 0-15
     } catch (e) { errLog(e); }
     return r;
   };
+  // a recycled enemy starts clean: the pool kept the last one's air height and squad flags, so a run depended on the
+  // runs before it (and its replay, which starts from a different pool, went another way)
+  const se98 = spawnEnemy;
+  spawnEnemy = function () { const e = se98.apply(this, arguments); if (e) { e._z96 = 0; e._vz96 = 0; e._aegis92 = false; e._boost92 = false; } return e; };
   // the final choice holds the game: no pause menu or resume behind it
   const tp98 = Flow.togglePause.bind(Flow);
   Flow.togglePause = function () { if (typeof StoryOverhaul95 !== 'undefined' && StoryOverhaul95.choiceOpen) return; return tp98.apply(this, arguments); };
