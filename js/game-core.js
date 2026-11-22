@@ -139,8 +139,8 @@ Math.sin = DMATH.sin; Math.cos = DMATH.cos; Math.atan = DMATH.atan; Math.atan2 =
    All tuning lives here. Logical units: the view is ~420 wide, the
    train roof (arena) is 340 wide. Speeds are units per second.
    ===================================================================== */
-const VERSION = '103.0';
-const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0', '36.0', '37.0', '38.0', '39.0', '40.0', '40.1', '41.0', '42.0', '43.0', '44.0', '45.0', '46.0', '47.0', '48.0', '49.0', '50.0', '51.0', '52.0', '53.0', '54.0', '55.0', '56.0', '57.0', '58.0', '59.0', '60.0', '61.0', '62.0', '63.0', '64.0', '65.0', '66.0', '67.0', '68.0', '69.0', '70.0', '71.0', '72.0', '73.0', '74.0', '75.0', '76.0', '77.0', '80.0', '82.0', '83.0', '84.0', '85.0', '86.0', '87.0', '88.0', '98.0', '103.0']; // (v98: replays of 89-97 are dropped, rules added then were not deterministic; 99-102 were never published) // replays recorded by these versions play back identically (arcade sim unchanged)
+const VERSION = '104.0';
+const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0', '36.0', '37.0', '38.0', '39.0', '40.0', '40.1', '41.0', '42.0', '43.0', '44.0', '45.0', '46.0', '47.0', '48.0', '49.0', '50.0', '51.0', '52.0', '53.0', '54.0', '55.0', '56.0', '57.0', '58.0', '59.0', '60.0', '61.0', '62.0', '63.0', '64.0', '65.0', '66.0', '67.0', '68.0', '69.0', '70.0', '71.0', '72.0', '73.0', '74.0', '75.0', '76.0', '77.0', '80.0', '82.0', '83.0', '84.0', '85.0', '86.0', '87.0', '88.0', '98.0', '103.0', '104.0']; // (v98: replays of 89-97 are dropped, rules added then were not deterministic; 99-102 were never published) // replays recorded by these versions play back identically (arcade sim unchanged)
 const CFG = { step: 1 / 60, maxSteps: 5, maxEnemies: 22, arenaW: 340, viewW: 420, viewH: 760 };
 let RDT = 1 / 60; // version 34: the real time of the frame being drawn. Drawing code uses it instead of a fixed 1/60, so 120-480 Hz screens animate at the right speed
 
@@ -15439,7 +15439,8 @@ const Preview = {
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 103.0
+const NEWS = [ // version 104.0
+  ["v104.0 — ONE STEP AT A TIME", "New players meet the newer systems one at a time as the story goes on: blade clash, boss armor, roof props, the launcher, rail events, squads, synergies, the awakened blade, the shadow rival and the heat pact, each with a short tip when it opens (players who already played keep everything). The HYPER BOSSES pact now works: bosses act 25% faster and have 25% more health. The daily and weekly runs remember your best attempt and send it beside you as a ghost, with the gap on screen, no connection needed. On a computer, the FPS meter stays off unless you turn it on. The home screen runs lighter on phones: about 45% more frames on a slow one. Under the hood: one source for the whole game and automatic tests on every change, which check that replays from versions 88, 98, 103 and 104 play back exactly."],
   ["v103.0 — ONE GAME, EVERY UPGRADE", "Version 102's studio sound, living hero, action camera, lock-on, 3D body, clean home and settings are merged with version 98's fixes: replays play back exactly (the new walk and the lock-on pull included), the roof props, rail events and armor break run as fair rules, the launcher [F] costs a dash charge, and the title screen keeps all its buttons."],
   ["v102.0 — STUDIO SOUND FX OVERHAUL (SLASHS, CREDITS, VICTORY & MORE)", "Brand-new multi-layered Studio Sound Design Engine (StudioSFX102) replacing retro beeps across the game: weapon-aware & combo-varied katana/heavy/fist slashes with metallic steel harmonics, crisp visceral hit & crit crunches, melodic combo-climbing kill chimes, authentic forged-steel parry & blade clashes, lush holographic credit-pickup & purchase chimes, heroic cyber-anime mission victory fanfares, escalating star chimes, bass-drop Overdrive surge, armor-shatter stagger, cinematic defeat power-down, and sleek sci-fi UI sounds — all with stereo panning and a Sound tab toggle."],
   ["v101.0 — ACTION MASTERWORK: LIVING HERO MOVEMENT, 3D ACTION CAM & 26+ UPGRADES", "Complete gameplay & animation leap: Fixed R3.render 3D sync awakening all 3D Boss Enrage, Armor Break, Destructible Props & Track Events; New 50° Action 3D Camera with smooth hero tracking, turn banking & slash zoom-punch; Living Hero Locomotion (unthrottled 360° WASD inertia, velocity-synced stride speed, dynamic pitch/roll leaning, independent legs vs. torso/head aim tracking, alive breathing/weight-shift, 4-hit alternating slash combo, Sandevistan 3D ghost silhouettes & landing crouch); Overhead Neon Maglev Gantry Arches, Holographic Sky Billboards, High-Speed Wind Streaks, Flying 3D Crescent Slash Waves, Smart 3D Lock-On Reticle, 3D Ground Aim Ring, Enemy Drop-Pod Spawn Beams, Cinematic Top Boss HP+Armor Bar, Live Blade Rank Glow, Hero Ground Charge Ring & Damage/Parry Vignette."],
@@ -32059,7 +32060,7 @@ const PCHud90 = {
     this.barEl.style.display = showBar ? 'flex' : 'none';
 
     // FPS / Frame-Time telemetry
-    const showFps = isDesk && S90.on('fps90', true) && !G.photo;
+    const showFps = isDesk && S90.on('fps90', false) /* (v104: off unless Settings > Show FPS is on, as the switch says) */ && !G.photo;
     if (showFps) {
       this.fpsAcc += (rd || 0.016);
       this.fpsCnt++;
@@ -33596,7 +33597,7 @@ const HeatPact92 = {
       rows +=
         '<div class="pact92-row ' + (on ? 'on' : '') + '">' +
           '<div><div style="font-weight:900;font-size:14px">' + L(p.name) + ' <span style="color:#ff4500">(+' + p.heat + '🔥)</span></div>' +
-          '<div style="font-size:11px;opacity:.78">' + p.desc + '</div></div>' +
+          '<div style="font-size:11px;opacity:.78">' + L(p.desc) + '</div></div>' +
           '<button data-pid="' + p.id + '">' + (on ? 'ON' : 'OFF') + '</button>' +
         '</div>';
     }
@@ -35976,7 +35977,7 @@ const StudioAudio95 = {
     };
   }
 }
-Object.assign(HE, {"v103.0 — ONE GAME, EVERY UPGRADE": "v103.0 — משחק אחד, כל השדרוגים", "Version 102's studio sound, living hero, action camera, lock-on, 3D body, clean home and settings are merged with version 98's fixes: replays play back exactly (the new walk and the lock-on pull included), the roof props, rail events and armor break run as fair rules, the launcher [F] costs a dash charge, and the title screen keeps all its buttons.": "הסאונד האולפני, הגיבור החי, מצלמת האקשן, הנעילה על מטרה, גוף התלת־ממד, מסך הבית וההגדרות החדשים של גרסה 102 שולבו עם התיקונים של גרסה 98: ההקלטות החוזרות מתנגנות בדיוק (כולל ההליכה החדשה ומשיכת הנעילה), האובייקטים על הגג, אירועי המסילה ושבירת השריון פועלים כחוקים הוגנים, השיגור [F] עולה מטען דאש, ומסך הבית שומר על כל הכפתורים."});
+Object.assign(HE, {"v104.0 — ONE STEP AT A TIME": "v104.0 — צעד אחר צעד", "New players meet the newer systems one at a time as the story goes on: blade clash, boss armor, roof props, the launcher, rail events, squads, synergies, the awakened blade, the shadow rival and the heat pact, each with a short tip when it opens (players who already played keep everything). The HYPER BOSSES pact now works: bosses act 25% faster and have 25% more health. The daily and weekly runs remember your best attempt and send it beside you as a ghost, with the gap on screen, no connection needed. On a computer, the FPS meter stays off unless you turn it on. The home screen runs lighter on phones: about 45% more frames on a slow one. Under the hood: one source for the whole game and automatic tests on every change, which check that replays from versions 88, 98, 103 and 104 play back exactly.": "שחקנים חדשים מכירים את המערכות החדשות אחת אחת לאורך הסיפור: התנגשות להבים, שריון בוסים, חפצים על הגג, המקפצה, אירועי מסילה, חוליות, סינרגיות, הלהב המתעורר, יריב הצל וברית החום, כל אחת עם טיפ קצר כשהיא נפתחת (מי שכבר שיחק שומר על הכל). ברית הבוסים ההיפר עובדת עכשיו: הבוסים פועלים מהר יותר ב-25% ויש להם 25% יותר חיים. הריצה היומית והשבועית זוכרות את הניסיון הטוב ביותר שלך ומריצות אותו לידך כרוח, עם הפער על המסך, בלי צורך בחיבור. במחשב, מד ה-FPS כבוי אלא אם מדליקים אותו. מסך הבית קל יותר בטלפונים: כ-45% יותר פריימים בטלפון חלש. מאחורי הקלעים: מקור אחד לכל המשחק ובדיקות אוטומטיות בכל שינוי, שמוודאות שהקלטות מגרסאות 88, 98, 103 ו-104 מתנגנות בדיוק.", "v103.0 — ONE GAME, EVERY UPGRADE": "v103.0 — משחק אחד, כל השדרוגים", "Version 102's studio sound, living hero, action camera, lock-on, 3D body, clean home and settings are merged with version 98's fixes: replays play back exactly (the new walk and the lock-on pull included), the roof props, rail events and armor break run as fair rules, the launcher [F] costs a dash charge, and the title screen keeps all its buttons.": "הסאונד האולפני, הגיבור החי, מצלמת האקשן, הנעילה על מטרה, גוף התלת־ממד, מסך הבית וההגדרות החדשים של גרסה 102 שולבו עם התיקונים של גרסה 98: ההקלטות החוזרות מתנגנות בדיוק (כולל ההליכה החדשה ומשיכת הנעילה), האובייקטים על הגג, אירועי המסילה ושבירת השריון פועלים כחוקים הוגנים, השיגור [F] עולה מטען דאש, ומסך הבית שומר על כל הכפתורים."});
 Object.assign(HE, {"v98.0 — FAIR, FIXED & REPLAYABLE": "v98.0 — הוגן, מתוקן וניתן לשחזור", "A full code review and fix pass: replays play back exactly again (the systems added in 89-97 now run in the fixed simulation step with the run's own dice, and [F], WASD and blade-clash mashing are recorded); the roof props, rail events, boss armor break and finisher camera actually run now; the launcher [F] costs a dash charge and its damage fits the game's scale (no more enemies left alive at negative health); the 1.6x damage on broken boss armor is real; the parry reward comes from a real parry; Glass and no-parry contracts hold; replays no longer pay out rewards; the final choice appears once, after DEUS EX KUROGANE; the title screen keeps its soundtrack, chips, heat pact and login buttons; the vampire synergy and the fragile pact work; no more missing-track requests.": "סבב בדיקת קוד ותיקונים מלא: ההקלטות החוזרות מתנגנות שוב בדיוק (המערכות שנוספו בגרסאות 89–97 רצות עכשיו בצעד הסימולציה הקבוע עם הקוביות של הריצה, ו־[F], WASD וההקשות ב־Blade Clash נרשמים); האובייקטים על הגג, אירועי המסילה, שבירת שריון הבוסים ומצלמת ה־Finisher באמת פועלים עכשיו; השיגור [F] עולה מטען דאש והנזק שלו מותאם לסקאלה של המשחק (אין יותר אויבים חיים עם חיים שליליים); נזק ×1.6 על שריון שבור אמיתי; תגמול הפארי מגיע מפארי אמיתי; מצב Glass וחוזה בלי פארי נשמרים; צפייה בהקלטה לא נותנת יותר פרסים; הבחירה האחרונה מופיעה פעם אחת, אחרי DEUS EX KUROGANE; במסך הבית נשארים כפתורי הפסקול, הצ'יפים, חוזי החום וההתחברות; סינרגיית הערפד וחוזה השבירות עובדים; אין יותר בקשות לשירים שלא קיימים."});
 
 /* ==========================================================================
@@ -36007,7 +36008,9 @@ const Sim98 = {
 RA.LAUNCH = 40; RA.CLASH = 41; RA.MOVE0 = 42; // (42-57: the WASD move mask 0-15; none of these carry a payload. 17 is RA.BEAT)
 {
   const db98 = Director.begin.bind(Director);
-  Director.begin = function () { if (!REPLAY.on) Sim98.cur = Sim98.snap(); PCMaster90.mask98 = 0; return db98.apply(this, arguments); };
+  const clean98 = e => { e._z96 = 0; e._vz96 = 0; e._aegis92 = false; e._boost92 = false; };
+  // every run starts from a clean enemy pool (what a v98 run saw as the first run after loading), whatever ran before it
+  Director.begin = function () { if (!REPLAY.on) Sim98.cur = Sim98.snap(); PCMaster90.mask98 = 0; for (let i = 0; i < EN.a.length; i++) if (EN.a[i]) clean98(EN.a[i]); return db98.apply(this, arguments); };
   const h98 = REC.header.bind(REC);
   REC.header = function (mode) { const h = h98(mode); try { h.x98 = Sim98.cur || Sim98.snap(); } catch (e) { errLog(e); } return h; };
   const ap98 = REPLAY.apply.bind(REPLAY);
@@ -36034,7 +36037,7 @@ RA.LAUNCH = 40; RA.CLASH = 41; RA.MOVE0 = 42; // (42-57: the WASD move mask 0-15
   // a recycled enemy starts clean: the pool kept the last one's air height and squad flags, so a run depended on the
   // runs before it (and its replay, which starts from a different pool, went another way)
   const se98 = spawnEnemy;
-  spawnEnemy = function () { const e = se98.apply(this, arguments); if (e) { e._z96 = 0; e._vz96 = 0; e._aegis92 = false; e._boost92 = false; } return e; };
+  spawnEnemy = function () { const e = se98.apply(this, arguments); if (e && simV(103)) clean98(e); return e; }; // v98 replays keep v98's recycled values
   // the final choice holds the game: no pause menu or resume behind it
   const tp98 = Flow.togglePause.bind(Flow);
   Flow.togglePause = function () { if (typeof StoryOverhaul95 !== 'undefined' && StoryOverhaul95.choiceOpen) return; return tp98.apply(this, arguments); };
