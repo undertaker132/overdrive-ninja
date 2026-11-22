@@ -241,7 +241,7 @@ const Flow = {
     Store.touch(); Store.flush(true); Cloud.publishStats();
     const mode = MODES.find(q => q.id === m), reach = m === 'tower' ? ltf('FLOOR {0}', Tower.floor) : m === 'highway' ? ltf('{0} M', fmtNum(Math.floor(Highway.dist))) : m === 'bossrush' || m === 'arena' ? ltf('BOSSES {0}', G.bossIdx) : m === 'timeattack' ? '90s' : ltf('CAR {0}', G.seqCar);
     const bestV = m === 'daily' ? d.best.daily : m === 'weekly' ? ii(d.weekly.scores[weekKey()]) : d.best[m];
-    const cause = !win ? deathCause() : null, notes = [{ t: ltf('+{0} CR score bonus', fmtNum(bonus)), c: 'gold' }];
+    const cause = !win ? deathCause() : null, notes = bonus > 0 ? [{ t: ltf('+{0} CR score bonus', fmtNum(bonus)), c: 'gold' }] : []; // (v105: no '+0 CR' line)
     if (m === 'tower') { notes.push({ t: ltf('+{0} SOUL SHARDS for the Tower Altar', twSh), c: 'gold' }); if (G.twEv) notes.push({ t: ltf('Event climb: {0}. Event climbs are not ranked.', lt((TOWER_EVENTS.find(q => q.id === G.twEv) || { name: '' }).name)), c: 'mute' }); const rl = RELICS.filter(r => P.perks[r.id]).map(r => lt(r.name)); if (rl.length) notes.push({ t: lt('RELICS') + ': ' + rl.join(', '), c: 'mute' }); }
     { const fc = FChal.note(); if (fc) notes.unshift(fc); }
     if (cause) notes.push({ t: cause[0] + ' · ' + lt('TIP') + ': ' + cause[1], c: 'mute' });

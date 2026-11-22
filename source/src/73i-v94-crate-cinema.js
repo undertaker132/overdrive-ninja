@@ -754,7 +754,7 @@ const CrateCinema94 = {
       const r = cr94.apply(this, arguments);
       try {
         const b = this.bag(), n = Math.min(5, b.crates | 0);
-        const hero = document.querySelector('#cx43Box .cr-hero .col');
+        const hero = document.querySelector('#cx43Box .cr-neon .col') || document.querySelector('#cx43Box .cr-hero .col'); // (v105: the card that holds these crates)
         if (hero && n >= 2 && !hero.querySelector('#bMulti94')) {
           const mb = el('button', 'btn', ltf('OPEN ×{0} (MULTI-SLASH)', n));
           mb.id = 'bMulti94';
@@ -762,7 +762,7 @@ const CrateCinema94 = {
           mb.style.color = '#ffb8f0';
           mb.onclick = () => CrateCinema94.openMulti(n);
           const firstBtn = hero.querySelector('button');
-          if (firstBtn && firstBtn.nextSibling) hero.insertBefore(mb, firstBtn.nextSibling);
+          const row = firstBtn && firstBtn.closest('.row'); mb.style.width = '100%'; if (row) row.parentNode.insertBefore(mb, row.nextSibling); // (v105: its own line under OPEN / BUY)
           else hero.appendChild(mb);
         }
       } catch (e) { errLog(e); }
