@@ -119,17 +119,35 @@ The game runs straight in the browser and can also be installed as a real app (h
 
 ## For the developer
 
-The whole game is one self-contained file, [`index.html`](index.html) (no dependencies to install). It is built from [`source/`](source): `python3 source/build.py` writes `index.html` and moves the offline cache in `sw.js` to the new version. Around it:
+The game is a static page: [`index.html`](index.html) loads `css/overdrive.css`, `js/three-r160.min.js` (3D), `js/game-core.js` (the game) and `js/overdrive-aaa.js` (the v96+ upgrade modules). Nothing to install to play or to build.
+
+**Change the game:** edit the files in `source/`, then run `python3 source/build.py`. It joins them into the two scripts in `js/` and names the offline cache in `sw.js` after the version (`VERSION` in `source/src/10-config.js`). `python3 source/build.py --check` only checks that the scripts match the source. `--artifact DIR` also writes the one-page copy used on claude.ai.
+
+**Test it:** `node tests/run.js` (needs Node and Playwright with Chromium; ESLint for the lint step). It runs:
+- `replay`: bot runs in every mode that records replays, each compared tick by tick with its own replay;
+- `compat`: replays recorded on older versions (`tests/fixtures/`, made with `node tests/record-fixture.js <build folder> <out.json>`) must give the same score on this one;
+- `sweep`: every arcade mode and one story stage per chapter played in real time in 2D and 3D, with no errors allowed.
+
+`node source/lint.js` is the code check. GitHub runs all of it on every push and pull request (`.github/workflows/tests.yml`).
+
+**Replays and old versions:** a rule that changes the simulation must be gated with `simV(<version>)`, so replays recorded before it still play the old way, and that version must be listed in `SIM_COMPAT` (`source/src/10-config.js`). Add a fixture recorded on the new version to `tests/fixtures/` when you release.
 
 | File | What it does |
 |---|---|
-| `source/` | the game's source: `src/` (one file per system, joined in name order), `i18n/` (translations), `build.py`, `lint.js` (ESLint check) |
+| `source/src/` | the core game, one file per system, joined in name order into `js/game-core.js` |
+| `source/aaa/` | the upgrade modules (v96 and later), joined in name order into `js/overdrive-aaa.js` |
+| `source/build.py`, `source/lint.js` | the build and the ESLint check |
+| `tests/` | the browser tests and the recorded replays |
+| `lang/` | Arabic and Russian dictionaries (edited in place, loaded only when chosen) |
+| `audio/` | optional music tracks (`tracks.json` lists them; see `PUT_TRACKS_HERE.txt`) |
+| `css/`, `js/` | the stylesheet and the built scripts |
 | `manifest.webmanifest` | makes the page installable (name, icons, full screen) |
 | `sw.js` | offline cache: network first for the game, cache for icons and fonts |
 | `icons/` | app icons (`icon.svg` is the source) |
 | `.github/ISSUE_TEMPLATE/` | the review, bug and idea forms |
 | `desktop/` | the desktop app (Electron) for Windows, macOS and Linux |
 | `.github/workflows/release.yml` | builds the desktop apps and the itch.io web zip |
+| `.github/workflows/tests.yml` | runs the build check, lint and browser tests on every push |
 | `docs/STORE.md` | store page text, tags, screenshot list and how to publish on itch.io / Steam |
 
 **Publishing (one time):** repository **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main` / `(root)` → Save.**

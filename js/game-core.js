@@ -36007,7 +36007,9 @@ const Sim98 = {
 RA.LAUNCH = 40; RA.CLASH = 41; RA.MOVE0 = 42; // (42-57: the WASD move mask 0-15; none of these carry a payload. 17 is RA.BEAT)
 {
   const db98 = Director.begin.bind(Director);
-  Director.begin = function () { if (!REPLAY.on) Sim98.cur = Sim98.snap(); PCMaster90.mask98 = 0; return db98.apply(this, arguments); };
+  const clean98 = e => { e._z96 = 0; e._vz96 = 0; e._aegis92 = false; e._boost92 = false; };
+  // every run starts from a clean enemy pool (what a v98 run saw as the first run after loading), whatever ran before it
+  Director.begin = function () { if (!REPLAY.on) Sim98.cur = Sim98.snap(); PCMaster90.mask98 = 0; for (let i = 0; i < EN.a.length; i++) if (EN.a[i]) clean98(EN.a[i]); return db98.apply(this, arguments); };
   const h98 = REC.header.bind(REC);
   REC.header = function (mode) { const h = h98(mode); try { h.x98 = Sim98.cur || Sim98.snap(); } catch (e) { errLog(e); } return h; };
   const ap98 = REPLAY.apply.bind(REPLAY);
@@ -36034,7 +36036,7 @@ RA.LAUNCH = 40; RA.CLASH = 41; RA.MOVE0 = 42; // (42-57: the WASD move mask 0-15
   // a recycled enemy starts clean: the pool kept the last one's air height and squad flags, so a run depended on the
   // runs before it (and its replay, which starts from a different pool, went another way)
   const se98 = spawnEnemy;
-  spawnEnemy = function () { const e = se98.apply(this, arguments); if (e) { e._z96 = 0; e._vz96 = 0; e._aegis92 = false; e._boost92 = false; } return e; };
+  spawnEnemy = function () { const e = se98.apply(this, arguments); if (e && simV(103)) clean98(e); return e; }; // v98 replays keep v98's recycled values
   // the final choice holds the game: no pause menu or resume behind it
   const tp98 = Flow.togglePause.bind(Flow);
   Flow.togglePause = function () { if (typeof StoryOverhaul95 !== 'undefined' && StoryOverhaul95.choiceOpen) return; return tp98.apply(this, arguments); };

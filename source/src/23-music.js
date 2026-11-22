@@ -37,7 +37,24 @@ const VOX = {
   gld: { o: [['sawtooth', 0, .6, 1], ['square', 5, .3, 1]], f0: 3200, f1: 2400, q: 1.4, a: .006, s: .85, r: .12, dist: 1 } // distorted lead guitar
 };
 /* drum keys: k kick, s snare, c clap, h hat, o open hat, t taiko, m tom, r shime, p metal, sh shaker */
+/* v98: songs written as 16-step semitone loops (v89's SANDEVISTAN PULSE, BLADE OF ETERNITY: drums/bass/lead/arp
+   arrays) become the engine's own format: notes to scale degrees, the lead repeated over the 64-step phrase, the
+   arpeggio as a second lead. Before this they threw in mkTrack and none of them was ever added. */
+function conv98(T) {
+  const scn = { min: 'aeo', minor: 'aeo', hir: 'hira', major: 'maj' }[T.sc] || (SCALES[T.sc] ? T.sc : 'aeo'), sc = SCALES[scn];
+  const deg = v => { const o = Math.floor(v / 12), r = v - 12 * o; let bi = 0, bd = 99; sc.forEach((x, i) => { const d = Math.abs(x - r); if (d < bd) { bd = d; bi = i; } }); return bi + o * sc.length; };
+  const tb = T.timbre || {}, vox = (w, d) => w === 'square' ? 'pulse' : w === 'triangle' ? 'tri' : w === 'sine' ? 'sub' : d;
+  const line = (arr, every) => { const n = []; for (let rep = 0; rep < 64; rep += arr.length * every) arr.forEach((v, i) => { if (v != null && v >= 0) n.push([rep + i * every, deg(v), every]); }); return n; };
+  const dr = T.drums || {};
+  return { name: T.name, style: T.style, bpm: T.bpm, root: T.root, sc: scn, prog: [0], form: ['A', 'A', 'B', 'B'],
+    dr: { A: Object.assign({}, dr), B: Object.assign({}, dr), F: Object.assign({}, dr) },
+    bass: { pat: (T.bass || []).map(v => v == null || v < 0 ? null : v), type: vox(tb.b, 'bass'), v: .09, len: 1.2 },
+    pad: { type: 'pad', oct: 1, v: .02 },
+    lead: { type: vox(tb.l, 'lead'), oct: 2, v: .035, sec: 'AB', n: line(T.lead || [], 1) },
+    lead2: T.arp ? { type: 'arp', oct: 3, v: .016, sec: 'B', n: line(T.arp, 2) } : undefined, col: T.col };
+}
 function mkTrack(T) {
+  if (T && (T.drums || Array.isArray(T.lead))) T = conv98(T);
   for (const sec in T.dr) { const D = T.dr[sec]; for (const k in D) D[k] = dpat(D[k]); }
   for (const key of ['lead', 'lead2']) { const L = T[key]; if (!L) continue; L.at = []; for (let i = 0; i < 64; i++) L.at.push(null); for (const n of L.n) { const i = n[0] & 63; (L.at[i] || (L.at[i] = [])).push(n); } }
   return T;

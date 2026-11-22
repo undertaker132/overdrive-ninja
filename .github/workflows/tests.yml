@@ -1,0 +1,31 @@
+name: Tests
+
+# Every push and pull request: the built scripts match source/, the code passes the lint check,
+# replays stay exact (this version and the recorded older ones), and every mode runs without errors in 2D and 3D.
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build is up to date
+        run: python3 source/build.py --check
+      - name: Install test tools
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.63.0 eslint@10.1.0
+          npx playwright install --with-deps chromium
+      - name: Lint
+        run: node source/lint.js
+      - name: Replays and cross-version replays
+        run: node tests/run.js replay,compat
+      - name: Every mode in 2D and 3D
+        run: node tests/run.js sweep --secs 3

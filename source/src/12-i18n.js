@@ -11,9 +11,24 @@ const HE = {}, AR = {}, RU = {};
 const DICTS = { he: HE, ar: AR, ru: RU };
 const LANGS = [{ id: 'en', n: 'ENGLISH' }, { id: 'he', n: 'עברית', rtl: 1 }, { id: 'ar', n: 'العربية', rtl: 1 }, { id: 'ru', n: 'РУССКИЙ' }];
 const DICT_OK = { en: 1, he: 1 };
-function loadDict(id) { // Arabic and Russian ship as JSON blocks, parsed only when a player picks that language
+function loadDict(id) { // v92: Arabic & Russian lazy-loaded from ./lang/{id}.js for faster boot
   if (DICT_OK[id] || !DICTS[id]) return; DICT_OK[id] = 1;
-  try { const s = document.getElementById('dict-' + id); if (s) Object.assign(DICTS[id], JSON.parse(s.textContent)); } catch (e) { errLog(e); }
+  try {
+    const pre = window['__DICT_' + id.toUpperCase()];
+    if (pre) { Object.assign(DICTS[id], pre); return; }
+    const s = document.getElementById('dict-' + id);
+    if (s) { Object.assign(DICTS[id], JSON.parse(s.textContent)); return; }
+    if (id === 'ar' || id === 'ru') {
+      const sc = document.createElement('script');
+      sc.src = './lang/' + id + '.js';
+      sc.onload = () => {
+        const d = window['__DICT_' + id.toUpperCase()];
+        if (d) Object.assign(DICTS[id], d);
+        try { if (typeof UI !== 'undefined' && UI.cur && typeof LANG !== 'undefined' && LANG.id === id) { if (UI.cur === 'settings') UI.openSettings(); else if (UI.cur === 'title') UI.openTitle(); } } catch (e) {}
+      };
+      document.head.appendChild(sc);
+    }
+  } catch (e) { errLog(e); }
 }
 const T_MISS = new Set(); // keys asked for in the current language with no translation (the test suite reads this)
 function lt(s) {
