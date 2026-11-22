@@ -3,11 +3,12 @@
 //   compat  replays recorded on older versions (tests/fixtures) must play back to the same score
 //   pace    a new player starts with the newer systems closed; they open with the story
 //   ghost   the daily saves your best attempt of the day and the next daily races it
+//   voice   story lines, the radio and the announcer never cut each other off; voices match the character
 //   sweep   every arcade mode and a story stage per chapter, played in real time in 2D and 3D; no errors allowed
 // Needs Playwright with Chromium. Exit code 1 on any failure.
 const { chromium } = require('playwright'), fs = require('fs'), path = require('path');
 const { serve, boot, BOT, ROOT } = require('./lib');
-const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,sweep').split(',');
+const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,voice,sweep').split(',');
 const SECS = +(args[args.indexOf('--secs') + 1] || 4);
 let failed = 0; const fail = m => { failed++; console.log('  FAIL', m); }, ok = m => console.log('  ok  ', m);
 
@@ -82,6 +83,27 @@ async function ghost(b, url) {
   await p.close();
 }
 
+async function voice(b, url) {
+  console.log('voice: the cast, the radio and the announcer share one speech engine without cutting each other off');
+  const ctx = await b.newContext({ viewport: { width: 390, height: 844 } });
+  await ctx.addInitScript(() => {
+    const V = [['Microsoft Asaf - Hebrew (Israel)', 'he-IL'], ['Carmit', 'he-IL'], ['Microsoft David - English (United States)', 'en-US'], ['Microsoft Zira - English (United States)', 'en-US']].map(([name, lang]) => ({ name, lang, voiceURI: name }));
+    window.__said = []; let cur = null;
+    const SS = { speaking: false, paused: false, getVoices: () => V, cancel() { cur = null; this.speaking = false; }, speak(u) { cur = u; this.speaking = true; window.__said.push(u.voice ? u.voice.name : '-'); }, resume() { }, addEventListener() { } };
+    Object.defineProperty(window, 'speechSynthesis', { value: SS }); window.SpeechSynthesisUtterance = function (t) { this.text = t; };
+    window.__end = () => { if (cur && cur.onend) { const u = cur; cur = null; SS.speaking = false; u.onend(); } };
+  });
+  const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
+  await p.goto(url + 'index.html'); await p.waitForSelector('#bootGo:not(.hidden)'); await p.click('#bootGo'); await p.waitForTimeout(800);
+  const said = await p.evaluate(() => { const d = Store.data; d.uiAll = 1; d.settings.lang = 'he'; applyLang(); d.settings.voice = 1; d.settings.cvoice = 1; __end(); __said.length = 0;
+    Voices.speak('M', 'שלום', 'hi'); Aud.say('Boss destroyed', 1); Voices.speak('K', 'רדיו', 'radio', .6); __end();
+    Voices.speak('K', 'שלום', 'hi'); __end(); Aud.say('Boss destroyed', 1); return __said; });
+  const want = ['Carmit', 'Microsoft Asaf - Hebrew (Israel)', 'Microsoft David - English (United States)'];
+  if (JSON.stringify(said) !== JSON.stringify(want)) fail('voices: expected ' + JSON.stringify(want) + ', got ' + JSON.stringify(said)); else ok('Mika speaks with a female voice, Kage with a male one, nothing cuts a story line off');
+  for (const e of errs) fail('page error: ' + e);
+  await ctx.close();
+}
+
 async function sweep(b, url) {
   console.log(`sweep: every mode and a stage per chapter, ${SECS}s each in real time, 2D and 3D`);
   const p = await boot(b, url, { width: 1280, height: 720 });
@@ -118,7 +140,7 @@ async function sweep(b, url) {
 (async () => {
   const s = await serve(ROOT), b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const t0 = Date.now();
-  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
+  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['voice', voice], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
   catch (e) { fail('test crashed: ' + (e.stack || e)); }
   await b.close(); s.close();
   console.log(failed ? `\n${failed} FAILED` : '\nall passed', `(${((Date.now() - t0) / 1000) | 0}s)`);

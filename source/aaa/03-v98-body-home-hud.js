@@ -1019,8 +1019,11 @@
         window.removeEventListener('resize', onResize);
         try { if (rn) rn.dispose(); } catch (e) {}
         ov.remove();
+        if (window.__crate98Close === closeQuiet) window.__crate98Close = null;
         if (typeof done === 'function') done();
       };
+      const closeQuiet = () => { done = null; cleanup(); }; // (no summary window over the next screen)
+      window.__crate98Close = closeQuiet; // (v105: leaving the screen or starting a run closes the film, which used to stay on top of everything)
 
       let dragStart = null;
       ov.addEventListener('pointerdown', e => {
@@ -1164,8 +1167,8 @@
         // Expanding shockwave rings
         for (const rg of rings2D) {
           rg.life -= dt;
-          const p = 1 - Math.max(0, rg.life / 0.55);
-          const rad = rg.r + (rg.maxR - rg.r) * p;
+          const p = Math.min(1, Math.max(0, 1 - rg.life / 0.55)); // (v105: a ring born with more life than 0.55 s gave a negative radius)
+          const rad = Math.max(0, rg.r + (rg.maxR - rg.r) * p);
           g2.globalAlpha = Math.max(0, rg.life * 2);
           g2.strokeStyle = rg.col; g2.lineWidth = Math.max(1.5, 9 * (1 - p));
           g2.beginPath(); g2.arc(rg.x, rg.y, rad, 0, Math.PI * 2); g2.stroke();

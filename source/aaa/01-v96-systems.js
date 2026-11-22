@@ -36,6 +36,8 @@
       "WEAPON CHIPS (v96)": "צ'יפים לנשק (v96)",
       "ARMOR BREAK!": "שריון נשבר!",
       "AIR JUGGLE": "קומבו אווירי",
+      "LAUNCH": "הקפצה",
+      "SLAM": "הנחתה",
       "HELM BREAKER!": "הנחתת להב!",
       "DARK TUNNEL AHEAD": "כניסה למנהרה חשוכה",
       "LIGHTNING STORM": "סופת ברקים על המסילה",
@@ -251,7 +253,8 @@
       if (!show) return;
       const air = this.hasAirborne();
       this.btnEl.classList.toggle('slam', air); this.btnEl.classList.toggle('off', !this.ready());
-      setTxt(this.btnEl, air ? '⚡ SLAM [F]' : '▲ LAUNCH [F]');
+      const key = typeof S90 !== 'undefined' && S90.isDesk() ? ' [F]' : ''; // (v105: the key only where there is a keyboard)
+      setTxt(this.btnEl, (air ? '⚡ ' + S96.L('SLAM') : '▲ ' + S96.L('LAUNCH')) + key);
     }
   };
 
