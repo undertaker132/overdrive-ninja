@@ -266,7 +266,7 @@ const PCHud90 = {
     this.barEl.style.display = showBar ? 'flex' : 'none';
 
     // FPS / Frame-Time telemetry
-    const showFps = isDesk && S90.on('fps90', true) && !G.photo;
+    const showFps = isDesk && S90.on('fps90', false) /* (v104: off unless Settings > Show FPS is on, as the switch says) */ && !G.photo;
     if (showFps) {
       this.fpsAcc += (rd || 0.016);
       this.fpsCnt++;

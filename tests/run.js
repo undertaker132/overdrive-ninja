@@ -2,11 +2,12 @@
 //   replay  live bot runs vs their replays, compared tick by tick (every mode that records replays)
 //   compat  replays recorded on older versions (tests/fixtures) must play back to the same score
 //   pace    a new player starts with the newer systems closed; they open with the story
+//   ghost   the daily saves your best attempt of the day and the next daily races it
 //   sweep   every arcade mode and a story stage per chapter, played in real time in 2D and 3D; no errors allowed
 // Needs Playwright with Chromium. Exit code 1 on any failure.
 const { chromium } = require('playwright'), fs = require('fs'), path = require('path');
 const { serve, boot, BOT, ROOT } = require('./lib');
-const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,sweep').split(',');
+const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,sweep').split(',');
 const SECS = +(args[args.indexOf('--secs') + 1] || 4);
 let failed = 0; const fail = m => { failed++; console.log('  FAIL', m); }, ok = m => console.log('  ok  ', m);
 
@@ -65,6 +66,22 @@ async function pace(b, url) {
   await p.close();
 }
 
+async function ghost(b, url) {
+  console.log('ghost: the daily remembers your best attempt of the day and races you with it');
+  const p = await boot(b, url);
+  const r = await p.evaluate(bot => { const o = {}; localStorage.removeItem('overdrive_ghost104_daily');
+    eval(bot)("Flow.startArcade('daily')", 3000);
+    for (let i = 0; i < 600 && G.state === 'PLAY'; i++) { P.hp = 0; P.inv = 0; safeStep(); }
+    o.over = G.state; o.score = G.score | 0; try { Flow.quit(true); } catch (e) { } UI.openTitle();
+    const g = JSON.parse(localStorage.getItem('overdrive_ghost104_daily') || 'null'); o.saved = g && g.s;
+    Flow.startArcade('daily'); o.playOn = Ghost.playOn; o.frames = Ghost.play && Ghost.play.n;
+    try { Flow.quit(true); } catch (e) { } UI.openTitle(); localStorage.removeItem('overdrive_ghost104_daily'); return o; }, BOT);
+  if (r.over !== 'OVER' || r.saved !== r.score) fail('the daily ghost was not saved ' + JSON.stringify(r)); else ok(`daily ghost saved at ${r.score}`);
+  if (!r.playOn || !(r.frames > 5)) fail('the next daily does not race the ghost ' + JSON.stringify(r)); else ok(`the next daily races it (${r.frames} positions)`);
+  for (const e of p.__errs) fail('page error: ' + e);
+  await p.close();
+}
+
 async function sweep(b, url) {
   console.log(`sweep: every mode and a stage per chapter, ${SECS}s each in real time, 2D and 3D`);
   const p = await boot(b, url, { width: 1280, height: 720 });
@@ -101,7 +118,7 @@ async function sweep(b, url) {
 (async () => {
   const s = await serve(ROOT), b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const t0 = Date.now();
-  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
+  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
   catch (e) { fail('test crashed: ' + (e.stack || e)); }
   await b.close(); s.close();
   console.log(failed ? `\n${failed} FAILED` : '\nall passed', `(${((Date.now() - t0) / 1000) | 0}s)`);
