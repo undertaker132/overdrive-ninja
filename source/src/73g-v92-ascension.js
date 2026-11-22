@@ -418,7 +418,7 @@ const HeatPact92 = {
       rows +=
         '<div class="pact92-row ' + (on ? 'on' : '') + '">' +
           '<div><div style="font-weight:900;font-size:14px">' + L(p.name) + ' <span style="color:#ff4500">(+' + p.heat + '🔥)</span></div>' +
-          '<div style="font-size:11px;opacity:.78">' + p.desc + '</div></div>' +
+          '<div style="font-size:11px;opacity:.78">' + L(p.desc) + '</div></div>' +
           '<button data-pid="' + p.id + '">' + (on ? 'ON' : 'OFF') + '</button>' +
         '</div>';
     }

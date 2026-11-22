@@ -13,7 +13,7 @@ Layout:
     index.html, css/  edited in place
 The game version is VERSION in source/src/10-config.js; the service worker cache is named after it.
 """
-import os, re, sys, shutil
+import os, re, sys, shutil, subprocess
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC, AAA = os.path.join(ROOT, 'source', 'src'), os.path.join(ROOT, 'source', 'aaa')
@@ -67,6 +67,11 @@ def main():
     for p in stale:
         with open(os.path.join(ROOT, p), 'w', encoding='utf-8', newline='') as f:
             f.write(outs[p])
+    if shutil.which('node'):  # a syntax error in one part would stop the whole script in the browser
+        for p in ('js/game-core.js', 'js/overdrive-aaa.js'):
+            r = subprocess.run(['node', '--check', os.path.join(ROOT, p)], capture_output=True, text=True)
+            if r.returncode:
+                sys.exit('syntax error in %s:\n%s' % (p, r.stderr.strip()[:1500]))
     print(ver, '- wrote' if stale else '- nothing to write,', ', '.join(stale) or 'all files current')
     if '--artifact' in args:
         artifact(args[args.index('--artifact') + 1])

@@ -1,21 +1,22 @@
 // The game's browser tests. usage: node tests/run.js [replay,compat,sweep] [--secs N]
 //   replay  live bot runs vs their replays, compared tick by tick (every mode that records replays)
 //   compat  replays recorded on older versions (tests/fixtures) must play back to the same score
+//   pace    a new player starts with the newer systems closed; they open with the story
 //   sweep   every arcade mode and a story stage per chapter, played in real time in 2D and 3D; no errors allowed
 // Needs Playwright with Chromium. Exit code 1 on any failure.
 const { chromium } = require('playwright'), fs = require('fs'), path = require('path');
 const { serve, boot, BOT, ROOT } = require('./lib');
-const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,sweep').split(',');
+const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,sweep').split(',');
 const SECS = +(args[args.indexOf('--secs') + 1] || 4);
 let failed = 0; const fail = m => { failed++; console.log('  FAIL', m); }, ok = m => console.log('  ok  ', m);
 
-const SNAP = `() => [TICK.n, Boss.cur ? Boss.cur.id + ':' + Math.round(Boss.cur.hp * 100) : '-', Math.round(P.x * 64), Math.round(P.y * 64), P.hp, +P.ch.toFixed(3), G.score | 0, G.kills | 0, EN.n, BU.n, R.s >>> 0, G.combo | 0, G.od | 0]`;
-const FIELDS = ['tick', 'boss', 'x', 'y', 'hp', 'ch', 'score', 'kills', 'enemies', 'bullets', 'rng', 'combo', 'od'];
+const SNAP = `() => [TICK.n, Boss.cur ? Boss.cur.id + ':' + Math.round(Boss.cur.hp * 100) : '-', Math.round(P.x * 64), Math.round(P.y * 64), P.hp, +P.ch.toFixed(3), G.score | 0, G.kills | 0, EN.n, BU.n, R.s >>> 0, G.combo | 0, G.od | 0, Math.round(P.face * 1e4), Math.round(P.ang * 1e4)]`;
+const FIELDS = ['tick', 'boss', 'x', 'y', 'hp', 'ch', 'score', 'kills', 'enemies', 'bullets', 'rng', 'combo', 'od', 'face', 'ang'];
 
 async function replay(b, url) {
   console.log('replay: live run vs its replay, tick by tick');
-  const p = await boot(b, url); await p.evaluate(() => { Store.data.story.unlocked = 999; });
-  for (const [label, start, n] of [['endless', "Flow.startArcade('endless')", 6000], ['bossrush', "Flow.startArcade('bossrush')", 6000], ['arena', "Flow.startArcade('arena')", 4000], ['tower', "Flow.startArcade('tower')", 4000], ['highway', "Flow.startArcade('highway')", 4000], ['timeattack', "Flow.startArcade('timeattack')", 4000], ['mayhem', "Flow.startArcade('mayhem')", 4000], ['daily', "Flow.startArcade('daily')", 4000], ['weekly', "Flow.startArcade('weekly')", 4000]]) {
+  const p = await boot(b, url); await p.evaluate(pet => { Store.data.story.unlocked = 999; if (pet) { Store.data.pet = pet; Store.data.pets = Object.assign(Store.data.pets || {}, { [pet]: 1 }); } }, process.env.PET || '');
+  for (const [label, start, n] of [['endless', "Flow.startArcade('endless')", 6000], ['bossrush', "Flow.startArcade('bossrush')", 6000], ['arena', "Flow.startArcade('arena')", 4000], ['tower', "Flow.startArcade('tower')", 4000], ['highway', "Flow.startArcade('highway')", 4000], ['timeattack', "Flow.startArcade('timeattack')", 4000], ['mayhem', "Flow.startArcade('mayhem')", 4000], ['daily', "Flow.startArcade('daily')", 4000], ['weekly', "Flow.startArcade('weekly')", 4000], ['bossrush, every heat pact', "Store.data.settings.heat92 = { hyperBoss: 1, doubleElite: 1, bulletStorm: 1, fragile: 1, crimsonVel: 1 }; Flow.startArcade('bossrush')", 5000]]) {
     const r = await p.evaluate(([bot, snapSrc, start, n]) => {
       const snap = eval(snapSrc); let rec = null; const s0 = step;
       step = function () { const r = s0.apply(this, arguments); if (rec && G.state === 'PLAY' && (REC.on || REPLAY.on)) rec.push(snap()); return r; };
@@ -23,7 +24,7 @@ async function replay(b, url) {
         rec = []; const live = rec; const rep = eval(bot)(start, n);
         try { Flow.quit(true); } catch (e) { }
         rec = []; const again = rec; const st = REPLAY.start(rep, { fast: true }); let k = 0; while (REPLAY.on && k < 40000) { REPLAY.tick(); k++; }
-        rec = null; try { Flow.quit(true); } catch (e) { } UI.openTitle();
+        rec = null; try { Flow.quit(true); } catch (e) { } Store.data.settings.heat92 = {}; UI.openTitle();
         let first = null; for (let i = 0; i < Math.min(live.length, again.length) && !first; i++) for (let f = 0; f < live[i].length; f++) if (live[i][f] !== again[i][f]) { first = { i, f, live: live[i], rep: again[i] }; break; }
         return { st, n: live.length, m: again.length, first, score: rep.hdr.sc, desync: REPLAY.desync };
       } finally { step = s0; }
@@ -46,6 +47,20 @@ async function compat(b, url) {
     if (r.score === fx.score && !(r.desync >= 0)) ok(`${f} (recorded on ${fx.recordedOn}): score ${r.score} on ${r.v}`);
     else fail(`${f} (recorded on ${fx.recordedOn}): expected score ${fx.score}, got ${r.score}, desync at ${r.desync}`);
   }
+  for (const e of p.__errs) fail('page error: ' + e);
+  await p.close();
+}
+
+async function pace(b, url) {
+  console.log('pace: a new player meets the newer systems one by one');
+  const p = await boot(b, url);
+  const r = await p.evaluate(() => { const d = Store.data, keep = [d.uiAll, d.story.unlocked, d.uiTold], o = {};
+    d.uiAll = 0; d.uiTold = {}; d.settings.heat92 = { hyperBoss: 1 };
+    d.story.unlocked = 0; o.fresh = Object.entries(Sim98.snap().f).filter(([k, v]) => v && k !== 'cutin91').map(([k]) => k); o.heat0 = HeatPact92.totalHeat(); HeatPact92.tickUI(); o.btn0 = HeatPact92.btnEl.style.display;
+    d.story.unlocked = 99; o.later = Object.values(Sim98.snap().f).every(Boolean); o.heat = HeatPact92.totalHeat(); HeatPact92.tickUI(); o.btn = HeatPact92.btnEl.style.display;
+    [d.uiAll, d.story.unlocked, d.uiTold] = keep; d.settings.heat92 = {}; return o; });
+  if (r.fresh.length || r.heat0 || r.btn0 !== 'none') fail('new player: systems already on ' + JSON.stringify(r)); else ok('new player: the newer systems and the heat pact start closed');
+  if (!r.later || r.heat !== 2) fail('later in the story: not everything opened ' + JSON.stringify(r)); else ok('later in the story: every system and the heat pact are open');
   for (const e of p.__errs) fail('page error: ' + e);
   await p.close();
 }
@@ -86,7 +101,7 @@ async function sweep(b, url) {
 (async () => {
   const s = await serve(ROOT), b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const t0 = Date.now();
-  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
+  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
   catch (e) { fail('test crashed: ' + (e.stack || e)); }
   await b.close(); s.close();
   console.log(failed ? `\n${failed} FAILED` : '\nall passed', `(${((Date.now() - t0) / 1000) | 0}s)`);
