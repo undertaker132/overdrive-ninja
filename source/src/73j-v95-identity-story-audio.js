@@ -438,6 +438,7 @@ const BossEnrage95 = {
 /* ==========================================================================
    5. StoryOverhaul95 — PERSONAL STAKES, BOSS BANTER, SYNC TWIST & DUAL ENDING
    ========================================================================== */
+const L95 = t => (typeof lt === 'function' ? lt(t) : t);
 const StoryOverhaul95 = {
   el: null, whoEl: null, txtEl: null, timer: 0, syncCount: 0, twistShown: false, choiceOpen: false, modalEl: null,
   LINES: {
@@ -721,7 +722,7 @@ const StudioAudio95 = {
       const ok = !!this.loaded[sl.id];
       return '<div class="ost95-row ' + (ok ? 'loaded' : '') + '">' +
         '<div><div style="font-weight:900;font-size:13px">' + (he ? sl.he : sl.title) + '</div>' +
-        '<div style="font-size:11px;opacity:.75">' + sl.file + ' · <span class="ost95-tag ' + (ok ? 'ok' : 'wait') + '">' + (ok ? (he ? 'נטען ופעיל' : 'LOADED') : (he ? 'ממתין לקובץ MP3' : 'DROP / PICK MP3')) + '</span></div></div>' +
+        '<div style="font-size:11px;opacity:.75">' + (DEV_UI ? sl.file + ' · ' : '') + '<span class="ost95-tag ' + (ok ? 'ok' : 'wait') + '">' + (ok ? (he ? 'נטען ופעיל' : 'LOADED') : (he ? 'ממתין לקובץ MP3' : 'DROP / PICK MP3')) + '</span></div></div>' +
         '<label class="modal92-close" style="cursor:pointer;border-color:#ffd700;color:#ffd700;font-size:11px">' + (he ? 'בחר קובץ' : 'PICK MP3') +
         '<input type="file" accept="audio/*" data-oid="' + sl.id + '" style="display:none"></label>' +
       '</div>';
@@ -729,8 +730,8 @@ const StudioAudio95 = {
 
     this.modalEl.innerHTML =
       '<div class="modal92-box">' +
-        '<div class="modal92-head"><h3>🎵 ' + (he ? 'פסקול אולפן (v95)' : 'STUDIO SOUNDTRACK (v95)') + '</h3><button class="modal92-close" id="ost95-x">✕</button></div>' +
-        '<p style="font-size:12px;opacity:.85;margin:0 0 12px">' + (he ? 'הורד את 3 הטראקים מהצ׳אט ושים אותם בתיקיית audio/ (boss.mp3, overdrive.mp3, combat1.mp3) — או פשוט בחר אותם כאן והם יישמרו קבוע במשחק!' : 'Place your downloaded tracks in the audio/ folder (boss.mp3, overdrive.mp3, combat1.mp3) — or pick them right here to save permanently in your browser!') + '</p>' +
+        '<div class="modal92-head"><h3>🎵 ' + (he ? 'פסקול אולפן' : L95('STUDIO SOUNDTRACK')) + '</h3><button class="modal92-close" id="ost95-x">✕</button></div>' +
+        '<p style="font-size:12px;opacity:.85;margin:0 0 12px">' + (he ? 'בחר מוזיקה משלך לכל רגע במשחק. הקבצים נשמרים רק במכשיר הזה.' : L95('Pick your own music for every moment of the game. The files stay on this device.')) + '</p>' +
         rows +
       '</div>';
 

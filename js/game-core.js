@@ -32061,7 +32061,7 @@ const PCHud90 = {
     this.barEl.style.display = showBar ? 'flex' : 'none';
 
     // FPS / Frame-Time telemetry
-    const showFps = isDesk && S90.on('fps90', false) /* (v104: off unless Settings > Show FPS is on, as the switch says) */ && !G.photo;
+    const showFps = false && isDesk && !G.photo; // (v106: one FPS meter — the frame-time graph on a computer, the badge on a phone)
     if (showFps) {
       this.fpsAcc += (rd || 0.016);
       this.fpsCnt++;
@@ -33537,6 +33537,7 @@ const SquadAI92 = {
 /* ==========================================================================
    3. HeatPact92 — ASCENSION / HEAT CONTRACT SYSTEM (HADES PACT OF PUNISHMENT)
    ========================================================================== */
+const DEV_UI = (() => { try { return /[?&]dev\b/.test(location.search); } catch (e) { return false; } })(); // (v106: developer-only panels)
 const HeatPact92 = {
   PACTS: [
     { id: 'hyperBoss',   heat: 2, name: 'HYPER BOSSES',     desc: 'Bosses act +25% faster' },
@@ -33599,7 +33600,7 @@ const HeatPact92 = {
         '<div class="pact92-row ' + (on ? 'on' : '') + '">' +
           '<div><div style="font-weight:900;font-size:14px">' + L(p.name) + ' <span style="color:#ff4500">(+' + p.heat + '🔥)</span></div>' +
           '<div style="font-size:11px;opacity:.78">' + L(p.desc) + '</div></div>' +
-          '<button data-pid="' + p.id + '">' + (on ? 'ON' : 'OFF') + '</button>' +
+          '<button data-pid="' + p.id + '">' + L(on ? 'ON' : 'OFF') + '</button>' +
         '</div>';
     }
     this.modalEl.innerHTML =
@@ -33769,18 +33770,18 @@ const CloudReady92 = {
         '<span>#' + (i + 1) + ' ' + String(r.name || 'NINJA').slice(0, 18) + (r.heat ? ' 🔥' + r.heat : '') + '</span>' +
         '<span style="color:#ffd700">' + (r.score | 0).toLocaleString() + '</span>' +
       '</div>'
-    ).join('') : '<div style="opacity:.7;text-align:center;padding:16px">Play a run to post your first high score!</div>';
+    ).join('') : '<div style="opacity:.7;text-align:center;padding:16px">' + L('Play a run to post your first high score!') + '</div>';
 
     const curUrl = this.getFirebaseUrl();
     this.modalEl.innerHTML =
       '<div class="modal92-box">' +
-        '<div class="modal92-head"><h3>🏆 ' + L('GLOBAL LEADERBOARD') + (cloud ? ' (CLOUD LIVE)' : ' (LOCAL)') + '</h3><button class="modal92-close" id="lb92-x">✕</button></div>' +
+        '<div class="modal92-head"><h3>🏆 ' + L('GLOBAL LEADERBOARD') + (cloud ? ' · ' + L('ONLINE') : '') + '</h3><button class="modal92-close" id="lb92-x">✕</button></div>' +
         listHtml +
         '<div style="margin-top:14px;padding-top:10px;border-top:1px solid rgba(255,255,255,.12)">' +
-          '<div style="font-size:11px;opacity:.8">Firebase Realtime DB URL (optional for global online scores):</div>' +
-          '<input class="cloud92-inp" id="fb92-url" placeholder="https://your-project-default-rtdb.firebaseio.com" value="' + curUrl + '">' +
+          (DEV_UI ? '<div style="font-size:11px;opacity:.8">Firebase Realtime DB URL (optional for global online scores):</div>' +
+          '<input class="cloud92-inp" id="fb92-url" placeholder="https://your-project-default-rtdb.firebaseio.com" value="' + curUrl + '">' : '') + /* (v106: server setup only in developer mode, ?dev) */
           '<div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">' +
-            '<button class="modal92-close" id="fb92-save" style="border-color:#00f2fe;color:#00f2fe">SAVE CLOUD URL</button>' +
+            (DEV_UI ? '<button class="modal92-close" id="fb92-save" style="border-color:#00f2fe;color:#00f2fe">SAVE CLOUD URL</button>' : '') +
             '<button class="modal92-close" id="sv92-exp">' + L('EXPORT SAVE') + '</button>' +
             '<button class="modal92-close" id="sv92-imp">' + L('IMPORT SAVE') + '</button>' +
           '</div>' +
@@ -33788,7 +33789,7 @@ const CloudReady92 = {
       '</div>';
 
     this.modalEl.querySelector('#lb92-x').onclick = () => this.modalEl.classList.remove('on');
-    this.modalEl.querySelector('#fb92-save').onclick = () => {
+    if (this.modalEl.querySelector('#fb92-save')) this.modalEl.querySelector('#fb92-save').onclick = () => {
       const v = this.modalEl.querySelector('#fb92-url').value.trim();
       if (Store && Store.data && Store.data.settings) { Store.data.settings.fbUrl92 = v; Store.touch(); }
       this.openModal();
@@ -34253,12 +34254,12 @@ const Auth93 = {
         '<div class="modal92-head"><h3>👤 ' + L('ACCOUNT & LOGIN') + '</h3><button class="modal92-close" id="a93-x">✕</button></div>' +
         '<div class="auth93-status" id="auth93-st"></div>' +
         bodyHtml +
-        '<details style="margin-top:12px;border-top:1px solid rgba(255,255,255,.12);padding-top:10px">' +
+        (DEV_UI ? '<details style="margin-top:12px;border-top:1px solid rgba(255,255,255,.12);padding-top:10px">' +
           '<summary style="cursor:pointer;font-size:11px;font-weight:800;color:#00f2fe">' + L('Firebase Auth Setup (Optional)') + '</summary>' +
           '<div style="font-size:11px;opacity:.8;margin:6px 0">Paste your Firebase Web Config JSON to enable live Google / Facebook / GitHub OAuth popups (requires HTTPS hosting like GitHub Pages or itch.io):</div>' +
           '<textarea class="cloud92-inp" id="a93-cfg" rows="4" placeholder=\'{"apiKey":"...","authDomain":"...","projectId":"..."}\'>' + savedCfg + '</textarea>' +
           '<button class="modal92-close" id="a93-cfg-save" style="border-color:#ffd700;color:#ffd700">SAVE FIREBASE CONFIG</button>' +
-        '</details>' +
+        '</details>' : '') +
       '</div>';
 
     this.modalEl.querySelector('#a93-x').onclick = () => this.modalEl.classList.remove('on');
@@ -35549,6 +35550,7 @@ const BossEnrage95 = {
 /* ==========================================================================
    5. StoryOverhaul95 — PERSONAL STAKES, BOSS BANTER, SYNC TWIST & DUAL ENDING
    ========================================================================== */
+const L95 = t => (typeof lt === 'function' ? lt(t) : t);
 const StoryOverhaul95 = {
   el: null, whoEl: null, txtEl: null, timer: 0, syncCount: 0, twistShown: false, choiceOpen: false, modalEl: null,
   LINES: {
@@ -35832,7 +35834,7 @@ const StudioAudio95 = {
       const ok = !!this.loaded[sl.id];
       return '<div class="ost95-row ' + (ok ? 'loaded' : '') + '">' +
         '<div><div style="font-weight:900;font-size:13px">' + (he ? sl.he : sl.title) + '</div>' +
-        '<div style="font-size:11px;opacity:.75">' + sl.file + ' · <span class="ost95-tag ' + (ok ? 'ok' : 'wait') + '">' + (ok ? (he ? 'נטען ופעיל' : 'LOADED') : (he ? 'ממתין לקובץ MP3' : 'DROP / PICK MP3')) + '</span></div></div>' +
+        '<div style="font-size:11px;opacity:.75">' + (DEV_UI ? sl.file + ' · ' : '') + '<span class="ost95-tag ' + (ok ? 'ok' : 'wait') + '">' + (ok ? (he ? 'נטען ופעיל' : 'LOADED') : (he ? 'ממתין לקובץ MP3' : 'DROP / PICK MP3')) + '</span></div></div>' +
         '<label class="modal92-close" style="cursor:pointer;border-color:#ffd700;color:#ffd700;font-size:11px">' + (he ? 'בחר קובץ' : 'PICK MP3') +
         '<input type="file" accept="audio/*" data-oid="' + sl.id + '" style="display:none"></label>' +
       '</div>';
@@ -35840,8 +35842,8 @@ const StudioAudio95 = {
 
     this.modalEl.innerHTML =
       '<div class="modal92-box">' +
-        '<div class="modal92-head"><h3>🎵 ' + (he ? 'פסקול אולפן (v95)' : 'STUDIO SOUNDTRACK (v95)') + '</h3><button class="modal92-close" id="ost95-x">✕</button></div>' +
-        '<p style="font-size:12px;opacity:.85;margin:0 0 12px">' + (he ? 'הורד את 3 הטראקים מהצ׳אט ושים אותם בתיקיית audio/ (boss.mp3, overdrive.mp3, combat1.mp3) — או פשוט בחר אותם כאן והם יישמרו קבוע במשחק!' : 'Place your downloaded tracks in the audio/ folder (boss.mp3, overdrive.mp3, combat1.mp3) — or pick them right here to save permanently in your browser!') + '</p>' +
+        '<div class="modal92-head"><h3>🎵 ' + (he ? 'פסקול אולפן' : L95('STUDIO SOUNDTRACK')) + '</h3><button class="modal92-close" id="ost95-x">✕</button></div>' +
+        '<p style="font-size:12px;opacity:.85;margin:0 0 12px">' + (he ? 'בחר מוזיקה משלך לכל רגע במשחק. הקבצים נשמרים רק במכשיר הזה.' : L95('Pick your own music for every moment of the game. The files stay on this device.')) + '</p>' +
         rows +
       '</div>';
 

@@ -34,6 +34,7 @@
       "Cinematic Finisher Cam": "מצלמת Finisher קולנועית",
       "CHIPS": "צ'יפים",
       "WEAPON CHIPS (v96)": "צ'יפים לנשק (v96)",
+      "WEAPON CHIPS": "צ'יפים לנשק",
       "ARMOR BREAK!": "שריון נשבר!",
       "AIR JUGGLE": "קומבו אווירי",
       "LAUNCH": "הקפצה",
@@ -78,7 +79,7 @@
       this.frames++; this.acc += Math.max(0.001, Math.min(0.1, rd || 0.016));
       if (this.acc < 0.6) return;
       this.fps = Math.round(this.frames / this.acc); this.frames = 0; this.acc = 0;
-      const show = S96.on('fps96', false);
+      const show = S96.on('fps96', false) && !(typeof PC !== 'undefined' && PC.isPC); // (v106: one meter: on a computer the frame-time graph shows instead)
       if (!this.badge) { if (!show) return; const b = document.createElement('div'); b.id = 'fps96-badge'; document.body.appendChild(b); this.badge = b; }
       setShow(this.badge, show);
       if (show) { setTxt(this.badge, this.fps + ' FPS'); this.badge.style.color = this.fps >= 55 ? '#00ff9d' : this.fps >= 40 ? '#ffd700' : '#ff0844'; }
@@ -169,7 +170,7 @@
                : '<span style="font-size:10px;opacity:.7">' + (he ? 'נופל מבוסים' : 'BOSS DROP') + '</span>') + '</div>';
       }).join('');
       this.modalEl.innerHTML =
-        '<div class="modal92-box"><div class="modal92-head"><h3>💎 ' + S96.L('WEAPON CHIPS (v96)') + ' (' + d.eq.length + '/2)</h3><button class="modal92-close" id="c96-x">✕</button></div>' +
+        '<div class="modal92-box"><div class="modal92-head"><h3>💎 ' + S96.L('WEAPON CHIPS') + ' (' + d.eq.length + '/2)</h3><button class="modal92-close" id="c96-x">✕</button></div>' +
         '<p style="font-size:12px;opacity:.82;margin:0 0 10px">' + (he ? 'שבץ עד 2 צ׳יפים טקטיים בנשק שלך. בוסים ואויבי עילית מפילים צ׳יפים נדירים נוספים. השינוי חל מהריצה הבאה.' : 'Socket up to 2 tactical chips into your weapon. Defeat Bosses & Elites to unlock more. Changes apply from your next run.') + '</p>' + rows + '</div>';
       this.modalEl.querySelector('#c96-x').onclick = () => this.modalEl.classList.remove('on');
       this.modalEl.querySelectorAll('button[data-cid]').forEach(b => {

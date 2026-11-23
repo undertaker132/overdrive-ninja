@@ -43,6 +43,7 @@
       "Cinematic Finisher Cam": "מצלמת Finisher קולנועית",
       "CHIPS": "צ'יפים",
       "WEAPON CHIPS (v96)": "צ'יפים לנשק (v96)",
+      "WEAPON CHIPS": "צ'יפים לנשק",
       "ARMOR BREAK!": "שריון נשבר!",
       "AIR JUGGLE": "קומבו אווירי",
       "LAUNCH": "הקפצה",
@@ -87,7 +88,7 @@
       this.frames++; this.acc += Math.max(0.001, Math.min(0.1, rd || 0.016));
       if (this.acc < 0.6) return;
       this.fps = Math.round(this.frames / this.acc); this.frames = 0; this.acc = 0;
-      const show = S96.on('fps96', false);
+      const show = S96.on('fps96', false) && !(typeof PC !== 'undefined' && PC.isPC); // (v106: one meter: on a computer the frame-time graph shows instead)
       if (!this.badge) { if (!show) return; const b = document.createElement('div'); b.id = 'fps96-badge'; document.body.appendChild(b); this.badge = b; }
       setShow(this.badge, show);
       if (show) { setTxt(this.badge, this.fps + ' FPS'); this.badge.style.color = this.fps >= 55 ? '#00ff9d' : this.fps >= 40 ? '#ffd700' : '#ff0844'; }
@@ -178,7 +179,7 @@
                : '<span style="font-size:10px;opacity:.7">' + (he ? 'נופל מבוסים' : 'BOSS DROP') + '</span>') + '</div>';
       }).join('');
       this.modalEl.innerHTML =
-        '<div class="modal92-box"><div class="modal92-head"><h3>💎 ' + S96.L('WEAPON CHIPS (v96)') + ' (' + d.eq.length + '/2)</h3><button class="modal92-close" id="c96-x">✕</button></div>' +
+        '<div class="modal92-box"><div class="modal92-head"><h3>💎 ' + S96.L('WEAPON CHIPS') + ' (' + d.eq.length + '/2)</h3><button class="modal92-close" id="c96-x">✕</button></div>' +
         '<p style="font-size:12px;opacity:.82;margin:0 0 10px">' + (he ? 'שבץ עד 2 צ׳יפים טקטיים בנשק שלך. בוסים ואויבי עילית מפילים צ׳יפים נדירים נוספים. השינוי חל מהריצה הבאה.' : 'Socket up to 2 tactical chips into your weapon. Defeat Bosses & Elites to unlock more. Changes apply from your next run.') + '</p>' + rows + '</div>';
       this.modalEl.querySelector('#c96-x').onclick = () => this.modalEl.classList.remove('on');
       this.modalEl.querySelectorAll('button[data-cid]').forEach(b => {
@@ -4584,4 +4585,60 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
     try { const ch = STAGE_BY_ID[LAST].ch, b = $('stEpi'); if (b && this.storyCh === ch && Store.data.story.stars[LAST]) { b.classList.remove('hidden'); b.onclick = () => { Aud.sfx('ui'); Comic.play('end8', () => this.openStory()); }; } } catch (e) { errLog(e); }
     return r;
   };
+})();
+
+/* --- MODULE 13: v106.0 ORDER — settings that fit the device, one switch per thing, one ghost --- */
+(function () {
+  'use strict';
+  if (typeof HE !== 'undefined') Object.assign(HE, { "ONLINE": "מקוון", "Play a run to post your first high score!": "שחק ריצה כדי לרשום את השיא הראשון שלך!", "STUDIO SOUNDTRACK": "פסקול אולפן", "Pick your own music for every moment of the game. The files stay on this device.": "בחר מוזיקה משלך לכל רגע במשחק. הקבצים נשמרים רק במכשיר הזה.", "WEAPON CHIPS": "צ'יפים לנשק", "+35% Elite spawn chance": "+35% סיכוי להופעת עילית", "Enemy bullets fly +22% faster": "יריות האויבים מהירות ב-22%", "-1 Max Shield (high stakes)": "-1 מגן מקסימלי (הימור גבוה)", "Enemies move +18% faster": "האויבים זזים מהר יותר ב-18%", "Character voices": "קולות הדמויות", "GAME VOICE": "קול המשחק", "Camera follows your aim": "המצלמה עוקבת אחרי הכיוון" });
+  const isDesk = () => { try { return S90.isDesk(); } catch (e) { return false; } };
+  const row = id => { const b = document.getElementById(id); return b ? b.closest('.set') || b.parentElement : null; };
+  const hide = id => { const r = row(id); if (r) r.style.display = 'none'; };
+  // a settings row like the others: a label and a button that cycles its values
+  const cycleRow = (label, key, opts, names) => {
+    const s = Store.data.settings, r = el('div', 'set'); r.appendChild(el('span', '', lt(label)));
+    const b = el('button', 'tog on'); b.id = 'set-' + key; b.type = 'button';
+    const idx = () => { const k = opts.indexOf(s[key] == null ? opts[0] : s[key]); return k < 0 ? 0 : k; };
+    b.textContent = lt(names[idx()]);
+    b.onclick = () => { s[key] = opts[(idx() + 1) % opts.length]; b.textContent = lt(names[idx()]); Aud.sfx('ui'); Store.touch(); if (key === 'cvoice' && s.cvoice) Voices.speak('M', lt('Hi, Mika. Where do you want me?'), 'Hi, Mika. Where do you want me?'); /* (a sample of the voice just chosen) */ };
+    r.appendChild(b); return r;
+  };
+  const os0 = UI.openSettings.bind(UI);
+  UI.openSettings = function () {
+    const r = os0.apply(this, arguments);
+    try {
+      const s = Store.data.settings, desk = isDesk();
+      // one announcer switch: the GAMEPLAY copy goes, "Voice callouts" (SOUND) rules both
+      hide('set-voice96'); s.voice96 = null;
+      // the character voices and the aim camera lost their switches in the v98 redesign
+      const vr = row('set-voice');
+      if (vr && !document.getElementById('set-cvoice')) vr.parentElement.insertBefore(cycleRow('Character voices', 'cvoice', [1, 2, 0], ['ON', 'GAME VOICE', 'OFF']), vr.nextSibling);
+      const sr = row('set-shake');
+      if (sr && !document.getElementById('set-lean')) sr.parentElement.insertBefore(cycleRow('Camera follows your aim', 'lean', [1, 0], ['ON', 'OFF']), sr.nextSibling);
+      // settings for the device in hand
+      if (!desk) { for (const id of ['set-wasd90', 'set-instSlash90', 'set-maim', 'set-xh']) hide(id); const kt = [...document.querySelectorAll('#setTabs button')].find(b => b.textContent === S98L('KEYS')); if (kt) kt.style.display = 'none'; const ar = row('set-air96'); if (ar && ar.firstChild) ar.firstChild.textContent = ar.firstChild.textContent.replace(/\s*\[F\]/, ''); }
+      else for (const id of ['set-tap', 'set-sens', 'set-lefty', 'set-haptics']) hide(id);
+      // the 3D options only matter in 3D
+      if (!(s.d3 > 0)) { hide('set-style3d91'); hide('set-actionCam101'); }
+      const d3b = document.getElementById('set-d3'); if (d3b && !d3b.dataset.o106) { d3b.dataset.o106 = 1; d3b.addEventListener('click', () => setTimeout(() => { if (UI.cur === 'settings') UI.openSettings(); }, 0)); }
+    } catch (e) { errLog(e); }
+    return r;
+  };
+  function S98L(t) { return typeof lt === 'function' ? lt(t) : t; }
+
+  // one ghost: the 3D ghost also runs the challenge, rival and daily ghosts (it only knew its own best before)
+  try {
+    const GR = window.__V96 && window.__V96.GhostRun96;
+    if (GR) {
+      const t0 = GR.tick.bind(GR);
+      GR.tick = function (rd) {
+        if (Ghost.playOn && Ghost.play && G.state === 'PLAY' && !REPLAY.on && typeof R3 !== 'undefined' && R3.ok && R3.root) {
+          const q = Ghost.posAt(G.time); const saved = this.pb;
+          if (q) { this.pb = { frames: [[0, q.x, q.y]] }; this.runT = 0; } // (the next draw puts it where the race ghost is)
+          const r = t0(rd); this.pb = saved; return r;
+        }
+        return t0(rd);
+      };
+    }
+  } catch (e) { }
 })();
