@@ -4,11 +4,12 @@
 //   pace    a new player starts with the newer systems closed; they open with the story
 //   ghost   the daily saves your best attempt of the day and the next daily races it
 //   voice   story lines, the radio and the announcer never cut each other off; voices match the character
+//   story   one stage of every objective type is played to STAGE CLEAR and its results screen
 //   sweep   every arcade mode and a story stage per chapter, played in real time in 2D and 3D; no errors allowed
 // Needs Playwright with Chromium. Exit code 1 on any failure.
 const { chromium } = require('playwright'), fs = require('fs'), path = require('path');
 const { serve, boot, BOT, ROOT } = require('./lib');
-const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,voice,sweep').split(',');
+const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,voice,story,sweep').split(',');
 const SECS = +(args[args.indexOf('--secs') + 1] || 4);
 let failed = 0; const fail = m => { failed++; console.log('  FAIL', m); }, ok = m => console.log('  ok  ', m);
 
@@ -104,6 +105,46 @@ async function voice(b, url) {
   await ctx.close();
 }
 
+// a bot that knows each objective (stand on terminals, touch shards, cut nodes, catch the courier, reflect shots...);
+// it cannot die and the cargo cannot be lost: this checks that every kind of stage can be finished, not how hard it is
+const STORY_BOT = `(function (i) {
+  const st = STAGES[i], o = st.obj || {};
+  const step1 = () => { safeStep(); Flow.update(CFG.step); if (Dlg.active) Dlg.next(); if (UI.cur === 'comic') Comic.end(); if (UI.cur === 'intro') Intro.end(); if (Tut.cur) { Tut.cur.t = 1; Tut.dismiss(); }
+    if (G.state === 'PERK') { const c = document.querySelector('#pkList .perk, #s-perk .perk'); if (c) c.click(); } if (G.state === 'ROUTE') { const c = document.querySelector('#s-route .route, #s-route button'); if (c) c.click(); } };
+  const near = () => { let best = null, bd = 1e9; for (let j = 0; j < EN.n; j++) { const e = EN.a[j]; if (!e.alive || e.al > 0) continue; const q = Math.hypot(e.x - P.x, e.y - P.y); if (q < bd) { bd = q; best = e; } } const B = Boss.cur; if (B && B.enter >= 1 && (!best || Math.hypot(B.x - P.x, B.y - P.y) < bd * 1.5)) best = B; return best; };
+  const go = (x, y) => { P.x = x; P.y = y; P.vx = P.vy = 0; };
+  __OD.startStory(i); let k = 0;
+  for (; k < 30000; k++) {
+    if (G.state === 'CLEAR' || G.state === 'OVER') break;
+    if (G.state === 'PLAY') {
+      P.hp = Math.max(P.hp, 3); if (o.t === 'combo') P.inv = Math.max(P.inv, .3); if (Arena.uplink) Arena.uplink.hp = Math.max(Arena.uplink.hp, Arena.uplink.mhp * .5);
+      let tg = null, stay = false;
+      if (o.t === 'hack') { const t = Arena.terms.find(t => !t.done); if (t) { go(t.x, t.y); stay = true; } }
+      else if (o.t === 'collect') { const s2 = Obj2.sh[0]; if (s2) go(s2.x, s2.y); }
+      else if (o.t === 'nodes') { const nd = Arena.nodes.find(q => q.alive); if (nd) { if (k % 20 === 0) go(nd.x, nd.y + 90); tg = nd; } }
+      else if (o.t === 'courier') { const c = Director.courier; if (c && c.alive) tg = c; }
+      else if (o.t === 'reflect') { let bb = null, bd = 1e9; for (let j = 0; j < BU.n; j++) { const q = BU.a[j]; if (!q.alive || q.rf) continue; const dd = Math.hypot(q.x - P.x, q.y - P.y); if (dd < bd) { bd = dd; bb = q; } } if (bb && bd < 140) tg = bb; }
+      const cad = o.t === 'combo' ? 12 : 18; if (!stay && k % cad === 0) { const t = tg || near(); slash(t ? Math.atan2(t.y - P.y, t.x - P.x) : (k / cad) % 6.28); }
+    }
+    step1();
+  }
+  const end = G.state; let k2 = 0; if (end === 'CLEAR') for (; k2 < 4000 && UI.cur !== 'result'; k2++) step1();
+  const out = { id: st.id, obj: o.t, end, ui: UI.cur, t: G.time | 0, err: ERRLOG.a.map(q => q.m).slice(0, 2) };
+  try { Flow.quit(true); } catch (e) { } UI.openTitle(); return out;
+})`;
+
+async function story(b, url) {
+  console.log('story: one stage of every objective type is played to STAGE CLEAR and its results screen');
+  const p = await boot(b, url);
+  const picks = await p.evaluate(() => { Store.data.story.unlocked = 999; const seen = {}, out = []; STAGES.forEach((s, i) => { const t = s.obj && s.obj.t; if (t && !seen[t] && stageOpen(i)) { seen[t] = 1; out.push(i); } }); return out; });
+  for (const i of picks) {
+    const r = await p.evaluate(([bot, i]) => { ERRLOG.a.length = 0; return eval(bot)(i); }, [STORY_BOT, i]);
+    if (r.end !== 'CLEAR' || r.ui !== 'result' || r.err.length) fail(`${r.id} (${r.obj}): ended ${r.end} on ${r.ui} after ${r.t}s ${r.err.join(' | ')}`); else ok(`${r.id} (${r.obj}): cleared in ${r.t}s, results shown`);
+  }
+  for (const e of p.__errs) fail('page error: ' + e);
+  await p.close();
+}
+
 async function sweep(b, url) {
   console.log(`sweep: every mode and a stage per chapter, ${SECS}s each in real time, 2D and 3D`);
   const p = await boot(b, url, { width: 1280, height: 720 });
@@ -140,7 +181,7 @@ async function sweep(b, url) {
 (async () => {
   const s = await serve(ROOT), b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const t0 = Date.now();
-  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['voice', voice], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
+  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['voice', voice], ['story', story], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
   catch (e) { fail('test crashed: ' + (e.stack || e)); }
   await b.close(); s.close();
   console.log(failed ? `\n${failed} FAILED` : '\nall passed', `(${((Date.now() - t0) / 1000) | 0}s)`);
