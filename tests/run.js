@@ -6,11 +6,12 @@
 //   voice   story lines, the radio and the announcer never cut each other off; voices match the character
 //   story   one stage of every objective type is played to STAGE CLEAR and its results screen
 //   leftovers nothing from the in-run HUD stays on the results or title screen
+//   first   a new player on a phone sees only the story and is playing within 30 taps
 //   sweep   every arcade mode and a story stage per chapter, played in real time in 2D and 3D; no errors allowed
 // Needs Playwright with Chromium. Exit code 1 on any failure.
 const { chromium } = require('playwright'), fs = require('fs'), path = require('path');
 const { serve, boot, BOT, ROOT } = require('./lib');
-const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,voice,story,leftovers,sweep').split(',');
+const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,voice,story,leftovers,first,sweep').split(',');
 const SECS = +(args[args.indexOf('--secs') + 1] || 4);
 let failed = 0; const fail = m => { failed++; console.log('  FAIL', m); }, ok = m => console.log('  ok  ', m);
 
@@ -167,6 +168,20 @@ async function leftovers(b, url) {
   await p.close();
 }
 
+async function first(b, url) {
+  console.log('first: a new player on a phone, tapping through, is playing within 30 taps');
+  const { devices } = require('playwright');
+  const ctx = await b.newContext({ ...devices['Pixel 5'], locale: 'he-IL' }); const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
+  await p.goto(url + 'index.html'); await p.waitForSelector('#bootGo:not(.hidden)'); await p.tap('#bootGo'); await p.waitForTimeout(1200);
+  const bar = await p.evaluate(() => [...document.querySelectorAll('#cmdbar98 > *')].filter(e => getComputedStyle(e).display !== 'none').map(e => e.id));
+  if (bar.length) fail('new player home screen shows extra buttons: ' + bar.join(', ')); else ok('the home screen shows a new player only the story');
+  await p.tap('#bStory'); let taps = 1, st = '';
+  for (; taps < 40; taps++) { await p.waitForTimeout(600); st = await p.evaluate(() => G.state + '/' + UI.cur); if (st.startsWith('PLAY')) break; await p.tap('body', { position: { x: 195, y: 650 } }); }
+  if (!st.startsWith('PLAY')) fail(`not playing after ${taps} taps (${st})`); else ok(`playing stage 1-1 after ${taps} taps`);
+  for (const e of errs) fail('page error: ' + e);
+  await ctx.close();
+}
+
 async function sweep(b, url) {
   console.log(`sweep: every mode and a stage per chapter, ${SECS}s each in real time, 2D and 3D`);
   const p = await boot(b, url, { width: 1280, height: 720 });
@@ -203,7 +218,7 @@ async function sweep(b, url) {
 (async () => {
   const s = await serve(ROOT), b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const t0 = Date.now();
-  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['voice', voice], ['story', story], ['leftovers', leftovers], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
+  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['voice', voice], ['story', story], ['leftovers', leftovers], ['first', first], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
   catch (e) { fail('test crashed: ' + (e.stack || e)); }
   await b.close(); s.close();
   console.log(failed ? `\n${failed} FAILED` : '\nall passed', `(${((Date.now() - t0) / 1000) | 0}s)`);

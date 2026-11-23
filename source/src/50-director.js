@@ -155,7 +155,7 @@ const Director = {
     const cap = Math.min(CFG.maxEnemies - 2, this.max + Math.round(G.skill * 2) + (G.mode === 'timeattack' || G.mode === 'race' ? 4 : 0));
     G.spawnT -= dt;
     if (!this.wavePause && this.pool.length && this.max > 0 && G.spawnT <= 0 && this.liveHostiles() < cap) {
-      const t = this.pickType(), el = R.f() < this.elite + G.diff.elite && t !== ET.MINI;
+      const t = this.pickType(), el = R.f() < this.elite + G.diff.elite && t !== ET.MINI && !(G.mode === 'story' && G.stage && G.stage.ch === 0); // (v106: no elite surprises in chapter 1, as the waves already promised)
       spawnEnemy(t, null, null, el);
       G.spawnT = this.rate / (G.diff.spawn * (.75 + G.skill * .5));
     }

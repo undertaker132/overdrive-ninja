@@ -249,7 +249,7 @@
     },
     tick() { // the on-screen button (drawing side)
       if (!this.btnEl) { const b = document.createElement('button'); b.id = 'air96-btn'; b.onclick = () => this.press(); document.body.appendChild(b); this.btnEl = b; }
-      const show = S96.on('air96', true) && G.state === 'PLAY' && !G.photo && !REPLAY.on;
+      const show = S96.on('air96', true) && (typeof Sim98 === 'undefined' || Sim98.on('air96')) && G.state === 'PLAY' && !G.photo && !REPLAY.on; // (v106: only when the launcher is on in this run)
       setShow(this.btnEl, show);
       if (!show) return;
       const air = this.hasAirborne();

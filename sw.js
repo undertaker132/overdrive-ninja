@@ -1,5 +1,5 @@
 /* Overdrive: Cyber Slash — offline cache (v100.0 PRO Split Architecture). */
-const CACHE = 'overdrive-v105';
+const CACHE = 'overdrive-v106';
 const CORE = [
   './',
   './index.html',
