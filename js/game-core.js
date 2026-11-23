@@ -139,8 +139,8 @@ Math.sin = DMATH.sin; Math.cos = DMATH.cos; Math.atan = DMATH.atan; Math.atan2 =
    All tuning lives here. Logical units: the view is ~420 wide, the
    train roof (arena) is 340 wide. Speeds are units per second.
    ===================================================================== */
-const VERSION = '105.0';
-const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0', '36.0', '37.0', '38.0', '39.0', '40.0', '40.1', '41.0', '42.0', '43.0', '44.0', '45.0', '46.0', '47.0', '48.0', '49.0', '50.0', '51.0', '52.0', '53.0', '54.0', '55.0', '56.0', '57.0', '58.0', '59.0', '60.0', '61.0', '62.0', '63.0', '64.0', '65.0', '66.0', '67.0', '68.0', '69.0', '70.0', '71.0', '72.0', '73.0', '74.0', '75.0', '76.0', '77.0', '80.0', '82.0', '83.0', '84.0', '85.0', '86.0', '87.0', '88.0', '98.0', '103.0', '104.0', '105.0']; // (v98: replays of 89-97 are dropped, rules added then were not deterministic; 99-102 were never published) // replays recorded by these versions play back identically (arcade sim unchanged)
+const VERSION = '106.0';
+const SIM_COMPAT = ['11.0', '12.0', '13.0', '15.0', '16.0', '16.1', '17.0', '18.0', '19.0', '20.0', '21.0', '22.0', '23.0', '24.0', '25.0', '26.0', '26.1', '26.2', '26.3', '27.0', '28.0', '29.0', '30.0', '31.0', '32.0', '33.0', '34.0', '35.0', '36.0', '37.0', '38.0', '39.0', '40.0', '40.1', '41.0', '42.0', '43.0', '44.0', '45.0', '46.0', '47.0', '48.0', '49.0', '50.0', '51.0', '52.0', '53.0', '54.0', '55.0', '56.0', '57.0', '58.0', '59.0', '60.0', '61.0', '62.0', '63.0', '64.0', '65.0', '66.0', '67.0', '68.0', '69.0', '70.0', '71.0', '72.0', '73.0', '74.0', '75.0', '76.0', '77.0', '80.0', '82.0', '83.0', '84.0', '85.0', '86.0', '87.0', '88.0', '98.0', '103.0', '104.0', '105.0', '106.0']; // (v98: replays of 89-97 are dropped, rules added then were not deterministic; 99-102 were never published) // replays recorded by these versions play back identically (arcade sim unchanged)
 const CFG = { step: 1 / 60, maxSteps: 5, maxEnemies: 22, arenaW: 340, viewW: 420, viewH: 760 };
 let RDT = 1 / 60; // version 34: the real time of the frame being drawn. Drawing code uses it instead of a fixed 1/60, so 120-480 Hz screens animate at the right speed
 
@@ -12708,7 +12708,7 @@ const Director = {
     const cap = Math.min(CFG.maxEnemies - 2, this.max + Math.round(G.skill * 2) + (G.mode === 'timeattack' || G.mode === 'race' ? 4 : 0));
     G.spawnT -= dt;
     if (!this.wavePause && this.pool.length && this.max > 0 && G.spawnT <= 0 && this.liveHostiles() < cap) {
-      const t = this.pickType(), el = R.f() < this.elite + G.diff.elite && t !== ET.MINI;
+      const t = this.pickType(), el = R.f() < this.elite + G.diff.elite && t !== ET.MINI && !(G.mode === 'story' && G.stage && G.stage.ch === 0); // (v106: no elite surprises in chapter 1, as the waves already promised)
       spawnEnemy(t, null, null, el);
       G.spawnT = this.rate / (G.diff.spawn * (.75 + G.skill * .5));
     }
@@ -15439,7 +15439,8 @@ const Preview = {
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 105.0
+const NEWS = [ // version 106.0
+  ["v106.0 — THE WHOLE STORY, START TO FINISH", "The last stage of the story now ends the whole game: an epilogue, closing credits of everything you went through (your stages, stars, kills and best combo) and a new achievement, LEGEND OF NEO-EDO. A new player sees one button and is playing in seconds: the first STORY press goes straight into the opening and stage 1-1, the extra buttons on the home screen open as you play, the first stage has no elite surprises, and tips and radio lines wait while the game is teaching you. Settings fit your device (no keyboard options on a phone), the character voices and aim camera switches are back, one announcer switch and one FPS meter. No more developer fields or version tags in the windows, and nothing from a run stays on the results or home screen."],
   ["v105.0 — EVERY VOICE IN ITS PLACE", "The characters, Mika's radio and the announcer no longer cut each other off: a story line always finishes, the radio waits for it, and the announcer waits for both. Each character gets a voice of their own gender when the device has one (Mika, Valkyrie and Izanami speak with a woman's voice), at a natural pitch. The game's own voice, for devices without one in your language, takes turns too. Fixes: opening several crates at once works and its button sits on the right crate; the crate film closes when you leave it and no longer freezes; the hero's perk tag no longer stays on the results screen; no '+0 CR' line; the launcher button shows [F] only on a computer and speaks your language; the music styles are translated."],
   ["v104.0 — ONE STEP AT A TIME", "New players meet the newer systems one at a time as the story goes on: blade clash, boss armor, roof props, the launcher, rail events, squads, synergies, the awakened blade, the shadow rival and the heat pact, each with a short tip when it opens (players who already played keep everything). The HYPER BOSSES pact now works: bosses act 25% faster and have 25% more health. The daily and weekly runs remember your best attempt and send it beside you as a ghost, with the gap on screen, no connection needed. On a computer, the FPS meter stays off unless you turn it on. The home screen runs lighter on phones: about 45% more frames on a slow one. Under the hood: one source for the whole game and automatic tests on every change, which check that replays from versions 88, 98, 103 and 104 play back exactly."],
   ["v103.0 — ONE GAME, EVERY UPGRADE", "Version 102's studio sound, living hero, action camera, lock-on, 3D body, clean home and settings are merged with version 98's fixes: replays play back exactly (the new walk and the lock-on pull included), the roof props, rail events and armor break run as fair rules, the launcher [F] costs a dash charge, and the title screen keeps all its buttons."],
@@ -28303,7 +28304,7 @@ Arts.reset();
 {
   const ha = Hero.apply.bind(Hero); Hero.apply = function () { const r = ha(); try { Arts.reset(); } catch (e) { errLog(e); } return r; };
   const al = applyLoadout; applyLoadout = function () { const r = al.apply(this, arguments); try { Arts.reset(); Arts.told = 0; } catch (e) { errLog(e); } return r; }; // (every run starts clean)
-  Pipe.on('post', 'arts83', () => { try { if (Arts.told || typeof G === 'undefined' || G.state !== 'PLAY' || G.freeze > 0 || G.time < 1.2 || !Arts.on()) return; Arts.told = 1; const A = ARTS[Arts.cls()]; if (A) hint('art83' + Arts.cls(), lt('SIGNATURE ART') + ' · ' + lt(A.n) + ': ' + lt(A.d)); } catch (e) { errLog(e); } }, 50); // (what this hero can do, the first few runs)
+  Pipe.on('post', 'arts83', () => { try { if (Arts.told || typeof G === 'undefined' || G.state !== 'PLAY' || G.freeze > 0 || G.time < 1.2 || !Arts.on() || (typeof Tut !== 'undefined' && Tut.cur) || (G.mode === 'story' && G.stage && G.stage.idx === 0)) return; /* (v106: never over the tutorial, and not in the very first stage) */ Arts.told = 1; const A = ARTS[Arts.cls()]; if (A) hint('art83' + Arts.cls(), lt('SIGNATURE ART') + ' · ' + lt(A.n) + ': ' + lt(A.d)); } catch (e) { errLog(e); } }, 50); // (what this hero can do, the first few runs)
   const ss = safeStep; safeStep = function () { const r = ss.apply(this, arguments); try { if (Arts.on() && G.freeze <= 0) Arts.step(CFG.step); } catch (e) { errLog(e); } return r; };
   const sl = slash; slash = function (a) { const s0 = P.seq, r = sl.apply(this, arguments); try { if (Arts.on() && P.seq !== s0) Arts.slash(P.ang); } catch (e) { errLog(e); } return r; };
   const de = damageEnemy; damageEnemy = function (e, d, a, src) { const r = de.apply(this, arguments); try { if (Arts.on()) Arts.hit(e, src); } catch (er) { errLog(er); } return r; };
@@ -32061,7 +32062,7 @@ const PCHud90 = {
     this.barEl.style.display = showBar ? 'flex' : 'none';
 
     // FPS / Frame-Time telemetry
-    const showFps = isDesk && S90.on('fps90', false) /* (v104: off unless Settings > Show FPS is on, as the switch says) */ && !G.photo;
+    const showFps = false; // (v106: never — one FPS meter: the frame-time graph on a computer, the badge on a phone)
     if (showFps) {
       this.fpsAcc += (rd || 0.016);
       this.fpsCnt++;
@@ -33537,6 +33538,7 @@ const SquadAI92 = {
 /* ==========================================================================
    3. HeatPact92 — ASCENSION / HEAT CONTRACT SYSTEM (HADES PACT OF PUNISHMENT)
    ========================================================================== */
+const DEV_UI = (() => { try { return /[?&]dev\b/.test(location.search); } catch (e) { return false; } })(); // (v106: developer-only panels)
 const HeatPact92 = {
   PACTS: [
     { id: 'hyperBoss',   heat: 2, name: 'HYPER BOSSES',     desc: 'Bosses act +25% faster' },
@@ -33599,7 +33601,7 @@ const HeatPact92 = {
         '<div class="pact92-row ' + (on ? 'on' : '') + '">' +
           '<div><div style="font-weight:900;font-size:14px">' + L(p.name) + ' <span style="color:#ff4500">(+' + p.heat + '🔥)</span></div>' +
           '<div style="font-size:11px;opacity:.78">' + L(p.desc) + '</div></div>' +
-          '<button data-pid="' + p.id + '">' + (on ? 'ON' : 'OFF') + '</button>' +
+          '<button data-pid="' + p.id + '">' + L(on ? 'ON' : 'OFF') + '</button>' +
         '</div>';
     }
     this.modalEl.innerHTML =
@@ -33769,18 +33771,18 @@ const CloudReady92 = {
         '<span>#' + (i + 1) + ' ' + String(r.name || 'NINJA').slice(0, 18) + (r.heat ? ' 🔥' + r.heat : '') + '</span>' +
         '<span style="color:#ffd700">' + (r.score | 0).toLocaleString() + '</span>' +
       '</div>'
-    ).join('') : '<div style="opacity:.7;text-align:center;padding:16px">Play a run to post your first high score!</div>';
+    ).join('') : '<div style="opacity:.7;text-align:center;padding:16px">' + L('Play a run to post your first high score!') + '</div>';
 
     const curUrl = this.getFirebaseUrl();
     this.modalEl.innerHTML =
       '<div class="modal92-box">' +
-        '<div class="modal92-head"><h3>🏆 ' + L('GLOBAL LEADERBOARD') + (cloud ? ' (CLOUD LIVE)' : ' (LOCAL)') + '</h3><button class="modal92-close" id="lb92-x">✕</button></div>' +
+        '<div class="modal92-head"><h3>🏆 ' + L('GLOBAL LEADERBOARD') + (cloud ? ' · ' + L('ONLINE') : '') + '</h3><button class="modal92-close" id="lb92-x">✕</button></div>' +
         listHtml +
         '<div style="margin-top:14px;padding-top:10px;border-top:1px solid rgba(255,255,255,.12)">' +
-          '<div style="font-size:11px;opacity:.8">Firebase Realtime DB URL (optional for global online scores):</div>' +
-          '<input class="cloud92-inp" id="fb92-url" placeholder="https://your-project-default-rtdb.firebaseio.com" value="' + curUrl + '">' +
+          (DEV_UI ? '<div style="font-size:11px;opacity:.8">Firebase Realtime DB URL (optional for global online scores):</div>' +
+          '<input class="cloud92-inp" id="fb92-url" placeholder="https://your-project-default-rtdb.firebaseio.com" value="' + curUrl + '">' : '') + /* (v106: server setup only in developer mode, ?dev) */
           '<div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">' +
-            '<button class="modal92-close" id="fb92-save" style="border-color:#00f2fe;color:#00f2fe">SAVE CLOUD URL</button>' +
+            (DEV_UI ? '<button class="modal92-close" id="fb92-save" style="border-color:#00f2fe;color:#00f2fe">SAVE CLOUD URL</button>' : '') +
             '<button class="modal92-close" id="sv92-exp">' + L('EXPORT SAVE') + '</button>' +
             '<button class="modal92-close" id="sv92-imp">' + L('IMPORT SAVE') + '</button>' +
           '</div>' +
@@ -33788,7 +33790,7 @@ const CloudReady92 = {
       '</div>';
 
     this.modalEl.querySelector('#lb92-x').onclick = () => this.modalEl.classList.remove('on');
-    this.modalEl.querySelector('#fb92-save').onclick = () => {
+    if (this.modalEl.querySelector('#fb92-save')) this.modalEl.querySelector('#fb92-save').onclick = () => {
       const v = this.modalEl.querySelector('#fb92-url').value.trim();
       if (Store && Store.data && Store.data.settings) { Store.data.settings.fbUrl92 = v; Store.touch(); }
       this.openModal();
@@ -34253,12 +34255,12 @@ const Auth93 = {
         '<div class="modal92-head"><h3>👤 ' + L('ACCOUNT & LOGIN') + '</h3><button class="modal92-close" id="a93-x">✕</button></div>' +
         '<div class="auth93-status" id="auth93-st"></div>' +
         bodyHtml +
-        '<details style="margin-top:12px;border-top:1px solid rgba(255,255,255,.12);padding-top:10px">' +
+        (DEV_UI ? '<details style="margin-top:12px;border-top:1px solid rgba(255,255,255,.12);padding-top:10px">' +
           '<summary style="cursor:pointer;font-size:11px;font-weight:800;color:#00f2fe">' + L('Firebase Auth Setup (Optional)') + '</summary>' +
           '<div style="font-size:11px;opacity:.8;margin:6px 0">Paste your Firebase Web Config JSON to enable live Google / Facebook / GitHub OAuth popups (requires HTTPS hosting like GitHub Pages or itch.io):</div>' +
           '<textarea class="cloud92-inp" id="a93-cfg" rows="4" placeholder=\'{"apiKey":"...","authDomain":"...","projectId":"..."}\'>' + savedCfg + '</textarea>' +
           '<button class="modal92-close" id="a93-cfg-save" style="border-color:#ffd700;color:#ffd700">SAVE FIREBASE CONFIG</button>' +
-        '</details>' +
+        '</details>' : '') +
       '</div>';
 
     this.modalEl.querySelector('#a93-x').onclick = () => this.modalEl.classList.remove('on');
@@ -35549,6 +35551,7 @@ const BossEnrage95 = {
 /* ==========================================================================
    5. StoryOverhaul95 — PERSONAL STAKES, BOSS BANTER, SYNC TWIST & DUAL ENDING
    ========================================================================== */
+const L95 = t => (typeof lt === 'function' ? lt(t) : t);
 const StoryOverhaul95 = {
   el: null, whoEl: null, txtEl: null, timer: 0, syncCount: 0, twistShown: false, choiceOpen: false, modalEl: null,
   LINES: {
@@ -35832,7 +35835,7 @@ const StudioAudio95 = {
       const ok = !!this.loaded[sl.id];
       return '<div class="ost95-row ' + (ok ? 'loaded' : '') + '">' +
         '<div><div style="font-weight:900;font-size:13px">' + (he ? sl.he : sl.title) + '</div>' +
-        '<div style="font-size:11px;opacity:.75">' + sl.file + ' · <span class="ost95-tag ' + (ok ? 'ok' : 'wait') + '">' + (ok ? (he ? 'נטען ופעיל' : 'LOADED') : (he ? 'ממתין לקובץ MP3' : 'DROP / PICK MP3')) + '</span></div></div>' +
+        '<div style="font-size:11px;opacity:.75">' + (DEV_UI ? sl.file + ' · ' : '') + '<span class="ost95-tag ' + (ok ? 'ok' : 'wait') + '">' + (ok ? (he ? 'נטען ופעיל' : 'LOADED') : (he ? 'ממתין לקובץ MP3' : 'DROP / PICK MP3')) + '</span></div></div>' +
         '<label class="modal92-close" style="cursor:pointer;border-color:#ffd700;color:#ffd700;font-size:11px">' + (he ? 'בחר קובץ' : 'PICK MP3') +
         '<input type="file" accept="audio/*" data-oid="' + sl.id + '" style="display:none"></label>' +
       '</div>';
@@ -35840,8 +35843,8 @@ const StudioAudio95 = {
 
     this.modalEl.innerHTML =
       '<div class="modal92-box">' +
-        '<div class="modal92-head"><h3>🎵 ' + (he ? 'פסקול אולפן (v95)' : 'STUDIO SOUNDTRACK (v95)') + '</h3><button class="modal92-close" id="ost95-x">✕</button></div>' +
-        '<p style="font-size:12px;opacity:.85;margin:0 0 12px">' + (he ? 'הורד את 3 הטראקים מהצ׳אט ושים אותם בתיקיית audio/ (boss.mp3, overdrive.mp3, combat1.mp3) — או פשוט בחר אותם כאן והם יישמרו קבוע במשחק!' : 'Place your downloaded tracks in the audio/ folder (boss.mp3, overdrive.mp3, combat1.mp3) — or pick them right here to save permanently in your browser!') + '</p>' +
+        '<div class="modal92-head"><h3>🎵 ' + (he ? 'פסקול אולפן' : L95('STUDIO SOUNDTRACK')) + '</h3><button class="modal92-close" id="ost95-x">✕</button></div>' +
+        '<p style="font-size:12px;opacity:.85;margin:0 0 12px">' + (he ? 'בחר מוזיקה משלך לכל רגע במשחק. הקבצים נשמרים רק במכשיר הזה.' : L95('Pick your own music for every moment of the game. The files stay on this device.')) + '</p>' +
         rows +
       '</div>';
 
@@ -35978,7 +35981,7 @@ const StudioAudio95 = {
     };
   }
 }
-Object.assign(HE, {"v105.0 — EVERY VOICE IN ITS PLACE": "v105.0 — כל קול במקומו", "The characters, Mika's radio and the announcer no longer cut each other off: a story line always finishes, the radio waits for it, and the announcer waits for both. Each character gets a voice of their own gender when the device has one (Mika, Valkyrie and Izanami speak with a woman's voice), at a natural pitch. The game's own voice, for devices without one in your language, takes turns too. Fixes: opening several crates at once works and its button sits on the right crate; the crate film closes when you leave it and no longer freezes; the hero's perk tag no longer stays on the results screen; no '+0 CR' line; the launcher button shows [F] only on a computer and speaks your language; the music styles are translated.": "הדמויות, הרדיו של מיקה והקריין כבר לא קוטעים זה את זה: שורת סיפור תמיד נגמרת, הרדיו מחכה לה, והקריין מחכה לשניהם. כל דמות מקבלת קול מהמגדר שלה כשיש כזה במכשיר (מיקה, ולקיריה ואיזנאמי מדברות בקול נשי), בגובה טבעי. גם הקול של המשחק עצמו, למכשירים בלי קול בשפה שלך, מחכה לתורו. תיקונים: פתיחת כמה תיבות בבת אחת עובדת והכפתור שלה נמצא על התיבה הנכונה; סרט התיבה נסגר כשיוצאים ממנו ולא קופא יותר; תג היכולת של הגיבור לא נשאר במסך התוצאות; אין יותר שורת '+0 CR'; כפתור ההקפצה מראה [F] רק במחשב ומדבר בשפה שלך; סגנונות המוזיקה מתורגמים.", "v104.0 — ONE STEP AT A TIME": "v104.0 — צעד אחר צעד", "New players meet the newer systems one at a time as the story goes on: blade clash, boss armor, roof props, the launcher, rail events, squads, synergies, the awakened blade, the shadow rival and the heat pact, each with a short tip when it opens (players who already played keep everything). The HYPER BOSSES pact now works: bosses act 25% faster and have 25% more health. The daily and weekly runs remember your best attempt and send it beside you as a ghost, with the gap on screen, no connection needed. On a computer, the FPS meter stays off unless you turn it on. The home screen runs lighter on phones: about 45% more frames on a slow one. Under the hood: one source for the whole game and automatic tests on every change, which check that replays from versions 88, 98, 103 and 104 play back exactly.": "שחקנים חדשים מכירים את המערכות החדשות אחת אחת לאורך הסיפור: התנגשות להבים, שריון בוסים, חפצים על הגג, המקפצה, אירועי מסילה, חוליות, סינרגיות, הלהב המתעורר, יריב הצל וברית החום, כל אחת עם טיפ קצר כשהיא נפתחת (מי שכבר שיחק שומר על הכל). ברית הבוסים ההיפר עובדת עכשיו: הבוסים פועלים מהר יותר ב-25% ויש להם 25% יותר חיים. הריצה היומית והשבועית זוכרות את הניסיון הטוב ביותר שלך ומריצות אותו לידך כרוח, עם הפער על המסך, בלי צורך בחיבור. במחשב, מד ה-FPS כבוי אלא אם מדליקים אותו. מסך הבית קל יותר בטלפונים: כ-45% יותר פריימים בטלפון חלש. מאחורי הקלעים: מקור אחד לכל המשחק ובדיקות אוטומטיות בכל שינוי, שמוודאות שהקלטות מגרסאות 88, 98, 103 ו-104 מתנגנות בדיוק.", "v103.0 — ONE GAME, EVERY UPGRADE": "v103.0 — משחק אחד, כל השדרוגים", "Version 102's studio sound, living hero, action camera, lock-on, 3D body, clean home and settings are merged with version 98's fixes: replays play back exactly (the new walk and the lock-on pull included), the roof props, rail events and armor break run as fair rules, the launcher [F] costs a dash charge, and the title screen keeps all its buttons.": "הסאונד האולפני, הגיבור החי, מצלמת האקשן, הנעילה על מטרה, גוף התלת־ממד, מסך הבית וההגדרות החדשים של גרסה 102 שולבו עם התיקונים של גרסה 98: ההקלטות החוזרות מתנגנות בדיוק (כולל ההליכה החדשה ומשיכת הנעילה), האובייקטים על הגג, אירועי המסילה ושבירת השריון פועלים כחוקים הוגנים, השיגור [F] עולה מטען דאש, ומסך הבית שומר על כל הכפתורים."});
+Object.assign(HE, {"v106.0 — THE WHOLE STORY, START TO FINISH": "v106.0 — כל הסיפור, מההתחלה ועד הסוף", "The last stage of the story now ends the whole game: an epilogue, closing credits of everything you went through (your stages, stars, kills and best combo) and a new achievement, LEGEND OF NEO-EDO. A new player sees one button and is playing in seconds: the first STORY press goes straight into the opening and stage 1-1, the extra buttons on the home screen open as you play, the first stage has no elite surprises, and tips and radio lines wait while the game is teaching you. Settings fit your device (no keyboard options on a phone), the character voices and aim camera switches are back, one announcer switch and one FPS meter. No more developer fields or version tags in the windows, and nothing from a run stays on the results or home screen.": "השלב האחרון בסיפור מסיים עכשיו את כל המשחק: אפילוג, כתוביות סיום של כל מה שעברת (השלבים, הכוכבים, האויבים והקומבו הטוב ביותר שלך) והישג חדש, אגדת ניאו-אדו. שחקן חדש רואה כפתור אחד ומשחק תוך שניות: הלחיצה הראשונה על מצב סיפור נכנסת ישר לפתיחה ולשלב 1-1, הכפתורים הנוספים במסך הבית נפתחים תוך כדי משחק, בשלב הראשון אין הפתעות של אויבי עילית, והטיפים והרדיו מחכים כשהמשחק מלמד אותך. ההגדרות מתאימות למכשיר שלך (בלי אפשרויות מקלדת בטלפון), המתגים של קולות הדמויות ומצלמת הכיוון חזרו, מתג קריין אחד ומד FPS אחד. אין יותר שדות מפתחים או תגי גרסה בחלונות, ושום דבר מהריצה לא נשאר במסך התוצאות או בבית.", "v105.0 — EVERY VOICE IN ITS PLACE": "v105.0 — כל קול במקומו", "The characters, Mika's radio and the announcer no longer cut each other off: a story line always finishes, the radio waits for it, and the announcer waits for both. Each character gets a voice of their own gender when the device has one (Mika, Valkyrie and Izanami speak with a woman's voice), at a natural pitch. The game's own voice, for devices without one in your language, takes turns too. Fixes: opening several crates at once works and its button sits on the right crate; the crate film closes when you leave it and no longer freezes; the hero's perk tag no longer stays on the results screen; no '+0 CR' line; the launcher button shows [F] only on a computer and speaks your language; the music styles are translated.": "הדמויות, הרדיו של מיקה והקריין כבר לא קוטעים זה את זה: שורת סיפור תמיד נגמרת, הרדיו מחכה לה, והקריין מחכה לשניהם. כל דמות מקבלת קול מהמגדר שלה כשיש כזה במכשיר (מיקה, ולקיריה ואיזנאמי מדברות בקול נשי), בגובה טבעי. גם הקול של המשחק עצמו, למכשירים בלי קול בשפה שלך, מחכה לתורו. תיקונים: פתיחת כמה תיבות בבת אחת עובדת והכפתור שלה נמצא על התיבה הנכונה; סרט התיבה נסגר כשיוצאים ממנו ולא קופא יותר; תג היכולת של הגיבור לא נשאר במסך התוצאות; אין יותר שורת '+0 CR'; כפתור ההקפצה מראה [F] רק במחשב ומדבר בשפה שלך; סגנונות המוזיקה מתורגמים.", "v104.0 — ONE STEP AT A TIME": "v104.0 — צעד אחר צעד", "New players meet the newer systems one at a time as the story goes on: blade clash, boss armor, roof props, the launcher, rail events, squads, synergies, the awakened blade, the shadow rival and the heat pact, each with a short tip when it opens (players who already played keep everything). The HYPER BOSSES pact now works: bosses act 25% faster and have 25% more health. The daily and weekly runs remember your best attempt and send it beside you as a ghost, with the gap on screen, no connection needed. On a computer, the FPS meter stays off unless you turn it on. The home screen runs lighter on phones: about 45% more frames on a slow one. Under the hood: one source for the whole game and automatic tests on every change, which check that replays from versions 88, 98, 103 and 104 play back exactly.": "שחקנים חדשים מכירים את המערכות החדשות אחת אחת לאורך הסיפור: התנגשות להבים, שריון בוסים, חפצים על הגג, המקפצה, אירועי מסילה, חוליות, סינרגיות, הלהב המתעורר, יריב הצל וברית החום, כל אחת עם טיפ קצר כשהיא נפתחת (מי שכבר שיחק שומר על הכל). ברית הבוסים ההיפר עובדת עכשיו: הבוסים פועלים מהר יותר ב-25% ויש להם 25% יותר חיים. הריצה היומית והשבועית זוכרות את הניסיון הטוב ביותר שלך ומריצות אותו לידך כרוח, עם הפער על המסך, בלי צורך בחיבור. במחשב, מד ה-FPS כבוי אלא אם מדליקים אותו. מסך הבית קל יותר בטלפונים: כ-45% יותר פריימים בטלפון חלש. מאחורי הקלעים: מקור אחד לכל המשחק ובדיקות אוטומטיות בכל שינוי, שמוודאות שהקלטות מגרסאות 88, 98, 103 ו-104 מתנגנות בדיוק.", "v103.0 — ONE GAME, EVERY UPGRADE": "v103.0 — משחק אחד, כל השדרוגים", "Version 102's studio sound, living hero, action camera, lock-on, 3D body, clean home and settings are merged with version 98's fixes: replays play back exactly (the new walk and the lock-on pull included), the roof props, rail events and armor break run as fair rules, the launcher [F] costs a dash charge, and the title screen keeps all its buttons.": "הסאונד האולפני, הגיבור החי, מצלמת האקשן, הנעילה על מטרה, גוף התלת־ממד, מסך הבית וההגדרות החדשים של גרסה 102 שולבו עם התיקונים של גרסה 98: ההקלטות החוזרות מתנגנות בדיוק (כולל ההליכה החדשה ומשיכת הנעילה), האובייקטים על הגג, אירועי המסילה ושבירת השריון פועלים כחוקים הוגנים, השיגור [F] עולה מטען דאש, ומסך הבית שומר על כל הכפתורים."});
 Object.assign(HE, {"v98.0 — FAIR, FIXED & REPLAYABLE": "v98.0 — הוגן, מתוקן וניתן לשחזור", "A full code review and fix pass: replays play back exactly again (the systems added in 89-97 now run in the fixed simulation step with the run's own dice, and [F], WASD and blade-clash mashing are recorded); the roof props, rail events, boss armor break and finisher camera actually run now; the launcher [F] costs a dash charge and its damage fits the game's scale (no more enemies left alive at negative health); the 1.6x damage on broken boss armor is real; the parry reward comes from a real parry; Glass and no-parry contracts hold; replays no longer pay out rewards; the final choice appears once, after DEUS EX KUROGANE; the title screen keeps its soundtrack, chips, heat pact and login buttons; the vampire synergy and the fragile pact work; no more missing-track requests.": "סבב בדיקת קוד ותיקונים מלא: ההקלטות החוזרות מתנגנות שוב בדיוק (המערכות שנוספו בגרסאות 89–97 רצות עכשיו בצעד הסימולציה הקבוע עם הקוביות של הריצה, ו־[F], WASD וההקשות ב־Blade Clash נרשמים); האובייקטים על הגג, אירועי המסילה, שבירת שריון הבוסים ומצלמת ה־Finisher באמת פועלים עכשיו; השיגור [F] עולה מטען דאש והנזק שלו מותאם לסקאלה של המשחק (אין יותר אויבים חיים עם חיים שליליים); נזק ×1.6 על שריון שבור אמיתי; תגמול הפארי מגיע מפארי אמיתי; מצב Glass וחוזה בלי פארי נשמרים; צפייה בהקלטה לא נותנת יותר פרסים; הבחירה האחרונה מופיעה פעם אחת, אחרי DEUS EX KUROGANE; במסך הבית נשארים כפתורי הפסקול, הצ'יפים, חוזי החום וההתחברות; סינרגיית הערפד וחוזה השבירות עובדים; אין יותר בקשות לשירים שלא קיימים."});
 
 /* ==========================================================================

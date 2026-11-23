@@ -130,6 +130,8 @@ The game is a static page: [`index.html`](index.html) loads `css/overdrive.css`,
 - `ghost`: the daily saves your best attempt of the day as a ghost, and the next daily races it;
 - `voice`: story lines, the radio and the announcer never cut each other off, and each character gets a voice of their gender;
 - `story`: a bot that knows every objective plays one stage of each kind to STAGE CLEAR and its results screen;
+- `leftovers`: nothing from the in-run HUD (boss bar, style rank, tags) stays on the results or title screen;
+- `first`: a new player on a phone sees only the story button and is playing stage 1-1 within 30 taps;
 - `sweep`: every arcade mode and one story stage per chapter played in real time in 2D and 3D, with no errors allowed.
 
 `node source/lint.js` is the code check. GitHub runs all of it on every push and pull request (`.github/workflows/tests.yml`).

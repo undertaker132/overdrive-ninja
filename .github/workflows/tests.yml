@@ -26,6 +26,6 @@ jobs:
       - name: Lint
         run: node source/lint.js
       - name: Replays and cross-version replays
-        run: node tests/run.js replay,compat,pace,ghost,voice,story
+        run: node tests/run.js replay,compat,pace,ghost,voice,story,leftovers,first
       - name: Every mode in 2D and 3D
         run: node tests/run.js sweep --secs 3

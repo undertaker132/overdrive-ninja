@@ -43,6 +43,7 @@
       "Cinematic Finisher Cam": "מצלמת Finisher קולנועית",
       "CHIPS": "צ'יפים",
       "WEAPON CHIPS (v96)": "צ'יפים לנשק (v96)",
+      "WEAPON CHIPS": "צ'יפים לנשק",
       "ARMOR BREAK!": "שריון נשבר!",
       "AIR JUGGLE": "קומבו אווירי",
       "LAUNCH": "הקפצה",
@@ -87,7 +88,7 @@
       this.frames++; this.acc += Math.max(0.001, Math.min(0.1, rd || 0.016));
       if (this.acc < 0.6) return;
       this.fps = Math.round(this.frames / this.acc); this.frames = 0; this.acc = 0;
-      const show = S96.on('fps96', false);
+      const show = S96.on('fps96', false) && !(typeof PC !== 'undefined' && PC.isPC); // (v106: one meter: on a computer the frame-time graph shows instead)
       if (!this.badge) { if (!show) return; const b = document.createElement('div'); b.id = 'fps96-badge'; document.body.appendChild(b); this.badge = b; }
       setShow(this.badge, show);
       if (show) { setTxt(this.badge, this.fps + ' FPS'); this.badge.style.color = this.fps >= 55 ? '#00ff9d' : this.fps >= 40 ? '#ffd700' : '#ff0844'; }
@@ -178,7 +179,7 @@
                : '<span style="font-size:10px;opacity:.7">' + (he ? 'נופל מבוסים' : 'BOSS DROP') + '</span>') + '</div>';
       }).join('');
       this.modalEl.innerHTML =
-        '<div class="modal92-box"><div class="modal92-head"><h3>💎 ' + S96.L('WEAPON CHIPS (v96)') + ' (' + d.eq.length + '/2)</h3><button class="modal92-close" id="c96-x">✕</button></div>' +
+        '<div class="modal92-box"><div class="modal92-head"><h3>💎 ' + S96.L('WEAPON CHIPS') + ' (' + d.eq.length + '/2)</h3><button class="modal92-close" id="c96-x">✕</button></div>' +
         '<p style="font-size:12px;opacity:.82;margin:0 0 10px">' + (he ? 'שבץ עד 2 צ׳יפים טקטיים בנשק שלך. בוסים ואויבי עילית מפילים צ׳יפים נדירים נוספים. השינוי חל מהריצה הבאה.' : 'Socket up to 2 tactical chips into your weapon. Defeat Bosses & Elites to unlock more. Changes apply from your next run.') + '</p>' + rows + '</div>';
       this.modalEl.querySelector('#c96-x').onclick = () => this.modalEl.classList.remove('on');
       this.modalEl.querySelectorAll('button[data-cid]').forEach(b => {
@@ -257,7 +258,7 @@
     },
     tick() { // the on-screen button (drawing side)
       if (!this.btnEl) { const b = document.createElement('button'); b.id = 'air96-btn'; b.onclick = () => this.press(); document.body.appendChild(b); this.btnEl = b; }
-      const show = S96.on('air96', true) && G.state === 'PLAY' && !G.photo && !REPLAY.on;
+      const show = S96.on('air96', true) && (typeof Sim98 === 'undefined' || Sim98.on('air96')) && G.state === 'PLAY' && !G.photo && !REPLAY.on; // (v106: only when the launcher is on in this run)
       setShow(this.btnEl, show);
       if (!show) return;
       const air = this.hasAirborne();
@@ -4493,4 +4494,201 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
 
   // the in-run hero perk chip stayed on the results screen (its updater runs only during play)
   Sim98.menu.push(() => { const a = document.getElementById('arch97-badge'); if (a && a.style.display !== 'none') a.style.display = 'none'; });
+
+  // a boss taunt / radio bubble started near the end of a fight stayed over the results, the comics and the credits
+  // (its timer only ran during play): outside a run it keeps counting down, and leaving a run closes it
+  Sim98.menu.push(() => { try { const S = StoryOverhaul95; if (S.el && S.el.classList.contains('on')) { S.timer = 0; S.el.classList.remove('on'); } } catch (e) { } });
+  // in-run HUD pieces whose updaters run only during play stayed on the results and title screens
+  // (the boss bar, the style rank, the synergy tags): outside a run they are hidden; the next run shows them again
+  const RUN_HUD = ['syn92-hud', 'boss-hud101', 'style89-badge', 'vig101'];
+  Sim98.menu.push(() => { for (const id of RUN_HUD) { const h = document.getElementById(id); if (h && h.style.display !== 'none') h.style.display = 'none'; } });
+})();
+
+/* --- MODULE 12: v106.0 THE GRAND FINALE — the last stage of the story ends the whole game --- */
+(function () {
+  'use strict';
+  const LAST = '23-4';
+  if (typeof HE !== 'undefined') Object.assign(HE, {
+    "EPILOGUE · THE LAST LEGEND": "אפילוג · האגדה האחרונה",
+    "OTAKEMARU.EXE: THE LAST LEGEND IS OVER.": "OTAKEMARU.EXE: האגדה האחרונה נגמרה.",
+    "SNOW SETTLES ON THE SHRINE. FOR THE FIRST TIME IN A HUNDRED YEARS, NOTHING IN NEO-EDO IS HUNTING ANYONE.": "השלג שוקע על המקדש. לראשונה מזה מאה שנה, שום דבר בניאו-אדו לא צד אף אחד.",
+    "Every machine that ran this city is asleep.": "כל מכונה שניהלה את העיר הזאת ישנה.",
+    "Then the city is ours.": "אז העיר שלנו.",
+    "From the Titan Express to the oni king. Same blade the whole way.": "מהטיטאן אקספרס ועד מלך האוני. אותו להב כל הדרך.",
+    "THE END": "סוף",
+    "THE WHOLE STORY IS COMPLETE": "כל הסיפור הושלם",
+    "THE LEGENDS YOU ENDED": "האגדות שסיימת",
+    "THE CAST": "הצוות",
+    "REN — the blade": "רן — הלהב",
+    "MIKA — the voice in your ear": "מיקה — הקול באוזן שלך",
+    "KAGE — the shadow who came back": "קאגה — הצל שחזר",
+    "YOUR JOURNEY": "המסע שלך",
+    "{0} STAGES CLEARED": "{0} שלבים הושלמו",
+    "{0} STARS": "{0} כוכבים",
+    "{0} ENEMIES CUT DOWN": "{0} אויבים נחתכו",
+    "BEST COMBO x{0}": "הקומבו הטוב ביותר x{0}",
+    "NEW GAME+ IS WAITING ON THE STORY MAP": "משחק חדש+ מחכה במפת הסיפור",
+    "LEGEND OF NEO-EDO": "אגדת ניאו-אדו",
+    "Finish the whole story": "סיים את כל הסיפור",
+    "Thank you for playing.": "תודה ששיחקת.",
+    "You finished the whole story. Roll the credits.": "סיימת את כל הסיפור. הקרדיטים מחכים."
+  });
+
+  // the epilogue: four panels, from the fallen king to the morning after
+  COMICS.end8 = { t: 'EPILOGUE · THE LAST LEGEND', p: [
+    { k: 'boss', id: 'otakemaru', down: 1, cap: 'OTAKEMARU.EXE: THE LAST LEGEND IS OVER.' },
+    { k: 'dawn', cap: 'SNOW SETTLES ON THE SHRINE. FOR THE FIRST TIME IN A HUNDRED YEARS, NOTHING IN NEO-EDO IS HUNTING ANYONE.' },
+    { k: 'duo', who: 'M', say: 'Every machine that ran this city is asleep.', who2: 'R', say2: 'Then the city is ours.' },
+    { k: 'face', who: 'K', say: 'From the Titan Express to the oni king. Same blade the whole way.' }] };
+
+  ACHS.push({ id: 'legend', name: 'LEGEND OF NEO-EDO', d: 'Finish the whole story', r: 1000 });
+
+  // the closing credits: the whole game, then the player's own journey
+  const roll = () => {
+    const d = Store.data, st = d.stats || {}, cleared = Object.keys(d.story.stars || {}).filter(k => d.story.stars[k] > 0).length;
+    const L = lt, F = ltf;
+    return [['OVERDRIVE: CYBER SLASH', 'big'], ['', ''], [L('THE END'), 'big gold'], [L('THE WHOLE STORY IS COMPLETE'), 'gold'], ['', ''],
+      [L('THE LEGENDS YOU ENDED'), 'gold'], ...['shogun', 'prime', 'genesis', 'oryu', 'izanami', 'hyakki', 'otakemaru'].filter(id => BOSS_INFO[id]).map(id => [L(BOSS_INFO[id].name), '']), ['', ''],
+      [L('THE CAST'), 'gold'], [L('REN — the blade'), ''], [L('MIKA — the voice in your ear'), ''], [L('KAGE — the shadow who came back'), ''], ['', ''],
+      [L('YOUR JOURNEY'), 'gold'], [F('{0} STAGES CLEARED', cleared), ''], [F('{0} STARS', Store.stars()), ''],
+      ...(st.kills ? [[F('{0} ENEMIES CUT DOWN', fmtNum(st.kills)), '']] : []), ...(st.maxCombo ? [[F('BEST COMBO x{0}', st.maxCombo), '']] : []), ['', ''],
+      [L('LEGEND OF NEO-EDO'), 'gold'], [L('NEW GAME+ IS WAITING ON THE STORY MAP'), ''], ['', ''], [L('Thank you for playing.'), 'big']];
+  };
+  const cr0 = Flow.credits.bind(Flow);
+  Flow.credits = function (act) {
+    if (act !== 8) return cr0.apply(this, arguments);
+    const d = Store.data;
+    if (!d.seen.cmEnd8) { d.seen.cmEnd8 = 1; Store.touch(); Comic.play('end8', () => this.credits(8)); return; } // the epilogue first
+    ach('legend');
+    G.state = 'MENU'; UI.show('credits'); const box = $('crRoll'); box.textContent = '';
+    for (const [t, c] of roll()) { const e = el('div', c, t || ' '); if (/big/.test(c)) { e.style.fontSize = '1.35em'; e.style.letterSpacing = '.12em'; e.style.margin = '.4em 0'; } box.appendChild(e); }
+    box.style.animation = 'none'; void box.offsetWidth; box.style.animation = ''; box.style.animationDuration = '58s'; // (a longer roll: it is the whole game)
+    Aud.intensity = 2; Aud.music('credits'); Aud.say('Neo Edo is free', 1);
+  };
+
+  // the last stage's results lead to the finale, the first time (not in New Game+)
+  const or0 = UI.openResult.bind(UI);
+  UI.openResult = function (o) {
+    try {
+      if (o && G.mode === 'story' && G.stage && G.stage.id === LAST && G.won && !G.ngp) {
+        o.main = [lt('ROLL CREDITS'), () => Flow.credits(8)];
+        (o.notes = o.notes || []).unshift({ t: lt('You finished the whole story. Roll the credits.'), c: 'gold' });
+      }
+    } catch (e) { errLog(e); }
+    return or0.apply(this, arguments);
+  };
+
+  // the story map's EPILOGUE button for the oni chapter, once it is cleared
+  const rs0 = UI.renderStory.bind(UI);
+  UI.renderStory = function () {
+    const r = rs0.apply(this, arguments);
+    try { const ch = STAGE_BY_ID[LAST].ch, b = $('stEpi'); if (b && this.storyCh === ch && Store.data.story.stars[LAST]) { b.classList.remove('hidden'); b.onclick = () => { Aud.sfx('ui'); Comic.play('end8', () => this.openStory()); }; } } catch (e) { errLog(e); }
+    return r;
+  };
+})();
+
+/* --- MODULE 13: v106.0 ORDER — settings that fit the device, one switch per thing, one ghost --- */
+(function () {
+  'use strict';
+  if (typeof HE !== 'undefined') Object.assign(HE, { "ONLINE": "מקוון", "Play a run to post your first high score!": "שחק ריצה כדי לרשום את השיא הראשון שלך!", "STUDIO SOUNDTRACK": "פסקול אולפן", "Pick your own music for every moment of the game. The files stay on this device.": "בחר מוזיקה משלך לכל רגע במשחק. הקבצים נשמרים רק במכשיר הזה.", "WEAPON CHIPS": "צ'יפים לנשק", "+35% Elite spawn chance": "+35% סיכוי להופעת עילית", "Enemy bullets fly +22% faster": "יריות האויבים מהירות ב-22%", "-1 Max Shield (high stakes)": "-1 מגן מקסימלי (הימור גבוה)", "Enemies move +18% faster": "האויבים זזים מהר יותר ב-18%", "Character voices": "קולות הדמויות", "GAME VOICE": "קול המשחק", "Camera follows your aim": "המצלמה עוקבת אחרי הכיוון" });
+  const isDesk = () => { try { return S90.isDesk(); } catch (e) { return false; } };
+  const row = id => { const b = document.getElementById(id); return b ? b.closest('.set') || b.parentElement : null; };
+  const hide = id => { const r = row(id); if (r) r.style.display = 'none'; };
+  // a settings row like the others: a label and a button that cycles its values
+  const cycleRow = (label, key, opts, names) => {
+    const s = Store.data.settings, r = el('div', 'set'); r.appendChild(el('span', '', lt(label)));
+    const b = el('button', 'tog on'); b.id = 'set-' + key; b.type = 'button';
+    const idx = () => { const k = opts.indexOf(s[key] == null ? opts[0] : s[key]); return k < 0 ? 0 : k; };
+    b.textContent = lt(names[idx()]);
+    b.onclick = () => { s[key] = opts[(idx() + 1) % opts.length]; b.textContent = lt(names[idx()]); Aud.sfx('ui'); Store.touch(); if (key === 'cvoice' && s.cvoice) Voices.speak('M', lt('Hi, Mika. Where do you want me?'), 'Hi, Mika. Where do you want me?'); /* (a sample of the voice just chosen) */ };
+    r.appendChild(b); return r;
+  };
+  const os0 = UI.openSettings.bind(UI);
+  UI.openSettings = function () {
+    const r = os0.apply(this, arguments);
+    try {
+      const s = Store.data.settings, desk = isDesk();
+      // one announcer switch: the GAMEPLAY copy goes, "Voice callouts" (SOUND) rules both
+      hide('set-voice96'); s.voice96 = null;
+      // the character voices and the aim camera lost their switches in the v98 redesign
+      const vr = row('set-voice');
+      if (vr && !document.getElementById('set-cvoice')) vr.parentElement.insertBefore(cycleRow('Character voices', 'cvoice', [1, 2, 0], ['ON', 'GAME VOICE', 'OFF']), vr.nextSibling);
+      const sr = row('set-shake');
+      if (sr && !document.getElementById('set-lean')) sr.parentElement.insertBefore(cycleRow('Camera follows your aim', 'lean', [1, 0], ['ON', 'OFF']), sr.nextSibling);
+      // settings for the device in hand
+      if (!desk) { for (const id of ['set-wasd90', 'set-instSlash90', 'set-maim', 'set-xh']) hide(id); const kt = [...document.querySelectorAll('#setTabs button')].find(b => b.textContent === S98L('KEYS')); if (kt) kt.style.display = 'none'; const ar = row('set-air96'); if (ar && ar.firstChild) ar.firstChild.textContent = ar.firstChild.textContent.replace(/\s*\[F\]/, ''); }
+      else for (const id of ['set-tap', 'set-sens', 'set-lefty', 'set-haptics']) hide(id);
+      // the 3D options only matter in 3D
+      if (!(s.d3 > 0)) { hide('set-style3d91'); hide('set-actionCam101'); }
+      const d3b = document.getElementById('set-d3'); if (d3b && !d3b.dataset.o106) { d3b.dataset.o106 = 1; d3b.addEventListener('click', () => setTimeout(() => { if (UI.cur === 'settings') UI.openSettings(); }, 0)); }
+    } catch (e) { errLog(e); }
+    return r;
+  };
+  function S98L(t) { return typeof lt === 'function' ? lt(t) : t; }
+
+  // one ghost: the 3D ghost also runs the challenge, rival and daily ghosts (it only knew its own best before)
+  try {
+    const GR = window.__V96 && window.__V96.GhostRun96;
+    if (GR) {
+      const t0 = GR.tick.bind(GR);
+      GR.tick = function (rd) {
+        if (Ghost.playOn && Ghost.play && G.state === 'PLAY' && !REPLAY.on && typeof R3 !== 'undefined' && R3.ok && R3.root) {
+          const q = Ghost.posAt(G.time); const saved = this.pb;
+          if (q) { this.pb = { frames: [[0, q.x, q.y]] }; this.runT = 0; } // (the next draw puts it where the race ghost is)
+          const r = t0(rd); this.pb = saved; return r;
+        }
+        return t0(rd);
+      };
+    }
+  } catch (e) { }
+})();
+
+/* --- MODULE 14: v106.0 THE FIRST MINUTE — a new player sees one button and is playing a second later --- */
+(function () {
+  'use strict';
+  const fresh = () => { try { const d = Store.data; return !d.uiAll && (d.story.unlocked | 0) === 0; } catch (e) { return false; } };
+  const isDesk = () => { try { return S90.isDesk(); } catch (e) { return false; } };
+  // the home screen's command bar (v92-v97) opens with the story like the rest of the title screen
+  const NEED = { 'auth93-btn': 1, 'lb92-btn': 2, 'ost95-btn': 3, 'chips96-btn': 4 };
+  const tidy = () => {
+    try {
+      const d = Store.data, lv = Gate.lv();
+      for (const id in NEED) { const b = document.getElementById(id); if (b) b.style.setProperty('display', d.uiAll || lv >= NEED[id] ? '' : 'none', d.uiAll || lv >= NEED[id] ? '' : 'important'); }
+      const k = document.getElementById('help97-btn'); if (k && !isDesk()) k.style.setProperty('display', 'none', 'important'); // (keyboard help: only with a keyboard)
+      const bar = document.getElementById('cmdbar98'); if (bar) bar.style.display = [...bar.children].some(c => getComputedStyle(c).display !== 'none') ? '' : 'none';
+    } catch (e) { }
+  };
+  Sim98.menu.push(() => { if (UI.cur === 'title') tidy(); });
+
+  // the very first STORY press plays the opening and stage 1-1 at once (the story map comes after the first stage)
+  const hook = () => {
+    const b = document.getElementById('bStory'); if (!b || b.dataset.fm106) return; b.dataset.fm106 = 1;
+    b.addEventListener('click', e => { if (!fresh() || Store.data.story.stars['1-1']) return; e.stopImmediatePropagation(); e.preventDefault(); Aud.sfx('ui'); Flow.startStory(0); }, true);
+  };
+  const ot0 = UI.openTitle.bind(UI);
+  UI.openTitle = function () { const r = ot0.apply(this, arguments); hook(); tidy(); return r; };
+
+  // the very first run: after the prologue, only the two lines that matter before the first cut
+  // (where you are, and how to aim); the full talk is there on every later visit to 1-1
+  const ss0 = Flow.startStory.bind(Flow);
+  Flow.startStory = function (idx) {
+    const s = STAGES[idx];
+    if (idx === 0 && s && !Store.data.story.prologue && !s.pre0) { s.pre0 = s.pre; s.pre = [s.pre[0], s.pre[2]].filter(Boolean); }
+    return ss0.apply(this, arguments);
+  };
+  const ep0 = Flow.enterPlay.bind(Flow);
+  Flow.enterPlay = function () { const s = STAGES[0]; if (s && s.pre0) { s.pre = s.pre0; s.pre0 = null; } return ep0.apply(this, arguments); };
+
+  // while the tutorial shows an instruction, the tips and Mika's radio wait for it (they used to print over it)
+  const waitT = [], waitC = [];
+  const teaching = () => (typeof Tut !== 'undefined' && Tut.cur) || (G.mode === 'story' && G.stage && G.stage.tut === 'aim' && G.kills < 2); // (Tut prompts, and the drag-to-aim lesson of 1-1)
+  const h0 = hint;
+  hint = function (id, text) { if (teaching() && G.state === 'PLAY') { if (!waitT.some(q => q[0] === id)) waitT.push([id, text]); return; } return h0(id, text); };
+  const cs0 = Comms.say.bind(Comms);
+  Comms.say = function (key, force) { if (teaching() && G.state === 'PLAY') { if (force && !waitC.some(q => q[0] === key)) waitC.push([key, force]); return; } return cs0(key, force); };
+  Pipe.on('post', 'wait106', () => {
+    if (G.state !== 'PLAY') { waitT.length = 0; waitC.length = 0; return; }
+    if (teaching() || G.hintT > 0) return;
+    if (waitC.length) { const [k, f] = waitC.shift(); cs0(k, f); } else if (waitT.length) { const [id, t] = waitT.shift(); h0(id, t); }
+  }, 60);
 })();

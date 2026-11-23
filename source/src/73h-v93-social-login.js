@@ -299,12 +299,12 @@ const Auth93 = {
         '<div class="modal92-head"><h3>👤 ' + L('ACCOUNT & LOGIN') + '</h3><button class="modal92-close" id="a93-x">✕</button></div>' +
         '<div class="auth93-status" id="auth93-st"></div>' +
         bodyHtml +
-        '<details style="margin-top:12px;border-top:1px solid rgba(255,255,255,.12);padding-top:10px">' +
+        (DEV_UI ? '<details style="margin-top:12px;border-top:1px solid rgba(255,255,255,.12);padding-top:10px">' +
           '<summary style="cursor:pointer;font-size:11px;font-weight:800;color:#00f2fe">' + L('Firebase Auth Setup (Optional)') + '</summary>' +
           '<div style="font-size:11px;opacity:.8;margin:6px 0">Paste your Firebase Web Config JSON to enable live Google / Facebook / GitHub OAuth popups (requires HTTPS hosting like GitHub Pages or itch.io):</div>' +
           '<textarea class="cloud92-inp" id="a93-cfg" rows="4" placeholder=\'{"apiKey":"...","authDomain":"...","projectId":"..."}\'>' + savedCfg + '</textarea>' +
           '<button class="modal92-close" id="a93-cfg-save" style="border-color:#ffd700;color:#ffd700">SAVE FIREBASE CONFIG</button>' +
-        '</details>' +
+        '</details>' : '') +
       '</div>';
 
     this.modalEl.querySelector('#a93-x').onclick = () => this.modalEl.classList.remove('on');

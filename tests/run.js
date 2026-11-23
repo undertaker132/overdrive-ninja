@@ -5,11 +5,13 @@
 //   ghost   the daily saves your best attempt of the day and the next daily races it
 //   voice   story lines, the radio and the announcer never cut each other off; voices match the character
 //   story   one stage of every objective type is played to STAGE CLEAR and its results screen
+//   leftovers nothing from the in-run HUD stays on the results or title screen
+//   first   a new player on a phone sees only the story and is playing within 30 taps
 //   sweep   every arcade mode and a story stage per chapter, played in real time in 2D and 3D; no errors allowed
 // Needs Playwright with Chromium. Exit code 1 on any failure.
 const { chromium } = require('playwright'), fs = require('fs'), path = require('path');
 const { serve, boot, BOT, ROOT } = require('./lib');
-const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,voice,story,sweep').split(',');
+const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,voice,story,leftovers,first,sweep').split(',');
 const SECS = +(args[args.indexOf('--secs') + 1] || 4);
 let failed = 0; const fail = m => { failed++; console.log('  FAIL', m); }, ok = m => console.log('  ok  ', m);
 
@@ -145,6 +147,41 @@ async function story(b, url) {
   await p.close();
 }
 
+async function leftovers(b, url) {
+  console.log('leftovers: nothing from the in-run HUD stays on the results or title screen');
+  const p = await boot(b, url); let bad = 0;
+  for (const m of ['endless', 'bossrush']) {
+    await p.evaluate(m => { Flow.startArcade(m); window.__b = setInterval(() => { try { if (Tut.cur) Tut.dismiss(); if (G.state === 'PERK') { const c = document.querySelector('#s-perk .perk'); if (c) c.click(); } if (G.state === 'PLAY' && In.buf <= 0) { In.buf = .2; In.ba = Math.random() * 6.28; } } catch (e) { } }, 150); }, m);
+    await p.waitForTimeout(7000);
+    await p.evaluate(() => { clearInterval(window.__b); for (let i = 0; i < 900 && G.state === 'PLAY'; i++) { P.hp = 0; P.inv = 0; safeStep(); } }); await p.waitForTimeout(2500);
+    for (const where of ['results', 'title']) {
+      if (where === 'title') { await p.evaluate(() => UI.openTitle()); await p.waitForTimeout(1200); }
+      const left = await p.evaluate(() => { const out = [], scr = document.querySelector('.scr:not(.hidden)');
+        for (const e of document.body.querySelectorAll('*')) { const cs = getComputedStyle(e); if (cs.position !== 'fixed' || cs.display === 'none' || cs.visibility === 'hidden' || +cs.opacity < .05 || e.closest('.scr') || e.closest('.unlock39') || e.id === 'viz88') continue;
+          const r = e.getBoundingClientRect(), t = (e.innerText || '').trim().replace(/\s+/g, ' ').slice(0, 40); if (r.width < 4 || r.height < 4 || !t) continue; if (/modal|toast|ach/i.test(e.className + e.id)) continue; out.push('#' + e.id + ' "' + t + '"'); }
+        return out; });
+      if (left.length) { bad++; fail(`${m} ${where}: still on screen ${left.slice(0, 4).join(', ')}`); }
+    }
+  }
+  if (!bad) ok('results and title screens are clean after endless and boss rush');
+  for (const e of p.__errs) fail('page error: ' + e);
+  await p.close();
+}
+
+async function first(b, url) {
+  console.log('first: a new player on a phone, tapping through, is playing within 30 taps');
+  const { devices } = require('playwright');
+  const ctx = await b.newContext({ ...devices['Pixel 5'], locale: 'he-IL' }); const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
+  await p.goto(url + 'index.html'); await p.waitForSelector('#bootGo:not(.hidden)'); await p.tap('#bootGo'); await p.waitForTimeout(1200);
+  const bar = await p.evaluate(() => [...document.querySelectorAll('#cmdbar98 > *')].filter(e => getComputedStyle(e).display !== 'none').map(e => e.id));
+  if (bar.length) fail('new player home screen shows extra buttons: ' + bar.join(', ')); else ok('the home screen shows a new player only the story');
+  await p.tap('#bStory'); let taps = 1, st = '';
+  for (; taps < 40; taps++) { await p.waitForTimeout(600); st = await p.evaluate(() => G.state + '/' + UI.cur); if (st.startsWith('PLAY')) break; await p.tap('body', { position: { x: 195, y: 650 } }); }
+  if (!st.startsWith('PLAY')) fail(`not playing after ${taps} taps (${st})`); else ok(`playing stage 1-1 after ${taps} taps`);
+  for (const e of errs) fail('page error: ' + e);
+  await ctx.close();
+}
+
 async function sweep(b, url) {
   console.log(`sweep: every mode and a stage per chapter, ${SECS}s each in real time, 2D and 3D`);
   const p = await boot(b, url, { width: 1280, height: 720 });
@@ -181,7 +218,7 @@ async function sweep(b, url) {
 (async () => {
   const s = await serve(ROOT), b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const t0 = Date.now();
-  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['voice', voice], ['story', story], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
+  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['voice', voice], ['story', story], ['leftovers', leftovers], ['first', first], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
   catch (e) { fail('test crashed: ' + (e.stack || e)); }
   await b.close(); s.close();
   console.log(failed ? `\n${failed} FAILED` : '\nall passed', `(${((Date.now() - t0) / 1000) | 0}s)`);

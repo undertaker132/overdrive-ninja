@@ -21,4 +21,12 @@
 
   // the in-run hero perk chip stayed on the results screen (its updater runs only during play)
   Sim98.menu.push(() => { const a = document.getElementById('arch97-badge'); if (a && a.style.display !== 'none') a.style.display = 'none'; });
+
+  // a boss taunt / radio bubble started near the end of a fight stayed over the results, the comics and the credits
+  // (its timer only ran during play): outside a run it keeps counting down, and leaving a run closes it
+  Sim98.menu.push(() => { try { const S = StoryOverhaul95; if (S.el && S.el.classList.contains('on')) { S.timer = 0; S.el.classList.remove('on'); } } catch (e) { } });
+  // in-run HUD pieces whose updaters run only during play stayed on the results and title screens
+  // (the boss bar, the style rank, the synergy tags): outside a run they are hidden; the next run shows them again
+  const RUN_HUD = ['syn92-hud', 'boss-hud101', 'style89-badge', 'vig101'];
+  Sim98.menu.push(() => { for (const id of RUN_HUD) { const h = document.getElementById(id); if (h && h.style.display !== 'none') h.style.display = 'none'; } });
 })();
