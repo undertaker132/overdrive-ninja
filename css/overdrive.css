@@ -1589,3 +1589,10 @@ textarea, input[type="text"], .edcode { background: rgba(4, 7, 20, .8); border: 
 @keyframes tileIn { from { opacity: 0; transform: translateY(8px) scale(.92); } to { opacity: 1; transform: none; } }
 @keyframes mainGlow107 { 0%, 100% { box-shadow: 0 0 0 rgba(255, 43, 214, 0); } 50% { box-shadow: 0 0 22px rgba(255, 43, 214, .55); } }
 @media (prefers-reduced-motion: reduce) { #s-result.seq107 > .col > *, #s-result.seq107 #rsStats > *, #s-result.seq107 #rsMain, #s-result.seq107 #rsTitle { animation: none !important; } }
+
+/* v107: the dialogue box follows the line's mood */
+#dlg .box.mood-shout { animation: dlgShake107 .32s cubic-bezier(.3, .2, .2, 1); }
+#dlg .box.mood-shout #dlgTxt { font-weight: 800; letter-spacing: .2px; }
+#dlg .box.mood-sad #dlgTxt { opacity: .82; font-style: italic; }
+@keyframes dlgShake107 { 0% { transform: translateX(0); } 20% { transform: translateX(-7px) rotate(-.4deg); } 45% { transform: translateX(6px) rotate(.3deg); } 70% { transform: translateX(-3px); } 100% { transform: none; } }
+@media (prefers-reduced-motion: reduce) { #dlg .box.mood-shout { animation: none; } }
