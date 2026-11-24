@@ -645,7 +645,7 @@ const CrateCinema94 = {
         g2.shadowColor = trueCol;
         g2.shadowBlur = 24;
         g2.fillText(L(R0.n), W * 0.5, H * 0.22);
-        const subName = res.item ? L(res.item.name) : (res.cr ? '+' + fmtNum(res.cr) + ' CR' : '+' + fmtNum(res.shards) + ' ' + L('SHARDS'));
+        const subName = res.item ? L(res.item.name) : (res.cr ? '+' + fmtNum(res.cr) + ' CR' : '+' + fmtNum(res.cores) + ' ◆ ' + L('CORES'));
         g2.font = '800 20px Rajdhani, Orbitron, sans-serif';
         g2.fillStyle = '#ffffff';
         g2.fillText(subName, W * 0.5, H * 0.74);
@@ -712,7 +712,7 @@ const CrateCinema94 = {
       rarEl.className = 'm94-rar'; rarEl.style.color = R0.c; rarEl.textContent = L(R0.n);
       const nmEl = document.createElement('div');
       nmEl.className = 'm94-nm';
-      nmEl.textContent = res.item ? L(res.item.name) : (res.cr ? '+' + fmtNum(res.cr) + ' CR' : '+' + fmtNum(res.shards) + ' ' + L('SHARDS'));
+      nmEl.textContent = res.item ? L(res.item.name) : (res.cr ? '+' + fmtNum(res.cr) + ' CR' : '+' + fmtNum(res.cores) + ' ◆ ' + L('CORES'));
       card.appendChild(rarEl); card.appendChild(nmEl);
       grid.appendChild(card);
     }

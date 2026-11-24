@@ -110,7 +110,7 @@ const EX_ACTS = [ // act, the chapters it holds, its final boss
   { n: 'I', ch: [0, 1, 2, 3], b: 'shogun', th: 'core' }, { n: 'II', ch: [6, 7, 8], b: 'prime', th: 'summit' }, { n: 'III', ch: [9, 10, 11], b: 'genesis', th: 'apex' },
   { n: 'IV', ch: [12, 13], b: 'oryu', th: 'abyss' }, { n: 'V', ch: [14, 15], b: 'tenkai', th: 'starring' }, { n: 'VI', ch: [16, 17], b: 'izanami', th: 'origin' }, { n: 'VII', ch: [18, 19], b: 'hyakki', th: 'hollow' }
 ];
-CHAPTERS.push({ n: 21, name: 'SECRETS', sub: 'EX bosses for the best', theme: 'void', bonus: true, bn: 'EX', secret: true, lock: 'Earn all three stars on every stage of an act to open its EX stage' });
+CHAPTERS.push({ n: 21, name: 'SECRETS', sub: 'An EX boss for every act', theme: 'void', bonus: true, bn: 'EX', secret: true, lock: 'Finish an act to open its EX stage' });
 EX_ACTS.forEach((A, i) => STAGES.push({
   id: 'EX-' + (i + 1), ch: 20, name: 'EX ' + A.n, theme: A.th, obj: { t: 'boss', b: A.b }, ex: 1, secret: i + 1,
   pool: { drone: 1.5, phantom: .5 }, max: 3, rate: 4,

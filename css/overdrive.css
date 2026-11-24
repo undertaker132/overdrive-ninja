@@ -1578,3 +1578,45 @@ textarea, input[type="text"], .edcode { background: rgba(4, 7, 20, .8); border: 
   position: fixed; inset: 0; z-index: 42; pointer-events: none;
   opacity: 0; transition: opacity .12s ease-out;
 }
+
+/* v107: the results screen as a sequence — title, grade, the numbers one by one, then the way on (tap to skip) */
+#s-result.seq107 > .col > * { animation: cardIn .45s cubic-bezier(.2, .9, .3, 1) both; animation-delay: var(--d, 0s); }
+#s-result.seq107 #rsTitle { animation: slam .55s cubic-bezier(.2, 1.6, .4, 1) both; animation-delay: var(--d, 0s); }
+#s-result.seq107 #rsStats > * { animation: tileIn .38s cubic-bezier(.2, 1.3, .4, 1) both; animation-delay: var(--d, 0s); }
+#s-result.seq107 #rsMain { animation: cardIn .45s cubic-bezier(.2, .9, .3, 1) both, mainGlow107 1.8s ease-in-out infinite; animation-delay: var(--d, 0s), calc(var(--d, 0s) + .6s); }
+#s-result.seq107.seqdone > .col > *, #s-result.seq107.seqdone #rsStats > *, #s-result.seq107.seqdone #rsTitle { animation-delay: 0s !important; animation-duration: .01s !important; }
+#s-result.seq107.seqdone #rsMain { animation: mainGlow107 1.8s ease-in-out infinite !important; }
+@keyframes tileIn { from { opacity: 0; transform: translateY(8px) scale(.92); } to { opacity: 1; transform: none; } }
+@keyframes mainGlow107 { 0%, 100% { box-shadow: 0 0 0 rgba(255, 43, 214, 0); } 50% { box-shadow: 0 0 22px rgba(255, 43, 214, .55); } }
+@media (prefers-reduced-motion: reduce) { #s-result.seq107 > .col > *, #s-result.seq107 #rsStats > *, #s-result.seq107 #rsMain, #s-result.seq107 #rsTitle { animation: none !important; } }
+
+/* v107: the dialogue box follows the line's mood */
+#dlg .box.mood-shout { animation: dlgShake107 .32s cubic-bezier(.3, .2, .2, 1); }
+#dlg .box.mood-shout #dlgTxt { font-weight: 800; letter-spacing: .2px; }
+#dlg .box.mood-sad #dlgTxt { opacity: .82; font-style: italic; }
+@keyframes dlgShake107 { 0% { transform: translateX(0); } 20% { transform: translateX(-7px) rotate(-.4deg); } 45% { transform: translateX(6px) rotate(.3deg); } 70% { transform: translateX(-3px); } 100% { transform: none; } }
+@media (prefers-reduced-motion: reduce) { #dlg .box.mood-shout { animation: none; } }
+
+/* v107: the chapters as stations on one rail line through Neo-Edo */
+#stTabs.rail107 { display: flex !important; gap: 0; overflow-x: auto; overflow-y: hidden; padding: 6px 10px 8px; scroll-snap-type: x proximity; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, transparent, #000 18px, #000 calc(100% - 18px), transparent); mask-image: linear-gradient(90deg, transparent, #000 18px, #000 calc(100% - 18px), transparent); }
+#stTabs.rail107::-webkit-scrollbar { display: none; }
+#stTabs.rail107 > button { flex: 0 0 84px; position: relative; background: none !important; border: none !important; box-shadow: none !important; clip-path: none !important; padding: 34px 4px 2px; margin: 0; font: 700 10px/1.25 var(--fm); color: var(--fg); text-align: center; scroll-snap-align: center; min-height: 0; }
+#stTabs.rail107 > button b { display: block; font: 700 11px var(--fd); color: var(--cyan); letter-spacing: 1px; margin-bottom: 2px; }
+#stTabs.rail107 > button::before { content: ''; position: absolute; top: 15px; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--cyan), var(--pink)); opacity: .75; }
+#stTabs.rail107 > button::after { content: ''; position: absolute; top: 8px; left: 50%; width: 17px; height: 17px; margin-left: -8.5px; border-radius: 50%; background: #0b1030; border: 3px solid var(--cyan); box-sizing: border-box; }
+#stTabs.rail107 > button.on::after { width: 25px; height: 25px; top: 4px; margin-left: -12.5px; background: var(--pink); border-color: #fff; box-shadow: 0 0 0 4px rgba(255, 43, 214, .25), 0 0 18px var(--pink); animation: station107 1.6s ease-in-out infinite; }
+#stTabs.rail107 > button.on { color: #fff; } #stTabs.rail107 > button.on b { color: var(--pink); }
+#stTabs.rail107 > button.lock { color: var(--mute); opacity: .55; }
+#stTabs.rail107 > button.lock::before { background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .25) 0 6px, transparent 6px 11px); }
+#stTabs.rail107 > button.lock::after { border-color: rgba(255, 255, 255, .3); }
+#stTabs.rail107 > button.bonus::after { border-color: var(--gold); } #stTabs.rail107 > button.bonus b { color: var(--gold); }
+#stTabs.rail107 > button.done::after { background: var(--cyan); }
+@keyframes station107 { 0%, 100% { box-shadow: 0 0 0 4px rgba(255, 43, 214, .25), 0 0 14px var(--pink); } 50% { box-shadow: 0 0 0 8px rgba(255, 43, 214, .12), 0 0 26px var(--pink); } }
+@media (prefers-reduced-motion: reduce) { #stTabs.rail107 > button.on::after { animation: none; } }
+
+/* v107: a tidier home screen — one row of small command chips, nothing under the bottom bar */
+#cmdbar98 { display: flex !important; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 6px !important; background: none !important; border: none !important; box-shadow: none !important; scrollbar-width: none; }
+#cmdbar98::-webkit-scrollbar { display: none; }
+#cmdbar98 > button { width: auto !important; flex: 0 0 auto; min-height: 30px; padding: 4px 11px !important; border-radius: 999px !important; font-size: 10.5px !important; }
+#s-title > .col { padding-bottom: calc(var(--tnav107, 120px) + 14px) !important; }
+#s-title .deckL > #bStory { margin-top: 4px; }

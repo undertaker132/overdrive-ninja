@@ -15,9 +15,7 @@ const Wallet = {
     const rows = [
       ['◎', fmtNum(d.credits) + ' CR', lt('Earned in every run and stage, from bounties and achievements. Spent on weapons, heroes, upgrades and crates.'), '#ffd23f'],
       ['▣', ltf('{0} CRATES', b.crates | 0), lt('Earned with stage stars, the season and your journey. Open them on the CRATES screen.'), '#7df9ff'],
-      ['◆', ltf('{0} CORES', b.cores | 0), lt('Drop from stages and runs. Used to evolve blades and heroes.'), '#00ff88'],
-      ['◈', ltf('{0} PRISMS', b.prisms | 0), lt('Rare. Drop from stages, legends and big crates.'), '#c45bff'],
-      ['✦', ltf('{0} SHARDS', b.shards | 0), lt('From legendary and mythic crates. Spend them in the forge.'), '#ff9a3d'],
+      ['◆', ltf('{0} CORES', b.cores | 0), lt('Drop from stages, runs and crates. Evolve blades and heroes, tune weapons and forge legends with them.'), '#00ff88'],
       ['★', ltf('SEASON TIER {0} / {1}', tier, SEASON_TIERS), lt('Every run earns season XP. Tiers pay credits and season-only rewards.'), '#ff2bd6']
     ];
     for (const [k, n, dsc, c] of rows) { const r = el('div', 'wal71-row'), ic = el('b', '', k); ic.style.color = c; r.appendChild(ic); const tx = el('span', 'col'); tx.style.gap = '0'; const nm = el('span', 'wal71-n', n); nm.style.color = c; tx.appendChild(nm); tx.appendChild(el('span', 'small mute', dsc)); r.appendChild(tx); card.appendChild(r); }

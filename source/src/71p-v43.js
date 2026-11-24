@@ -25,11 +25,13 @@
    ===================================================================== */
 const RAR = [{ n: 'COMMON', c: '#e8f0ff' }, { n: 'RARE', c: '#00b4ff' }, { n: 'EPIC', c: '#c45bff' }, { n: 'LEGENDARY', c: '#ffb000' }, { n: 'MYTHIC', c: '#ff2b5e' }];
 const RAR_ODDS = [52, 28, 14, 5, 1];
-const CRATE_PRICE = 1500, PITY_LEG = 30, PITY_MYTH = 100, FORGE_COST = [0, 0, 0, 0, 300, 800];
-const EVO_REQ = [[1, 10, 0], [2, 25, 2], [4, 50, 6]];
+const CRATE_PRICE = 1500, PITY_LEG = 30, PITY_MYTH = 100, FORGE_COST = [0, 0, 0, 0, 30, 80]; // (v107: in cores — one rare currency; was 300 / 800 shards at 10 shards a core)
+const EVO_REQ = [[1, 10, 0], [2, 37, 0], [4, 86, 0]]; // (v107: cores only — a prism counted as 6 cores)
 const NAV = ['bArcade', 'bArsenal', 'bCrates', 'bForge', 'bDojo', 'bPuzzle', 'bLive', 'bWeekly', 'bSeason', 'bClub', 'bProfile', 'bHideout', 'bEditor', 'bSettings']; // the home screen nav bar, in order (missing buttons are skipped) // level gate (mastery / hero level), cores, prisms
 const Crates = {
-  bag() { const d = Store.data; if (!d.bag || typeof d.bag !== 'object') d.bag = { crates: 3, opened: 0, sl: 0, sm: 0, shards: 0, cores: 0, prisms: 0 }; return d.bag; },
+  bag() { const d = Store.data; if (!d.bag || typeof d.bag !== 'object') d.bag = { crates: 3, opened: 0, sl: 0, sm: 0, shards: 0, cores: 0, prisms: 0 }; const b = d.bag;
+    if (!d.cur107) { d.cur107 = 1; b.cores = (b.cores | 0) + (b.prisms | 0) * 6 + Math.ceil((b.shards | 0) / 10); b.prisms = 0; b.shards = 0; Store.touch(); } // (v107: prisms and shards became cores, nothing lost)
+    return b; },
   pool(r) { // things you do not own yet, of item tier r + 1 (COMMON = tier 1 ... MYTHIC = tier 5)
     const d = Store.data, t = r + 1, out = [], ok = it => it.cost > 0 && !it.ev && it.season == null && !it.unlock;
     for (const w of WEAPONS) if (ok(w) && !d.owned[w.id] && itemTier('w', w.id) === t) out.push({ tab: 'blades', id: w.id, name: w.name });
@@ -48,8 +50,8 @@ const Crates = {
     const pool = this.pool(r), res = { r, item: null, cr: 0, cores: 0, prisms: 0, shards: 0 };
     if (pool.length && Math.random() < (r >= 3 ? .85 : .6)) { const it = pool[Math.floor(Math.random() * pool.length)]; res.item = it;
       if (it.tab === 'blades') d.owned[it.id] = 1; else if (it.tab === 'heroes') d.skins[it.id] = 1; else if (it.tab === 'fx') d.blades[it.id] = 1; else { d.pets = d.pets || {}; d.pets[it.id] = 1; } }
-    else { const C = [[200, 3, 0, 0], [500, 6, 1, 0], [1200, 12, 2, 0], [0, 0, 3, 150], [0, 0, 6, 400]][r]; res.cr = C[0]; res.cores = C[1]; res.prisms = C[2]; res.shards = C[3]; }
-    if (r >= 3 && res.item) res.shards = r === 4 ? 60 : 25; // a little forge credit with every big pull
+    else { const C = [[200, 3, 0, 0], [500, 6, 1, 0], [1200, 12, 2, 0], [0, 0, 3, 150], [0, 0, 6, 400]][r]; res.cr = C[0]; res.cores = C[1] + C[2] * 6 + C[3] / 10; }
+    if (r >= 3 && res.item) res.cores += r === 4 ? 6 : 3; // a little forge credit with every big pull
     d.credits += res.cr; b.cores += res.cores; b.prisms += res.prisms; b.shards += res.shards; Store.touch(); Store.flush && Store.flush(true);
     return res;
   },
@@ -74,14 +76,14 @@ const Crates = {
     RAR.forEach((R0, i) => { const row = el('div', 'cr-odd'); const n = el('span', '', lt(R0.n)); n.style.color = R0.c; row.appendChild(n); row.appendChild(el('span', 'mute', RAR_ODDS[i] + '%')); odds.appendChild(row); });
     odds.appendChild(el('div', 'small mute', lt('Every crate gives a blade, hero, blade skin or pet you do not own yet, or credits and materials.'))); box.appendChild(odds);
     const mat = el('div', 'panel'); mat.appendChild(el('div', 'eyebrow', lt('MATERIALS')));
-    for (const [k, n, dsc] of [['◆', ltf('{0} CORES', b.cores), lt('Drop from stages and runs. Used to evolve blades and heroes.')], ['◈', ltf('{0} PRISMS', b.prisms), lt('Rare. Drop from stages, legends and big crates.')], ['✦', ltf('{0} SHARDS', b.shards), lt('From legendary and mythic crates. Spend them in the forge.')]]) {
+    for (const [k, n, dsc] of [['◆', ltf('{0} CORES', b.cores), lt('Drop from stages, runs and crates. Evolve blades and heroes, tune weapons and forge legends with them.')]]) {
       const row = el('div', 'cr-mat'); row.appendChild(el('b', '', k)); const tx = el('span', 'col'); tx.style.gap = '0'; tx.appendChild(el('span', '', n)); tx.appendChild(el('span', 'small mute', dsc)); row.appendChild(tx); mat.appendChild(row); }
     box.appendChild(mat);
     const fg = el('div', 'panel'); fg.appendChild(el('div', 'eyebrow', lt('THE FORGE'))); fg.appendChild(el('div', 'small mute', lt('LEGENDARY and MYTHIC blades come only from crates or the forge.')));
     const list = WEAPONS.filter(w => w.cost > 0 && !w.ev && itemTier('w', w.id) >= 4 && !d.owned[w.id]);
     if (!list.length) fg.appendChild(el('div', 'small gold', lt('You own every forgeable blade.')));
     for (const w of list) { const t = itemTier('w', w.id), cost = FORGE_COST[t], row = el('div', 'cr-forge'); const nm = el('span', 'col'); nm.style.gap = '0'; nm.appendChild(el('b', '', lt(w.name))); const tc = el('span', 'small', lt(TIERS[t].n)); tc.style.color = TIERS[t].c; nm.appendChild(tc); row.appendChild(nm);
-      const fb = el('button', 'btn', '✦ ' + fmtNum(cost)); fb.disabled = b.shards < cost; fb.onclick = () => { if (b.shards < cost) { Aud.sfx('deny'); return; } b.shards -= cost; d.owned[w.id] = 1; Store.touch(); Store.flush && Store.flush(true); this.reveal({ r: t - 1, item: { tab: 'blades', id: w.id, name: w.name }, cr: 0, cores: 0, prisms: 0, shards: 0, forged: 1 }); }; row.appendChild(fb); fg.appendChild(row); }
+      const fb = el('button', 'btn', '◆ ' + fmtNum(cost)); fb.disabled = b.cores < cost; fb.onclick = () => { if (b.cores < cost) { Aud.sfx('deny'); return; } b.cores -= cost; d.owned[w.id] = 1; Store.touch(); Store.flush && Store.flush(true); this.reveal({ r: t - 1, item: { tab: 'blades', id: w.id, name: w.name }, cr: 0, cores: 0, prisms: 0, shards: 0, forged: 1 }); }; row.appendChild(fb); fg.appendChild(row); }
     box.appendChild(fg);
     const how = el('div', 'panel small mute'); how.appendChild(el('div', 'eyebrow', lt('WHERE CRATES COME FROM'))); for (const t of ['Every rank up', 'Every step of the star road', 'The boss of the week', 'A rare drop at the end of stages and runs', 'The shop: 1,500 CR']) how.appendChild(el('div', '', '▸ ' + lt(t))); box.appendChild(how);
   },
@@ -98,10 +100,10 @@ const Crates = {
     const R0 = RAR[res.r], ov = el('div', 'unlock39 cr-rev'), card = el('div', 'card'); card.style.borderColor = R0.c; card.style.boxShadow = '0 0 50px ' + hexA(R0.c, .45);
     card.appendChild(el('div', 'eyebrow', res.forged ? lt('FORGED') : lt(R0.n))); const cv = document.createElement('canvas'); cv.width = cv.height = 280; cv.className = 'cr-ic big';
     const g = cv.getContext('2d'); if (res.item) { try { drawIcon(g, { tab: res.item.tab, id: res.item.id, tier: res.r + 1 }, 280); } catch (e) { errLog(e); } } else this.drawLoot(g, 280, res, R0.c);
-    card.appendChild(cv); const h = el('h2', '', res.item ? lt(res.item.name) : res.cr ? '+' + fmtNum(res.cr) + ' CR' : '+' + fmtNum(res.shards) + ' ' + lt('SHARDS')); h.style.color = R0.c; card.appendChild(h);
+    card.appendChild(cv); const h = el('h2', '', res.item ? lt(res.item.name) : res.cr ? '+' + fmtNum(res.cr) + ' CR' : '+' + fmtNum(res.cores) + ' ◆ ' + lt('CORES')); h.style.color = R0.c; card.appendChild(h);
     const chips = el('div', 'ul'); const add = t => chips.appendChild(el('span', '', t));
     if (res.item) add(lt('NEW') + ' · ' + lt({ blades: 'BLADES', heroes: 'HEROES', fx: 'BLADE FX', pets: 'PETS' }[res.item.tab] || ''));
-    if (res.cores) add('+' + res.cores + ' ◆'); if (res.prisms) add('+' + res.prisms + ' ◈'); if (res.shards && res.item) add('+' + res.shards + ' ✦'); card.appendChild(chips);
+    if (res.cores) add('+' + res.cores + ' ◆'); card.appendChild(chips);
     const row = el('div', 'row'); const b = this.bag();
     if (b.crates > 0 && !res.forged) { const again = el('button', 'btn pri', ltf('OPEN ANOTHER ({0})', b.crates)); again.onclick = () => { ov.remove(); this.play(); }; row.appendChild(again); }
     const done = el('button', 'btn', lt('DONE')); done.onclick = () => { Aud.sfx('ui'); ov.remove(); if (UI.cur === 'crates') this.render(); }; row.appendChild(done); card.appendChild(row);
@@ -119,7 +121,7 @@ const Crates = {
     const won = G.state === 'CLEAR', long = (G.time || 0) > 45; if (!won && !long) return;
     const b = this.bag(), boss = !!(G.stage && G.stage.obj && G.stage.obj.t === 'boss') || !!G.legend, hard = (G.di | 0) >= 2, notes = [];
     if (Math.random() < .5) { const n = 1 + Math.floor(Math.random() * 3) + (hard ? 1 : 0) + (boss ? 2 : 0); b.cores += n; notes.push('+' + n + ' ◆ ' + lt('CORES')); }
-    if (Math.random() < (boss ? .2 : .06) * (hard ? 1.5 : 1)) { b.prisms++; notes.push('+1 ◈ ' + lt('PRISM')); }
+    if (Math.random() < (boss ? .2 : .06) * (hard ? 1.5 : 1)) { b.cores += 6; notes.push('+6 ◆ ' + lt('CORES')); }
     if (Math.random() < (boss ? .15 : .05)) { b.crates++; notes.push('+1 ' + lt('CRATE')); }
     if (notes.length) { Store.touch(); o.notes = o.notes || []; o.notes.push({ t: notes.join(' · '), c: 'gold' }); }
   }
@@ -238,8 +240,8 @@ const Evo = {
   lvl(kind, id) { return (this.data()[kind][id] | 0); },
   gate(kind, id) { return kind === 'w' ? masteryLevel(id) : heroLevel(id); },
   look(kind, n) { return lt((kind === 'w' ? ['A brighter blade and trail', 'Sparks fly from every swing', 'Runes orbit the blade and every kill bursts in gold'] : ['A stronger aura', 'Spirit embers rise around you', 'A halo of light and a burst on every dash'])[n - 1]); },
-  can(kind, id) { const L = this.lvl(kind, id); if (L >= 3) return false; const [g, c, p] = EVO_REQ[L], b = Crates.bag(); return this.gate(kind, id) >= g && b.cores >= c && b.prisms >= p; },
-  up(kind, id) { if (!this.can(kind, id)) return false; const L = this.lvl(kind, id), [, c, p] = EVO_REQ[L], b = Crates.bag(); b.cores -= c; b.prisms -= p; this.data()[kind][id] = L + 1; Store.touch(); Store.flush && Store.flush(true); return true; },
+  can(kind, id) { const L = this.lvl(kind, id); if (L >= 3) return false; const [g, c] = EVO_REQ[L], b = Crates.bag(); return this.gate(kind, id) >= g && b.cores >= c; },
+  up(kind, id) { if (!this.can(kind, id)) return false; const L = this.lvl(kind, id), [, c] = EVO_REQ[L], b = Crates.bag(); b.cores -= c; this.data()[kind][id] = L + 1; Store.touch(); Store.flush && Store.flush(true); return true; },
   panel() { // under the arsenal preview, for an owned blade or hero
     let box = $('asEvo'); const s = UI.asSel, d = Store.data, prev = $('asPrev'); if (!prev) return;
     const kind = s && s.tab === 'blades' ? 'w' : s && s.tab === 'heroes' ? 's' : null, own = kind && (kind === 'w' ? d.owned[s.id] : d.skins[s.id]);

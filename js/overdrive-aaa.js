@@ -1716,7 +1716,7 @@
         ? CrateCinema94.buildRewardCanvas(res, trueCol) : null;
 
       // Setup reward text
-      const itemNm = res.item ? L(res.item.name) : (res.cr ? '+' + fmtNum(res.cr) + ' CR' : '+' + fmtNum(res.shards) + ' ' + L('SHARDS'));
+      const itemNm = res.item ? L(res.item.name) : (res.cr ? '+' + fmtNum(res.cr) + ' CR' : '+' + fmtNum(res.cores) + ' ◆ ' + L('CORES'));
       ov.querySelector('#c98-rar').textContent = '✦ ' + L(R0.n) + (multiCount > 1 ? ' · BEST OF ×' + multiCount : '');
       ov.querySelector('#c98-rar').style.color = trueCol;
       ov.querySelector('#c98-nm').textContent = itemNm;
@@ -4624,6 +4624,28 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
     } catch (e) { errLog(e); }
     return r;
   };
+  // v107: one choice instead of twelve switches: FULL (every newer system), CLASSIC (the game before them) or CUSTOM (the switches)
+  const SYS107 = ['air96', 'props96', 'events96', 'events91', 'armor96', 'clash91', 'rival91', 'awaken91', 'syn92', 'squad92'], EXTRA107 = ['ghost96', 'fcam96'];
+  const styleOf = s => { if (s.style107) return s.style107; const on = SYS107.filter(k => s[k] == null || !!s[k]).length; return on === SYS107.length ? 'full' : on === 0 ? 'classic' : 'custom'; };
+  const os107 = UI.openSettings.bind(UI);
+  UI.openSettings = function () {
+    const r = os107.apply(this, arguments);
+    try {
+      const s = Store.data.settings, first = row('set-air96'); if (!first || document.getElementById('set-style107')) return r;
+      const opts = ['full', 'classic', 'custom'], names = ['FULL', 'CLASSIC', 'CUSTOM'];
+      const rr = el('div', 'set'); rr.appendChild(el('span', '', lt('Game style')));
+      const b = el('button', 'tog on'); b.id = 'set-style107'; b.type = 'button';
+      const show = () => { const st = styleOf(s); b.textContent = lt(names[opts.indexOf(st)]); for (const k of SYS107.concat(EXTRA107)) { const x = row('set-' + k); if (x) x.style.display = st === 'custom' ? '' : 'none'; }
+        hint.textContent = st === 'full' ? lt('Every system in the game: blade clashes, boss armor, the launcher, rail events, squads and more.') : st === 'classic' ? lt('The pure slasher: the game without the newer systems.') : lt('Pick each system yourself.'); };
+      const hint = el('div', 'small mute', ''); hint.style.margin = '-4px 0 8px';
+      b.onclick = () => { const st = opts[(opts.indexOf(styleOf(s)) + 1) % 3]; s.style107 = st; if (st !== 'custom') for (const k of SYS107) s[k] = st === 'full' ? 1 : 0; Aud.sfx('ui'); Store.touch(); UI.openSettings(); };
+      rr.appendChild(b); first.parentElement.insertBefore(rr, first); first.parentElement.insertBefore(hint, first); show();
+    } catch (e) { errLog(e); }
+    return r;
+  };
+  if (typeof HE !== 'undefined') Object.assign(HE, { "Game style": "סגנון משחק", "FULL": "מלא", "CLASSIC": "קלאסי", "CUSTOM": "מותאם אישית",
+    "Every system in the game: blade clashes, boss armor, the launcher, rail events, squads and more.": "כל המערכות במשחק: התנגשות להבים, שריון בוסים, המקפצה, אירועי מסילה, חוליות ועוד.",
+    "The pure slasher: the game without the newer systems.": "הסלאשר הטהור: המשחק בלי המערכות החדשות.", "Pick each system yourself.": "בחר כל מערכת בעצמך." });
   function S98L(t) { return typeof lt === 'function' ? lt(t) : t; }
 
   // one ghost: the 3D ghost also runs the challenge, rival and daily ghosts (it only knew its own best before)
@@ -4691,4 +4713,238 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
     if (teaching() || G.hintT > 0) return;
     if (waitC.length) { const [k, f] = waitC.shift(); cs0(k, f); } else if (waitT.length) { const [id, t] = waitT.shift(); h0(id, t); }
   }, 60);
+})();
+
+/* --- MODULE 15: v107.0 STAGE PACING — combo stages keep a combo alive, reflect stages always have shots to send back --- */
+(function () {
+  'use strict';
+  // Story stages only (they are never recorded as replays). Dice go through R like every simulation rule.
+  // Bot runs at a human pace showed combo stages swinging from 25 s to never (enemies spawn at the edges and the
+  // combo ends 3.4 s after the last kill) and reflect stages dragging past two minutes when no one was shooting.
+  const near = r => { for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (e.alive && e.al <= 0 && e.type !== ET.TREASURE && Math.hypot(e.x - P.x, e.y - P.y) < r) return true; } return false; };
+  const count = t => { let n = 0; for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (e.alive && e.type === t) n++; } return n; };
+  const incoming = () => { for (let i = 0; i < BU.n; i++) { const b = BU.a[i]; if (b.alive && !b.rf) return true; } return false; };
+  let feedT = 0, quietT = 0, lastK = 0;
+  Sim98.steps.push(dt => {
+    if (G.mode !== 'story' || G.state !== 'PLAY' || G.freeze > 0 || !G.obj || G.won) { feedT = quietT = 0; lastK = G.kills | 0; return; }
+    const o = G.obj; feedT -= dt;
+    if (o.t === 'combo') {
+      if ((G.kills | 0) > lastK && G.combo > 0) G.ct = Math.max(G.ct, 4.2); // a little more time between kills on the stage built around them
+      lastK = G.kills | 0;
+      // the combo is about to run out and nothing is in reach: one more enemy steps in close enough to reach
+      if (G.combo > 0 && G.ct < 2 && feedT <= 0 && !near(320) && Director.liveHostiles() < CFG.maxEnemies - 2) {
+        const a = R.f() * Math.PI * 2, d = 200 + R.f() * 80;
+        const x = clamp(P.x + Math.cos(a) * d, V.L + 40, V.R - 40), y = clamp(P.y + Math.sin(a) * d, 80, V.VH - 140);
+        const e = spawnEnemy(Director.pool.length ? Director.pickType() : ET.DRONE, x, y, false); if (e) e.spawnT = .35;
+        feedT = 1.2;
+      }
+    } else if (o.t === 'reflect') {
+      // no shot in the air for a while and fewer than two snipers on the roof: a sniper climbs up
+      quietT = incoming() ? 0 : quietT + dt;
+      if (quietT > 2.2 && feedT <= 0 && count(ET.SNIPER) < 2 && Director.liveHostiles() < CFG.maxEnemies - 2) {
+        const e = spawnEnemy(ET.SNIPER, V.L + 60 + R.f() * (V.R - V.L - 120), 70 + R.f() * 60, false); if (e) e.spawnT = .5;
+        feedT = 3; quietT = 0;
+      }
+    }
+  });
+
+  // on a combo stage every hit that lands keeps the combo alive (in later chapters an enemy can take several cuts,
+  // and the combo used to run out while you were still cutting the one in front of you); kills still count it up
+  const de107 = damageEnemy;
+  damageEnemy = function (e, d) {
+    const r = de107.apply(this, arguments);
+    try { if (G.mode === 'story' && G.obj && G.obj.t === 'combo' && G.state === 'PLAY' && G.combo > 0 && e && d > 0) G.ct = Math.max(G.ct, 2.6); } catch (er) { }
+    return r;
+  };
+})();
+
+/* --- MODULE 16: v107.0 RESULTS AS A SEQUENCE — one beat at a time, one main way on --- */
+(function () {
+  'use strict';
+  const or0 = UI.openResult.bind(UI);
+  UI.openResult = function (o) {
+    const r = or0.apply(this, arguments);
+    try {
+      const sc = document.getElementById('s-result'), col = sc && sc.querySelector('.col'); if (!col) return r;
+      sc.classList.remove('seq107', 'seqdone'); void sc.offsetWidth;
+      let t = 0; const at = (e, d) => { if (e) e.style.setProperty('--d', d.toFixed(2) + 's'); };
+      for (const e of col.children) {
+        if (e.classList.contains('hidden')) continue;
+        switch (e.id) {
+          case 'rsEyebrow': at(e, 0); break;
+          case 'rsTitle': at(e, .05); t = .45; break;
+          case 'rsStars': case 'rsBest': at(e, t); t += .25; break;
+          case 'rsGrade': at(e, t); t += .45; break;
+          case 'rsStats': at(e, t); [...e.children].forEach((c, i) => at(c, t + .08 + i * .09)); t += .2 + e.children.length * .09; break;
+          case 'rsMain': t += .15; at(e, t); t += .15; break;
+          default: at(e, t); t += .07;
+        }
+      }
+      sc.classList.add('seq107');
+      // one main button: SHARE & CHALLENGE was a second gold button right under it
+      const sh = document.getElementById('rsShare'); if (sh) { sh.classList.remove('gold'); sh.classList.add('ghost'); }
+      // achievements earned in the run join the summary as gold lines, instead of a pop-up over the title
+      const notes = document.getElementById('rsNotes');
+      if (notes && UI.achQ.length) {
+        for (const a of UI.achQ.splice(0)) notes.insertBefore(el('div', 'gold', '🏆 ' + lt('ACHIEVEMENT UNLOCKED') + ' · ' + lt(a.name) + '  +' + a.r + ' CR'), notes.firstChild);
+        notes.classList.remove('hidden'); Aud.sfx('star', 2);
+      }
+      // a tap shows everything at once
+      if (!sc.dataset.skip107) { sc.dataset.skip107 = 1; sc.addEventListener('pointerdown', () => { if (sc.classList.contains('seq107')) sc.classList.add('seqdone'); }, true); }
+    } catch (e) { errLog(e); }
+    return r;
+  };
+})();
+
+/* --- MODULE 17: v107.0 MOODS AND ENTRANCES — portraits that react to the line, bosses that arrive like bosses --- */
+(function () {
+  'use strict';
+  if (typeof HE !== 'undefined') Object.assign(HE, { "Drop from stages, runs and crates. Evolve blades and heroes, tune weapons and forge legends with them.": "נופלות משלבים, מריצות ומתיבות. בעזרתן משדרגים להבים וגיבורים, מכווננים נשקים ומחשלים אגדות.", "The SECRETS chapter opens an EX boss for every act you finish.": "פרק הסודות פותח בוס EX לכל מערכה שתסיימו.", "Finish an act to open its EX stage": "סיימו מערכה כדי לפתוח את שלב ה-EX שלה", "An EX boss for every act": "בוס EX לכל מערכה", "FIRST ENCOUNTER": "מפגש ראשון", "TAP TO SKIP": "הקש כדי לדלג" });
+
+  /* ---- dialogue moods, read from the line itself (any language): a shout, a question, a hesitation ---- */
+  const moodOf = s => {
+    s = String(s || ''); const lat = s.replace(/[^A-Za-z]/g, ''), caps = lat.length > 10 && lat.replace(/[^A-Z]/g, '').length / lat.length > .75;
+    if (/!/.test(s) || caps) return 'shout';
+    if (/(\.\.\.|…)/.test(s)) return 'sad';
+    if (/\?\s*["'”]?\s*$/.test(s)) return 'q';
+    return '';
+  };
+  const ld0 = Dlg.load.bind(Dlg);
+  Dlg.load = function () {
+    const r = ld0.apply(this, arguments);
+    try {
+      this.mood = moodOf(this.text); this.moodT = 0;
+      this.cps = this.mood === 'shout' ? 60 : this.mood === 'sad' ? 34 : 48;
+      const box = $('dlg').querySelector('.box'); box.classList.remove('mood-shout', 'mood-sad', 'mood-q'); void box.offsetWidth; if (this.mood) box.classList.add('mood-' + this.mood);
+    } catch (e) { }
+    return r;
+  };
+  Dlg.drawPortrait = function () {
+    if (!this.ptx) { this.pc = $('dlgPort'); this.ptx = this.pc.getContext('2d'); }
+    const g = this.ptx, W = 168, t = this.pt, talking = this.shown < this.text.length, mouth = talking ? Math.abs(Math.sin(t * 18)) : 0, col = this.c.col, m = this.mood || '';
+    this.moodT = (this.moodT || 0) + RDT; const mt = this.moodT, calm = CALM;
+    g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = '#05060f'; g.fillRect(0, 0, W, W);
+    const bg = g.createLinearGradient(0, 0, 0, W); bg.addColorStop(0, m === 'sad' ? '#0a1026' : '#0d1433'); bg.addColorStop(1, '#05060f'); g.fillStyle = bg; g.fillRect(0, 0, W, W);
+    if (m === 'shout' && !calm) { // speed lines and a flash in the speaker's color
+      const f = Math.max(0, 1 - mt * 2.5); g.save(); g.translate(84, 90); g.globalAlpha = .18 + .3 * f; g.strokeStyle = col; g.lineWidth = 2;
+      for (let k = 0; k < 18; k++) { const a = k / 18 * TAU + t * .4, r0 = 52 + ((t * 120 + k * 37) % 40); g.beginPath(); g.moveTo(Math.cos(a) * r0, Math.sin(a) * r0); g.lineTo(Math.cos(a) * (r0 + 40), Math.sin(a) * (r0 + 40)); g.stroke(); }
+      g.restore(); if (f > 0) { g.globalAlpha = .35 * f; g.fillStyle = col; g.fillRect(0, 0, W, W); }
+    }
+    g.globalAlpha = .12; g.fillStyle = col; for (let y = (t * 30) % 6; y < W; y += 6) g.fillRect(0, y, W, 2); g.globalAlpha = 1;
+    g.save();
+    let x = 84, y = 96 + Math.sin(t * 2) * 2;
+    if (m === 'shout' && talking && !calm) { x += (Math.random() - .5) * 3.5; y += (Math.random() - .5) * 2.5; }
+    if (m === 'sad') y += 3 + Math.sin(t * 1.2) * 1.2; // the head a little lower
+    g.translate(x, y);
+    if (m === 'q') g.rotate(-.1 * Math.min(1, mt * 4)); // a tilt of the head on a question
+    if (talking) g.scale(1, 1 - .022 * mouth); // small nods with the syllables
+    charPortrait(g, this.cid, t, mouth, col);
+    g.restore();
+    if (m === 'sad') { g.globalAlpha = .22; g.fillStyle = '#1a2a6a'; g.fillRect(0, 0, W, W); g.globalAlpha = 1; }
+    g.strokeStyle = col; g.lineWidth = 4; g.strokeRect(2, 2, W - 4, W - 4);
+  };
+
+  /* ---- the first time the story meets a boss: a longer entrance with its name cut in and a line of its own ---- */
+  const quote = id => { try { const L = StoryOverhaul95.LINES[id]; if (!L || !L.p2) return ''; return StoryOverhaul95.isHe() ? L.p2[1] : L.p2[0]; } catch (e) { return ''; } };
+  const bs0 = Boss.spawn.bind(Boss);
+  Boss.spawn = function (id) {
+    const r = bs0.apply(this, arguments);
+    try {
+      const d = Store.data, k = 'bi107_' + id;
+      if (G.mode === 'story' && !REPLAY.on && !d.seen[k] && G.cine && G.cine.k === 'boss' && !CALM) { // (story runs are never replays)
+        d.seen[k] = 1; Store.touch();
+        G.cine.d = 3.8; G.freeze = 3.8; G.cine.first = 1; G.cine.q = quote(id);
+      }
+    } catch (e) { errLog(e); }
+    return r;
+  };
+  const ci0 = HUD.cine.bind(HUD);
+  HUD.cine = function (rd) {
+    const c = G.cine, r = ci0.apply(this, arguments);
+    try {
+      if (!c || !c.first || c.k !== 'boss' || G.cine !== c) return r;
+      const info = BOSS_INFO[c.id] || {}, y = V.VH * .42, a = Math.min(1, c.t * 4, (c.d - c.t) * 4);
+      cx.save(); cx.globalAlpha = a; cx.textAlign = 'center';
+      // a blade cut across the band as the name lands
+      const u = clamp((c.t - .25) / .35, 0, 1); if (u > 0 && u < 1) { cx.strokeStyle = '#ffffff'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(-20 + u * (V.VW + 40) - 60, y + 60); cx.lineTo(-20 + u * (V.VW + 40), y + 40); cx.stroke(); }
+      cx.font = '700 11px ' + FONT_M; cx.fillStyle = info.col || '#ff0844'; cx.fillText('— ' + lt('FIRST ENCOUNTER') + ' —', V.CX, y - 44);
+      if (c.q) { const n = Math.max(0, Math.min(c.q.length, ((c.t - .9) * 38) | 0)); if (n > 0) { cx.font = 'italic 700 14px ' + FONT_D; cx.fillStyle = '#ffffff'; wrapText(c.q.slice(0, n), V.CX, y + 132, Math.min(V.VW - 40, 340), 18); } }
+      cx.globalAlpha = a * .6; cx.font = '700 10px ' + FONT_M; cx.fillStyle = '#e8fbff'; cx.fillText(lt('TAP TO SKIP'), V.CX, V.VH - 78);
+      cx.restore();
+    } catch (e) { }
+    return r;
+  };
+  function wrapText(s, x, y, w, lh) { const words = s.split(' '); let line = '', yy = y; for (const wd of words) { const tst = line ? line + ' ' + wd : wd; if (cx.measureText(tst).width > w && line) { cx.fillText(line, x, yy); line = wd; yy += lh; } else line = tst; } if (line) cx.fillText(line, x, yy); }
+  // a tap skips the long entrance
+  window.addEventListener('pointerdown', () => { const c = G.cine; if (c && c.first && c.k === 'boss' && G.freeze > .3) { G.freeze = .3; c.t = Math.max(c.t, c.d - .3); } }, true);
+
+  // Mika's v95 'memory core' radio line came at the start of every story stage, the same eight lines each time,
+  // and covered the boss entrance on boss stages: now once, on the first stage of the first chapter, and never over a boss
+  const ss95 = StoryOverhaul95.onStoryStart.bind(StoryOverhaul95);
+  StoryOverhaul95.onStoryStart = function (mode) {
+    try { const d = Store.data; if (mode !== 'story' || d.seen.so95line || !G.stage || G.stage.idx !== 0) return; d.seen.so95line = 1; Store.touch(); } catch (e) { return; }
+    return ss95.apply(this, arguments);
+  };
+  const say95 = StoryOverhaul95.say.bind(StoryOverhaul95);
+  StoryOverhaul95.say = function () { if (G.cine && G.cine.k === 'boss') return; return say95.apply(this, arguments); };
+})();
+
+/* --- MODULE 18: v107.0 THE RAIL MAP — the chapters as stations on one line through Neo-Edo --- */
+(function () {
+  'use strict';
+  const rs0 = UI.renderStory.bind(UI);
+  UI.renderStory = function () {
+    const r = rs0.apply(this, arguments);
+    try {
+      const tabs = $('stTabs'); if (!tabs) return r;
+      tabs.classList.add('rail107'); tabs.style.gridTemplateColumns = '';
+      const st = Store.data.story.stars;
+      [...tabs.children].forEach((b, i) => {
+        const first = chFirst(i), n = chLen(i); let all = n > 0;
+        for (let k = first; k < first + n; k++) if (!STAGES[k] || !(st[STAGES[k].id] > 0)) { all = false; break; }
+        b.classList.toggle('done', all && !b.classList.contains('on')); // a station you have passed is lit
+      });
+      // the line rolls to where you are
+      const on = tabs.querySelector('button.on');
+      if (on && tabs.dataset.at !== String(this.storyCh)) { tabs.dataset.at = this.storyCh; requestAnimationFrame(() => { try { on.scrollIntoView({ block: 'nearest', inline: 'center', behavior: tabs.dataset.seen ? 'smooth' : 'auto' }); tabs.dataset.seen = 1; } catch (e) { } }); }
+    } catch (e) { errLog(e); }
+    return r;
+  };
+})();
+
+/* --- MODULE 19: v107.0 A TIDIER HOME — the story first, the rest folded away, one window at a time --- */
+(function () {
+  'use strict';
+  // the story button sat right under the bottom navigation bar on a phone (604-700 px under a bar at 588-701):
+  // it moves up under the logo, and the screen keeps room for the bar at the bottom
+  const tidy = () => {
+    try {
+      if (UI.cur !== 'title') return;
+      const L = document.querySelector('#s-title .deckL'), logo = L && L.querySelector('.logo'), st = document.getElementById('bStory');
+      if (L && logo && st && logo.nextElementSibling !== st) L.insertBefore(st, logo.nextSibling);
+      const nav = document.getElementById('tNav'); if (nav) document.documentElement.style.setProperty('--tnav107', Math.round(nav.getBoundingClientRect().height || 110) + 'px');
+    } catch (e) { }
+  };
+  const ot0 = UI.openTitle.bind(UI);
+  UI.openTitle = function () { const r = ot0.apply(this, arguments); tidy(); return r; };
+  Sim98.menu.push(tidy);
+
+  // TODAY stays folded until you open it (its header already says REWARD READY); it used to open itself, 630 px tall
+  const ts0 = Today.sync.bind(Today);
+  Today.sync = function () {
+    const r = ts0.apply(this, arguments);
+    try { const box = $('tToday'), h = $('tTodayH'), s = Store.data.settings; if (box && h) { const open = !!s.today; box.classList.toggle('open', open); h.setAttribute('aria-expanded', open ? 'true' : 'false'); } } catch (e) { }
+    return r;
+  };
+
+  // one window at a time: a reward card, a guide tip or a crate reveal waits for the one already on screen
+  const OV = '.unlock39, .coach46';
+  const waiting = [];
+  const visible = except => [...document.querySelectorAll(OV)].some(e => e !== except && e.isConnected && e.style.display !== 'none' && getComputedStyle(e).display !== 'none');
+  new MutationObserver(muts => {
+    for (const m of muts) {
+      for (const n of m.addedNodes) if (n.nodeType === 1 && n.matches && n.matches(OV) && !n.classList.contains('cr-rev') && visible(n)) { n.style.display = 'none'; waiting.push(n); }
+      if (m.removedNodes.length && waiting.length && !visible()) { const n = waiting.shift(); if (n.isConnected) n.style.display = ''; }
+    }
+  }).observe(document.body, { childList: true, subtree: true });
 })();

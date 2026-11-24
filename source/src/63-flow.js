@@ -170,7 +170,7 @@ const Flow = {
     if (s.final3 && !ng) notes.push({ t: lt('DEUS FRAME hero unlocked in the Arsenal. ACT III complete!'), c: 'gold' });
     if (s.final4 && !ng) notes.push({ t: lt('ABYSS DRAGON hero unlocked in the Arsenal. ACT IV complete!'), c: 'gold' }, { t: lt('Chapter 15 is open: SKY ELEVATOR.'), c: 'gold' });
     if (s.actFinal === 16) notes.push({ t: lt('STAR FRAME hero unlocked in the Arsenal. ACT V complete!'), c: 'gold' }, { t: lt('Chapter 17 is open: OVERGROWN RUINS.'), c: 'gold' });
-    if (s.final7 && !ng) notes.push({ t: lt('LANTERN ONI hero unlocked in the Arsenal. ACT VII complete!'), c: 'gold' }, { t: lt('The SECRETS chapter opens EX bosses for every act you finish with all stars.'), c: 'gold' });
+    if (s.final7 && !ng) notes.push({ t: lt('LANTERN ONI hero unlocked in the Arsenal. ACT VII complete!'), c: 'gold' }, { t: lt('The SECRETS chapter opens an EX boss for every act you finish.'), c: 'gold' });
     if (s.secret && !ng) { ach('exa' + s.secret); const nEx = EX_ACTS.filter((A, k) => Store.data.ach['exa' + (k + 1)]).length; if (nEx >= 3) ach('ex3'); if (nEx >= EX_ACTS.length) ach('exall'); notes.push({ t: ltf('EX bosses beaten: {0} of {1}', nEx, EX_ACTS.length), c: 'gold' }); }
     if (s.final5 && !ng) notes.push({ t: lt('FIRST BLADE hero and FIRST CODE blade unlocked in the Arsenal. ACT VI complete!'), c: 'gold' });
     let main12 = 0; for (let i = 0; i < MAIN_STAGES; i++) main12 += sv.stars[STAGES[i].id] | 0; if (main12 >= 36) ach('stars36');
