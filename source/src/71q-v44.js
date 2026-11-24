@@ -52,7 +52,7 @@ Object.assign(Crates, {
     if (t === 'neon') return this.open(); const d = Store.data, b = this.bag(), T = CRATE_T[t]; if ((b[T.k] | 0) <= 0) return null; b[T.k]--; b.opened++;
     const r = this.rollT(t), sl = 'sl_' + t, sm = 'sm_' + t; b[sl] = r >= 3 ? 0 : (b[sl] | 0) + 1; b[sm] = r >= 4 ? 0 : (b[sm] | 0) + 1;
     const f = this.featured();
-    if (t === 'lim' && r >= 3 && !d.owned[f] && Math.random() < (r === 4 ? .6 : .25)) { d.owned[f] = 1; b.shards += 40; Store.touch(); Store.flush && Store.flush(true); return { r: 4, item: { tab: 'blades', id: f, name: WEAPONS.find(w => w.id === f).name }, cr: 0, cores: 0, prisms: 0, shards: 40, lim: 1 }; }
+    if (t === 'lim' && r >= 3 && !d.owned[f] && Math.random() < (r === 4 ? .6 : .25)) { d.owned[f] = 1; b.cores += 4; Store.touch(); Store.flush && Store.flush(true); return { r: 4, item: { tab: 'blades', id: f, name: WEAPONS.find(w => w.id === f).name }, cr: 0, cores: 0, prisms: 0, shards: 40, lim: 1 }; }
     // the same draw as a neon crate, at this crate's rarity
     const keep = this.rollRarity, sl0 = b.sl, sm0 = b.sm, crates = b.crates; this.rollRarity = () => r; b.crates = 1; let res; try { res = this.open(); } finally { this.rollRarity = keep; b.crates = crates; b.opened--; b.sl = sl0; b.sm = sm0; }
     return res;
@@ -76,13 +76,13 @@ Object.assign(Crates, {
       p.appendChild(hi); box.appendChild(p);
     }
     const mat = el('div', 'panel'); mat.appendChild(el('div', 'eyebrow', lt('MATERIALS')));
-    mat.appendChild(el('div', 'cr-matl', '◆ ' + ltf('{0} CORES', b.cores) + '   ◈ ' + ltf('{0} PRISMS', b.prisms) + '   ✦ ' + ltf('{0} SHARDS', b.shards) + '   ⚒ ' + ltf('{0} RELIC PIECES', b.relic | 0))); box.appendChild(mat);
+    mat.appendChild(el('div', 'cr-matl', '◆ ' + ltf('{0} CORES', b.cores) + ((b.relic | 0) ? '   ⚒ ' + ltf('{0} RELIC PIECES', b.relic | 0) : ''))); box.appendChild(mat);
     const fg = el('div', 'panel'); fg.appendChild(el('div', 'eyebrow', lt('THE FORGE'))); fg.appendChild(el('div', 'small mute', lt('LEGENDARY and MYTHIC blades come only from crates or the forge.')));
     const list = WEAPONS.filter(w => w.cost > 0 && !w.ev && itemTier('w', w.id) >= 4 && !d.owned[w.id]);
     for (const w of list) { const t = itemTier('w', w.id), cost = FORGE_COST[t], row = el('div', 'cr-forge'); const nm = el('span', 'col'); nm.style.gap = '0'; nm.appendChild(el('b', '', lt(w.name))); const tc = el('span', 'small', lt(TIERS[t].n)); tc.style.color = TIERS[t].c; nm.appendChild(tc); row.appendChild(nm);
-      const fb = el('button', 'btn', '✦ ' + fmtNum(cost)); fb.disabled = b.shards < cost; fb.onclick = () => { if (b.shards < cost) { Aud.sfx('deny'); return; } b.shards -= cost; d.owned[w.id] = 1; Store.touch(); Store.flush && Store.flush(true); this.reveal({ r: t - 1, item: { tab: 'blades', id: w.id, name: w.name }, cr: 0, cores: 0, prisms: 0, shards: 0, forged: 1 }); }; row.appendChild(fb); fg.appendChild(row); }
+      const fb = el('button', 'btn', '◆ ' + fmtNum(cost)); fb.disabled = b.cores < cost; fb.onclick = () => { if (b.cores < cost) { Aud.sfx('deny'); return; } b.cores -= cost; d.owned[w.id] = 1; Store.touch(); Store.flush && Store.flush(true); this.reveal({ r: t - 1, item: { tab: 'blades', id: w.id, name: w.name }, cr: 0, cores: 0, prisms: 0, shards: 0, forged: 1 }); }; row.appendChild(fb); fg.appendChild(row); }
     if (!d.owned.worldeater) { const row = el('div', 'cr-forge'); const nm = el('span', 'col'); nm.style.gap = '0'; nm.appendChild(el('b', '', lt('WORLD-EATER'))); nm.appendChild(el('span', 'small mute', ltf('Restore 3 broken relic pieces ({0}/3) · 60 ◆ · 8 ◈', b.relic | 0))); row.appendChild(nm);
-      const ok = (b.relic | 0) >= 3 && b.cores >= 60 && b.prisms >= 8, fb = el('button', 'btn', lt('RESTORE')); fb.disabled = !ok; fb.onclick = () => { if (!ok) { Aud.sfx('deny'); return; } b.relic -= 3; b.cores -= 60; b.prisms -= 8; d.owned.worldeater = 1; Store.touch(); Store.flush && Store.flush(true); this.reveal({ r: 4, item: { tab: 'blades', id: 'worldeater', name: 'WORLD-EATER' }, cr: 0, cores: 0, prisms: 0, shards: 0, forged: 1 }); }; row.appendChild(fb); fg.appendChild(row); }
+      const ok = (b.relic | 0) >= 3 && b.cores >= 108, fb = el('button', 'btn', lt('RESTORE')); fb.disabled = !ok; fb.onclick = () => { if (!ok) { Aud.sfx('deny'); return; } b.relic -= 3; b.cores -= 108; d.owned.worldeater = 1; Store.touch(); Store.flush && Store.flush(true); this.reveal({ r: 4, item: { tab: 'blades', id: 'worldeater', name: 'WORLD-EATER' }, cr: 0, cores: 0, prisms: 0, shards: 0, forged: 1 }); }; row.appendChild(fb); fg.appendChild(row); }
     box.appendChild(fg);
     const how = el('div', 'panel small mute'); how.appendChild(el('div', 'eyebrow', lt('WHERE CRATES COME FROM'))); for (const t of ['Every rank up', 'Every step of the star road', 'The boss of the week', 'A rare drop at the end of stages and runs', 'The World Boss']) how.appendChild(el('div', '', '▸ ' + lt(t))); box.appendChild(how);
   }
@@ -210,9 +210,9 @@ const Hero = {
     wp.appendChild(seg); const W = this.weapon(); wp.appendChild(el('div', 'small', ltf('DMG {0} · CHARGES {1} · CRIT {2}%', W.dmg, W.ch, Math.round(W.crit * 100))));
     for (const [k, nm, ds] of [['edge', 'EDGE', '+6% damage per level'], ['grip', 'GRIP', '+1 charge every 2 levels, faster recharge'], ['core', 'CORE', '+2.5% critical chance per level']]) {
       const n = f.w[k], [cc, pp] = this.partCost(n), row = el('div', 'cr-forge'); const tx = el('span', 'col'); tx.style.gap = '0'; tx.appendChild(el('b', '', lt(nm) + ' ' + n + '/5')); tx.appendChild(el('span', 'small mute', lt(ds))); row.appendChild(tx);
-      const ok = n < 5 && b.cores >= cc && b.prisms >= pp, bt = el('button', 'btn', n >= 5 ? lt('MAX') : cc + ' ◆' + (pp ? ' · ' + pp + ' ◈' : '')); bt.disabled = !ok;
-      bt.onclick = () => { if (!ok) { Aud.sfx('deny'); return; } b.cores -= cc; b.prisms -= pp; f.w[k]++; Store.touch(); Aud.sfx('buy'); this.render(); }; row.appendChild(bt); wp.appendChild(row); }
-    wp.appendChild(el('div', 'small mute', '◆ ' + b.cores + '  ◈ ' + b.prisms)); box.appendChild(wp);
+      const cost = cc + pp * 6, ok = n < 5 && b.cores >= cost, bt = el('button', 'btn', n >= 5 ? lt('MAX') : cost + ' ◆'); bt.disabled = !ok;
+      bt.onclick = () => { if (!ok) { Aud.sfx('deny'); return; } b.cores -= cost; f.w[k]++; Store.touch(); Aud.sfx('buy'); this.render(); }; row.appendChild(bt); wp.appendChild(row); }
+    wp.appendChild(el('div', 'small mute', '◆ ' + b.cores)); box.appendChild(wp);
     // play
     const play = el('button', 'btn pri', lt('PLAY HERO TRIALS')); play.onclick = () => { Aud.sfx('ui'); Flow.startArcade('trials'); }; box.appendChild(play);
     box.appendChild(WBoss.card());
@@ -235,7 +235,7 @@ const WBoss = {
   start() { const B = this.boss(), s = B.s; if (!s) return; Aud.init(); Flow.dop = null; Flow.sr = null; Legend.cur = null; this.cur = { id: B.id }; Flow.last = { mode: 'story', idx: s.idx }; Flow.endT = 0; REC.on = false;
     Director.begin('story', s); G.cine = null; G.freeze = 0; Flow.enterPlay(); G.cine = { k: 'stage', t: 0, d: 1.6 }; G.freeze = 1.6; FX.call(lt('WORLD BOSS'), '#ff2b5e', 3, 28); },
   drops(o) { // a cleared world boss (alone or in a raid)
-    const d = Store.data, b = Crates.bag(), notes = []; const n = 6 + Math.floor(Math.random() * 6); b.cores += n; notes.push('+' + n + ' ◆'); const pz = 1 + (Math.random() < .5 ? 1 : 0); b.prisms += pz; notes.push('+' + pz + ' ◈');
+    const d = Store.data, b = Crates.bag(), notes = []; const n = 6 + Math.floor(Math.random() * 6); b.cores += n; notes.push('+' + n + ' ◆'); const pz = (1 + (Math.random() < .5 ? 1 : 0)) * 6; b.cores += pz; notes.push('+' + pz + ' ◆');
     if (Math.random() < .12) { b.relic = (b.relic | 0) + 1; notes.push(lt('BROKEN RELIC PIECE') + ' ⚒ ' + b.relic + '/3'); }
     if (!d.skins.worldeater_s && Math.random() < .04) { d.skins.worldeater_s = 1; notes.push(lt('WORLD-EATER HERO!')); Journey.card(lt('VERY RARE DROP'), lt('WORLD-EATER'), [lt('A hero only the World Boss drops')], '#ff2b5e'); }
     const wk = Journey.week(); if (d.wbCrate !== wk) { d.wbCrate = wk; b.crates++; notes.push('+1 ' + lt('CRATE')); }

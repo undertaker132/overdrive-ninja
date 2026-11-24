@@ -845,7 +845,7 @@
         ? CrateCinema94.buildRewardCanvas(res, trueCol) : null;
 
       // Setup reward text
-      const itemNm = res.item ? L(res.item.name) : (res.cr ? '+' + fmtNum(res.cr) + ' CR' : '+' + fmtNum(res.shards) + ' ' + L('SHARDS'));
+      const itemNm = res.item ? L(res.item.name) : (res.cr ? '+' + fmtNum(res.cr) + ' CR' : '+' + fmtNum(res.cores) + ' ◆ ' + L('CORES'));
       ov.querySelector('#c98-rar').textContent = '✦ ' + L(R0.n) + (multiCount > 1 ? ' · BEST OF ×' + multiCount : '');
       ov.querySelector('#c98-rar').style.color = trueCol;
       ov.querySelector('#c98-nm').textContent = itemNm;

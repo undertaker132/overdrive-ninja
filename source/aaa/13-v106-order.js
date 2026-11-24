@@ -36,6 +36,28 @@
     } catch (e) { errLog(e); }
     return r;
   };
+  // v107: one choice instead of twelve switches: FULL (every newer system), CLASSIC (the game before them) or CUSTOM (the switches)
+  const SYS107 = ['air96', 'props96', 'events96', 'events91', 'armor96', 'clash91', 'rival91', 'awaken91', 'syn92', 'squad92'], EXTRA107 = ['ghost96', 'fcam96'];
+  const styleOf = s => { if (s.style107) return s.style107; const on = SYS107.filter(k => s[k] == null || !!s[k]).length; return on === SYS107.length ? 'full' : on === 0 ? 'classic' : 'custom'; };
+  const os107 = UI.openSettings.bind(UI);
+  UI.openSettings = function () {
+    const r = os107.apply(this, arguments);
+    try {
+      const s = Store.data.settings, first = row('set-air96'); if (!first || document.getElementById('set-style107')) return r;
+      const opts = ['full', 'classic', 'custom'], names = ['FULL', 'CLASSIC', 'CUSTOM'];
+      const rr = el('div', 'set'); rr.appendChild(el('span', '', lt('Game style')));
+      const b = el('button', 'tog on'); b.id = 'set-style107'; b.type = 'button';
+      const show = () => { const st = styleOf(s); b.textContent = lt(names[opts.indexOf(st)]); for (const k of SYS107.concat(EXTRA107)) { const x = row('set-' + k); if (x) x.style.display = st === 'custom' ? '' : 'none'; }
+        hint.textContent = st === 'full' ? lt('Every system in the game: blade clashes, boss armor, the launcher, rail events, squads and more.') : st === 'classic' ? lt('The pure slasher: the game without the newer systems.') : lt('Pick each system yourself.'); };
+      const hint = el('div', 'small mute', ''); hint.style.margin = '-4px 0 8px';
+      b.onclick = () => { const st = opts[(opts.indexOf(styleOf(s)) + 1) % 3]; s.style107 = st; if (st !== 'custom') for (const k of SYS107) s[k] = st === 'full' ? 1 : 0; Aud.sfx('ui'); Store.touch(); UI.openSettings(); };
+      rr.appendChild(b); first.parentElement.insertBefore(rr, first); first.parentElement.insertBefore(hint, first); show();
+    } catch (e) { errLog(e); }
+    return r;
+  };
+  if (typeof HE !== 'undefined') Object.assign(HE, { "Game style": "סגנון משחק", "FULL": "מלא", "CLASSIC": "קלאסי", "CUSTOM": "מותאם אישית",
+    "Every system in the game: blade clashes, boss armor, the launcher, rail events, squads and more.": "כל המערכות במשחק: התנגשות להבים, שריון בוסים, המקפצה, אירועי מסילה, חוליות ועוד.",
+    "The pure slasher: the game without the newer systems.": "הסלאשר הטהור: המשחק בלי המערכות החדשות.", "Pick each system yourself.": "בחר כל מערכת בעצמך." });
   function S98L(t) { return typeof lt === 'function' ? lt(t) : t; }
 
   // one ghost: the 3D ghost also runs the challenge, rival and daily ghosts (it only knew its own best before)

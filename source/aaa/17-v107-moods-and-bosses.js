@@ -2,7 +2,7 @@
 /* --- MODULE 17: v107.0 MOODS AND ENTRANCES — portraits that react to the line, bosses that arrive like bosses --- */
 (function () {
   'use strict';
-  if (typeof HE !== 'undefined') Object.assign(HE, { "The SECRETS chapter opens an EX boss for every act you finish.": "פרק הסודות פותח בוס EX לכל מערכה שתסיימו.", "Finish an act to open its EX stage": "סיימו מערכה כדי לפתוח את שלב ה-EX שלה", "An EX boss for every act": "בוס EX לכל מערכה", "FIRST ENCOUNTER": "מפגש ראשון", "TAP TO SKIP": "הקש כדי לדלג" });
+  if (typeof HE !== 'undefined') Object.assign(HE, { "Drop from stages, runs and crates. Evolve blades and heroes, tune weapons and forge legends with them.": "נופלות משלבים, מריצות ומתיבות. בעזרתן משדרגים להבים וגיבורים, מכווננים נשקים ומחשלים אגדות.", "The SECRETS chapter opens an EX boss for every act you finish.": "פרק הסודות פותח בוס EX לכל מערכה שתסיימו.", "Finish an act to open its EX stage": "סיימו מערכה כדי לפתוח את שלב ה-EX שלה", "An EX boss for every act": "בוס EX לכל מערכה", "FIRST ENCOUNTER": "מפגש ראשון", "TAP TO SKIP": "הקש כדי לדלג" });
 
   /* ---- dialogue moods, read from the line itself (any language): a shout, a question, a hesitation ---- */
   const moodOf = s => {

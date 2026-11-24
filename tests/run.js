@@ -7,11 +7,12 @@
 //   story   one stage of every objective type is played to STAGE CLEAR and its results screen
 //   leftovers nothing from the in-run HUD stays on the results or title screen
 //   first   a new player on a phone sees only the story and is playing within 30 taps
+//   economy two currencies (credits and cores); an old save's prisms and shards convert without loss
 //   sweep   every arcade mode and a story stage per chapter, played in real time in 2D and 3D; no errors allowed
 // Needs Playwright with Chromium. Exit code 1 on any failure.
 const { chromium } = require('playwright'), fs = require('fs'), path = require('path');
 const { serve, boot, BOT, ROOT } = require('./lib');
-const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,voice,story,leftovers,first,sweep').split(',');
+const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,voice,story,leftovers,first,economy,sweep').split(',');
 const SECS = +(args[args.indexOf('--secs') + 1] || 4);
 let failed = 0; const fail = m => { failed++; console.log('  FAIL', m); }, ok = m => console.log('  ok  ', m);
 
@@ -182,6 +183,17 @@ async function first(b, url) {
   await ctx.close();
 }
 
+async function economy(b, url) {
+  console.log('economy: two currencies; an old save keeps everything it had');
+  const p = await boot(b, url);
+  const r = await p.evaluate(() => { const d = Store.data; delete d.cur107; d.bag = { crates: 2, opened: 0, sl: 0, sm: 0, shards: 345, cores: 20, prisms: 5, relic: 3 };
+    const bg = Crates.bag(), once = bg.cores; Crates.bag(); return { cores: bg.cores, again: Crates.bag().cores === once, prisms: bg.prisms, shards: bg.shards, forge: FORGE_COST[5], evo: EVO_REQ.every(q => !q[2]) }; });
+  if (r.cores !== 85 || !r.again || r.prisms || r.shards) fail('old save conversion: ' + JSON.stringify(r)); else ok('20 cores + 5 prisms + 345 shards became 85 cores, once');
+  if (r.forge !== 80 || !r.evo) fail('prices still in old materials: ' + JSON.stringify(r)); else ok('forge and evolution are priced in cores');
+  for (const e of p.__errs) fail('page error: ' + e);
+  await p.close();
+}
+
 async function sweep(b, url) {
   console.log(`sweep: every mode and a stage per chapter, ${SECS}s each in real time, 2D and 3D`);
   const p = await boot(b, url, { width: 1280, height: 720 });
@@ -218,7 +230,7 @@ async function sweep(b, url) {
 (async () => {
   const s = await serve(ROOT), b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const t0 = Date.now();
-  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['voice', voice], ['story', story], ['leftovers', leftovers], ['first', first], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
+  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['voice', voice], ['story', story], ['leftovers', leftovers], ['first', first], ['economy', economy], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
   catch (e) { fail('test crashed: ' + (e.stack || e)); }
   await b.close(); s.close();
   console.log(failed ? `\n${failed} FAILED` : '\nall passed', `(${((Date.now() - t0) / 1000) | 0}s)`);
