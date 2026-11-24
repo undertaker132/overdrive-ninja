@@ -4777,7 +4777,7 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
 /* --- MODULE 17: v107.0 MOODS AND ENTRANCES — portraits that react to the line, bosses that arrive like bosses --- */
 (function () {
   'use strict';
-  if (typeof HE !== 'undefined') Object.assign(HE, { "FIRST ENCOUNTER": "מפגש ראשון", "TAP TO SKIP": "הקש כדי לדלג" });
+  if (typeof HE !== 'undefined') Object.assign(HE, { "The SECRETS chapter opens an EX boss for every act you finish.": "פרק הסודות פותח בוס EX לכל מערכה שתסיימו.", "Finish an act to open its EX stage": "סיימו מערכה כדי לפתוח את שלב ה-EX שלה", "An EX boss for every act": "בוס EX לכל מערכה", "FIRST ENCOUNTER": "מפגש ראשון", "TAP TO SKIP": "הקש כדי לדלג" });
 
   /* ---- dialogue moods, read from the line itself (any language): a shout, a question, a hesitation ---- */
   const moodOf = s => {
@@ -4865,4 +4865,27 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
   };
   const say95 = StoryOverhaul95.say.bind(StoryOverhaul95);
   StoryOverhaul95.say = function () { if (G.cine && G.cine.k === 'boss') return; return say95.apply(this, arguments); };
+})();
+
+/* --- MODULE 18: v107.0 THE RAIL MAP — the chapters as stations on one line through Neo-Edo --- */
+(function () {
+  'use strict';
+  const rs0 = UI.renderStory.bind(UI);
+  UI.renderStory = function () {
+    const r = rs0.apply(this, arguments);
+    try {
+      const tabs = $('stTabs'); if (!tabs) return r;
+      tabs.classList.add('rail107'); tabs.style.gridTemplateColumns = '';
+      const st = Store.data.story.stars;
+      [...tabs.children].forEach((b, i) => {
+        const first = chFirst(i), n = chLen(i); let all = n > 0;
+        for (let k = first; k < first + n; k++) if (!STAGES[k] || !(st[STAGES[k].id] > 0)) { all = false; break; }
+        b.classList.toggle('done', all && !b.classList.contains('on')); // a station you have passed is lit
+      });
+      // the line rolls to where you are
+      const on = tabs.querySelector('button.on');
+      if (on && tabs.dataset.at !== String(this.storyCh)) { tabs.dataset.at = this.storyCh; requestAnimationFrame(() => { try { on.scrollIntoView({ block: 'nearest', inline: 'center', behavior: tabs.dataset.seen ? 'smooth' : 'auto' }); tabs.dataset.seen = 1; } catch (e) { } }); }
+    } catch (e) { errLog(e); }
+    return r;
+  };
 })();

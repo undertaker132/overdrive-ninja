@@ -1532,7 +1532,7 @@ const EX_ACTS = [ // act, the chapters it holds, its final boss
   { n: 'I', ch: [0, 1, 2, 3], b: 'shogun', th: 'core' }, { n: 'II', ch: [6, 7, 8], b: 'prime', th: 'summit' }, { n: 'III', ch: [9, 10, 11], b: 'genesis', th: 'apex' },
   { n: 'IV', ch: [12, 13], b: 'oryu', th: 'abyss' }, { n: 'V', ch: [14, 15], b: 'tenkai', th: 'starring' }, { n: 'VI', ch: [16, 17], b: 'izanami', th: 'origin' }, { n: 'VII', ch: [18, 19], b: 'hyakki', th: 'hollow' }
 ];
-CHAPTERS.push({ n: 21, name: 'SECRETS', sub: 'EX bosses for the best', theme: 'void', bonus: true, bn: 'EX', secret: true, lock: 'Earn all three stars on every stage of an act to open its EX stage' });
+CHAPTERS.push({ n: 21, name: 'SECRETS', sub: 'An EX boss for every act', theme: 'void', bonus: true, bn: 'EX', secret: true, lock: 'Finish an act to open its EX stage' });
 EX_ACTS.forEach((A, i) => STAGES.push({
   id: 'EX-' + (i + 1), ch: 20, name: 'EX ' + A.n, theme: A.th, obj: { t: 'boss', b: A.b }, ex: 1, secret: i + 1,
   pool: { drone: 1.5, phantom: .5 }, max: 3, rate: 4,
@@ -1615,7 +1615,7 @@ CHAPTERS.push({ n: 22, name: 'AFTERGLOW', sub: 'The storm after the show', theme
   const at = STAGES.findIndex(s => s.secret); STAGES.splice(at < 0 ? STAGES.length : at, 0, ...AG);
   STAGES.forEach((s, i) => { s.idx = i; STAGE_BY_ID[s.id] = s; });
 }
-function exActStars(i) { const A = EX_ACTS[i], st = Store.data.story.stars; return STAGES.every(s => A.ch.indexOf(s.ch) < 0 || (st[s.id] | 0) >= 3); }
+function exActStars(i) { const A = EX_ACTS[i], st = Store.data.story.stars; return STAGES.every(s => A.ch.indexOf(s.ch) < 0 || (st[s.id] | 0) >= 1); } // (v107: an act you finish opens its EX boss; three stars stay a challenge of their own)
 function stageOpen(idx) { const s = STAGES[idx]; if (!s) return false; if (s.secret) return exActStars(s.secret - 1); return idx <= Store.data.story.unlocked; }
 const CREDITS_ROLL7 = [
   'OVERDRIVE: CYBER SLASH', '', 'ACT VII COMPLETE', '', 'REN — the last cut of the night', 'MIKA — every lantern', 'KAGE — who remembered them', 'HYAKKI — at peace', '',
@@ -14707,7 +14707,7 @@ const Flow = {
     if (s.final3 && !ng) notes.push({ t: lt('DEUS FRAME hero unlocked in the Arsenal. ACT III complete!'), c: 'gold' });
     if (s.final4 && !ng) notes.push({ t: lt('ABYSS DRAGON hero unlocked in the Arsenal. ACT IV complete!'), c: 'gold' }, { t: lt('Chapter 15 is open: SKY ELEVATOR.'), c: 'gold' });
     if (s.actFinal === 16) notes.push({ t: lt('STAR FRAME hero unlocked in the Arsenal. ACT V complete!'), c: 'gold' }, { t: lt('Chapter 17 is open: OVERGROWN RUINS.'), c: 'gold' });
-    if (s.final7 && !ng) notes.push({ t: lt('LANTERN ONI hero unlocked in the Arsenal. ACT VII complete!'), c: 'gold' }, { t: lt('The SECRETS chapter opens EX bosses for every act you finish with all stars.'), c: 'gold' });
+    if (s.final7 && !ng) notes.push({ t: lt('LANTERN ONI hero unlocked in the Arsenal. ACT VII complete!'), c: 'gold' }, { t: lt('The SECRETS chapter opens an EX boss for every act you finish.'), c: 'gold' });
     if (s.secret && !ng) { ach('exa' + s.secret); const nEx = EX_ACTS.filter((A, k) => Store.data.ach['exa' + (k + 1)]).length; if (nEx >= 3) ach('ex3'); if (nEx >= EX_ACTS.length) ach('exall'); notes.push({ t: ltf('EX bosses beaten: {0} of {1}', nEx, EX_ACTS.length), c: 'gold' }); }
     if (s.final5 && !ng) notes.push({ t: lt('FIRST BLADE hero and FIRST CODE blade unlocked in the Arsenal. ACT VI complete!'), c: 'gold' });
     let main12 = 0; for (let i = 0; i < MAIN_STAGES; i++) main12 += sv.stars[STAGES[i].id] | 0; if (main12 >= 36) ach('stars36');

@@ -70,7 +70,7 @@ CHAPTERS.push({ n: 22, name: 'AFTERGLOW', sub: 'The storm after the show', theme
   const at = STAGES.findIndex(s => s.secret); STAGES.splice(at < 0 ? STAGES.length : at, 0, ...AG);
   STAGES.forEach((s, i) => { s.idx = i; STAGE_BY_ID[s.id] = s; });
 }
-function exActStars(i) { const A = EX_ACTS[i], st = Store.data.story.stars; return STAGES.every(s => A.ch.indexOf(s.ch) < 0 || (st[s.id] | 0) >= 3); }
+function exActStars(i) { const A = EX_ACTS[i], st = Store.data.story.stars; return STAGES.every(s => A.ch.indexOf(s.ch) < 0 || (st[s.id] | 0) >= 1); } // (v107: an act you finish opens its EX boss; three stars stay a challenge of their own)
 function stageOpen(idx) { const s = STAGES[idx]; if (!s) return false; if (s.secret) return exActStars(s.secret - 1); return idx <= Store.data.story.unlocked; }
 const CREDITS_ROLL7 = [
   'OVERDRIVE: CYBER SLASH', '', 'ACT VII COMPLETE', '', 'REN — the last cut of the night', 'MIKA — every lantern', 'KAGE — who remembered them', 'HYAKKI — at peace', '',

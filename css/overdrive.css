@@ -1596,3 +1596,20 @@ textarea, input[type="text"], .edcode { background: rgba(4, 7, 20, .8); border: 
 #dlg .box.mood-sad #dlgTxt { opacity: .82; font-style: italic; }
 @keyframes dlgShake107 { 0% { transform: translateX(0); } 20% { transform: translateX(-7px) rotate(-.4deg); } 45% { transform: translateX(6px) rotate(.3deg); } 70% { transform: translateX(-3px); } 100% { transform: none; } }
 @media (prefers-reduced-motion: reduce) { #dlg .box.mood-shout { animation: none; } }
+
+/* v107: the chapters as stations on one rail line through Neo-Edo */
+#stTabs.rail107 { display: flex !important; gap: 0; overflow-x: auto; overflow-y: hidden; padding: 6px 10px 8px; scroll-snap-type: x proximity; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, transparent, #000 18px, #000 calc(100% - 18px), transparent); mask-image: linear-gradient(90deg, transparent, #000 18px, #000 calc(100% - 18px), transparent); }
+#stTabs.rail107::-webkit-scrollbar { display: none; }
+#stTabs.rail107 > button { flex: 0 0 84px; position: relative; background: none !important; border: none !important; box-shadow: none !important; clip-path: none !important; padding: 34px 4px 2px; margin: 0; font: 700 10px/1.25 var(--fm); color: var(--fg); text-align: center; scroll-snap-align: center; min-height: 0; }
+#stTabs.rail107 > button b { display: block; font: 700 11px var(--fd); color: var(--cyan); letter-spacing: 1px; margin-bottom: 2px; }
+#stTabs.rail107 > button::before { content: ''; position: absolute; top: 15px; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--cyan), var(--pink)); opacity: .75; }
+#stTabs.rail107 > button::after { content: ''; position: absolute; top: 8px; left: 50%; width: 17px; height: 17px; margin-left: -8.5px; border-radius: 50%; background: #0b1030; border: 3px solid var(--cyan); box-sizing: border-box; }
+#stTabs.rail107 > button.on::after { width: 25px; height: 25px; top: 4px; margin-left: -12.5px; background: var(--pink); border-color: #fff; box-shadow: 0 0 0 4px rgba(255, 43, 214, .25), 0 0 18px var(--pink); animation: station107 1.6s ease-in-out infinite; }
+#stTabs.rail107 > button.on { color: #fff; } #stTabs.rail107 > button.on b { color: var(--pink); }
+#stTabs.rail107 > button.lock { color: var(--mute); opacity: .55; }
+#stTabs.rail107 > button.lock::before { background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .25) 0 6px, transparent 6px 11px); }
+#stTabs.rail107 > button.lock::after { border-color: rgba(255, 255, 255, .3); }
+#stTabs.rail107 > button.bonus::after { border-color: var(--gold); } #stTabs.rail107 > button.bonus b { color: var(--gold); }
+#stTabs.rail107 > button.done::after { background: var(--cyan); }
+@keyframes station107 { 0%, 100% { box-shadow: 0 0 0 4px rgba(255, 43, 214, .25), 0 0 14px var(--pink); } 50% { box-shadow: 0 0 0 8px rgba(255, 43, 214, .12), 0 0 26px var(--pink); } }
+@media (prefers-reduced-motion: reduce) { #stTabs.rail107 > button.on::after { animation: none; } }
