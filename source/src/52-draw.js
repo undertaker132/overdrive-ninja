@@ -19,6 +19,7 @@ function render(rd) {
     const fx = clamp(V.VW / 2 + (CAM.fx - V.VW / 2) * fk * .65, hw, V.VW - hw), fy = clamp(V.VH / 2 + (CAM.fy - V.VH / 2) * fk * .65, hh, V.VH - hh);
     if (W3D.live) { const C3 = GL3D.cam; cx.translate(V.VW / 2, V.VH / 2 + W3D.offY()); cx.scale(C3.z, C3.z * W3D.k()); cx.rotate(GL3D.yaw); cx.translate(-C3.x, -C3.y); } else { cx.translate(V.VW / 2, V.VH / 2 + W3D.offY()); cx.scale(z, z * W3D.k()); cx.rotate(CAM.rot); cx.translate(-fx + CAM.ox, -fy + CAM.oy); } // 3D: the 2D layer lies on the tilted roof
   }
+  const chaseL = run && window.ChaseLayer && window.ChaseLayer.begin(); // (v108: the chase camera takes the world layer as a texture on the roof)
   BG.draw(true);
   if (run) {
     Arena.drawFloor(); FX.drawLow();
@@ -31,9 +32,10 @@ function render(rd) {
       const c = G.odT > 0 ? '#ffd700' : (P.fx && P.fx.blade && P.fx.blade !== 'prism' && P.fx.blade !== 'glitch' ? P.fx.blade : P.ca);
       cx.globalCompositeOperation = 'lighter'; glow(P.x, P.y, 230, c, G.odT > 0 ? .16 : .1 + P.dashT * .3); cx.globalCompositeOperation = 'source-over';
     }
-    BG.rain(rd * (G.state === 'PLAY' ? G.ts : 1));
+    if (!chaseL) BG.rain(rd * (G.state === 'PLAY' ? G.ts : 1)); // (the 3D rain falls in the chase view)
     drawDark();
   } else BG.rain(rd);
+  if (chaseL) window.ChaseLayer.end();
   cx.restore();
   if (run) {
     if (Q.glow && (In.on && G.state === 'PLAY' || G.odT > 0)) { cx.globalAlpha = G.odT > 0 ? .35 : .55; cx.drawImage(vigSpr(), -20, -20, V.VW + 40, V.VH + 40); cx.globalAlpha = 1; }

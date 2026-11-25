@@ -8,11 +8,12 @@
 //   leftovers nothing from the in-run HUD stays on the results or title screen
 //   first   a new player on a phone sees only the story and is playing within 30 taps
 //   economy two currencies (credits and cores); an old save's prisms and shards convert without loss
+//   chase   the third-person camera: hero in frame, touch lands where it points, TOP restores the classic camera
 //   sweep   every arcade mode and a story stage per chapter, played in real time in 2D and 3D; no errors allowed
 // Needs Playwright with Chromium. Exit code 1 on any failure.
 const { chromium } = require('playwright'), fs = require('fs'), path = require('path');
 const { serve, boot, BOT, ROOT } = require('./lib');
-const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,voice,story,leftovers,first,economy,sweep').split(',');
+const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,voice,story,leftovers,first,economy,chase,sweep').split(',');
 const SECS = +(args[args.indexOf('--secs') + 1] || 4);
 let failed = 0; const fail = m => { failed++; console.log('  FAIL', m); }, ok = m => console.log('  ok  ', m);
 
@@ -194,10 +195,30 @@ async function economy(b, url) {
   await p.close();
 }
 
+async function chase(b, url) {
+  console.log('chase: the third-person camera, its roof layer, its walls and its touch aim');
+  const p = await boot(b, url, { width: 390, height: 844 });
+  await p.evaluate(() => { window.__TEST3D = true; try { Object.defineProperty(W3D, 'slow', { get: () => false, set() { }, configurable: true }); } catch (e) { } const d = Store.data; d.settings.d3 = 2; d.settings.chase108 = 1; Flow.startArcade('endless'); });
+  let r = null;
+  for (let i = 0; i < 40; i++) { await p.waitForTimeout(500); r = await p.evaluate(() => { if (!(window.ChaseCam108 && ChaseCam108.on()) || !R3.cam || R3.cam.type !== 'PerspectiveCamera') return null;
+    // the hero's spot on the screen, cast back onto the roof, lands on the hero
+    const v = new THREE.Vector3(P.x, -P.y, 0).project(R3.cam), sx = (v.x * .5 + .5) * V.VW, sy = (-v.y * .5 + .5) * V.VH, q = W3D.unproj(sx, sy);
+    return { err: Math.hypot(q[0] - P.x, q[1] - P.y), onScreen: Math.abs(v.x) < 1 && Math.abs(v.y) < 1, fog: !!R3.scene.fog }; }); if (r) break; }
+  if (!r) { fail('the chase camera did not come on (3D models off in this browser?)'); await p.close(); return; }
+  if (!r.onScreen) fail('the hero is out of the chase frame'); else ok('the camera is behind the hero and the hero is in frame');
+  if (!(r.err < 3)) fail('a touch on the hero lands ' + r.err.toFixed(1) + ' units away'); else ok('a touch lands where it points (' + r.err.toFixed(2) + ' units)');
+  await p.waitForTimeout(2500);
+  const back = await p.evaluate(() => { Store.data.settings.chase108 = 0; return new Promise(res => setTimeout(() => res({ cam: R3.cam && R3.cam.type, fog: !!R3.scene.fog }), 800)); });
+  if (back.cam !== 'OrthographicCamera') fail('TOP did not bring the classic camera back: ' + back.cam); else ok('TOP brings the classic camera back');
+  for (const e of p.__errs) fail('page error: ' + e);
+  await p.close();
+}
+
 async function sweep(b, url) {
-  console.log(`sweep: every mode and a stage per chapter, ${SECS}s each in real time, 2D and 3D`);
+  console.log(`sweep: every mode and a stage per chapter, ${SECS}s each in real time, in 2D, 3D and 3D MODELS`);
   const p = await boot(b, url, { width: 1280, height: 720 });
   await p.evaluate(() => {
+    window.__TEST3D = true; // (the game keeps 3D off in automated browsers unless asked: before v108 this sweep's '3D' pass ran in 2D)
     try { Object.defineProperty(W3D, 'slow', { get: () => false, set() { }, configurable: true }); } catch (e) { }
     Store.data.story.unlocked = 999;
     window.__bot = setInterval(() => { try {
@@ -210,19 +231,22 @@ async function sweep(b, url) {
   });
   const stages = await p.evaluate(() => { const out = [], seen = {}; for (const s of STAGES) { if (s.secret) continue; if (!seen[s.ch]) { seen[s.ch] = 1; out.push(s.id); } } const z = STAGES.find(s => s.secret); if (z) out.push(z.id); return out; });
   const modes = ['endless', 'bossrush', 'arena', 'tower', 'highway', 'timeattack', 'mayhem', 'daily', 'weekly', 'dojo'];
-  for (const gfx of [0, 1]) {
+  const GFX = ['2D', '3D', '3D MODELS'];
+  for (const gfx of [0, 1, 2]) {
     await p.evaluate(g => { Store.data.settings.d3 = g; }, gfx);
     const runs = modes.map(m => [m, `Flow.startArcade('${m}')`]).concat(stages.map(id => ['story ' + id, `__OD.startStory(STAGES.findIndex(s => s.id === '${id}'))`]));
-    let bad = 0;
+    let bad = 0, live3d = 0;
     for (const [label, start] of runs) {
       p.__errs.length = 0; await p.evaluate(() => { ERRLOG.a.length = 0; });
       await p.evaluate(start); await p.waitForTimeout(SECS * 1000);
-      const r = await p.evaluate(() => ({ st: G.state, log: ERRLOG.a.map(q => q.c + 'x ' + q.m + ' @ ' + (q.s || '')).concat(typeof R3 !== 'undefined' && R3.err ? ['R3 ' + R3.err] : []) }));
+      const r = await p.evaluate(() => ({ st: G.state, live: W3D.live, log: ERRLOG.a.map(q => q.c + 'x ' + q.m + ' @ ' + (q.s || '')).concat(typeof R3 !== 'undefined' && R3.err ? ['R3 ' + R3.err] : []) }));
       await p.evaluate(() => { try { if (G.state === 'PAUSE') Flow.togglePause(); Flow.quit(true); } catch (e) { } try { UI.openTitle(); } catch (e) { } }); await p.waitForTimeout(250);
       const errs = p.__errs.concat(r.log);
-      if (errs.length) { bad++; fail(`${gfx ? '3D' : '2D'} ${label}: ${errs.slice(0, 3).join(' | ')}`); }
+      if (errs.length) { bad++; fail(`${GFX[gfx]} ${label}: ${errs.slice(0, 3).join(' | ')}`); }
+      if (gfx && r.live) live3d++;
     }
-    if (!bad) ok(`${gfx ? '3D' : '2D'}: ${runs.length} runs, no errors`);
+    if (!bad) ok(`${GFX[gfx]}: ${runs.length} runs, no errors` + (gfx ? ` (3D really on in ${live3d})` : ''));
+    if (gfx && live3d < runs.length / 2) fail(`3D was on in only ${live3d} of ${runs.length} runs`);
   }
   await p.close();
 }
@@ -230,7 +254,7 @@ async function sweep(b, url) {
 (async () => {
   const s = await serve(ROOT), b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const t0 = Date.now();
-  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['voice', voice], ['story', story], ['leftovers', leftovers], ['first', first], ['economy', economy], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
+  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['voice', voice], ['story', story], ['leftovers', leftovers], ['first', first], ['economy', economy], ['chase', chase], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
   catch (e) { fail('test crashed: ' + (e.stack || e)); }
   await b.close(); s.close();
   console.log(failed ? `\n${failed} FAILED` : '\nall passed', `(${((Date.now() - t0) / 1000) | 0}s)`);
