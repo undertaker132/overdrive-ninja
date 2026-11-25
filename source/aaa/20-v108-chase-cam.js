@@ -39,7 +39,9 @@
     lean += (clamp((P.vx || 0) / 900, -1, 1) * .09 - lean) * k;
     // a boss on the roof: back and up, so the hero and the boss are both in frame (never closer than the hero view)
     const B = Boss.cur && Boss.cur.enter >= 1 ? Boss.cur : null, sep = B ? clamp(cy0 - B.y, 0, 620) : 0;
-    bk += ((B ? 290 + sep * .32 : 240) - bk) * k; ht += ((B ? 255 + sep * .38 : 175) - ht) * k; lk += ((B ? sep * .55 + 60 : 200) - lk) * k;
+    // the closer the boss stands, the higher the camera: a tall boss next to the hero must not fill the frame
+    const nearB = B ? clamp(1 - sep / 420, 0, 1) : 0;
+    bk += ((B ? 330 + sep * .3 + nearB * 60 : 240) - bk) * k; ht += ((B ? 320 + sep * .32 + nearB * 170 : 175) - ht) * k; lk += ((B ? sep * .5 + 40 : 200) - lk) * k;
     const sx = (typeof CAM !== 'undefined' ? CAM.ox || 0 : 0) * .6, sy = (typeof CAM !== 'undefined' ? CAM.oy || 0 : 0) * .6; // (screen shake)
     const px = clamp(cx0 - lean * 300, V.L - 20, V.R + 20) + sx;
     persp.position.set(px, -(cy0 + bk) - sy, Math.max(150, ht));
@@ -59,7 +61,7 @@
   const Floor = {
     cv: null, g: null, tex: null, mesh: null, k: 1.25, x0: -80, y0: -170, w: 0, h: 0,
     ensure() {
-      const w = V.VW + 160, h = V.VH + 260, k = (typeof Q !== 'undefined' && Q.lvl >= 2) ? 1.4 : 1.1;
+      const lv = typeof Q !== 'undefined' ? Q.lvl | 0 : 2, w = V.VW + 160, h = V.VH + 260, k = lv >= 3 ? 1.3 : lv >= 2 ? 1.15 : lv >= 1 ? .95 : .8; // (texture detail follows the quality level)
       if (this.mesh && this.w === w && this.h === h && this.k === k) return;
       this.w = w; this.h = h; this.k = k;
       if (!this.cv) { this.cv = document.createElement('canvas'); this.g = this.cv.getContext('2d'); }
@@ -72,7 +74,7 @@
     place() { if (this.mesh) this.mesh.position.set(this.x0 + this.w / 2, -(this.y0 + this.h / 2), 1.5); },
     show(v) { if (this.mesh) this.mesh.visible = v; }
   };
-  let main = null, stands = [], active = false, cx0Saved = null;
+  let main = null, stands = [], active = false, cx0Saved = null, darkNow = false;
   window.ChaseLayer = {
     begin() {
       if (!on() || !persp) return false;
@@ -82,8 +84,10 @@
       cx = g; cx0Saved = W3D.cx0; W3D.cx0 = g; /* (drawHero and friends tell the game canvas from a shop preview by this) */ stands = []; active = true; return true;
     },
     end() {
-      if (!active) return; active = false; cx = main; W3D.cx0 = cx0Saved; Floor.tex.needsUpdate = true;
-      cx.save(); try { drawStands(); drawArrows(); } catch (e) { errLog(e); } cx.restore();
+      if (!active) return; active = false; cx = main; W3D.cx0 = cx0Saved;
+      // the one extra cost of this view is sending the roof layer to the GPU: every frame on high quality, every other one below
+      Floor.n = (Floor.n | 0) + 1; if (!(typeof Q !== 'undefined' && Q.lvl < 2) || Floor.n % 2 === 0) Floor.tex.needsUpdate = true;
+      cx.save(); try { drawStands(); if (darkNow) drawDarkScreen(); drawArrows(); } catch (e) { errLog(e); } cx.restore(); darkNow = false;
     }
   };
   // what stands up (numbers, labels, bars): on the screen above its spot, a size that follows the distance
@@ -127,9 +131,21 @@
     cx.setTransform(1, 0, 0, 1, 0, 0);
   }
 
+
+  // the blackout: darkness over the whole screen with a light around the hero (on the roof layer it lay there like a black rug)
+  const dd0 = drawDark;
+  drawDark = function () { if (active) { if (G.dark && !(G.odT > 0)) darkNow = true; return; } return dd0.apply(this, arguments); };
+  function drawDarkScreen() {
+    const h = toScreen(P.x, P.y, 20), e = toScreen(P.x + 185, P.y, 20); if (!h) return;
+    const W = cv.width, H = cv.height, r = clamp(e ? Math.hypot(e.x - h.x, e.y - h.y) * .6 : W * .3, W * .2, W * .32); // (near the camera the 185-unit light would cover the screen)
+    cx.setTransform(1, 0, 0, 1, 0, 0);
+    const g = cx.createRadialGradient(h.x, h.y, r * .55, h.x, h.y, r * 1.15); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.96)');
+    cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+    for (let i = 0; i < EN.n; i++) { const en = EN.a[i]; if (!en.alive || en.al > 0 || dist(en.x, en.y, P.x, P.y) < 150) continue; const q = toScreen(en.x, en.y, 24); if (!q) continue; const k = clamp(Math.hypot(bk, ht) / q.d, .5, 1.5) * V.dpr; cx.fillStyle = '#ff0844'; cx.fillRect(q.x - 5 * k, q.y, 3 * k, 2 * k); cx.fillRect(q.x + 2 * k, q.y, 3 * k, 2 * k); }
+  }
   /* ---------------- no invisible walls: an energy wall on every edge of the play area ---------------- */
   const Walls = {
-    g: null, list: [], flash: [0, 0, 0, 0],
+    g: null, list: [], edges: [], flash: [0, 0, 0, 0],
     build() {
       const t = T(), c = document.createElement('canvas'); c.width = 4; c.height = 64; const x = c.getContext('2d');
       const gr = x.createLinearGradient(0, 64, 0, 0); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.25, 'rgba(255,255,255,.5)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = gr; x.fillRect(0, 0, 4, 64);
@@ -137,6 +153,7 @@
       for (let i = 0; i < 4; i++) {
         const mat = new t.MeshBasicMaterial({ map: tex, color: new t.Color('#00f2fe'), transparent: true, opacity: .1, blending: t.AdditiveBlending, depthWrite: false, side: t.DoubleSide, fog: false, toneMapped: false });
         const m = new t.Mesh(new t.PlaneGeometry(1, 1), mat); m.frustumCulled = false; this.g.add(m); this.list.push(m);
+        const e = new t.Mesh(new t.PlaneGeometry(1, 1), new t.MeshBasicMaterial({ color: new t.Color('#00f2fe'), transparent: true, opacity: .6, blending: t.AdditiveBlending, depthWrite: false, side: t.DoubleSide, fog: false, toneMapped: false })); e.frustumCulled = false; this.g.add(e); this.edges.push(e); // (a bright line along the top of the wall)
       }
       R3.scene.add(this.g);
     },
@@ -146,10 +163,13 @@
       const L = V.L, R = V.R, top = 0, bot = V.VH, h = 46, sides = [[L, top, L, bot, Math.abs(P.x - L)], [R, top, R, bot, Math.abs(R - P.x)], [L, top, R, top, Math.abs(P.y - top)], [L, bot, R, bot, Math.abs(bot - P.y)]];
       sides.forEach((s, i) => {
         const m = this.list[i], [x1, y1, x2, y2, d] = s, len = Math.hypot(x2 - x1, y2 - y1);
-        m.scale.set(len, h, 1); m.position.set((x1 + x2) / 2, -(y1 + y2) / 2, h / 2); m.rotation.set(Math.PI / 2, 0, 0); m.rotateOnWorldAxis(new (T().Vector3)(0, 0, 1), -Math.atan2(y2 - y1, x2 - x1));
+        // the back edge is behind the hero, between them and the camera: a glowing strip on the roof instead of a wall
+        const wh = i === 3 ? 5 : h;
+        m.scale.set(len, wh, 1); m.position.set((x1 + x2) / 2, -(y1 + y2) / 2, wh / 2); m.rotation.set(Math.PI / 2, 0, 0); m.rotateOnWorldAxis(new (T().Vector3)(0, 0, 1), -Math.atan2(y2 - y1, x2 - x1));
         if (d < P.r + 3) this.flash[i] = 1; this.flash[i] = Math.max(0, this.flash[i] - dt * 2.5);
         const near = clamp(1 - (d - P.r) / 110, 0, 1);
-        m.material.opacity = .07 + near * .38 + this.flash[i] * .5; m.material.color.set(this.flash[i] > .3 ? '#ffffff' : G.odT > 0 ? '#ffd700' : '#00f2fe');
+        m.material.opacity = .14 + near * .46 + this.flash[i] * .5;
+        const e = this.edges[i]; e.scale.set(len, 2.2, 1); e.position.set((x1 + x2) / 2, -(y1 + y2) / 2, i === 3 ? 5 : h); e.rotation.copy(m.rotation); e.material.opacity = .45 + near * .5 + this.flash[i] * .5; e.material.color.copy(m.material.color); m.material.color.set(this.flash[i] > .3 ? '#ffffff' : G.odT > 0 ? '#ffd700' : '#00f2fe');
       });
     }
   };
@@ -161,6 +181,18 @@
     const t = T(), rc = new t.Raycaster(); rc.setFromCamera(new t.Vector2(sx / V.VW * 2 - 1, -(sy / V.VH * 2 - 1)), persp);
     const hit = new t.Vector3(); if (!rc.ray.intersectPlane(new t.Plane(new t.Vector3(0, 0, 1), 0), hit)) return up0(sx, sy);
     return [hit.x, -hit.y];
+  };
+
+  // every screen marker the game places over a world spot (tutorial spotlights, element orbs, execution marks, ripples)
+  const pj0 = W3D.proj.bind(W3D);
+  W3D.proj = function (x, y, h) { if (!on() || !persp) return pj0(x, y, h); const p = toScreen(x, y, h || 0); return p ? [p.x, p.y] : [-9999, -9999]; };
+
+  // the tutorial's spotlight took a roof point as a screen point: off target in any 3D view (classic 3D included)
+  const tdr0 = Tut.draw.bind(Tut);
+  Tut.draw = function () {
+    const c = this.cur;
+    if (c && W3D.live) { if (c.wx == null) { c.wx = c.x; c.wy = c.y; } const q = W3D.proj(c.wx, c.wy, 10), k = V.s * V.dpr; c.x = q[0] / k; c.y = q[1] / k; }
+    return tdr0.apply(this, arguments);
   };
 
   /* ---------------- the switch: Settings > Graphics > 3D CAMERA ---------------- */

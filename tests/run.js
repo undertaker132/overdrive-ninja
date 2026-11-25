@@ -215,7 +215,7 @@ async function chase(b, url) {
 }
 
 async function sweep(b, url) {
-  console.log(`sweep: every mode and a stage per chapter, ${SECS}s each in real time, in 2D, 3D and 3D MODELS`);
+  console.log(`sweep: every mode and a stage per chapter, ${SECS}s each in real time, in 2D, 3D, 3D MODELS and the chase camera`);
   const p = await boot(b, url, { width: 1280, height: 720 });
   await p.evaluate(() => {
     window.__TEST3D = true; // (the game keeps 3D off in automated browsers unless asked: before v108 this sweep's '3D' pass ran in 2D)
@@ -231,9 +231,9 @@ async function sweep(b, url) {
   });
   const stages = await p.evaluate(() => { const out = [], seen = {}; for (const s of STAGES) { if (s.secret) continue; if (!seen[s.ch]) { seen[s.ch] = 1; out.push(s.id); } } const z = STAGES.find(s => s.secret); if (z) out.push(z.id); return out; });
   const modes = ['endless', 'bossrush', 'arena', 'tower', 'highway', 'timeattack', 'mayhem', 'daily', 'weekly', 'dojo'];
-  const GFX = ['2D', '3D', '3D MODELS'];
-  for (const gfx of [0, 1, 2]) {
-    await p.evaluate(g => { Store.data.settings.d3 = g; }, gfx);
+  const GFX = ['2D', '3D', '3D MODELS', 'CHASE CAMERA'];
+  for (const gfx of [0, 1, 2, 3]) {
+    await p.evaluate(g => { Store.data.settings.d3 = Math.min(2, g); Store.data.settings.chase108 = g === 3 ? 1 : 0; }, gfx);
     const runs = modes.map(m => [m, `Flow.startArcade('${m}')`]).concat(stages.map(id => ['story ' + id, `__OD.startStory(STAGES.findIndex(s => s.id === '${id}'))`]));
     let bad = 0, live3d = 0;
     for (const [label, start] of runs) {
