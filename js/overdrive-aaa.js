@@ -3531,7 +3531,10 @@
       for (const sh of this.shocks) {
         sh.life -= dt;
         const p = 1 - Math.max(0, sh.life / sh.maxL);
-        sh.m.scale.setScalar(1 + p * (sh.maxScale - 1));
+        // v109: the ring grows, its line stays thin (scaled as a whole the tube grew with it: from the chase camera a fat
+        // white crescent that covered the hero)
+        const R = 14 * (1 + p * (sh.maxScale - 1)), q = Math.round(R);
+        if (q !== sh.q) { sh.q = q; sh.m.geometry.dispose(); sh.m.geometry = new THREE.TorusGeometry(q, 2.2 * (1 - p * .5), 4, 40); }
         sh.m.material.opacity = 0.9 * (1 - p);
         if (sh.life <= 0) {
           if (sh.m.parent) sh.m.parent.remove(sh.m);
@@ -4974,6 +4977,8 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
     if (!live) {
       if (ortho && this.cam !== ortho) { this.cam = ortho; try { this.comp.passes[0].camera = ortho; } catch (e) { } }
       if (fogOn) { this.scene.fog = fog0; fogOn = false; }
+      roofLook(false);
+      try { const sc = this.moon.shadow.camera; if (sc.top === 900) { sc.left = -520; sc.right = 520; sc.top = 620; sc.bottom = -620; sc.updateProjectionMatrix(); } } catch (e) { }
       ready = false; return sc0.apply(this, arguments);
     }
     if (!ortho) ortho = this.cam;
@@ -4985,7 +4990,7 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
     const tx = clamp(P.x * .8 + V.CX * .2, V.L, V.R), ty = P.y;
     cx0 += (tx - cx0) * k; cy0 += (ty - cy0) * k;
     // smooth, but the hero never leaves the frame: a dash back toward the camera pulls the camera with it at once
-    cx0 = clamp(cx0, tx - 70, tx + 70); cy0 = clamp(cy0, ty - 140, ty + 12);
+    cx0 = clamp(cx0, tx - 70, tx + 70); cy0 = clamp(cy0, ty - 55, ty + 12); // (v109: a run toward the camera kept the hero at the bottom edge)
     lean += (clamp((P.vx || 0) / 900, -1, 1) * .09 - lean) * k;
     // a boss on the roof: back and up, so the hero and the boss are both in frame (never closer than the hero view)
     const B = Boss.cur && Boss.cur.enter >= 1 ? Boss.cur : null, sep = B ? clamp(cy0 - B.y, 0, 620) : 0;
@@ -5002,8 +5007,18 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
     this.cam = persp; try { this.comp.passes[0].camera = persp; } catch (e) { }
     // fog hides the far end of the train (and spares the far draw calls)
     if (!fogOn) { fog0 = this.scene.fog; const bg = this.scene.background && this.scene.background.isColor ? this.scene.background : new (T().Color)('#070a1c'); this.scene.fog = new (T().Fog)(bg.clone(), 1100, 3000); fogOn = true; }
-    Walls.update(dt); Floor.place();
+    // the moon's shadow covers what this camera sees: centred ahead of the hero, a wider area than the top view needs
+    try { const sc = this.moon.shadow.camera, fx = cx0, fy = cy0 - 260; this.moon.position.set(fx - 420, -(fy + 620), 1100); this.moon.target.position.set(fx, -fy, 0); this.moon.target.updateMatrixWorld();
+      if (sc.top !== 900) { sc.left = -640; sc.right = 640; sc.top = 900; sc.bottom = -900; sc.updateProjectionMatrix(); } } catch (e) { }
+    roofLook(true); Walls.update(dt); Floor.place();
   };
+  // the 3D roof past the play area: seen at a grazing angle its wet metal mirrored the sky, a white glare with black puddles
+  let roof0 = null;
+  function roofLook(v) {
+    const m = R3.roofMat; if (!m) return;
+    if (v && !roof0) { roof0 = { rm: m.roughnessMap, r: m.roughness, mt: m.metalness, e: m.envMapIntensity }; m.roughnessMap = null; m.roughness = .88; m.metalness = .2; m.envMapIntensity = .45; m.needsUpdate = true; }
+    else if (!v && roof0) { m.roughnessMap = roof0.rm; m.roughness = roof0.r; m.metalness = roof0.mt; m.envMapIntensity = roof0.e; m.needsUpdate = true; roof0 = null; }
+  }
   // the finisher camera of v96 moves the camera itself: not in the chase view (the chase view frames the kill already)
   try { const FC = window.__V96 && window.__V96.FinisherCam96; if (FC) { const t0 = FC.tick.bind(FC); FC.tick = function () { if (on()) { this.t = 0; return; } return t0.apply(this, arguments); }; } } catch (e) { }
 
@@ -5018,14 +5033,47 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
       this.cv.width = Math.round(w * k); this.cv.height = Math.round(h * k);
       if (this.mesh) { R3.scene.remove(this.mesh); this.mesh.geometry.dispose(); this.mesh.material.dispose(); this.tex.dispose(); }
       const t = T(); this.tex = new t.CanvasTexture(this.cv); this.tex.colorSpace = t.SRGBColorSpace; this.tex.anisotropy = 4; this.tex.generateMipmaps = false; this.tex.minFilter = t.LinearFilter;
-      this.mesh = new t.Mesh(new t.PlaneGeometry(w, h), new t.MeshBasicMaterial({ map: this.tex, transparent: true, depthWrite: false, toneMapped: false, fog: false }));
-      this.mesh.renderOrder = 5; this.mesh.frustumCulled = false; R3.scene.add(this.mesh); this.place();
+      // v109: the layer is the roof itself, drawn first: an opaque surface just above the 3D roof (alpha-tested at its edges).
+      // Before it lay at 1.5 units as a see-through sheet drawn after the models: it hid every shadow and the soles of the
+      // feet, and the hero seemed to hover over the roof.
+      // (its color a shade under white: the bloom pass lights only what is brighter, so the 2D slashes, already drawn with their
+      // own glow, no longer flood the near half of the screen; the 3D neon still blooms)
+      this.mesh = new t.Mesh(new t.PlaneGeometry(w, h), new t.MeshBasicMaterial({ map: this.tex, color: new t.Color(.86, .86, .86), transparent: false, alphaTest: .03, depthWrite: true, toneMapped: false, fog: false }));
+      this.mesh.renderOrder = -10; this.mesh.frustumCulled = false; R3.scene.add(this.mesh);
+      // the shadows of the models fall on the layer through a shadow catcher laid on top of it
+      if (!this.sh) { this.sh = new t.Mesh(new t.PlaneGeometry(1, 1), new t.ShadowMaterial({ opacity: .5, transparent: true, depthWrite: false })); this.sh.receiveShadow = true; this.sh.renderOrder = -9; this.sh.frustumCulled = false; R3.scene.add(this.sh); }
+      this.sh.scale.set(w, h, 1);
+      this.place();
     },
-    place() { if (this.mesh) this.mesh.position.set(this.x0 + this.w / 2, -(this.y0 + this.h / 2), 1.5); },
-    show(v) { if (this.mesh) this.mesh.visible = v; }
+    place() { if (this.mesh) { const x = this.x0 + this.w / 2, y = -(this.y0 + this.h / 2); this.mesh.position.set(x, y, .12); this.sh.position.set(x, y, .3); } },
+    show(v) { if (this.mesh) this.mesh.visible = v; if (this.sh) this.sh.visible = v && R3.rn.shadowMap.enabled; Contact.show(v); }
   };
+  /* ---------------- contact: where the feet meet the roof ---------------- */
+  // a soft dark patch under the hero and the boss (ambient occlusion), on every quality level, shadows or not
+  const Contact = {
+    list: [],
+    make(size) {
+      const t = T();
+      if (!this.tex) { const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d'), g = x.createRadialGradient(32, 32, 0, 32, 32, 32); g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(.5, 'rgba(0,0,0,.75)'); g.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(0, 0, 64, 64); this.tex = new t.CanvasTexture(c); }
+      const m = new t.Mesh(new t.PlaneGeometry(1, 1), new t.MeshBasicMaterial({ map: this.tex, transparent: true, depthWrite: false, fog: false, toneMapped: false }));
+      m.renderOrder = 3; m.frustumCulled = false; m.base = size; /* (above the neon pool under the hero, which lit it away) */ R3.scene.add(m); this.list.push(m); return m;
+    },
+    show(v) { for (const m of this.list) m.visible = false; if (!v) return;
+      if (!this.hero) this.hero = this.make(24); if (!this.boss) this.boss = this.make(1);
+      const h = this.hero; h.visible = true;
+      // off the roof (a launch, a helm breaker) the patch shrinks and fades: a jump reads as a jump, not as floating
+      let air = 0; try { const hg = R3.ents.get('hero'); if (hg) air = clamp((hg.g.position.z + 1.95) / 60, 0, 1); } catch (e) { }
+      const k = 1 - air * .45; h.position.set(P.x, -P.y, .8); h.scale.set(h.base * 1.15 * k, h.base * k, 1); h.material.opacity = .9 * (1 - air * .55);
+      const B = Boss.cur; if (B && B.enter >= 1) { const b = this.boss, r = (B.r || 40) * 2.1; b.visible = true; b.position.set(B.x, -B.y, .8); b.scale.set(r, r, 1); b.material.opacity = .5; }
+    }
+  };
+  // the hero's model stood with its soles 2 units over the roof (no one could tell from above): on the roof in this view
+  const ah0 = R3.animHero.bind(R3);
+  R3.animHero = function (g) { const r = ah0.apply(this, arguments); if (active3() && g.human) g.position.z -= 1.95; return r; };
+  const active3 = () => persp && R3.cam === persp;
   let main = null, stands = [], active = false, cx0Saved = null, darkNow = false;
   window.ChaseLayer = {
+    get canvas() { return Floor.cv; }, // (tests look at the roof layer)
     begin() {
       if (!on() || !persp) return false;
       try { Floor.ensure(); } catch (e) { errLog(e); return false; }

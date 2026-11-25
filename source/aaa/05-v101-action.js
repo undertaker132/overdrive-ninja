@@ -650,7 +650,10 @@
       for (const sh of this.shocks) {
         sh.life -= dt;
         const p = 1 - Math.max(0, sh.life / sh.maxL);
-        sh.m.scale.setScalar(1 + p * (sh.maxScale - 1));
+        // v109: the ring grows, its line stays thin (scaled as a whole the tube grew with it: from the chase camera a fat
+        // white crescent that covered the hero)
+        const R = 14 * (1 + p * (sh.maxScale - 1)), q = Math.round(R);
+        if (q !== sh.q) { sh.q = q; sh.m.geometry.dispose(); sh.m.geometry = new THREE.TorusGeometry(q, 2.2 * (1 - p * .5), 4, 40); }
         sh.m.material.opacity = 0.9 * (1 - p);
         if (sh.life <= 0) {
           if (sh.m.parent) sh.m.parent.remove(sh.m);
