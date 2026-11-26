@@ -87,12 +87,12 @@
       this.cv.width = Math.round(w * k); this.cv.height = Math.round(h * k);
       if (this.mesh) { R3.scene.remove(this.mesh); this.mesh.geometry.dispose(); this.mesh.material.dispose(); this.tex.dispose(); }
       const t = T(); this.tex = new t.CanvasTexture(this.cv); this.tex.colorSpace = t.SRGBColorSpace; this.tex.anisotropy = 4; this.tex.generateMipmaps = false; this.tex.minFilter = t.LinearFilter;
-      // v109: the layer is the roof itself, drawn first: an opaque surface just above the 3D roof (alpha-tested at its edges).
+      // v109: the layer lies just above the 3D roof and is drawn first of the see-through things (the soles stand above it).
       // Before it lay at 1.5 units as a see-through sheet drawn after the models: it hid every shadow and the soles of the
       // feet, and the hero seemed to hover over the roof.
       // (its color a shade under white: the bloom pass lights only what is brighter, so the 2D slashes, already drawn with their
       // own glow, no longer flood the near half of the screen; the 3D neon still blooms)
-      this.mesh = new t.Mesh(new t.PlaneGeometry(w, h), new t.MeshBasicMaterial({ map: this.tex, color: new t.Color(.86, .86, .86), transparent: false, alphaTest: .03, depthWrite: true, toneMapped: false, fog: false }));
+      this.mesh = new t.Mesh(new t.PlaneGeometry(w, h), new t.MeshBasicMaterial({ map: this.tex, color: new t.Color(.86, .86, .86), transparent: true, depthWrite: false, toneMapped: false, fog: false })); // (v113: blended again: opaque, every half-clear patch the 2D layer paints became a solid slab)
       this.mesh.renderOrder = -10; this.mesh.frustumCulled = false; R3.scene.add(this.mesh);
       // the shadows of the models fall on the layer through a shadow catcher laid on top of it
       if (!this.sh) { this.sh = new t.Mesh(new t.PlaneGeometry(1, 1), new t.ShadowMaterial({ opacity: .5, transparent: true, depthWrite: false })); this.sh.receiveShadow = true; this.sh.renderOrder = -9; this.sh.frustumCulled = false; R3.scene.add(this.sh); }
@@ -224,7 +224,7 @@
         if (d < P.r + 3) this.flash[i] = 1; this.flash[i] = Math.max(0, this.flash[i] - dt * 2.5);
         const near = clamp(1 - (d - P.r) / 110, 0, 1);
         m.material.opacity = .14 + near * .46 + this.flash[i] * .5;
-        const e = this.edges[i]; e.scale.set(len, 2.2, 1); e.position.set((x1 + x2) / 2, -(y1 + y2) / 2, i === 3 ? 5 : h); e.rotation.copy(m.rotation); e.material.opacity = .45 + near * .5 + this.flash[i] * .5; e.material.color.copy(m.material.color); m.material.color.set(this.flash[i] > .3 ? '#ffffff' : G.odT > 0 ? '#ffd700' : '#00f2fe');
+        const e = this.edges[i]; e.scale.set(len, 2.2, 1); e.position.set((x1 + x2) / 2, -(y1 + y2) / 2, i === 3 ? 5 : h); e.rotation.copy(m.rotation); e.material.opacity = .45 + near * .5 + this.flash[i] * .5; e.material.color.copy(m.material.color); m.material.color.set(this.flash[i] > .3 ? '#ffffff' : G.odT > 0 ? '#ffd700' : (BG.T && BG.T.rail) || '#00f2fe'); /* (v113: the stage's own neon) */
       });
     }
   };
