@@ -13,6 +13,7 @@
   if (typeof HE !== 'undefined') Object.assign(HE, { "3D camera": "מצלמת 3D", "TOP": "מלמעלה", "CHASE": "מרדף" });
   const T = () => THREE;
   const on = () => { try { return Store.data.settings.chase108 === 1 && W3D.live && R3.ok && !CALM && inRun() && !(REPLAY.on && REPLAY.fast); } catch (e) { return false; } };
+  const Rear = { v: 0 };
   let persp = null, ortho = null, ready = false, cx0 = 0, cy0 = 0, lean = 0, bk = 240, ht = 175, lk = 200, fog0 = null, fogOn = false;
   const V3 = () => new (T().Vector3)();
 
@@ -43,7 +44,13 @@
     const B = Boss.cur && Boss.cur.enter >= 1 ? Boss.cur : null, sep = B ? clamp(cy0 - B.y, 0, 620) : 0;
     // the closer the boss stands, the higher the camera: a tall boss next to the hero must not fill the frame
     const nearB = B ? clamp(1 - sep / 420, 0, 1) : 0;
-    bk += ((B ? 330 + sep * .3 + nearB * 60 : 240) - bk) * k; ht += ((B ? 320 + sep * .32 + nearB * 170 : 175) - ht) * k; lk += ((B ? sep * .5 + 40 : 200) - lk) * k;
+    // v110: a threat behind the hero (between the hero and the camera, out of view): the camera rises toward the top view
+    // until it is in frame, and settles back once it is gone; one that is winding up an attack counts double
+    let rear = 0;
+    for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (!e.alive || e.al > 0 || e.type === ET.DUMMY || e.y < ty + 30) continue; const d = Math.hypot(e.x - P.x, e.y - ty); if (d > 320) continue;
+      let w = 0; try { w = EAnim.windup(e); } catch (er) { } rear = Math.max(rear, clamp(1 - (d - 80) / 280, 0, 1) * (.9 + w * .4) + (e.st === 4 && e.type === ET.PHANTOM ? .4 : 0)); }
+    rear = clamp(rear, 0, 1); Rear.v += (rear - Rear.v) * (rear > Rear.v ? k * 1.6 : k * .5); const rv = Rear.v;
+    bk += ((B ? 330 + sep * .3 + nearB * 60 : 240 + rv * 50) - bk) * k; ht += ((B ? 320 + sep * .32 + nearB * 170 : 175 + rv * 270) - ht) * k; lk += ((B ? sep * .5 + 40 : 200 - rv * 175) - lk) * k;
     const sx = (typeof CAM !== 'undefined' ? CAM.ox || 0 : 0) * .6, sy = (typeof CAM !== 'undefined' ? CAM.oy || 0 : 0) * .6; // (screen shake)
     const px = clamp(cx0 - lean * 300, V.L - 20, V.R + 20) + sx;
     persp.position.set(px, -(cy0 + bk) - sy, Math.max(150, ht));
@@ -157,11 +164,11 @@
   function drawArrows() {
     const W = cv.width, H = cv.height, m = 26 * V.dpr, hero = toScreen(P.x, P.y, 0); if (!hero) return;
     const list = [];
-    for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (e.alive && e.type !== ET.CLONE && e.type !== ET.DUMMY) list.push([e.x, e.y, e.col || '#ff3b5c', Math.hypot(e.x - P.x, e.y - P.y)]); }
+    for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (e.alive && e.al <= 0 && e.type !== ET.CLONE && e.type !== ET.DUMMY) { let w = 0; try { w = EAnim.windup(e); } catch (er) { } list.push([e.x, e.y, w > .05 ? '#ff0844' : e.col || '#ff3b5c', Math.hypot(e.x - P.x, e.y - P.y) - w * 400, w]); } }
     if (Boss.cur) list.push([Boss.cur.x, Boss.cur.y, (Boss.cur.info && Boss.cur.info.col) || '#ff0844', 0]);
     list.sort((a, b) => a[3] - b[3]);
     let n = 0;
-    for (const [x, y, col] of list) {
+    for (const [x, y, col, , w] of list) {
       if (n >= 7) break;
       const v = V3().set(x, -y, 20); v.project(persp); const behind = v.z > 1;
       let sx = (v.x * .5 + .5) * W, sy = (-v.y * .5 + .5) * H;
@@ -170,7 +177,10 @@
       const a = Math.atan2(sy - hero.y, sx - hero.x), r = Math.min((W / 2 - m) / Math.abs(Math.cos(a) || 1e-6), (H / 2 - m * 2) / Math.abs(Math.sin(a) || 1e-6));
       const ax = W / 2 + Math.cos(a) * r, ay = H / 2 + Math.sin(a) * r;
       cx.setTransform(1, 0, 0, 1, 0, 0); cx.translate(ax, ay); cx.rotate(a);
-      cx.globalAlpha = .55 + .35 * Math.sin(CAM.t * 8 + n); cx.fillStyle = col; cx.beginPath(); const s = 9 * V.dpr; cx.moveTo(s, 0); cx.lineTo(-s * .7, s * .75); cx.lineTo(-s * .35, 0); cx.lineTo(-s * .7, -s * .75); cx.closePath(); cx.fill();
+      // (v110: an enemy out of view that is about to attack: a big red arrow that beats fast, with a ring)
+      const hot = w > .05; cx.globalAlpha = hot ? .75 + .25 * Math.sin(CAM.t * 22) : .55 + .35 * Math.sin(CAM.t * 8 + n); cx.fillStyle = col;
+      if (hot) { cx.strokeStyle = col; cx.lineWidth = 2 * V.dpr; cx.beginPath(); cx.arc(-4 * V.dpr, 0, (14 + 8 * (1 - w)) * V.dpr, 0, TAU); cx.stroke(); }
+      cx.beginPath(); const s = (hot ? 13 + 3 * w : 9) * V.dpr; cx.moveTo(s, 0); cx.lineTo(-s * .7, s * .75); cx.lineTo(-s * .35, 0); cx.lineTo(-s * .7, -s * .75); cx.closePath(); cx.fill();
       cx.globalAlpha = 1; n++;
     }
     cx.setTransform(1, 0, 0, 1, 0, 0);
