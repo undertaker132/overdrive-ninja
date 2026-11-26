@@ -4966,6 +4966,7 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
   if (typeof HE !== 'undefined') Object.assign(HE, { "3D camera": "מצלמת 3D", "TOP": "מלמעלה", "CHASE": "מרדף" });
   const T = () => THREE;
   const on = () => { try { return Store.data.settings.chase108 === 1 && W3D.live && R3.ok && !CALM && inRun() && !(REPLAY.on && REPLAY.fast); } catch (e) { return false; } };
+  const Rear = { v: 0 };
   let persp = null, ortho = null, ready = false, cx0 = 0, cy0 = 0, lean = 0, bk = 240, ht = 175, lk = 200, fog0 = null, fogOn = false;
   const V3 = () => new (T().Vector3)();
 
@@ -4996,7 +4997,13 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
     const B = Boss.cur && Boss.cur.enter >= 1 ? Boss.cur : null, sep = B ? clamp(cy0 - B.y, 0, 620) : 0;
     // the closer the boss stands, the higher the camera: a tall boss next to the hero must not fill the frame
     const nearB = B ? clamp(1 - sep / 420, 0, 1) : 0;
-    bk += ((B ? 330 + sep * .3 + nearB * 60 : 240) - bk) * k; ht += ((B ? 320 + sep * .32 + nearB * 170 : 175) - ht) * k; lk += ((B ? sep * .5 + 40 : 200) - lk) * k;
+    // v110: a threat behind the hero (between the hero and the camera, out of view): the camera rises toward the top view
+    // until it is in frame, and settles back once it is gone; one that is winding up an attack counts double
+    let rear = 0;
+    for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (!e.alive || e.al > 0 || e.type === ET.DUMMY || e.y < ty + 30) continue; const d = Math.hypot(e.x - P.x, e.y - ty); if (d > 320) continue;
+      let w = 0; try { w = EAnim.windup(e); } catch (er) { } rear = Math.max(rear, clamp(1 - (d - 80) / 280, 0, 1) * (.9 + w * .4) + (e.st === 4 && e.type === ET.PHANTOM ? .4 : 0)); }
+    rear = clamp(rear, 0, 1); Rear.v += (rear - Rear.v) * (rear > Rear.v ? k * 1.6 : k * .5); const rv = Rear.v;
+    bk += ((B ? 330 + sep * .3 + nearB * 60 : 240 + rv * 50) - bk) * k; ht += ((B ? 320 + sep * .32 + nearB * 170 : 175 + rv * 270) - ht) * k; lk += ((B ? sep * .5 + 40 : 200 - rv * 175) - lk) * k;
     const sx = (typeof CAM !== 'undefined' ? CAM.ox || 0 : 0) * .6, sy = (typeof CAM !== 'undefined' ? CAM.oy || 0 : 0) * .6; // (screen shake)
     const px = clamp(cx0 - lean * 300, V.L - 20, V.R + 20) + sx;
     persp.position.set(px, -(cy0 + bk) - sy, Math.max(150, ht));
@@ -5110,11 +5117,11 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
   function drawArrows() {
     const W = cv.width, H = cv.height, m = 26 * V.dpr, hero = toScreen(P.x, P.y, 0); if (!hero) return;
     const list = [];
-    for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (e.alive && e.type !== ET.CLONE && e.type !== ET.DUMMY) list.push([e.x, e.y, e.col || '#ff3b5c', Math.hypot(e.x - P.x, e.y - P.y)]); }
+    for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (e.alive && e.al <= 0 && e.type !== ET.CLONE && e.type !== ET.DUMMY) { let w = 0; try { w = EAnim.windup(e); } catch (er) { } list.push([e.x, e.y, w > .05 ? '#ff0844' : e.col || '#ff3b5c', Math.hypot(e.x - P.x, e.y - P.y) - w * 400, w]); } }
     if (Boss.cur) list.push([Boss.cur.x, Boss.cur.y, (Boss.cur.info && Boss.cur.info.col) || '#ff0844', 0]);
     list.sort((a, b) => a[3] - b[3]);
     let n = 0;
-    for (const [x, y, col] of list) {
+    for (const [x, y, col, , w] of list) {
       if (n >= 7) break;
       const v = V3().set(x, -y, 20); v.project(persp); const behind = v.z > 1;
       let sx = (v.x * .5 + .5) * W, sy = (-v.y * .5 + .5) * H;
@@ -5123,7 +5130,10 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
       const a = Math.atan2(sy - hero.y, sx - hero.x), r = Math.min((W / 2 - m) / Math.abs(Math.cos(a) || 1e-6), (H / 2 - m * 2) / Math.abs(Math.sin(a) || 1e-6));
       const ax = W / 2 + Math.cos(a) * r, ay = H / 2 + Math.sin(a) * r;
       cx.setTransform(1, 0, 0, 1, 0, 0); cx.translate(ax, ay); cx.rotate(a);
-      cx.globalAlpha = .55 + .35 * Math.sin(CAM.t * 8 + n); cx.fillStyle = col; cx.beginPath(); const s = 9 * V.dpr; cx.moveTo(s, 0); cx.lineTo(-s * .7, s * .75); cx.lineTo(-s * .35, 0); cx.lineTo(-s * .7, -s * .75); cx.closePath(); cx.fill();
+      // (v110: an enemy out of view that is about to attack: a big red arrow that beats fast, with a ring)
+      const hot = w > .05; cx.globalAlpha = hot ? .75 + .25 * Math.sin(CAM.t * 22) : .55 + .35 * Math.sin(CAM.t * 8 + n); cx.fillStyle = col;
+      if (hot) { cx.strokeStyle = col; cx.lineWidth = 2 * V.dpr; cx.beginPath(); cx.arc(-4 * V.dpr, 0, (14 + 8 * (1 - w)) * V.dpr, 0, TAU); cx.stroke(); }
+      cx.beginPath(); const s = (hot ? 13 + 3 * w : 9) * V.dpr; cx.moveTo(s, 0); cx.lineTo(-s * .7, s * .75); cx.lineTo(-s * .35, 0); cx.lineTo(-s * .7, -s * .75); cx.closePath(); cx.fill();
       cx.globalAlpha = 1; n++;
     }
     cx.setTransform(1, 0, 0, 1, 0, 0);
@@ -5209,4 +5219,97 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
     return r;
   };
   window.ChaseCam108 = { on };
+})();
+
+/* --- MODULE 21: v110.0 THREATS IN 3D — the chase camera's warnings stand up off the roof --- */
+(function () {
+  'use strict';
+  // From behind the hero a ring or a line painted on the roof is flat and easy to miss. In the chase view every attack that
+  // is coming also stands in the air, in the same colors as the 2D warning:
+  //  · an enemy winding up an attack: a column of light rising out of it, taller and brighter as the attack nears,
+  //    and a ring on the roof that closes on it
+  //  · an aimed attack (the sniper's shot, a charge, a lunge, a copied dash): a wall of light along its line
+  //  · a bomber's lit fuse: a dome over the blast radius that beats faster to the end
+  // Only the view changes; the simulation and the replays do not.
+  if (typeof R3 === 'undefined' || typeof THREE === 'undefined') return;
+  const on = () => { try { return window.ChaseCam108 && window.ChaseCam108.on(); } catch (e) { return false; } };
+  const T = () => THREE;
+  let built = false, root = null, grad = null;
+  const cols = [], lanes = [], domes = [];
+  const Z = () => new (T().Vector3)(0, 0, 1);
+  function gradTex() {
+    const c = document.createElement('canvas'); c.width = 4; c.height = 64; const x = c.getContext('2d');
+    const g = x.createLinearGradient(0, 64, 0, 0); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(.3, 'rgba(255,255,255,.55)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+    x.fillStyle = g; x.fillRect(0, 0, 4, 64); return new (T().CanvasTexture)(c);
+  }
+  const glowMat = (map, side) => new (T().MeshBasicMaterial)({ map: map || null, color: 0xff3b5c, transparent: true, opacity: 0, blending: T().AdditiveBlending, depthWrite: false, side: side || T().FrontSide, fog: false, toneMapped: false });
+  function build() {
+    const t = T(); built = true; grad = gradTex(); root = new t.Group(); root.name = 'threats110'; R3.scene.add(root);
+    const cylG = new t.CylinderGeometry(1, 1, 1, 20, 1, true), ringG = new t.TorusGeometry(1, .07, 4, 40), planeG = new t.PlaneGeometry(1, 1), beamG = new t.BoxGeometry(1, 1, 1);
+    const domeG = new t.SphereGeometry(1, 28, 10, 0, Math.PI * 2, 0, Math.PI / 2);
+    for (let i = 0; i < 14; i++) {
+      const c = new t.Mesh(cylG, glowMat(grad, t.DoubleSide)); c.rotation.x = Math.PI / 2; c.frustumCulled = false;
+      const r = new t.Mesh(ringG, glowMat(null)); r.frustumCulled = false;
+      root.add(c); root.add(r); cols.push({ c, r });
+    }
+    for (let i = 0; i < 8; i++) {
+      const w = new t.Mesh(planeG, glowMat(grad, t.DoubleSide)); w.frustumCulled = false;
+      const b = new t.Mesh(beamG, glowMat(null)); b.frustumCulled = false;
+      root.add(w); root.add(b); lanes.push({ w, b });
+    }
+    for (let i = 0; i < 4; i++) {
+      const d = new t.Mesh(domeG, glowMat(null, t.DoubleSide)); d.rotation.x = Math.PI / 2; d.frustumCulled = false;
+      const r = new t.Mesh(ringG, glowMat(null)); r.frustumCulled = false;
+      root.add(d); root.add(r); domes.push({ d, r });
+    }
+  }
+  const hideAll = () => { for (const o of cols) { o.c.visible = o.r.visible = false; } for (const o of lanes) { o.w.visible = o.b.visible = false; } for (const o of domes) { o.d.visible = o.r.visible = false; } };
+  // the line an enemy is about to attack along: [angle, length, color] or null
+  function laneOf(e) {
+    const t = ET;
+    if (e.type === t.SNIPER && e.st === 1 && !G.dark) return [e.ang, 900, '#ff9a00'];
+    if (e.type === t.CLONE && e.st === 1) return [e.ang, 280, '#ff0844'];
+    if (e.type === t.MIMIC && e.st === 1) return [e.da, 264, '#ff6ad5'];
+    if (e.type === t.ENFORCER && e.st === 1) return [e.da, 520, '#ff0844'];
+    if (e.type === t.PHANTOM && e.st === 3) return [e.ang, 170, '#7df9ff'];
+    return null;
+  }
+  function update() {
+    if (!built) build();
+    hideAll(); root.visible = true;
+    const t = CAM.t || 0; let nc = 0, nl = 0, nd = 0;
+    for (let i = 0; i < EN.n; i++) {
+      const e = EN.a[i]; if (!e.alive || e.al > 0 || (e.vis != null && e.vis < .2)) continue;
+      let w = 0; try { w = EAnim.windup(e); } catch (er) { }
+      const x = e.x, y = -e.y, r = Math.max(8, e.r * (e.scale || 1));
+      // a column of light out of an enemy about to attack
+      if (w > .05 && nc < cols.length) {
+        const o = cols[nc++], col = e.type === ET.SNIPER ? '#ff9a3d' : '#ff3b5c', h = 22 + 48 * w, rr = r * (1.15 + .25 * Math.sin(t * 30) * w);
+        o.c.visible = true; o.c.position.set(x, y, h / 2); o.c.scale.set(rr, h, rr); o.c.material.color.set(col); o.c.material.opacity = .14 + .42 * w;
+        const rg = r * (1 + 1.6 * (1 - w)) + 4; o.r.visible = true; o.r.position.set(x, y, 1.2); o.r.scale.set(rg, rg, rg); o.r.material.color.set(col); o.r.material.opacity = .35 + .6 * w;
+      }
+      // a wall of light along an aimed attack
+      const L = laneOf(e);
+      if (L && nl < lanes.length) {
+        const o = lanes[nl++], [a, len, col] = L, k = Math.max(w, .35), h = 12 + 26 * k, mx = e.x + Math.cos(a) * len / 2, my = e.y + Math.sin(a) * len / 2;
+        o.w.visible = true; o.w.scale.set(len, h, 1); o.w.position.set(mx, -my, h / 2); o.w.rotation.set(Math.PI / 2, 0, 0); o.w.rotateOnWorldAxis(Z(), -a);
+        o.w.material.color.set(col); o.w.material.opacity = .14 + .4 * k;
+        o.b.visible = true; o.b.scale.set(len, 1.6 + 2 * k, 1.6 + 2 * k); o.b.position.set(mx, -my, 14); o.b.rotation.set(0, 0, -a);
+        o.b.material.color.set(col); o.b.material.opacity = .35 + .55 * k * (.75 + .25 * Math.sin(t * 40));
+      }
+      // a dome over a bomber's blast radius, beating faster as the fuse burns down
+      if (e.type === ET.BOMBER && e.fuse > 0 && nd < domes.length) {
+        const o = domes[nd++], f = clamp(1 - e.fuse / .8, 0, 1), beat = .5 + .5 * Math.sin(t * (10 + 30 * f));
+        o.d.visible = true; o.d.position.set(x, y, 0); o.d.scale.set(90, 90 * (.35 + .25 * f), 90); o.d.material.color.set('#ff5500'); o.d.material.opacity = .035 + .09 * f + .04 * beat;
+        o.r.visible = true; o.r.position.set(x, y, 1.2); o.r.scale.set(90, 90, 90 * .6); o.r.material.color.set('#ff7a1a'); o.r.material.opacity = .45 + .4 * beat;
+      }
+    }
+  }
+  const sc0 = R3.syncCam.bind(R3);
+  R3.syncCam = function () {
+    const r = sc0.apply(this, arguments);
+    try { if (on() && !CALM) update(); else if (root) root.visible = false; } catch (e) { errLog(e); if (root) root.visible = false; }
+    return r;
+  };
+  window.Threats110 = { counts: () => [cols.filter(o => o.c.visible).length, lanes.filter(o => o.w.visible).length, domes.filter(o => o.d.visible).length] };
 })();
