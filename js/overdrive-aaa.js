@@ -5537,6 +5537,9 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
     } catch (er) { errLog(er); }
     return g;
   };
+  // models without normals (the four-legged pet: dog, fox, tiger, kaya, komainu) took no light at all: black silhouettes
+  const in0 = Models.inst.bind(Models);
+  Models.inst = function () { const r = in0.apply(this, arguments); try { r.o.traverse(o => { if (o.isMesh && o.geometry && !o.geometry.attributes.normal && o.geometry.attributes.position) o.geometry.computeVertexNormals(); }); } catch (e) { } return r; };
   const chase = () => { try { return window.ChaseCam108 && window.ChaseCam108.on(); } catch (e) { return false; } };
   const ae0 = R3.animEnemy.bind(R3);
   R3.animEnemy = function (g, e) {
@@ -5547,4 +5550,12 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
     } catch (er) { }
     return r;
   };
+  // pets: larger in the chase view (beside the hero they were a few pixels)
+  const pm0 = R3.petModel.bind(R3);
+  R3.petModel = function () { const g = pm0.apply(this, arguments); try { if (g) g.k112 = g.scale.x; } catch (e) { } return g; };
+  const ap0 = R3.animPet.bind(R3);
+  R3.animPet = function (g) { const r = ap0.apply(this, arguments); try { if (g && g.k112) g.scale.setScalar(g.k112 * (chase() ? 1.55 : 1)); } catch (e) { } return r; };
+  // the 2D scarf, cape or tail was still painted on the roof under the 3D hero: from behind, a red worm on the floor
+  const ht0 = drawHeroTrail;
+  drawHeroTrail = function () { try { if (chase() && W3D.models() && cx === W3D.cx0) return; } catch (e) { } return ht0.apply(this, arguments); };
 })();
