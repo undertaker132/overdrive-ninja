@@ -77,7 +77,8 @@ async function ghost(b, url) {
   const p = await boot(b, url);
   const r = await p.evaluate(bot => { const o = {}; localStorage.removeItem('overdrive_ghost104_daily');
     eval(bot)("Flow.startArcade('daily')", 3000);
-    for (let i = 0; i < 600 && G.state === 'PLAY'; i++) { P.hp = 0; P.inv = 0; safeStep(); }
+    // (a daily can reach a perk choice inside the bot's first seconds, depending on the day: pick one and go on)
+    for (let i = 0; i < 600 && (G.state === 'PLAY' || G.state === 'PERK'); i++) { if (G.state === 'PERK') { const c = document.querySelector('#s-perk .perk'); if (c) c.click(); continue; } P.hp = 0; P.inv = 0; safeStep(); }
     o.over = G.state; o.score = G.score | 0; try { Flow.quit(true); } catch (e) { } UI.openTitle();
     const g = JSON.parse(localStorage.getItem('overdrive_ghost104_daily') || 'null'); o.saved = g && g.s;
     Flow.startArcade('daily'); o.playOn = Ghost.playOn; o.frames = Ghost.play && Ghost.play.n;
