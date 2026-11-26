@@ -211,10 +211,10 @@ async function chase(b, url) {
   // v110: threats in 3D, and an enemy behind the hero brings the camera up until it is in frame
   const th = await p.evaluate(() => new Promise(res => {
     for (let i = 0; i < EN.n; i++) EN.a[i].alive = false;
-    const s = spawnEnemy(ET.SNIPER, P.x + 40, P.y - 260), bk = spawnEnemy(ET.BRUTE, P.x, Math.min(V.VH - 30, P.y + 150)), bo = spawnEnemy(ET.BOMBER, P.x - 120, P.y - 120);
-    const hold = () => { for (const e of [s, bk, bo]) { e.spawnT = 0; e.vx = e.vy = 0; } s.st = 1; s.stT = .35; bo.fuse = .4; bk.x = P.x; bk.y = Math.min(V.VH - 30, P.y + 150); P.hp = Math.max(P.hp, 3); };
-    const t0 = setInterval(hold, 16); hold();
-    setTimeout(() => { clearInterval(t0); const v = new THREE.Vector3(bk.x, -bk.y, 10).project(R3.cam); for (let i = 0; i < EN.n; i++) EN.a[i].alive = false; P.hp = Math.max(P.hp, 3); P.inv = 3; /* (the run goes on for the TOP check) */ res({ c: Threats110.counts(), behind: v.y > -1 && v.y < 1 && v.z < 1, dbg: [v.x, v.y, v.z, P.y, bk.y, bk.alive, R3.cam.position.z, V.VH] }); }, 1400);
+    let bk = spawnEnemy(ET.BRUTE, P.x, Math.min(V.VH - 30, P.y + 150)); const s = spawnEnemy(ET.SNIPER, P.x + 40, P.y - 260), bo = spawnEnemy(ET.BOMBER, P.x - 120, P.y - 120);
+    const hold = () => { if (!bk.alive) { window.__resp = (window.__resp || 0) + 1; bk = spawnEnemy(ET.BRUTE, P.x, Math.min(V.VH - 30, P.y + 150)) || bk; } /* (a pet or a stray shot may kill it) */ for (const e of [s, bk, bo]) { e.spawnT = 0; e.vx = e.vy = 0; } s.st = 1; s.stT = .35; bo.fuse = .4; bk.x = P.x; bk.y = Math.min(V.VH - 30, P.y + 150); for (const e of [s, bk, bo]) { e.alive = true; e.hp = Math.max(e.hp, 50); } P.hp = Math.max(P.hp, 3); P.inv = 1; }; /* (nothing may kill them while the camera moves) */
+    const t0 = setInterval(hold, 16); hold(); const f0 = R3.frame, w0 = performance.now();
+    const done = () => { if (R3.frame < f0 + 10 && performance.now() - w0 < 15000) return setTimeout(done, 100); /* (software 3D: wait for real frames) */ clearInterval(t0); const v = new THREE.Vector3(bk.x, -bk.y, 10).project(R3.cam); for (let i = 0; i < EN.n; i++) EN.a[i].alive = false; P.hp = Math.max(P.hp, 3); P.inv = 3; /* (the run goes on for the TOP check) */ res({ c: Threats110.counts(), behind: v.y > -1 && v.y < 1 && v.z < 1, dbg: [v.x, v.y, v.z, P.y, bk.y, bk.alive, R3.cam.position.z, V.VH, window.__resp, bk.hp, bk.type, G.state, EN.n] }); }; done();
   }));
   if (!(th.c[0] >= 1 && th.c[1] >= 1 && th.c[2] >= 1)) fail('3D warnings missing (columns, walls, domes): ' + th.c.join(', ')); else ok('3D warnings stand up: ' + th.c[0] + ' column(s), ' + th.c[1] + ' wall(s), ' + th.c[2] + ' dome(s)');
   if (!th.behind) fail('an enemy right behind the hero stays out of the chase frame ' + JSON.stringify(th.dbg)); else ok('an enemy behind the hero is brought into frame');

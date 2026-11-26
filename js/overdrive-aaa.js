@@ -5001,9 +5001,9 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
     // until it is in frame, and settles back once it is gone; one that is winding up an attack counts double
     let rear = 0;
     for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (!e.alive || e.al > 0 || e.type === ET.DUMMY || e.y < ty + 30) continue; const d = Math.hypot(e.x - P.x, e.y - ty); if (d > 320) continue;
-      let w = 0; try { w = EAnim.windup(e); } catch (er) { } rear = Math.max(rear, clamp(1 - (d - 80) / 280, 0, 1) * (.9 + w * .4) + (e.st === 4 && e.type === ET.PHANTOM ? .4 : 0)); }
+      let w = 0; try { w = EAnim.windup(e); } catch (er) { } rear = Math.max(rear, clamp(1 - (d - 70) / 300, 0, 1) * (1 + w * .4) + (e.st === 4 && e.type === ET.PHANTOM ? .4 : 0)); }
     rear = clamp(rear, 0, 1); Rear.v += (rear - Rear.v) * (rear > Rear.v ? k * 1.6 : k * .5); const rv = Rear.v;
-    bk += ((B ? 330 + sep * .3 + nearB * 60 : 240 + rv * 50) - bk) * k; ht += ((B ? 320 + sep * .32 + nearB * 170 : 175 + rv * 270) - ht) * k; lk += ((B ? sep * .5 + 40 : 200 - rv * 175) - lk) * k;
+    bk += ((B ? 330 + sep * .3 + nearB * 60 : 240 + rv * 40) - bk) * k; ht += ((B ? 320 + sep * .32 + nearB * 170 : 175 + rv * 330) - ht) * k; lk += ((B ? sep * .5 + 40 : 200 - rv * 210) - lk) * k;
     const sx = (typeof CAM !== 'undefined' ? CAM.ox || 0 : 0) * .6, sy = (typeof CAM !== 'undefined' ? CAM.oy || 0 : 0) * .6; // (screen shake)
     const px = clamp(cx0 - lean * 300, V.L - 20, V.R + 20) + sx;
     persp.position.set(px, -(cy0 + bk) - sy, Math.max(150, ht));
