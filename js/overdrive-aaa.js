@@ -5040,12 +5040,12 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
       this.cv.width = Math.round(w * k); this.cv.height = Math.round(h * k);
       if (this.mesh) { R3.scene.remove(this.mesh); this.mesh.geometry.dispose(); this.mesh.material.dispose(); this.tex.dispose(); }
       const t = T(); this.tex = new t.CanvasTexture(this.cv); this.tex.colorSpace = t.SRGBColorSpace; this.tex.anisotropy = 4; this.tex.generateMipmaps = false; this.tex.minFilter = t.LinearFilter;
-      // v109: the layer is the roof itself, drawn first: an opaque surface just above the 3D roof (alpha-tested at its edges).
+      // v109: the layer lies just above the 3D roof and is drawn first of the see-through things (the soles stand above it).
       // Before it lay at 1.5 units as a see-through sheet drawn after the models: it hid every shadow and the soles of the
       // feet, and the hero seemed to hover over the roof.
       // (its color a shade under white: the bloom pass lights only what is brighter, so the 2D slashes, already drawn with their
       // own glow, no longer flood the near half of the screen; the 3D neon still blooms)
-      this.mesh = new t.Mesh(new t.PlaneGeometry(w, h), new t.MeshBasicMaterial({ map: this.tex, color: new t.Color(.86, .86, .86), transparent: false, alphaTest: .03, depthWrite: true, toneMapped: false, fog: false }));
+      this.mesh = new t.Mesh(new t.PlaneGeometry(w, h), new t.MeshBasicMaterial({ map: this.tex, color: new t.Color(.86, .86, .86), transparent: true, depthWrite: false, toneMapped: false, fog: false })); // (v113: blended again: opaque, every half-clear patch the 2D layer paints became a solid slab)
       this.mesh.renderOrder = -10; this.mesh.frustumCulled = false; R3.scene.add(this.mesh);
       // the shadows of the models fall on the layer through a shadow catcher laid on top of it
       if (!this.sh) { this.sh = new t.Mesh(new t.PlaneGeometry(1, 1), new t.ShadowMaterial({ opacity: .5, transparent: true, depthWrite: false })); this.sh.receiveShadow = true; this.sh.renderOrder = -9; this.sh.frustumCulled = false; R3.scene.add(this.sh); }
@@ -5177,7 +5177,7 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
         if (d < P.r + 3) this.flash[i] = 1; this.flash[i] = Math.max(0, this.flash[i] - dt * 2.5);
         const near = clamp(1 - (d - P.r) / 110, 0, 1);
         m.material.opacity = .14 + near * .46 + this.flash[i] * .5;
-        const e = this.edges[i]; e.scale.set(len, 2.2, 1); e.position.set((x1 + x2) / 2, -(y1 + y2) / 2, i === 3 ? 5 : h); e.rotation.copy(m.rotation); e.material.opacity = .45 + near * .5 + this.flash[i] * .5; e.material.color.copy(m.material.color); m.material.color.set(this.flash[i] > .3 ? '#ffffff' : G.odT > 0 ? '#ffd700' : '#00f2fe');
+        const e = this.edges[i]; e.scale.set(len, 2.2, 1); e.position.set((x1 + x2) / 2, -(y1 + y2) / 2, i === 3 ? 5 : h); e.rotation.copy(m.rotation); e.material.opacity = .45 + near * .5 + this.flash[i] * .5; e.material.color.copy(m.material.color); m.material.color.set(this.flash[i] > .3 ? '#ffffff' : G.odT > 0 ? '#ffd700' : (BG.T && BG.T.rail) || '#00f2fe'); /* (v113: the stage's own neon) */
       });
     }
   };
@@ -5558,4 +5558,25 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
   // the 2D scarf, cape or tail was still painted on the roof under the 3D hero: from behind, a red worm on the floor
   const ht0 = drawHeroTrail;
   drawHeroTrail = function () { try { if (chase() && W3D.models() && cx === W3D.cx0) return; } catch (e) { } return ht0.apply(this, arguments); };
+})();
+
+/* --- MODULE 25: v113.0 STAGE LOOK — every stage its own roof in 3D --- */
+(function () {
+  'use strict';
+  // In 3D every stage stood on the same steel-blue roof; only the sky and the rails changed. The roof now takes the
+  // stage's neon (magenta in the Undercity, green on the Ghost Line, gold on the Spire, red in the Shogun Core...),
+  // softly, so the plates, seams and puddles still read. The chase view's edge walls glow in the same neon.
+  if (typeof R3 === 'undefined' || typeof THREE === 'undefined') return;
+  const ts0 = R3.themeSet.bind(R3);
+  R3.themeSet = function (T0) {
+    const was = this.theme, r = ts0.apply(this, arguments);
+    try {
+      if (this.theme !== was && this.roofMat && T0) {
+        const c = new THREE.Color(T0.rail || '#00f2fe'), hsl = {}; c.getHSL(hsl);
+        this.roofMat.color.setHSL(hsl.h, Math.min(.42, hsl.s * .5), .72);
+        if (this.roofMat.emissive) { this.roofMat.emissive.setHSL(hsl.h, .6, .05); this.roofMat.emissiveIntensity = 1; }
+      }
+    } catch (e) { errLog(e); }
+    return r;
+  };
 })();
