@@ -8,12 +8,13 @@
 //   leftovers nothing from the in-run HUD stays on the results or title screen
 //   first   a new player on a phone sees only the story and is playing within 30 taps
 //   economy two currencies (credits and cores); an old save's prisms and shards convert without loss
+//   motion  smooth drawing between the fixed steps on a 59.94 Hz screen: no stalls, no double steps
 //   chase   the third-person camera: hero in frame, touch lands where it points, TOP restores the classic camera
 //   sweep   every arcade mode and a story stage per chapter, played in real time in 2D and 3D; no errors allowed
 // Needs Playwright with Chromium. Exit code 1 on any failure.
 const { chromium } = require('playwright'), fs = require('fs'), path = require('path');
 const { serve, boot, BOT, ROOT } = require('./lib');
-const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,voice,story,leftovers,first,economy,chase,sweep').split(',');
+const args = process.argv.slice(2), only = (args.find(a => !a.startsWith('--') && isNaN(+a)) || 'replay,compat,pace,ghost,voice,story,leftovers,first,economy,motion,chase,sweep').split(',');
 const SECS = +(args[args.indexOf('--secs') + 1] || 4);
 let failed = 0; const fail = m => { failed++; console.log('  FAIL', m); }, ok = m => console.log('  ok  ', m);
 
@@ -196,6 +197,26 @@ async function economy(b, url) {
   await p.close();
 }
 
+async function motion(b, url) {
+  console.log('motion: on a 59.94 Hz screen with timing jitter the hero glides evenly (no frame stalls, no double steps)');
+  const p = await boot(b, url);
+  await p.evaluate(() => { const d = Store.data; d.uiAll = 1; d.seenVer = VERSION; d.settings.tips = 0; Flow.startArcade('endless'); });
+  await p.waitForTimeout(1500);
+  await p.evaluate(() => { window.__q = []; window.requestAnimationFrame = cb => { __q.push(cb); return 1; }; }); await p.waitForTimeout(200);
+  const r = await p.evaluate(() => {
+    let k = 0; const s0 = step; step = function () { s0(); k++; P.x = 60 + (k * 2) % 200; P.hp = 9; if (Tut.cur) Tut.dismiss(); }; // (a hero gliding at 120 units a second)
+    const r0 = render; let xs = []; render = function (rd) { xs.push(P.x); return r0(rd); };
+    let t = performance.now(), seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < 400; i++) { t += 1000 / 59.94 + (rnd() - .5) * 6; __q.length = 0; frame(t); }
+    step = s0; render = r0;
+    const d = []; for (let i = 20; i < xs.length; i++) { const v = xs[i] - xs[i - 1]; if (v > -50) d.push(v); }
+    return { stalls: d.filter(v => v === 0).length, doubles: d.filter(v => v > 3.5).length, n: d.length };
+  });
+  if (r.n < 300) fail('too few frames drawn: ' + r.n); else if (r.stalls + r.doubles > 2) fail(`motion hitches: ${r.stalls} stalls, ${r.doubles} double steps in ${r.n} frames`); else ok(`${r.n} frames, ${r.stalls} stalls, ${r.doubles} double steps`);
+  for (const e of p.__errs) fail('page error: ' + e);
+  await p.close();
+}
+
 async function chase(b, url) {
   console.log('chase: the third-person camera, its roof layer, its walls, its touch aim and its 3D warnings');
   const p = await boot(b, url, { width: 390, height: 844 });
@@ -275,7 +296,7 @@ async function sweep(b, url) {
 (async () => {
   const s = await serve(ROOT), b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const t0 = Date.now();
-  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['voice', voice], ['story', story], ['leftovers', leftovers], ['first', first], ['economy', economy], ['chase', chase], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
+  try { for (const [k, fn] of [['replay', replay], ['compat', compat], ['pace', pace], ['ghost', ghost], ['voice', voice], ['story', story], ['leftovers', leftovers], ['first', first], ['economy', economy], ['motion', motion], ['chase', chase], ['sweep', sweep]]) if (only.includes(k)) await fn(b, s.url); }
   catch (e) { fail('test crashed: ' + (e.stack || e)); }
   await b.close(); s.close();
   console.log(failed ? `\n${failed} FAILED` : '\nall passed', `(${((Date.now() - t0) / 1000) | 0}s)`);

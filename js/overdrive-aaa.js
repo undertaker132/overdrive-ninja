@@ -5429,3 +5429,133 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
   Store.load = function () { const r = ld0.apply(this, arguments); try { const s = Store.data.settings; if (!s.m111) { if (s.chase108 === 1 && s.d3 === 2) { s.d3 = 1; s.r3m = 1; } s.m111 = 1; Store.touch(); } } catch (e) { } return r; };
   window.ChaseFeel111 = { F, toggleCam };
 })();
+
+/* --- MODULE 23: v112.0 SMOOTH MOTION — every frame between two steps, every turn eased --- */
+(function () {
+  'use strict';
+  // The game steps at a fixed 60 per second. A 60 Hz screen refreshes at about that rate, never exactly: some refreshes
+  // ran two steps and some none, and the picture hitched (judder). The in-between drawing that fixes it (Smooth) was
+  // only on for screens over 75 Hz. Now AUTO turns it on for every screen (OFF still turns it off).
+  // The in-between drawing now covers facing too (the hero's blade and every enemy's heading), and the 3D models turn
+  // through a quick ease instead of snapping to a new heading in one frame.
+  // Only the drawing changes; the simulation and the replays do not.
+  const want0 = Smooth.want.bind(Smooth);
+  Smooth.want = function () { const m = (Store.data && Store.data.settings.smooth) || 'auto'; return m === 'auto' ? true : want0(); };
+
+  const lerpA = (a, b, k) => { let d = b - a; while (d > Math.PI) d -= Math.PI * 2; while (d < -Math.PI) d += Math.PI * 2; return a + d * k; };
+  // angles: remembered with the positions at each step, drawn in between, put back after the drawing
+  const snap0 = Smooth.snap.bind(Smooth);
+  Smooth.snap = function () {
+    snap0();
+    if (G.state !== 'PLAY') return;
+    P._pa = P.ang; P._pf = P.face;
+    for (let i = 0; i < EN.n; i++) { const o = EN.a[i]; o._pa = o.ang; }
+  };
+  const ren0 = Smooth.render.bind(Smooth);
+  Smooth.render = function (rd) {
+    const act = G.state === 'PLAY' && !(REPLAY.on && (REPLAY.fast || REPLAY.paused)) && !G.photo && (this.want() || (REPLAY.on && REPLAY.speed < 1));
+    if (!act) return ren0(rd);
+    const a = clamp((REPLAY.on ? REPLAY.acc : acc) / CFG.step, 0, 1), keep = [];
+    const one = (o, f, pf) => { const v = o[f], p = o[pf]; if (typeof v !== 'number' || typeof p !== 'number' || v === p) return; const d = Math.abs(lerpA(0, v - p, 1)); if (d > 2.6) return; keep.push(o, f, v); o[f] = lerpA(p, v, a); };
+    try {
+      one(P, 'ang', '_pa'); one(P, 'face', '_pf');
+      for (let i = 0; i < EN.n; i++) { const o = EN.a[i]; if (o.alive && o._pg === o.gen) one(o, 'ang', '_pa'); }
+      return ren0(rd);
+    } finally { for (let i = keep.length - 3; i >= 0; i -= 3) keep[i][keep[i + 1]] = keep[i + 2]; }
+  };
+
+  // 3D: a heading change eases in over a few frames (a dash still turns at once to the eye: ~50 ms)
+  const ease = (g, rate) => {
+    const t = g.rotation.z, dt = Math.min(.05, RDT || 1 / 60);
+    if (g._yz == null || g._yf !== (R3.frame | 0) - 1 && g._yf !== (R3.frame | 0)) g._yz = t; // (first seen, or not drawn for a while: no sweep)
+    else g._yz = lerpA(g._yz, t, 1 - Math.exp(-rate * dt));
+    g._yf = R3.frame | 0; g.rotation.z = g._yz;
+  };
+  if (typeof R3 !== 'undefined') {
+    const ah0 = R3.animHero.bind(R3);
+    R3.animHero = function (g, o) { const r = ah0.apply(this, arguments); try { if (o && (o.x || o.y)) ease(g, 30); } catch (e) { } return r; };
+    const ae0 = R3.animEnemy.bind(R3);
+    R3.animEnemy = function (g, e) { const r = ae0.apply(this, arguments); try { if (!e.dead && !(e.vis < .2)) ease(g, 16); } catch (er) { } return r; };
+  }
+  // the human hero (the recorded motion): the dash lean came on and off in one frame, and a speed near a threshold
+  // flickered between the walk and run clips every few frames. The lean now eases in and out, and each clip holds
+  // until the speed is clearly past the other side (hysteresis)
+  if (typeof Human !== 'undefined' && Human.anim) {
+    const hn0 = Human.anim.bind(Human);
+    Human.anim = function (g, o, rd, t) {
+      if (!g || !o) return hn0.apply(this, arguments);
+      const dt = Math.min(.05, rd || 0), dash = !!o.dashing; let sp = o.spd || 0;
+      g._dk = g._dk == null ? (dash ? 1 : 0) : dash ? Math.min(1, g._dk + dt * 14) : Math.max(0, g._dk - dt * 6);
+      if (!dash) { if (g._run && sp > 190) sp = Math.max(sp, 270); else if (!g._run && sp < 320) sp = Math.min(sp, 250); if (g._walk && sp > 14) sp = Math.max(sp, 36); else if (!g._walk && sp < 48) sp = Math.min(sp, 24); }
+      g._run = dash || sp > 260; g._walk = sp > 30;
+      const r = hn0.call(this, g, sp === o.spd ? o : Object.assign({}, o, { spd: sp }), rd, t);
+      try { const B = g.human && g.human.B; if (B && B.spine) B.spine.rotation.x += .45 * ((g._dk || 0) - (dash ? 1 : 0)); } catch (e) { }
+      return r;
+    };
+  }
+  window.Motion112 = { lerpA };
+})();
+
+/* --- MODULE 24: v112.0 LOOKS — enemies with weight: deep colors, an ink line, a size that reads --- */
+(function () {
+  'use strict';
+  // The animated enemies (the orc, the demons, the robots) came out pale: their texture tinted toward the enemy color,
+  // then the cel-shading pass lightened every color again, and a constant glow under the bloom washed them to mint and
+  // lilac. Their skinned bodies also had no ink line (the line was only made for rigid meshes).
+  //  · a deep, saturated body color and a low glow (a hit flash and an execution mark still light them up)
+  //  · an ink line that follows the animated body (pushed out along the normals after the skinning, in the shader)
+  //  · in the chase view the small enemies are drawn larger: next to the hero they were toys (the hit size is the same)
+  if (typeof R3 === 'undefined' || typeof THREE === 'undefined') return;
+  const T = () => THREE;
+  let inkMat = null;
+  function ink(th) {
+    const t = T(), m = new t.MeshBasicMaterial({ color: 0x07060c, side: t.BackSide });
+    m.onBeforeCompile = sh => { sh.uniforms.th112 = { value: th }; sh.vertexShader = 'uniform float th112;\n' + sh.vertexShader.replace('#include <skinning_vertex>', '#include <skinning_vertex>\n  transformed += normalize(objectNormal) * th112;'); };
+    m.customProgramCacheKey = () => 'ink112' + th.toFixed(3); m.userData.isOutline91 = 1; m.userData.noToon91 = 1; return m;
+  }
+  function deepen(mat) {
+    if (!mat || mat.userData && mat.userData.deep112 || !mat.color || mat.isMeshBasicMaterial) return;
+    const hsl = {}; mat.color.getHSL(hsl); mat.color.setHSL(hsl.h, Math.min(1, hsl.s * 1.15 + .08), clamp(hsl.l * .68, .16, .58));
+    if (mat.emissive && (mat.emissiveIntensity || 0) < .8) mat.emissiveIntensity = Math.min(mat.emissiveIntensity || 0, .07); // (parts made to glow, eyes and cores, keep their light)
+    mat.userData = Object.assign({}, mat.userData, { deep112: 1 });
+  }
+  const ei0 = R3.enemyInst.bind(R3);
+  R3.enemyInst = function (e) {
+    const g = ei0(e);
+    try {
+      if (g && (g.mon || g.rob) && !CALM) {
+        const skinned = []; g.traverse(o => { if (o.isSkinnedMesh) skinned.push(o); else if (o.isMesh && o.material && !o.material.transparent) deepen(o.material); });
+        for (const m of skinned) {
+          deepen(m.material);
+          if (!m.geometry || !m.skeleton || m.userData.ink112) continue;
+          m.geometry.computeBoundingSphere(); const th = (m.geometry.boundingSphere ? m.geometry.boundingSphere.radius : 1) * .028;
+          const o = new (T().SkinnedMesh)(m.geometry, ink(th)); o.bind(m.skeleton, m.bindMatrix); o.frustumCulled = false; o.castShadow = false; o.userData.isOutline91 = 1;
+          m.parent.add(o); o.position.copy(m.position); o.quaternion.copy(m.quaternion); o.scale.copy(m.scale); m.userData.ink112 = 1;
+        }
+        g.deep112 = 1;
+      }
+    } catch (er) { errLog(er); }
+    return g;
+  };
+  // models without normals (the four-legged pet: dog, fox, tiger, kaya, komainu) took no light at all: black silhouettes
+  const in0 = Models.inst.bind(Models);
+  Models.inst = function () { const r = in0.apply(this, arguments); try { r.o.traverse(o => { if (o.isMesh && o.geometry && !o.geometry.attributes.normal && o.geometry.attributes.position) o.geometry.computeVertexNormals(); }); } catch (e) { } return r; };
+  const chase = () => { try { return window.ChaseCam108 && window.ChaseCam108.on(); } catch (e) { return false; } };
+  const ae0 = R3.animEnemy.bind(R3);
+  R3.animEnemy = function (g, e) {
+    const r = ae0.apply(this, arguments);
+    try {
+      if (g.deep112 && g.bodyMat && g.bodyMat.emissive && !(e.fl > .3) && !e.exec) g.bodyMat.emissiveIntensity = Math.min(g.bodyMat.emissiveIntensity, .07);
+      if (chase() && !e.mb && (e.r || 14) < 21 && e.type !== ET.DUMMY) g.scale.multiplyScalar(1.3);
+    } catch (er) { }
+    return r;
+  };
+  // pets: larger in the chase view (beside the hero they were a few pixels)
+  const pm0 = R3.petModel.bind(R3);
+  R3.petModel = function () { const g = pm0.apply(this, arguments); try { if (g) g.k112 = g.scale.x; } catch (e) { } return g; };
+  const ap0 = R3.animPet.bind(R3);
+  R3.animPet = function (g) { const r = ap0.apply(this, arguments); try { if (g && g.k112) g.scale.setScalar(g.k112 * (chase() ? 1.55 : 1)); } catch (e) { } return r; };
+  // the 2D scarf, cape or tail was still painted on the roof under the 3D hero: from behind, a red worm on the floor
+  const ht0 = drawHeroTrail;
+  drawHeroTrail = function () { try { if (chase() && W3D.models() && cx === W3D.cx0) return; } catch (e) { } return ht0.apply(this, arguments); };
+})();
