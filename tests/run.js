@@ -214,12 +214,12 @@ async function chase(b, url) {
     const s = spawnEnemy(ET.SNIPER, P.x + 40, P.y - 260), bk = spawnEnemy(ET.BRUTE, P.x, Math.min(V.VH - 30, P.y + 150)), bo = spawnEnemy(ET.BOMBER, P.x - 120, P.y - 120);
     const hold = () => { for (const e of [s, bk, bo]) { e.spawnT = 0; e.vx = e.vy = 0; } s.st = 1; s.stT = .35; bo.fuse = .4; bk.x = P.x; bk.y = Math.min(V.VH - 30, P.y + 150); P.hp = Math.max(P.hp, 3); };
     const t0 = setInterval(hold, 16); hold();
-    setTimeout(() => { clearInterval(t0); const v = new THREE.Vector3(bk.x, -bk.y, 10).project(R3.cam); res({ c: Threats110.counts(), behind: v.y > -1 && v.y < 1 && v.z < 1, dbg: [v.x, v.y, v.z, P.y, bk.y, bk.alive, R3.cam.position.z, V.VH] }); }, 1400);
+    setTimeout(() => { clearInterval(t0); const v = new THREE.Vector3(bk.x, -bk.y, 10).project(R3.cam); for (let i = 0; i < EN.n; i++) EN.a[i].alive = false; P.hp = Math.max(P.hp, 3); P.inv = 3; /* (the run goes on for the TOP check) */ res({ c: Threats110.counts(), behind: v.y > -1 && v.y < 1 && v.z < 1, dbg: [v.x, v.y, v.z, P.y, bk.y, bk.alive, R3.cam.position.z, V.VH] }); }, 1400);
   }));
   if (!(th.c[0] >= 1 && th.c[1] >= 1 && th.c[2] >= 1)) fail('3D warnings missing (columns, walls, domes): ' + th.c.join(', ')); else ok('3D warnings stand up: ' + th.c[0] + ' column(s), ' + th.c[1] + ' wall(s), ' + th.c[2] + ' dome(s)');
   if (!th.behind) fail('an enemy right behind the hero stays out of the chase frame ' + JSON.stringify(th.dbg)); else ok('an enemy behind the hero is brought into frame');
   await p.waitForTimeout(1000);
-  const back = await p.evaluate(() => { Store.data.settings.chase108 = 0; return new Promise(res => setTimeout(() => res({ cam: R3.cam && R3.cam.type, fog: !!R3.scene.fog }), 800)); });
+  const back = await p.evaluate(() => { P.hp = Math.max(P.hp, 3); Store.data.settings.chase108 = 0; return new Promise(res => setTimeout(() => res({ cam: R3.cam && R3.cam.type, fog: !!R3.scene.fog }), 800)); });
   if (back.cam !== 'OrthographicCamera') fail('TOP did not bring the classic camera back: ' + back.cam); else ok('TOP brings the classic camera back');
   for (const e of p.__errs) fail('page error: ' + e);
   await p.close();
