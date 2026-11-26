@@ -199,7 +199,7 @@ async function economy(b, url) {
 async function chase(b, url) {
   console.log('chase: the third-person camera, its roof layer, its walls, its touch aim and its 3D warnings');
   const p = await boot(b, url, { width: 390, height: 844 });
-  await p.evaluate(() => { window.__TEST3D = true; try { Object.defineProperty(W3D, 'slow', { get: () => false, set() { }, configurable: true }); } catch (e) { } const d = Store.data; d.settings.d3 = 2; d.settings.chase108 = 1; Flow.startArcade('endless'); });
+  await p.evaluate(() => { window.__TEST3D = true; try { Object.defineProperty(W3D, 'slow', { get: () => false, set() { }, configurable: true }); } catch (e) { } const d = Store.data; d.settings.r3m = 1; d.settings.d3 = 1; d.settings.chase108 = 1; Flow.startArcade('endless'); });
   let r = null;
   for (let i = 0; i < 40; i++) { await p.waitForTimeout(500); r = await p.evaluate(() => { if (!(window.ChaseCam108 && ChaseCam108.on()) || !R3.cam || R3.cam.type !== 'PerspectiveCamera') return null;
     // the hero's spot on the screen, cast back onto the roof, lands on the hero
@@ -218,9 +218,19 @@ async function chase(b, url) {
   }));
   if (!(th.c[0] >= 1 && th.c[1] >= 1 && th.c[2] >= 1)) fail('3D warnings missing (columns, walls, domes): ' + th.c.join(', ')); else ok('3D warnings stand up: ' + th.c[0] + ' column(s), ' + th.c[1] + ' wall(s), ' + th.c[2] + ' dome(s)');
   if (!th.behind) fail('an enemy right behind the hero stays out of the chase frame ' + JSON.stringify(th.dbg)); else ok('an enemy behind the hero is brought into frame');
+  // v111: a touch in the sky over the far roof aims up the roof, the wind streaks run in a dash, the pause menu switches the camera
+  const fe = await p.evaluate(() => new Promise(res => {
+    const sky = W3D.unproj(V.VW / 2, 4), o = { skyAhead: sky[1] < P.y - 400 && Math.abs(sky[0] - P.x) < 400 && isFinite(sky[0]) };
+    const hold = setInterval(() => { P.dashT = .3; P.vx = 0; P.vy = -900; P.hp = Math.max(P.hp, 3); }, 16), f0 = R3.frame, t0 = performance.now();
+    const wait = () => { const s = R3.scene.children.find(c => c.isLineSegments && c.renderOrder === 6); if (!(s && s.visible) && performance.now() - t0 < 8000 || R3.frame < f0 + 3) return setTimeout(wait, 100); clearInterval(hold); o.streaks = !!(s && s.visible); /* (software 3D: a few frames a second) */
+      Flow.togglePause(); const b = document.getElementById('psCam'); o.btn = b ? b.textContent : null; if (b) { b.click(); o.after = Store.data.settings.chase108; b.click(); } Flow.togglePause(); res(o); }; wait();
+  }));
+  if (!fe.skyAhead) fail('a touch above the horizon does not aim up the roof'); else ok('a touch above the horizon aims up the roof');
+  if (!fe.streaks) fail('no wind streaks in a dash'); else ok('wind streaks run in a dash');
+  if (!fe.btn || fe.after !== 0) fail('the pause menu camera switch is missing or does nothing ' + JSON.stringify(fe)); else ok('the pause menu switches the camera (' + fe.btn + ')');
   await p.waitForTimeout(1000);
-  const back = await p.evaluate(() => { P.hp = Math.max(P.hp, 3); Store.data.settings.chase108 = 0; return new Promise(res => setTimeout(() => res({ cam: R3.cam && R3.cam.type, fog: !!R3.scene.fog }), 800)); });
-  if (back.cam !== 'OrthographicCamera') fail('TOP did not bring the classic camera back: ' + back.cam); else ok('TOP brings the classic camera back');
+  const back = await p.evaluate(() => { P.hp = Math.max(P.hp, 3); P.inv = 9; Store.data.settings.chase108 = 0; const f0 = R3.frame; return new Promise(res => { const t0 = performance.now(), chk = () => { if (R3.frame >= f0 + 3 || performance.now() - t0 > 12000) res({ cam: R3.cam && R3.cam.type, fog: !!R3.scene.fog, frames: R3.frame - f0 }); else setTimeout(chk, 100); }; chk(); }); }); // (software 3D draws a few frames a second: wait for real frames)
+  if (back.cam !== 'OrthographicCamera') fail('TOP did not bring the classic camera back: ' + back.cam + ' ' + JSON.stringify(back)); else ok('TOP brings the classic camera back');
   for (const e of p.__errs) fail('page error: ' + e);
   await p.close();
 }
@@ -242,9 +252,9 @@ async function sweep(b, url) {
   });
   const stages = await p.evaluate(() => { const out = [], seen = {}; for (const s of STAGES) { if (s.secret) continue; if (!seen[s.ch]) { seen[s.ch] = 1; out.push(s.id); } } const z = STAGES.find(s => s.secret); if (z) out.push(z.id); return out; });
   const modes = ['endless', 'bossrush', 'arena', 'tower', 'highway', 'timeattack', 'mayhem', 'daily', 'weekly', 'dojo'];
-  const GFX = ['2D', '3D', '3D MODELS', 'CHASE CAMERA'];
+  const GFX = ['2D', 'CLASSIC 3D', '3D MODELS', 'CHASE CAMERA'];
   for (const gfx of [0, 1, 2, 3]) {
-    await p.evaluate(g => { Store.data.settings.d3 = Math.min(2, g); Store.data.settings.chase108 = g === 3 ? 1 : 0; }, gfx);
+    await p.evaluate(g => { Store.data.settings.r3m = 1; Store.data.settings.d3 = [0, 2, 1, 1][g]; Store.data.settings.chase108 = g === 3 ? 1 : 0; /* (2D, CLASSIC 3D, 3D models, chase; r3m: no migration of the value) */ }, gfx);
     const runs = modes.map(m => [m, `Flow.startArcade('${m}')`]).concat(stages.map(id => ['story ' + id, `__OD.startStory(STAGES.findIndex(s => s.id === '${id}'))`]));
     let bad = 0, live3d = 0;
     for (const [label, start] of runs) {

@@ -12,7 +12,7 @@
   //  · a touch is cast onto the roof through the perspective camera
   if (typeof HE !== 'undefined') Object.assign(HE, { "3D camera": "מצלמת 3D", "TOP": "מלמעלה", "CHASE": "מרדף" });
   const T = () => THREE;
-  const on = () => { try { return Store.data.settings.chase108 === 1 && W3D.live && R3.ok && !CALM && inRun() && !(REPLAY.on && REPLAY.fast); } catch (e) { return false; } };
+  const on = () => { try { return Store.data.settings.chase108 === 1 && W3D.live && R3.ok && R3.on && !CALM && inRun() && !(REPLAY.on && REPLAY.fast); } catch (e) { return false; } };
   const Rear = { v: 0 };
   let persp = null, ortho = null, ready = false, cx0 = 0, cy0 = 0, lean = 0, bk = 240, ht = 175, lk = 200, fog0 = null, fogOn = false;
   const V3 = () => new (T().Vector3)();
@@ -259,8 +259,8 @@
       if (row && !document.getElementById('set-chase108')) {
         const rr = el('div', 'set'); rr.appendChild(el('span', '', lt('3D camera')));
         const b = el('button', 'tog on'); b.id = 'set-chase108'; b.type = 'button'; b.textContent = lt(s.chase108 === 1 ? 'CHASE' : 'TOP');
-        b.onclick = () => { s.chase108 = s.chase108 === 1 ? 0 : 1; if (s.chase108 === 1 && !(s.d3 >= 2)) s.d3 = 2; /* (the chase view needs the 3D models) */ Aud.sfx('ui'); Store.touch(); UI.openSettings(); };
-        rr.appendChild(b); row.parentElement.insertBefore(rr, row.nextSibling); if (!(s.d3 > 0)) rr.style.display = 'none';
+        b.onclick = () => { s.chase108 = s.chase108 === 1 ? 0 : 1; if (s.chase108 === 1) { s.d3 = 1; s.r3m = 1; } /* (the chase view needs the 3D models: d3 1 is the three.js view, 2 the classic one) */ Aud.sfx('ui'); Store.touch(); UI.openSettings(); };
+        rr.appendChild(b); row.parentElement.insertBefore(rr, row.nextSibling); if (s.d3 !== 1) rr.style.display = 'none'; // (v111: only under the three.js 3D, which it needs)
       }
     } catch (e) { errLog(e); }
     return r;
