@@ -9,7 +9,8 @@
   // a report file to send back. The save is put back exactly as it was afterwards (nothing earned, nothing lost).
   let on = false; try { on = /[?&]selftest\b/.test(location.search); } catch (e) { }
   if (!on) return;
-  const PHASES = [['2D', 0, 0], ['CLASSIC 3D', 2, 0], ['3D MODELS', 1, 0], ['CHASE CAMERA', 1, 1]], SECS = 15;
+  const QUICK = /[?&]selftest=quick\b/.test(location.search);
+  const PHASES = [['2D', 0, 0], ['CLASSIC 3D', 2, 0], ['3D MODELS', 1, 0], ['CHASE CAMERA', 1, 1]], SECS = QUICK ? 15 : 12;
   const box = document.createElement('div');
   box.style.cssText = 'position:fixed;left:8px;right:8px;top:8px;z-index:99999;padding:10px 12px;border-radius:10px;background:rgba(5,8,20,.88);color:#cfefff;font:600 13px/1.45 system-ui,sans-serif;border:1px solid #00f2fe;pointer-events:none;direction:ltr;text-align:left';
   const say = t => { box.textContent = t; };
@@ -52,6 +53,7 @@
       rep.phases.push({ name, frames: dts.length, fps: +(1000 / avg).toFixed(1), low1: +(1000 / Math.max(1, p99)).toFixed(1), over20ms: dts.filter(d => d > 20).length, over33ms: dts.filter(d => d > 33).length, worstMs: Math.round(sorted[sorted.length - 1] || 0),
         quality: typeof Q !== 'undefined' ? Q.lvl : null, r3: typeof R3 !== 'undefined' && R3.q, calls: n ? Math.round(calls / n) : 0, tris: n ? Math.round(tris / n) : 0, threeDOn: threeD, chaseOn, res: typeof R3 !== 'undefined' && R3.pr0, img });
     }
+    if (!QUICK) { try { rep.checks = await fullCheck(errs); } catch (e) { errs.push('full check: ' + e.message); } }
     try { Flow.quit(true); } catch (e) { }
     window.removeEventListener('error', onErr); window.removeEventListener('unhandledrejection', onErr);
     rep.errors = errs.slice(0, 40); rep.gameErrors = (ERRLOG.a || []).slice(err0).map(e => ({ m: e.m, s: e.s, c: e.c }));
@@ -62,9 +64,47 @@
     box.innerHTML = '';
     const h = document.createElement('div'); h.textContent = 'Self-test done. The report was saved to your Downloads (' + a.download + '). Send that file back.'; box.appendChild(h);
     for (const p of rep.phases) { const d = document.createElement('div'); d.textContent = p.name + ': ' + p.fps + ' FPS (1% low ' + p.low1 + '), ' + p.over33ms + ' long frames, 3D ' + (p.threeDOn ? 'on' : 'off'); box.appendChild(d); }
+    if (rep.checks) { const bad = rep.checks.filter(c => !c.ok); const d = document.createElement('div'); d.textContent = 'Full check: ' + (rep.checks.length - bad.length) + ' / ' + rep.checks.length + ' OK' + (bad.length ? ' — problems: ' + bad.slice(0, 6).map(c => c.what).join(', ') : ''); d.style.color = bad.length ? '#ff8a8a' : '#7dffb0'; box.appendChild(d); }
     const e = document.createElement('div'); e.textContent = 'Errors: ' + (rep.errors.length + rep.gameErrors.length); box.appendChild(e);
     const b = document.createElement('button'); b.textContent = 'Download the report again'; b.style.cssText = 'margin-top:6px;padding:6px 10px;border-radius:8px;border:0;background:#00f2fe;color:#000;font-weight:800'; b.onclick = () => a.click(); box.appendChild(b);
     window.__SELFTEST = rep;
+  }
+  // ---------------- the full check: every screen, every mode, a stage of every chapter, every skin ----------------
+  async function fullCheck(errs) {
+    const out = [], log0 = () => (ERRLOG.a || []).length, mark = () => [errs.length, log0()];
+    const since = m => errs.slice(m[0]).concat((ERRLOG.a || []).slice(m[1]).map(q => q.m)).slice(0, 4);
+    const put = (what, m, extra) => { const e = since(m); out.push(Object.assign({ what, ok: !e.length && !(extra && extra.bad), errors: e }, extra || {})); };
+    const s = Store.data.settings; s.r3m = 1; s.d3 = 1; s.chase108 = 0; Store.data.story.unlocked = 999;
+    const bt = setInterval(() => { bot(); try { if (Dlg.active) Dlg.next(); if (UI.cur === 'comic') Comic.end(); if (UI.cur === 'intro') Intro.end(); } catch (e) { } }, 90);
+    // screens: opened one by one; anything that spills off the screen is reported
+    try { Flow.quit(true); } catch (e) { }
+    const screens = [['home', () => UI.openTitle()], ['story map', () => UI.openStory()], ['arcade', () => UI.openArcade()], ['arsenal', () => UI.openArsenal()], ['settings', () => UI.openSettings()], ['profile', () => UI.openProfile()], ['what\'s new', () => UI.openNews()], ['music', () => UI.openMusic()], ['device', () => UI.openDevice()], ['save code', () => UI.openSave()], ['season', () => UI.openSeason()], ['puzzles', () => UI.openPuzzles()], ['play live', () => UI.openLive()], ['legend bosses', () => UI.openLegend()]];
+    for (const [name, open] of screens) {
+      say('Full check: screen ' + name); const m = mark();
+      try { open(); } catch (e) { errs.push(name + ': ' + e.message); }
+      await wait(700);
+      const spill = []; try { const sec = document.querySelector('section.scr:not(.hidden)'); if (sec) for (const el of sec.querySelectorAll('button, .btn, .chip, h1, h2, .panel, input')) { const r = el.getBoundingClientRect(); if (!r.width) continue; const sc = el.closest('[style*="overflow"], .settabs, .rail107, .tabs'); if (sc) continue; if (r.right > innerWidth + 2 || r.left < -2) spill.push((el.id || el.textContent || el.tagName).trim().slice(0, 24)); } } catch (e) { }
+      put('screen: ' + name, m, { spill: spill.slice(0, 4), bad: spill.length > 0 });
+    }
+    // every mode, 5 seconds each with the autopilot
+    for (const mode of ['endless', 'bossrush', 'arena', 'tower', 'highway', 'timeattack', 'mayhem', 'daily', 'weekly', 'dojo']) {
+      say('Full check: mode ' + mode); const m = mark(); let st = '';
+      try { try { if (G.state !== 'MENU') Flow.quit(true); } catch (e) { } Flow.startArcade(mode); await wait(5000); st = G.state; } catch (e) { errs.push(mode + ': ' + e.message); }
+      put('mode: ' + mode, m, { state: st, bad: !/PLAY|PAUSE|PERK|DIALOG|OVER|CLEAR|ROUTE/.test(st) });
+    }
+    // a stage of every chapter (the first of each), 4 seconds each
+    const stages = []; try { const seen = {}; STAGES.forEach((q, i) => { if (!q.secret && !seen[q.ch]) { seen[q.ch] = 1; stages.push(i); } }); } catch (e) { }
+    for (const i of stages) {
+      const id = STAGES[i].id; say('Full check: story ' + id); const m = mark(); let st = '';
+      try { try { if (G.state !== 'MENU') Flow.quit(true); } catch (e) { } window.__OD.startStory(i); await wait(4000); st = G.state; } catch (e) { errs.push('story ' + id + ': ' + e.message); }
+      put('story: ' + id, m, { state: st, bad: !/PLAY|PAUSE|PERK|DIALOG|OVER|CLEAR|ROUTE|MENU/.test(st) });
+    }
+    // every hero skin, on the 3D hero in a run
+    try { if (G.state !== 'MENU') Flow.quit(true); } catch (e) { } Flow.startArcade('endless'); await wait(3000);
+    const skins = [...new Set(SKINS.map(k => k.id))]; let badSk = [];
+    for (const id of skins) { say('Full check: skin ' + id); const m = mark(); try { const sk = skinLook(id); P.skin = sk; P.ca = sk.a; P.cb = sk.b; } catch (e) { errs.push('skin ' + id + ': ' + e.message); } await wait(250); const e = since(m); if (e.length) badSk.push(id + ': ' + e[0]); }
+    out.push({ what: 'skins: ' + skins.length + ' on the 3D hero', ok: !badSk.length, errors: badSk.slice(0, 6) });
+    clearInterval(bt); return out;
   }
   window.addEventListener('load', () => setTimeout(() => run().catch(e => say('Self-test failed: ' + e.message)), 300));
 })();
