@@ -1620,3 +1620,6 @@ textarea, input[type="text"], .edcode { background: rgba(4, 7, 20, .8); border: 
 #cmdbar98 > button { width: auto !important; flex: 0 0 auto; min-height: 30px; padding: 4px 11px !important; border-radius: 999px !important; font-size: 10.5px !important; }
 #s-title > .col { padding-bottom: calc(var(--tnav107, 120px) + 14px) !important; }
 #s-title .deckL > #bStory { margin-top: 4px; }
+
+/* v117: the settings tabs wrap to a second row instead of scrolling one tab off a narrow screen */
+#setTabs.settabs { flex-wrap: wrap; overflow-x: visible; row-gap: 6px; }
