@@ -5742,7 +5742,7 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
       say('Full check: screen ' + name); const m = mark();
       try { open(); } catch (e) { errs.push(name + ': ' + e.message); }
       await wait(700);
-      const spill = []; try { const sec = document.querySelector('section.scr:not(.hidden)'); if (sec) for (const el of sec.querySelectorAll('button, .btn, .chip, h1, h2, .panel, input')) { const r = el.getBoundingClientRect(); if (!r.width) continue; const sc = el.closest('[style*="overflow"], .settabs, .rail107, .tabs'); if (sc) continue; if (r.right > innerWidth + 2 || r.left < -2) spill.push((el.id || el.textContent || el.tagName).trim().slice(0, 24)); } } catch (e) { }
+      const spill = []; try { const sec = document.querySelector('section.scr:not(.hidden)'); if (sec) for (const el of sec.querySelectorAll('button, .btn, .chip, h1, h2, .panel, input')) { const r = el.getBoundingClientRect(); if (!r.width) continue; let sc = false; for (let q = el.parentElement; q && q !== sec; q = q.parentElement) { const ox = getComputedStyle(q).overflowX; if (ox === 'auto' || ox === 'scroll') { sc = true; break; } } if (sc) continue; /* (a row that scrolls sideways holds more than fits, by design) */ if (r.right > innerWidth + 2 || r.left < -2) spill.push((el.id || el.textContent || el.tagName).trim().slice(0, 24)); } } catch (e) { }
       put('screen: ' + name, m, { spill: spill.slice(0, 4), bad: spill.length > 0 });
     }
     // every mode, 5 seconds each with the autopilot
