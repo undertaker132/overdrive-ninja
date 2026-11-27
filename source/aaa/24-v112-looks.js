@@ -10,7 +10,6 @@
   //  · in the chase view the small enemies are drawn larger: next to the hero they were toys (the hit size is the same)
   if (typeof R3 === 'undefined' || typeof THREE === 'undefined') return;
   const T = () => THREE;
-  let inkMat = null;
   function ink(th) {
     const t = T(), m = new t.MeshBasicMaterial({ color: 0x07060c, side: t.BackSide });
     m.onBeforeCompile = sh => { sh.uniforms.th112 = { value: th }; sh.vertexShader = 'uniform float th112;\n' + sh.vertexShader.replace('#include <skinning_vertex>', '#include <skinning_vertex>\n  transformed += normalize(objectNormal) * th112;'); };
