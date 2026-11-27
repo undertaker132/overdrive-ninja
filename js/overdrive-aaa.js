@@ -5033,8 +5033,14 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
   const Floor = {
     cv: null, g: null, tex: null, mesh: null, k: 1.25, x0: -80, y0: -170, w: 0, h: 0,
     ensure() {
-      const lv = typeof Q !== 'undefined' ? Q.lvl | 0 : 2, w = V.VW + 160, h = V.VH + 260, k = lv >= 3 ? 1.3 : lv >= 2 ? 1.15 : lv >= 1 ? .95 : .8; // (texture detail follows the quality level)
-      if (this.mesh && this.w === w && this.h === h && this.k === k) return;
+      // v117: only the roof the fight is on (the arena and a margin), not the whole wide screen: on a 1920 px desktop the
+      // layer was 2026 x 1173 pixels sent to the graphics card every frame (51 FPS on an RTX 5070). Detail follows the
+      // quality level, capped at about a million pixels.
+      const lv = typeof Q !== 'undefined' ? Q.lvl | 0 : 2, x0 = Math.floor(V.L - 130), w = Math.ceil(V.R - V.L) + 260, h = V.VH + 260;
+      // (one detail level for the whole run: rebuilding the layer each time the quality governor moved cost a hitch)
+      let k = Math.min(1.15, Math.sqrt(1.0e6 / (w * h))); k = Math.round(k * 20) / 20; void lv;
+      if (this.mesh && this.w === w && this.h === h && this.k === k && this.x0 === x0) return;
+      this.x0 = x0;
       this.w = w; this.h = h; this.k = k;
       if (!this.cv) { this.cv = document.createElement('canvas'); this.g = this.cv.getContext('2d'); }
       this.cv.width = Math.round(w * k); this.cv.height = Math.round(h * k);
@@ -5091,7 +5097,9 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
     end() {
       if (!active) return; active = false; cx = main; W3D.cx0 = cx0Saved;
       // the one extra cost of this view is sending the roof layer to the GPU: every frame on high quality, every other one below
-      Floor.n = (Floor.n | 0) + 1; if (!(typeof Q !== 'undefined' && Q.lvl < 2) || Floor.n % 2 === 0) Floor.tex.needsUpdate = true;
+      // (v117: at most about 75 uploads a second: a 165 Hz screen sent the layer 165 times a second for no visible gain)
+      const now = performance.now(), gapMs = typeof Q !== 'undefined' && Q.lvl < 2 ? 26 : 12.5;
+      if (now - (Floor.up || 0) >= gapMs) { Floor.up = now; Floor.tex.needsUpdate = true; }
       cx.save(); try { drawStands(); if (darkNow) drawDarkScreen(); drawArrows(); } catch (e) { errLog(e); } cx.restore(); darkNow = false;
     }
   };
@@ -5696,8 +5704,9 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
       const bt = setInterval(bot, 80); await wait(2500); // (models load, the intro card passes)
       const dts = []; let last = 0, live = true; const tick = t => { if (last) dts.push(t - last); last = t; if (live) requestAnimationFrame(tick); }; requestAnimationFrame(tick);
       let calls = 0, tris = 0, n = 0, threeD = 0, chaseOn = 0; const t0 = performance.now();
+      let rr0 = null; try { if (R3.rn) { R3.rn.info.autoReset = false; rr0 = R3.render; R3.render = function () { R3.rn.info.reset(); return rr0.apply(R3, arguments); }; } } catch (e) { } // (count every pass of a frame, not only the last)
       while (performance.now() - t0 < SECS * 1000) { await wait(500); try { if (R3.on && R3.rn) { calls += R3.rn.info.render.calls; tris += R3.rn.info.render.triangles; n++; } if (W3D.live) threeD++; if (window.ChaseCam108 && window.ChaseCam108.on()) chaseOn++; } catch (e) { } say('Self-test: ' + name + ' — ' + Math.ceil(SECS - (performance.now() - t0) / 1000) + ' s'); }
-      live = false; const img = await shot(); clearInterval(bt);
+      live = false; const img = await shot(); clearInterval(bt); try { if (rr0) { R3.render = rr0; R3.rn.info.autoReset = true; } } catch (e) { }
       const sorted = dts.slice().sort((a, b) => a - b), avg = dts.reduce((a, b) => a + b, 0) / Math.max(1, dts.length), p99 = sorted[Math.floor(sorted.length * .99)] || 0;
       rep.phases.push({ name, frames: dts.length, fps: +(1000 / avg).toFixed(1), low1: +(1000 / Math.max(1, p99)).toFixed(1), over20ms: dts.filter(d => d > 20).length, over33ms: dts.filter(d => d > 33).length, worstMs: Math.round(sorted[sorted.length - 1] || 0),
         quality: typeof Q !== 'undefined' ? Q.lvl : null, r3: typeof R3 !== 'undefined' && R3.q, calls: n ? Math.round(calls / n) : 0, tris: n ? Math.round(tris / n) : 0, threeDOn: threeD, chaseOn, res: typeof R3 !== 'undefined' && R3.pr0, img });

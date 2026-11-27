@@ -45,8 +45,9 @@
       const bt = setInterval(bot, 80); await wait(2500); // (models load, the intro card passes)
       const dts = []; let last = 0, live = true; const tick = t => { if (last) dts.push(t - last); last = t; if (live) requestAnimationFrame(tick); }; requestAnimationFrame(tick);
       let calls = 0, tris = 0, n = 0, threeD = 0, chaseOn = 0; const t0 = performance.now();
+      let rr0 = null; try { if (R3.rn) { R3.rn.info.autoReset = false; rr0 = R3.render; R3.render = function () { R3.rn.info.reset(); return rr0.apply(R3, arguments); }; } } catch (e) { } // (count every pass of a frame, not only the last)
       while (performance.now() - t0 < SECS * 1000) { await wait(500); try { if (R3.on && R3.rn) { calls += R3.rn.info.render.calls; tris += R3.rn.info.render.triangles; n++; } if (W3D.live) threeD++; if (window.ChaseCam108 && window.ChaseCam108.on()) chaseOn++; } catch (e) { } say('Self-test: ' + name + ' — ' + Math.ceil(SECS - (performance.now() - t0) / 1000) + ' s'); }
-      live = false; const img = await shot(); clearInterval(bt);
+      live = false; const img = await shot(); clearInterval(bt); try { if (rr0) { R3.render = rr0; R3.rn.info.autoReset = true; } } catch (e) { }
       const sorted = dts.slice().sort((a, b) => a - b), avg = dts.reduce((a, b) => a + b, 0) / Math.max(1, dts.length), p99 = sorted[Math.floor(sorted.length * .99)] || 0;
       rep.phases.push({ name, frames: dts.length, fps: +(1000 / avg).toFixed(1), low1: +(1000 / Math.max(1, p99)).toFixed(1), over20ms: dts.filter(d => d > 20).length, over33ms: dts.filter(d => d > 33).length, worstMs: Math.round(sorted[sorted.length - 1] || 0),
         quality: typeof Q !== 'undefined' ? Q.lvl : null, r3: typeof R3 !== 'undefined' && R3.q, calls: n ? Math.round(calls / n) : 0, tris: n ? Math.round(tris / n) : 0, threeDOn: threeD, chaseOn, res: typeof R3 !== 'undefined' && R3.pr0, img });

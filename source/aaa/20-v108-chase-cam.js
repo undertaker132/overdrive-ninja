@@ -80,8 +80,14 @@
   const Floor = {
     cv: null, g: null, tex: null, mesh: null, k: 1.25, x0: -80, y0: -170, w: 0, h: 0,
     ensure() {
-      const lv = typeof Q !== 'undefined' ? Q.lvl | 0 : 2, w = V.VW + 160, h = V.VH + 260, k = lv >= 3 ? 1.3 : lv >= 2 ? 1.15 : lv >= 1 ? .95 : .8; // (texture detail follows the quality level)
-      if (this.mesh && this.w === w && this.h === h && this.k === k) return;
+      // v117: only the roof the fight is on (the arena and a margin), not the whole wide screen: on a 1920 px desktop the
+      // layer was 2026 x 1173 pixels sent to the graphics card every frame (51 FPS on an RTX 5070). Detail follows the
+      // quality level, capped at about a million pixels.
+      const lv = typeof Q !== 'undefined' ? Q.lvl | 0 : 2, x0 = Math.floor(V.L - 130), w = Math.ceil(V.R - V.L) + 260, h = V.VH + 260;
+      // (one detail level for the whole run: rebuilding the layer each time the quality governor moved cost a hitch)
+      let k = Math.min(1.15, Math.sqrt(1.0e6 / (w * h))); k = Math.round(k * 20) / 20; void lv;
+      if (this.mesh && this.w === w && this.h === h && this.k === k && this.x0 === x0) return;
+      this.x0 = x0;
       this.w = w; this.h = h; this.k = k;
       if (!this.cv) { this.cv = document.createElement('canvas'); this.g = this.cv.getContext('2d'); }
       this.cv.width = Math.round(w * k); this.cv.height = Math.round(h * k);
@@ -138,7 +144,9 @@
     end() {
       if (!active) return; active = false; cx = main; W3D.cx0 = cx0Saved;
       // the one extra cost of this view is sending the roof layer to the GPU: every frame on high quality, every other one below
-      Floor.n = (Floor.n | 0) + 1; if (!(typeof Q !== 'undefined' && Q.lvl < 2) || Floor.n % 2 === 0) Floor.tex.needsUpdate = true;
+      // (v117: at most about 75 uploads a second: a 165 Hz screen sent the layer 165 times a second for no visible gain)
+      const now = performance.now(), gapMs = typeof Q !== 'undefined' && Q.lvl < 2 ? 26 : 12.5;
+      if (now - (Floor.up || 0) >= gapMs) { Floor.up = now; Floor.tex.needsUpdate = true; }
       cx.save(); try { drawStands(); if (darkNow) drawDarkScreen(); drawArrows(); } catch (e) { errLog(e); } cx.restore(); darkNow = false;
     }
   };
