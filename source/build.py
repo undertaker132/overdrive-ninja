@@ -48,6 +48,8 @@ def artifact(out):
     with open(os.path.join(out, 'artifact.html'), 'w', encoding='utf-8', newline='') as f:
         f.write('<title>Overdrive: Cyber Slash</title>\n' + html[a:b])
     files = ['css/overdrive.css', 'js/three-r160.min.js', 'js/game-core.js', 'js/overdrive-aaa.js', 'lang/ar.js', 'lang/ru.js', 'audio/tracks.json']
+    skins = os.path.join(ROOT, 'icons', 'skins')  # (v120: every hero's painted card)
+    if os.path.isdir(skins): files += sorted('icons/skins/' + f for f in os.listdir(skins) if f.endswith('.jpg'))
     for p in files:
         os.makedirs(os.path.dirname(os.path.join(out, p)), exist_ok=True)
         shutil.copyfile(os.path.join(ROOT, p), os.path.join(out, p))
