@@ -30,14 +30,17 @@
       if (G.state === 'PLAY' && In.buf <= 0) { let best = null, bd = 1e9; for (let i = 0; i < EN.n; i++) { const e = EN.a[i]; if (!e.alive || e.al > 0) continue; const q = Math.hypot(e.x - P.x, e.y - P.y); if (q < bd) { bd = q; best = e; } } const B = Boss.cur; if (B && B.enter >= 1 && (!best || Math.hypot(B.x - P.x, B.y - P.y) < bd * 1.5)) best = B; In.buf = .3; In.ba = best ? Math.atan2(best.y - P.y, best.x - P.x) : -1.57; }
     } catch (e) { }
   }
+  let BOOT_MS = 0;
   async function run() {
     document.body.appendChild(box); say('Overdrive self-test: starting…');
     for (let i = 0; i < 100 && !(document.getElementById('bootGo') && !document.getElementById('bootGo').classList.contains('hidden')); i++) await wait(200);
-    try { document.getElementById('bootGo').click(); } catch (e) { }
+    BOOT_MS = performance.now(); try { document.getElementById('bootGo').click(); } catch (e) { }
     await wait(1500);
     const snap = JSON.stringify(Store.data), errs = [], onErr = e => errs.push(String(e && (e.message || e.reason && e.reason.message || e.reason) || e).slice(0, 200));
     window.addEventListener('error', onErr); window.addEventListener('unhandledrejection', onErr);
-    const err0 = (ERRLOG.a || []).length, rep = { v: VERSION, when: new Date().toISOString(), ua: navigator.userAgent, cores: navigator.hardwareConcurrency || 0, mem: navigator.deviceMemory || 0, screen: [screen.width, screen.height, devicePixelRatio], view: [innerWidth, innerHeight], gpu: gpu(), lang: LANG && LANG.id, phases: [] };
+    let wl = null; try { wl = navigator.wakeLock && await navigator.wakeLock.request('screen'); } catch (e) { } // (a phone must not sleep mid-test)
+    const safe = (() => { try { const d = document.createElement('div'); d.style.cssText = 'position:fixed;left:0;top:0;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);visibility:hidden'; document.body.appendChild(d); const c = getComputedStyle(d), r = [c.paddingTop, c.paddingRight, c.paddingBottom, c.paddingLeft].map(v => parseFloat(v) || 0); d.remove(); return r; } catch (e) { return null; } })();
+    const err0 = (ERRLOG.a || []).length, rep = { bootMs: Math.round(BOOT_MS), touch: navigator.maxTouchPoints || 0, phone: /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent), orient: (screen.orientation && screen.orientation.type) || (innerWidth > innerHeight ? 'landscape' : 'portrait'), safe, heapMB: performance.memory ? Math.round(performance.memory.usedJSHeapSize / 1048576) : null, v: VERSION, when: new Date().toISOString(), ua: navigator.userAgent, cores: navigator.hardwareConcurrency || 0, mem: navigator.deviceMemory || 0, screen: [screen.width, screen.height, devicePixelRatio], view: [innerWidth, innerHeight], gpu: gpu(), lang: LANG && LANG.id, phases: [] };
     for (const [name, d3, chase] of PHASES) {
       say('Self-test: ' + name + ' (' + SECS + ' s)…');
       const s = Store.data.settings; s.r3m = 1; s.d3 = d3; s.chase108 = chase; s.tips = 0; Store.data.uiAll = 1; Store.data.seenVer = VERSION;
@@ -50,24 +53,76 @@
       while (performance.now() - t0 < SECS * 1000) { await wait(500); try { if (R3.on && R3.rn) { calls += R3.rn.info.render.calls; tris += R3.rn.info.render.triangles; n++; } if (W3D.live) threeD++; if (window.ChaseCam108 && window.ChaseCam108.on()) chaseOn++; } catch (e) { } say('Self-test: ' + name + ' — ' + Math.ceil(SECS - (performance.now() - t0) / 1000) + ' s'); }
       live = false; const img = await shot(); clearInterval(bt); try { if (rr0) { R3.render = rr0; R3.rn.info.autoReset = true; } } catch (e) { }
       const sorted = dts.slice().sort((a, b) => a - b), avg = dts.reduce((a, b) => a + b, 0) / Math.max(1, dts.length), p99 = sorted[Math.floor(sorted.length * .99)] || 0;
-      rep.phases.push({ name, frames: dts.length, fps: +(1000 / avg).toFixed(1), low1: +(1000 / Math.max(1, p99)).toFixed(1), over20ms: dts.filter(d => d > 20).length, over33ms: dts.filter(d => d > 33).length, worstMs: Math.round(sorted[sorted.length - 1] || 0),
+      const half = Math.floor(dts.length / 2), fpsOf = a => a.length ? +(1000 / (a.reduce((x, y) => x + y, 0) / a.length)).toFixed(1) : 0;
+      rep.phases.push({ name, fpsFirst: fpsOf(dts.slice(0, half)), fpsLast: fpsOf(dts.slice(half)), frames: dts.length, fps: +(1000 / avg).toFixed(1), low1: +(1000 / Math.max(1, p99)).toFixed(1), over20ms: dts.filter(d => d > 20).length, over33ms: dts.filter(d => d > 33).length, worstMs: Math.round(sorted[sorted.length - 1] || 0),
         quality: typeof Q !== 'undefined' ? Q.lvl : null, r3: typeof R3 !== 'undefined' && R3.q, calls: n ? Math.round(calls / n) : 0, tris: n ? Math.round(tris / n) : 0, threeDOn: threeD, chaseOn, res: typeof R3 !== 'undefined' && R3.pr0, img });
     }
+    try { rep.controls = await controlsCheck(); } catch (e) { errs.push('controls: ' + e.message); }
     if (!QUICK) { try { rep.checks = await fullCheck(errs); } catch (e) { errs.push('full check: ' + e.message); } }
     try { Flow.quit(true); } catch (e) { }
     window.removeEventListener('error', onErr); window.removeEventListener('unhandledrejection', onErr);
     rep.errors = errs.slice(0, 40); rep.gameErrors = (ERRLOG.a || []).slice(err0).map(e => ({ m: e.m, s: e.s, c: e.c }));
     try { Store.data = JSON.parse(snap); Store.touch(); Store.flush(true); } catch (e) { } // (the save exactly as it was)
+    try { if (wl) wl.release(); } catch (e) { }
+    try { rep.score = grade(rep); } catch (e) { rep.score = { err: e.message }; }
     const txt = JSON.stringify(rep), a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], { type: 'application/json' })); a.download = 'overdrive-selftest-' + rep.when.slice(0, 19).replace(/[:T]/g, '-') + '.json';
     document.body.appendChild(a); a.click();
-    box.style.pointerEvents = 'auto';
-    box.innerHTML = '';
-    const h = document.createElement('div'); h.textContent = 'Self-test done. The report was saved to your Downloads (' + a.download + '). Send that file back.'; box.appendChild(h);
-    for (const p of rep.phases) { const d = document.createElement('div'); d.textContent = p.name + ': ' + p.fps + ' FPS (1% low ' + p.low1 + '), ' + p.over33ms + ' long frames, 3D ' + (p.threeDOn ? 'on' : 'off'); box.appendChild(d); }
-    if (rep.checks) { const bad = rep.checks.filter(c => !c.ok); const d = document.createElement('div'); d.textContent = 'Full check: ' + (rep.checks.length - bad.length) + ' / ' + rep.checks.length + ' OK' + (bad.length ? ' — problems: ' + bad.slice(0, 6).map(c => c.what).join(', ') : ''); d.style.color = bad.length ? '#ff8a8a' : '#7dffb0'; box.appendChild(d); }
-    const e = document.createElement('div'); e.textContent = 'Errors: ' + (rep.errors.length + rep.gameErrors.length); box.appendChild(e);
-    const b = document.createElement('button'); b.textContent = 'Download the report again'; b.style.cssText = 'margin-top:6px;padding:6px 10px;border-radius:8px;border:0;background:#00f2fe;color:#000;font-weight:800'; b.onclick = () => a.click(); box.appendChild(b);
+    box.style.pointerEvents = 'auto'; box.style.maxHeight = '92vh'; box.style.overflowY = 'auto'; box.innerHTML = '';
+    const he = LANG && LANG.id === 'he'; if (he) { box.style.direction = 'rtl'; box.style.textAlign = 'right'; }
+    const add = (t, css) => { const d = document.createElement('div'); d.textContent = t; if (css) d.style.cssText = css; box.appendChild(d); return d; };
+    const S = rep.score || {};
+    add((he ? 'ציון כולל: ' : 'Overall: ') + (S.overall != null ? '\u2066' + S.overall + '/100 · ' + S.grade + '\u2069' : '?'), 'font:900 20px system-ui;color:' + (S.overall >= 90 ? '#7dffb0' : S.overall >= 75 ? '#ffd23f' : '#ff8a8a'));
+    for (const [k, v] of Object.entries(S.parts || {})) add((S.names && S.names[k] || k) + ': \u2066' + v + '/100\u2069');
+    if (S.good && S.good.length) { add(he ? 'טוב:' : 'Good:', 'margin-top:6px;color:#7dffb0;font-weight:800'); for (const t of S.good) add('✓ ' + t); }
+    if (S.bad && S.bad.length) { add(he ? 'דורש תיקון:' : 'Needs work:', 'margin-top:6px;color:#ff8a8a;font-weight:800'); for (const t of S.bad) add('✗ ' + t); }
+    add(he ? 'הדוח נשמר: ' + a.download + ' — שלח אותו.' : 'Report saved: ' + a.download + ' — send it back.', 'margin-top:6px;opacity:.8');
+    const btn = (t, f) => { const b = document.createElement('button'); b.textContent = t; b.style.cssText = 'margin:6px 6px 0 0;padding:8px 12px;border-radius:8px;border:0;background:#00f2fe;color:#000;font-weight:800'; b.onclick = f; box.appendChild(b); };
+    const file = (() => { try { return new File([txt], a.download, { type: 'application/json' }); } catch (e) { return null; } })();
+    if (file && navigator.canShare && navigator.canShare({ files: [file] })) btn(he ? 'שתף את הדוח' : 'Share the report', () => navigator.share({ files: [file], title: 'Overdrive self-test' }).catch(() => { }));
+    btn(he ? 'הורד שוב' : 'Download again', () => a.click());
+    btn(he ? 'העתק כטקסט' : 'Copy as text', () => { try { navigator.clipboard.writeText(txt); } catch (e) { } });
     window.__SELFTEST = rep;
+  }
+  // ---------------- controls: real pointer events on the canvas, the way a finger does it ----------------
+  async function controlsCheck() {
+    const s = Store.data.settings; s.r3m = 1; s.d3 = 1; s.chase108 = 0; s.tap = 1;
+    try { if (G.state !== 'MENU') Flow.quit(true); } catch (e) { } Flow.startArcade('endless'); await wait(3000);
+    try { if (Tut.cur) Tut.dismiss(); } catch (e) { }
+    const r = cv.getBoundingClientRect(), cx0 = r.left + r.width / 2, cy0 = r.top + r.height * .6, ev = (type, x, y, tgt) => (tgt || cv).dispatchEvent(new PointerEvent(type, { pointerId: 7, pointerType: 'touch', isPrimary: true, clientX: x, clientY: y, bubbles: true, cancelable: true }));
+    const out = [];
+    const ready = async () => { for (let i = 0; i < 160; i++) { try { if (Tut.cur) Tut.dismiss(); } catch (e) { } if (G.state === 'PLAY' && !(G.freeze > 0) && !(P.dashT > 0) && !(P.lock > 0)) return; await wait(50); } }; // (the run start freezes input for a moment)
+    const tryMove = async (name, fn) => { await ready(); P.hp = Math.max(P.hp, 3); P.ch = Math.max(P.ch || 0, 2); const x0 = P.x, y0 = P.y; let dashed = false; const t0 = performance.now(); await fn(); while (performance.now() - t0 < 900) { if (P.dashT > 0 || Math.hypot(P.x - x0, P.y - y0) > 30) { dashed = true; break; } await wait(16); } out.push({ what: name, ok: dashed, ms: Math.round(performance.now() - t0) }); };
+    await tryMove('swipe up', async () => { ev('pointerdown', cx0, cy0); for (let k = 1; k <= 6; k++) { await wait(16); ev('pointermove', cx0, cy0 - k * 18, window); } ev('pointerup', cx0, cy0 - 108, window); });
+    await wait(600);
+    await tryMove('swipe right', async () => { ev('pointerdown', cx0, cy0); for (let k = 1; k <= 6; k++) { await wait(16); ev('pointermove', cx0 + k * 18, cy0, window); } ev('pointerup', cx0 + 108, cy0, window); });
+    await wait(600);
+    await tryMove('quick tap', async () => { const q = W3D.live ? W3D.proj(P.x + 90, P.y - 60, 0) : null, k = V.s * V.dpr, x = q ? r.left + q[0] / k : cx0 + 70, y = q ? r.top + q[1] / k : cy0 - 50; ev('pointerdown', x, y); await wait(60); ev('pointerup', x, y, window); });
+    return out;
+  }
+  // ---------------- the grade: what a player feels, scored and said plainly ----------------
+  function grade(rep) {
+    const he = LANG && LANG.id === 'he', T = (a, b) => he ? b : a, good = [], bad = [], L = x => '\u2066' + x + '\u2069'; // (numbers and FPS kept left-to-right inside Hebrew lines)
+    const ph = n => rep.phases.find(p => p.name === n) || {};
+    const smooth = p => { if (!p.frames) return 0; const f = Math.min(1, p.fps / 58), longs = p.frames ? p.over33ms / p.frames : 1; return Math.max(0, Math.round(100 * f - longs * 400)); };
+    const w = { '2D': .2, 'CLASSIC 3D': .15, '3D MODELS': .4, 'CHASE CAMERA': .25 }; let perf = 0;
+    for (const [n, k] of Object.entries(w)) { const p = ph(n), sc = smooth(p); perf += sc * k; const nm = T(n, { '2D': 'דו־ממד', 'CLASSIC 3D': 'תלת־ממד קלאסי', '3D MODELS': 'מודלי תלת־ממד', 'CHASE CAMERA': 'מצלמת מרדף' }[n]);
+      if (sc >= 90) good.push(nm + ': ' + L(p.fps + ' FPS') + ' ' + T('smooth', 'חלק')); else bad.push(nm + ': ' + L(p.fps + ' FPS') + ' · ' + L(p.over33ms) + T(' long frames', ' פריימים ארוכים'));
+      if (p.fpsFirst && p.fpsLast && p.fpsLast < p.fpsFirst * .85) bad.push(nm + T(': slows down as it runs (heat?) ', ': מאט תוך כדי (חום?) ') + L(p.fpsFirst + ' → ' + p.fpsLast + ' FPS')); }
+    perf = Math.round(perf);
+    const nErr = (rep.errors || []).length + (rep.gameErrors || []).length, stab = Math.max(0, 100 - nErr * 12);
+    if (!nErr) good.push(T('No errors at all', 'אפס שגיאות')); else bad.push(nErr + T(' errors (in the report)', ' שגיאות (בדוח)'));
+    const ch = rep.checks || [], okc = ch.filter(c => c.ok).length, content = ch.length ? Math.round(100 * okc / ch.length) : 100;
+    if (ch.length) { if (okc === ch.length) good.push(T('All ', 'כל ') + ch.length + T(' screens, modes, stages and skins work', ' המסכים, המצבים, השלבים והסקינים עובדים')); else bad.push(ch.filter(c => !c.ok).map(c => c.what).slice(0, 5).join(', ')); }
+    const ct = rep.controls || [], okt = ct.filter(c => c.ok).length, controls = ct.length ? Math.round(100 * okt / ct.length) : 0;
+    if (ct.length && okt === ct.length) good.push(T('Touch controls answer (swipe and tap)', 'שליטת המגע מגיבה (החלקה ונגיעה)')); else bad.push(T('Touch: ', 'מגע: ') + ct.filter(c => !c.ok).map(c => c.what).join(', '));
+    const small = ch.reduce((a, c) => a + (c.small || 0), 0), tiny = ch.reduce((a, c) => a + (c.tiny || 0), 0), spill = ch.filter(c => c.spill && c.spill.length).length;
+    const layout = Math.max(0, 100 - spill * 10 - Math.min(30, small * 2) - Math.min(20, tiny));
+    if (spill) bad.push(spill + T(' screens with parts off the screen', ' מסכים עם חלקים מחוץ למסך')); if (small) bad.push(small + T(' buttons smaller than a fingertip (under 36 px)', ' כפתורים קטנים מאצבע (מתחת ל־36 פיקסלים)')); if (tiny) bad.push(tiny + T(' texts smaller than 10 px', ' טקסטים קטנים מ־10 פיקסלים'));
+    if (!spill && !small && !tiny) good.push(T('Every screen fits and reads well', 'כל המסכים נכנסים וקריאים'));
+    if (rep.bootMs) (rep.bootMs < 4000 ? good : bad).push(T('Loads in ', 'נטען תוך ') + L((rep.bootMs / 1000).toFixed(1)) + T(' s', ' שניות'));
+    const overall = Math.round(perf * .35 + stab * .25 + content * .2 + controls * .1 + layout * .1);
+    return { overall, grade: overall >= 95 ? 'A+' : overall >= 90 ? 'A' : overall >= 80 ? 'B' : overall >= 70 ? 'C' : 'D', parts: { perf, stability: stab, content, controls, layout },
+      names: { perf: T('Smoothness', 'חלקות'), stability: T('Stability', 'יציבות'), content: T('Everything works', 'הכל עובד'), controls: T('Touch controls', 'שליטת מגע'), layout: T('Screens and layout', 'מסכים ופריסה') }, good, bad };
   }
   // ---------------- the full check: every screen, every mode, a stage of every chapter, every skin ----------------
   async function fullCheck(errs) {
@@ -84,7 +139,8 @@
       try { open(); } catch (e) { errs.push(name + ': ' + e.message); }
       await wait(700);
       const spill = []; try { const sec = document.querySelector('section.scr:not(.hidden)'); if (sec) for (const el of sec.querySelectorAll('button, .btn, .chip, h1, h2, .panel, input')) { const r = el.getBoundingClientRect(); if (!r.width) continue; let sc = false; for (let q = el.parentElement; q && q !== sec; q = q.parentElement) { const ox = getComputedStyle(q).overflowX; if (ox === 'auto' || ox === 'scroll') { sc = true; break; } } if (sc) continue; /* (a row that scrolls sideways holds more than fits, by design) */ if (r.right > innerWidth + 2 || r.left < -2) spill.push((el.id || el.textContent || el.tagName).trim().slice(0, 24)); } } catch (e) { }
-      put('screen: ' + name, m, { spill: spill.slice(0, 4), bad: spill.length > 0 });
+      let small = 0, tiny = 0; try { const sec = document.querySelector('section.scr:not(.hidden)'); if (sec) { for (const el of sec.querySelectorAll('button')) { const r = el.getBoundingClientRect(); if (r.width && r.height && r.top < innerHeight && r.bottom > 0 && (r.height < 30 || r.width < 30)) small++; } for (const el of sec.querySelectorAll('div, span, p, button, label')) { if (!el.childNodes.length || el.children.length) continue; const r = el.getBoundingClientRect(); if (!r.width || r.top > innerHeight) continue; if (parseFloat(getComputedStyle(el).fontSize) < 9.5 && el.textContent.trim().length > 2) tiny++; } } } catch (e) { }
+      put('screen: ' + name, m, { spill: spill.slice(0, 4), small, tiny, bad: spill.length > 0 });
     }
     // every mode, 5 seconds each with the autopilot
     for (const mode of ['endless', 'bossrush', 'arena', 'tower', 'highway', 'timeattack', 'mayhem', 'daily', 'weekly', 'dojo']) {
