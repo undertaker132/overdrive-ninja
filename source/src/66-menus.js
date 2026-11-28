@@ -3,7 +3,8 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 120.0
+const NEWS = [ // version 121.0
+  ["v121.0 — THE LIVE HERO ON THE ARSENAL STAGE", "The Arsenal stage shows the live, animated hero again (a flat painting pasted on the lit stage looked wrong); the painted portraits stay in the lists, the shop, crate rewards, the profile and the home card."],
   ["v120.0 — EVERY HERO HAS A FACE", "All 98 heroes now have their own painted portrait: the Arsenal list and stage, the shop, crate rewards, the profile and the home card show each hero as its character art, armor, wings, masks and all. Weapons in the hero's hand are also drawn 30% larger in 3D."],
   ["v119.0 — WEAPONS THAT READ", "In 3D the weapon in the hero's hand was sized for the 2D drawing and looked thin next to the hero: every weapon is now drawn 30% larger in the hand, so a katana, a hammer, a spear or a chakram reads at a glance (the reach in the game is the same)."],
   ["v117.0 — THE CHASE CAMERA AT FULL SPEED", "Measured on a player's own desktop (thanks for the self-test report): the chase camera ran at 51 FPS with hitches while every other view ran at 165. Its roof layer covered the whole wide screen (2026 x 1173 pixels) and was sent to the graphics card every frame; it now covers only the arena (about a million pixels), keeps one detail level for the whole run (rebuilding it when the quality governor moved cost a hitch) and is refreshed at most about 75 times a second. Also: the settings tabs wrap to a second row on a narrow screen (the last tab was off the screen in Hebrew), and the self-test counts every drawing pass of a frame."],
