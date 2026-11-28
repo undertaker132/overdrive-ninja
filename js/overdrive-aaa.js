@@ -5611,9 +5611,12 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
           m.emissive.lerp(tint, .35); if (m.color) { m.color.lerp(tint, .3); m.color.multiplyScalar(.8); } m.emissiveIntensity = Math.min(m.emissiveIntensity, .45);
         });
       }
+      if (g && g.human && !g.wrap119) { g.wrap119 = 1; bigBlades(g); }
     } catch (e) { errLog(e); }
     return g;
   };
+  // the weapon in the hand at a size that reads next to the hero (it was drawn for the 2D proportions)
+  function bigBlades(g) { for (const b of [g.blade, g.blade2]) if (b && b.scale) b.scale.multiplyScalar(1.3); }
 })();
 
 /* --- MODULE 27: v115.0 WORLD — the train reads as one train --- */

@@ -3,7 +3,8 @@
    FPS), what's new, music room, device check, save codes, bug reports,
    share screen, creator dashboard, rival alerts, weekly + dojo entries.
    ===================================================================== */
-const NEWS = [ // version 117.0
+const NEWS = [ // version 119.0
+  ["v119.0 — WEAPONS THAT READ", "In 3D the weapon in the hero's hand was sized for the 2D drawing and looked thin next to the hero: every weapon is now drawn 30% larger in the hand, so a katana, a hammer, a spear or a chakram reads at a glance (the reach in the game is the same)."],
   ["v117.0 — THE CHASE CAMERA AT FULL SPEED", "Measured on a player's own desktop (thanks for the self-test report): the chase camera ran at 51 FPS with hitches while every other view ran at 165. Its roof layer covered the whole wide screen (2026 x 1173 pixels) and was sent to the graphics card every frame; it now covers only the arena (about a million pixels), keeps one detail level for the whole run (rebuilding it when the quality governor moved cost a hitch) and is refreshed at most about 75 times a second. Also: the settings tabs wrap to a second row on a narrow screen (the last tab was off the screen in Hebrew), and the self-test counts every drawing pass of a frame."],
   ["v115.0 — ONE TRAIN", "In 3D the cars of the train stood apart with a bare gap between them. Every two cars are now coupled by a gangway: a grated steel bridge at roof level, rubber bellows on both sides and a neon edge in the stage's color."],
   ["v114.0 — WINGS, NOT GLARE", "Hero gear in 3D: the wings, halos and thrusters of the pale skins (ASCENDANT, SERAPH, DEUS, AURORA SERAPH, STAR SERAPH and others) went through the bloom as a white blot bigger than the hero. Near-white glow parts now take a touch of the skin's second color and glow softer, so you see wings, feathers and a halo again; colored glows keep their light."],
