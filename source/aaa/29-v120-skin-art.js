@@ -13,7 +13,7 @@
     return null;
   }
   // a canvas that asked for a portrait before it arrived is redrawn when it lands
-  function refresh(id) { clearTimeout(wait.t); wait.t = setTimeout(() => { try { document.querySelectorAll('canvas[data-art120]').forEach(cv => { const sk = SKINS.find(s => s.id === cv.dataset.art120); if (sk && img[sk.id] && img[sk.id].complete) { const g = cv.getContext('2d'); g.save(); g.setTransform(1, 0, 0, 1, 0, 0); bust(g, sk, cv.width); g.restore(); } }); if (typeof Preview !== 'undefined' && Preview.sel) Preview.t = Math.max(Preview.t, .6); } catch (e) { } }, 80); }
+  function refresh(id) { clearTimeout(wait.t); wait.t = setTimeout(() => { try { document.querySelectorAll('canvas[data-art120]').forEach(cv => { const sk = SKINS.find(s => s.id === cv.dataset.art120); if (sk && img[sk.id] && img[sk.id].complete) { const g = cv.getContext('2d'); g.save(); g.setTransform(1, 0, 0, 1, 0, 0); bust(g, sk, cv.width); g.restore(); } }); } catch (e) { } }, 80); }
   // head and shoulders, from the top of the card
   function bust(g, sk, S) {
     const i = get(sk.id); if (!i) return false; const w = i.naturalWidth, h = i.naturalHeight, s = w * .78;
@@ -30,13 +30,6 @@
     const di0 = drawIcon;
     drawIcon = function (g, it, S) { try { if (it && it.tab === 'heroes' && ART.has(it.id)) { const sk = SKINS.find(s => s.id === it.id) || { id: it.id }; if (bust(g, sk, S)) return; try { g.canvas.dataset.art120 = it.id; } catch (e) { } } } catch (e) { } return di0.apply(this, arguments); };
   }
-  // the Arsenal stage: the full painted figure stands on the lit stage instead of the little drawn hero
-  if (typeof Preview !== 'undefined' && Preview.hero) {
-    const ph0 = Preview.hero.bind(Preview);
-    Preview.hero = function (x, y) {
-      try { const s = this.sel; if (s && s.tab === 'heroes') { const i = get(s.id); if (i) { const H = 158, W = H * i.naturalWidth / i.naturalHeight, bob = Math.sin((this.t || 0) * 2) * 1.5; cx.save(); cx.shadowColor = 'rgba(0,0,0,.6)'; cx.shadowBlur = 12; cx.drawImage(i, this.W / 2 - W / 2, 166 - H + bob, W, H); cx.restore(); return; } } } catch (e) { }
-      return ph0.apply(this, arguments);
-    };
-  }
+  // (v121: the Arsenal stage shows the live, animated hero again; a flat painting pasted on the lit stage looked wrong)
   window.SkinArt120 = { has: id => ART.has(id), get };
 })();
