@@ -5611,10 +5611,24 @@ if (typeof HE !== 'undefined') Object.assign(HE, {"Anime boss orchestral rock": 
           m.emissive.lerp(tint, .35); if (m.color) { m.color.lerp(tint, .3); m.color.multiplyScalar(.8); } m.emissiveIntensity = Math.min(m.emissiveIntensity, .45);
         });
       }
-      if (g && g.human && !g.wrap119) { g.wrap119 = 1; bigBlades(g); }
+      if (g && g.human && !g.wrap119) { g.wrap119 = 1; bigBlades(g); artDirect(g); }
     } catch (e) { errLog(e); }
     return g;
   };
+  // v121: the look of the character sheets: dark, saturated armor with thin neon lines. In 3D the whole suit glowed and
+  // the bloom washed most heroes to pale blots; the body now takes a deep version of its color and a faint glow, the
+  // trims and lines keep a clear neon glow, and the weapon is left as it is.
+  function artDirect(g) {
+    const skip = new Set(); for (const b of [g.blade, g.blade2]) if (b) b.traverse(o => skip.add(o));
+    const seen = new Set(), hsl = {};
+    g.traverse(o => {
+      const m = o.isMesh && !skip.has(o) && o.material; if (!m || Array.isArray(m) || seen.has(m) || (m.userData && m.userData.isOutline91) || o === g.pool) return; seen.add(m);
+      const trim = !!m.emissive && (m.emissiveIntensity || 0) >= .9;
+      if (m.color && !m.isMeshBasicMaterial) { m.color.getHSL(hsl); m.color.setHSL(hsl.h, Math.min(1, hsl.s * 1.15 + (hsl.s > .15 ? .1 : 0)), trim ? Math.min(hsl.l, .62) : clamp(hsl.l * .72, .1, .5)); }
+      if (m.emissive) m.emissiveIntensity = trim ? Math.min(m.emissiveIntensity, 1.25) : Math.min(m.emissiveIntensity || 0, .12);
+      if (m.isMeshBasicMaterial && !m.transparent && m.color) { m.color.getHSL(hsl); if (hsl.l > .6) m.color.setHSL(hsl.h, hsl.s, .6); } // (unlit parts: no white)
+    });
+  }
   // the weapon in the hand at a size that reads next to the hero (it was drawn for the 2D proportions)
   function bigBlades(g) { for (const b of [g.blade, g.blade2]) if (b && b.scale) b.scale.multiplyScalar(1.3); }
 })();
