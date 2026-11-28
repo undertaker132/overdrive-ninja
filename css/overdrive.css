@@ -1623,3 +1623,25 @@ textarea, input[type="text"], .edcode { background: rgba(4, 7, 20, .8); border: 
 
 /* v117: the settings tabs wrap to a second row instead of scrolling one tab off a narrow screen */
 #setTabs.settabs { flex-wrap: wrap; overflow-x: visible; row-gap: 6px; }
+
+/* v122: FIRST STEPS on the home screen and NEXT GOAL on the results */
+.fs122 { margin: 10px 0 4px; padding: 10px 12px; border: 1px solid rgba(0,242,254,.35); background: linear-gradient(135deg, rgba(0,242,254,.08), rgba(181,55,242,.08)); }
+.fs122-h { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+.fs122-t { font-weight: 900; letter-spacing: .12em; color: #7df9ff; font-size: 13px; }
+.fs122-n { font-size: 11px; opacity: .75; }
+.fs122-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-top: 1px solid rgba(255,255,255,.07); }
+.fs122-row.ready .fs122-g { color: #ffd23f; }
+.fs122-x { flex: 1; min-width: 0; }
+.fs122-g { font-weight: 700; font-size: 13px; }
+.fs122-r { font-size: 11px; color: #ffd23f; opacity: .9; }
+.fs122-b { padding: 6px 12px; min-height: 36px; background: linear-gradient(90deg, #ffd23f, #ff9a3d); color: #120a00; font-weight: 900; animation: fs122pulse 1.2s ease-in-out infinite; }
+@keyframes fs122pulse { 50% { transform: scale(1.06); box-shadow: 0 0 14px rgba(255,210,63,.7); } }
+.fs122-bar { width: 72px; height: 6px; border-radius: 3px; background: rgba(255,255,255,.12); overflow: hidden; flex: none; }
+.fs122-bar i { display: block; height: 100%; background: linear-gradient(90deg, #00f2fe, #b537f2); }
+.rsnext122 { margin: 8px 0; padding: 8px 12px; border: 1px solid rgba(255,210,63,.4); text-align: center; }
+.rsnext122.ready { border-color: #ffd23f; box-shadow: 0 0 16px rgba(255,210,63,.35); }
+.rsnext122-h { font-size: 11px; letter-spacing: .14em; color: #ffd23f; font-weight: 900; }
+.rsnext122-t { font-weight: 800; margin-top: 2px; }
+.rsnext122-s { font-size: 12px; opacity: .85; }
+.rsnext122 .fs122-bar { width: 60%; margin: 6px auto 0; }
+@media (prefers-reduced-motion: reduce) { .fs122-b { animation: none; } }
